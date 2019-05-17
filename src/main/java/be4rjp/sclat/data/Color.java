@@ -11,11 +11,16 @@ import org.bukkit.ChatColor;
  */
 public class Color {
     private String colorname;
-    private ChatColor colorcode;
+    private String colorcode;
+    private boolean isUsed = false;
     
     public Color(String colorname){this.colorname = colorname;}
     
-    public ChatColor getColorCode(){return colorcode;}
+    public String getColorCode(){return colorcode;}
+    
+    public boolean getIsUsed(){return isUsed;}
+    
+    public void setIsUsed(boolean isused){isUsed = isused;}
     
     
 }

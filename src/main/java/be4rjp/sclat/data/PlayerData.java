@@ -12,13 +12,21 @@ public class PlayerData {
     private Team team;
     private boolean inmatch = false;
     
-   public PlayerData(Player player){this.player = player;}
+    public PlayerData(Player player){this.player = player;}
    
-   public Match getMatch(){return match;}
+    public Match getMatch(){return match;}
    
-   public Team getTeam(){return team;}
+    public Team getTeam(){return team;}
    
-   public boolean isInMatch(){return inmatch;}
+    public boolean isInMatch(){return inmatch;}
+    
+    
+    public void setMatch(Match match){this.match = match;}
+    
+    public void setTeam(Team team){this.team = team;}
+    
+    public void setIsInMatch(boolean isinmatch){this.inmatch = isinmatch;}
+    
     
     
     
