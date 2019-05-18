@@ -1,6 +1,10 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.ColorMgr;
+import be4rjp.sclat.manager.GameMgr;
+import be4rjp.sclat.manager.MatchMgr;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -15,7 +19,12 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("Loading config files...");
-        conf.LoadConfig();
+        //conf.LoadConfig();
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new GameMgr(), this);
+        ColorMgr.SetupColor();
+        MatchMgr.MatchSetup();
+        
     }
 
 

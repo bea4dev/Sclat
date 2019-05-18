@@ -4,6 +4,7 @@ package be4rjp.sclat.data;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 /**
  *
@@ -13,6 +14,7 @@ public class Color {
     private String colorname;
     private String colorcode;
     private boolean isUsed = false;
+    private Material wool;
     
     public Color(String colorname){this.colorname = colorname;}
     
@@ -20,7 +22,13 @@ public class Color {
     
     public boolean getIsUsed(){return isUsed;}
     
+    public Material getWool(){return wool;}
+    
+    public void setWool(Material Wool){wool = Wool;}
+    
     public void setIsUsed(boolean isused){isUsed = isused;}
+    
+    public void setColorCode(String code){colorcode = code;}
     
     
 }
