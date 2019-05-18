@@ -12,11 +12,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class Config {
     private FileConfiguration ps;
     private FileConfiguration conf;
-    private File psf = new File("plugins/Sclat", "Weapons.yml");
+    private FileConfiguration weapon;
+    private File psf = new File("plugins/Sclat", "class.yml");
+    private File weaponf = new File("plugins/Sclat", "mainnweapon.yml");
     private File conff = new File("plugins/Sclat", "config.yml");
     public synchronized void LoadConfig(){
         ps = YamlConfiguration.loadConfiguration(psf);
         conf = YamlConfiguration.loadConfiguration(conff);
+        weapon = YamlConfiguration.loadConfiguration(weaponf);
     }
     
     public synchronized void SaveConfig(){
@@ -31,7 +34,11 @@ public class Config {
         return conf;
     }
     
-    public FileConfiguration getWeapons(){
+    public FileConfiguration getClassConfig(){
         return ps;
+    }
+    
+    public FileConfiguration getWeaponConfig(){
+        return weapon;
     }
 }
