@@ -26,7 +26,7 @@ public class MatchRunnable extends BukkitRunnable{
     @Override
     public void run() {
         if (counter > 0) {
-            player.sendMessage("");
+            player.sendTitle("", "§a試合開始まで後" + counter-- + "秒", 4, 12, 4);
         }
     }
     

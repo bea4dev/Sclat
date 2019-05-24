@@ -13,6 +13,7 @@ public class Match {
     private Team team0;
     private Team team1;
     private int playercount = 0;
+    private MapData map;
     
     public Match(int id){this.id = id;}
     
@@ -24,10 +25,14 @@ public class Match {
     
     public int getPlayerCount(){return playercount;}
     
+    public MapData getMapData(){return this.map;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
     public void setTeam1(Team team){team1 = team;}
     
     public void addPlayerCount(){playercount++;}
+    
+    public void setMapData(MapData map){this.map = map;}
 }

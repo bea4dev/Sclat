@@ -1,5 +1,6 @@
 package be4rjp.sclat.data;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 /**
@@ -14,6 +15,8 @@ public class PlayerData {
     private boolean inmatch = false;
     private WeaponClass weaponclass;
     private MainWeapon mainweapon;
+    private Location matchloc;
+    private int playernumber;
     
     public PlayerData(Player player){this.player = player;}
    
@@ -27,6 +30,10 @@ public class PlayerData {
     
     public MainWeapon getMainWeapon(){return mainweapon;}
     
+    public Location getMatchLocation(){return this.matchloc;}
+    
+    public int getPlayerNumber(){return this.playernumber;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -37,6 +44,10 @@ public class PlayerData {
     public void setWeaponClass(WeaponClass weaponclass){this.weaponclass = weaponclass;}
     
     public void setMainWeapon(MainWeapon mainweapon){this.mainweapon = mainweapon;}
+    
+    public void setMatchLocation(Location l){this.matchloc = l;}
+    
+    public void setPlayerNumber(int i){this.playernumber = i;}
     
     
 }
