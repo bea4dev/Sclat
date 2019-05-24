@@ -8,6 +8,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -67,7 +68,12 @@ public class MatchMgr {
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getMatch() == match){
                 player.sendTitle("","§a試合開始まで後10秒", 10, 70, 20);
-                
+                new BukkitRunnable() {
+                @Override
+                    public void run() {
+                        
+                    }
+                }.runTaskLater(Main.getPlugin(Main.class), 20);
             }
         }
     }
