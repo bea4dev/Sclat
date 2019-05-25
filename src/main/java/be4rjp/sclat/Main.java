@@ -5,6 +5,9 @@ import be4rjp.sclat.manager.ColorMgr;
 import be4rjp.sclat.manager.GameMgr;
 import be4rjp.sclat.manager.MapDataMgr;
 import be4rjp.sclat.manager.MatchMgr;
+import be4rjp.sclat.manager.NPCMgr;
+import java.util.logging.Level;
+
 import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,11 +22,13 @@ public class Main extends JavaPlugin {
     
     private static Main plugin;
     
+    public NPCMgr npcmgr;
+    
 
     @Override
     public void onEnable() {
-        plugin = this;
-        
+        plugin = this;	
+        this.npcmgr = new NPCMgr();
         getLogger().info("Loading config files...");
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
@@ -46,3 +51,5 @@ public class Main extends JavaPlugin {
     }
     
 }
+
+

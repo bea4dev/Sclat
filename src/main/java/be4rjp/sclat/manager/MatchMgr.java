@@ -23,8 +23,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import net.minecraft.server.v1_13_R1.*;
 
 /**
  *
@@ -102,6 +106,7 @@ public class MatchMgr {
                     World w = Main.getPlugin().getServer().getWorld(match.getMapData().getWorldName());
                     
                     LivingEntity squid;
+                    //LivingEntity npcle;
                     
                     
                     @Override
@@ -141,8 +146,10 @@ public class MatchMgr {
                             squid.setCustomNameVisible(true);
                             
                             Location introl = match.getMapData().getIntro();
-                            p.setGameMode(GameMode.SPECTATOR);
+                            
+                            p.setGameMode(GameMode.CREATIVE);
                             p.teleport(introl);
+                            
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                         }
                         if(s >= 101 && s <= 200){
@@ -152,15 +159,30 @@ public class MatchMgr {
                         if(s >= 201 && s <= 260){
                             Location introl = match.getMapData().getTeam0Intro();
                             p.teleport(introl);
-                            if(s == 220 && DataMgr.getPlayerData(p).getTeam() == match.getTeam0())
-                                squid.getWorld().playEffect(squid.getLocation(), Effect.STEP_SOUND, DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool());
-                                squid.remove();
+                            if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
+                                if(s >= 201 && s <= 220){
+                                    //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
+                                    
+                                }
+                                if(s == 220){
+                                    squid.remove();
+                                }
+                                if(s == 201){
+                                    NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
+                                    //p.getWorld().playEffect(introl, Effect.CLICK2, DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool());
+                                }
+                                //npcle = (LivingEntity)npc.getEntity();
+                                //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
+                            }
                         }
                         if(s >= 261 && s <= 320){
                             Location introl = match.getMapData().getTeam1Intro();
                             p.teleport(introl);
                             if(s == 280 && DataMgr.getPlayerData(p).getTeam() == match.getTeam1())
                                 squid.remove();
+                                
+                                //npcle = (LivingEntity)npc.getEntity();
+                                //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
                         if(s == 322){
                         //playerclass
@@ -174,8 +196,10 @@ public class MatchMgr {
                             p.teleport(introl); 
                         }  
                             
-                        if(s < 400)
+                        
                             s++;
+                        
+                        
                         
                     }
                 };
