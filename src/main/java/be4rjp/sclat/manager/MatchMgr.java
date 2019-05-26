@@ -59,7 +59,7 @@ public class MatchMgr {
             }
             data.setIsInMatch(true);
             data.setMatch(match);
-            if(playercount == 1){//-------------------test--------------------//
+            if(playercount == 3){//-------------------test--------------------//
                 StartMatch(match);
             }
         }else{
@@ -117,25 +117,25 @@ public class MatchMgr {
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
                                 int i = (DataMgr.getPlayerData(p).getPlayerNumber()+1)/2;
                                 if(i == 1)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1D, l.getBlockY(), l.getBlockZ() + 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1D, l.getBlockY(), l.getBlockZ() + 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1D, l.getBlockY(), l.getBlockZ() - 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1D, l.getBlockY(), l.getBlockZ() - 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
                             }
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
                                 int i = DataMgr.getPlayerData(p).getPlayerNumber()/2;
                                 if(i == 1)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1D, l.getBlockY(), l.getBlockZ() + 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1D, l.getBlockY(), l.getBlockZ() + 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1D, l.getBlockY(), l.getBlockZ() - 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1D, l.getBlockY(), l.getBlockZ() - 1D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
                             }
                             
                             Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
@@ -147,7 +147,7 @@ public class MatchMgr {
                             
                             Location introl = match.getMapData().getIntro();
                             
-                            p.setGameMode(GameMode.CREATIVE);
+                            p.setGameMode(GameMode.SPECTATOR);
                             p.teleport(introl);
                             
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
@@ -162,7 +162,7 @@ public class MatchMgr {
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                                 if(s >= 201 && s <= 220){
                                     //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
-                                    
+                                    introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
                                 }
                                 if(s == 220){
                                     squid.remove();
@@ -178,15 +178,26 @@ public class MatchMgr {
                         if(s >= 261 && s <= 320){
                             Location introl = match.getMapData().getTeam1Intro();
                             p.teleport(introl);
-                            if(s == 280 && DataMgr.getPlayerData(p).getTeam() == match.getTeam1())
-                                squid.remove();
+                            if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
+                                if(s >= 261 && s <= 280){
+                                    //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
+                                    introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
+                                }
+                                if(s == 280){
+                                    squid.remove();
+                                }
+                                if(s == 261){
+                                    NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
+                                }
+                            }
+                                
                                 
                                 //npcle = (LivingEntity)npc.getEntity();
                                 //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
-                        if(s == 322){
-                        //playerclass
-                            
+                        if(s == 401){
+                            //playerclass
+                            p.getInventory().setItemInMainHand(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         }
                         
                         if(s >= 321 && s <= 400){

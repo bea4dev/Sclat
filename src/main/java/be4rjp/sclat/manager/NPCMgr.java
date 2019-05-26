@@ -1,6 +1,7 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.data.DataMgr;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.server.v1_13_R1.*;
@@ -52,7 +53,7 @@ public class NPCMgr {
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
                         //connection.sendPacket(new PacketPlayOutEntityTeleport(npc));
-                        connection.sendPacket(new PacketPlayOutEntityEquipment(npc.getBukkitEntity().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(new ItemStack(Material.WOODEN_HOE))));
+                        connection.sendPacket(new PacketPlayOutEntityEquipment(npc.getBukkitEntity().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack())));
                     }
                     
                 }

@@ -34,6 +34,8 @@ public class MapDataMgr {
             int t0z = conf.getMapConfig().getInt("Maps." + mapname + ".Team0.Z");
             int t0yaw = conf.getMapConfig().getInt("Maps." + mapname + ".Team0.Yaw");
             Location t0l = new Location(w, t0x, t0y, t0z);
+            t0l.setX(t0l.getX() + 0.5);
+            t0l.setZ(t0l.getZ() + 0.5);
             t0l.setYaw(t0yaw);
             
             int t1x = conf.getMapConfig().getInt("Maps." + mapname + ".Team1.X");
@@ -41,6 +43,8 @@ public class MapDataMgr {
             int t1z = conf.getMapConfig().getInt("Maps." + mapname + ".Team1.Z");
             int t1yaw = conf.getMapConfig().getInt("Maps." + mapname + ".Team1.Yaw");
             Location t1l = new Location(w, t1x, t1y, t1z);
+            t1l.setX(t1l.getX() + 0.5);
+            t1l.setZ(t1l.getZ() + 0.5);
             t1l.setYaw(t1yaw);
             
             int t0intx = conf.getMapConfig().getInt("Maps." + mapname + ".Team0IntroLoc.X");

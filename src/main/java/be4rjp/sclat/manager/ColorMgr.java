@@ -13,11 +13,13 @@ public class ColorMgr {
         Color blue = new Color("Blue");
             blue.setWool(Material.BLUE_WOOL);
             blue.setColorCode("§9");
+            blue.setBukkitColor(org.bukkit.Color.BLUE);
         DataMgr.setColor("Blue", blue);
             
         Color aqua = new Color("Aqua");
             aqua.setWool(Material.LIGHT_BLUE_WOOL);
             aqua.setColorCode("§b");
+            aqua.setBukkitColor(org.bukkit.Color.AQUA);
         DataMgr.setColor("Aqua", aqua);
     }
 }

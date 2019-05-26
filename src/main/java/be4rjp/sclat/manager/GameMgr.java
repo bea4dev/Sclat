@@ -21,8 +21,10 @@ public class GameMgr implements Listener{
         Player player = e.getPlayer();
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
+        data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
         MatchMgr.PlayerJoinMatch(player);
+        
     }
     
 }

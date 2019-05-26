@@ -28,7 +28,7 @@ public class PlayerData {
     
     public WeaponClass getWeaponClass(){return weaponclass;}
     
-    public MainWeapon getMainWeapon(){return mainweapon;}
+    //public MainWeapon getMainWeapon(){return mainweapon;}
     
     public Location getMatchLocation(){return this.matchloc;}
     
@@ -43,7 +43,7 @@ public class PlayerData {
     
     public void setWeaponClass(WeaponClass weaponclass){this.weaponclass = weaponclass;}
     
-    public void setMainWeapon(MainWeapon mainweapon){this.mainweapon = mainweapon;}
+    //public void setMainWeapon(MainWeapon mainweapon){this.mainweapon = mainweapon;}
     
     public void setMatchLocation(Location l){this.matchloc = l;}
     

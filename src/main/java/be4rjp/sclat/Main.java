@@ -3,9 +3,12 @@ package be4rjp.sclat;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.ColorMgr;
 import be4rjp.sclat.manager.GameMgr;
+import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.MapDataMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.NPCMgr;
+import be4rjp.sclat.manager.WeaponClassMgr;
+import be4rjp.sclat.weapon.MainWeapon;
 import java.util.logging.Level;
 
 import org.bukkit.WorldCreator;
@@ -35,7 +38,10 @@ public class Main extends JavaPlugin {
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
+        pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
         ColorMgr.SetupColor();
+        MainWeaponMgr.SetupMainWeapon();
+        WeaponClassMgr.WeaponClassSetup();
         MapDataMgr.SetupMap();
         MatchMgr.MatchSetup();
     }

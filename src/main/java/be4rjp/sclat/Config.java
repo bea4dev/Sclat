@@ -14,14 +14,14 @@ public class Config {
     private FileConfiguration conf;
     private FileConfiguration weapon;
     private FileConfiguration map;
-    //private File psf = new File("plugins/Sclat", "class.yml");
-    //private File weaponf = new File("plugins/Sclat", "mainnweapon.yml");
+    private File psf = new File("plugins/Sclat", "class.yml");
+    private File weaponf = new File("plugins/Sclat", "mainnweapon.yml");
     private File mapf = new File("plugins/Sclat", "maps.yml");
     //private File conff = new File("plugins/Sclat", "config.yml");
     public synchronized void LoadConfig(){
-        //ps = YamlConfiguration.loadConfiguration(psf);
+        ps = YamlConfiguration.loadConfiguration(psf);
         //conf = YamlConfiguration.loadConfiguration(conff);
-        //weapon = YamlConfiguration.loadConfiguration(weaponf);
+        weapon = YamlConfiguration.loadConfiguration(weaponf);
         map = YamlConfiguration.loadConfiguration(mapf);
     }
     
