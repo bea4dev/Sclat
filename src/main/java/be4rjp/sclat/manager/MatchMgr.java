@@ -10,6 +10,7 @@ import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.data.TeamLoc;
+import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import net.minecraft.server.v1_13_R1.*;
+import org.bukkit.Sound;
 
 /**
  *
@@ -59,8 +61,32 @@ public class MatchMgr {
             }
             data.setIsInMatch(true);
             data.setMatch(match);
-            if(playercount == 3){//-------------------test--------------------//
-                StartMatch(match);
+            if(playercount == 1){//-------------------test--------------------//
+                BukkitRunnable task = new BukkitRunnable(){
+                    int s = 0;
+                    @Override
+                    public void run(){
+                        if(s == 0)
+                            player.sendTitle("","§a試合開始まで後10秒", 10, 70, 20);
+                        if(s == 5)
+                            player.sendTitle("","§a試合開始まで後5秒", 5, 5, 10);
+                        if(s == 6)
+                            player.sendTitle("","§a試合開始まで後4秒", 5, 5, 10);
+                        if(s == 7)
+                            player.sendTitle("","§a試合開始まで後3秒", 5, 5, 10);
+                        if(s == 8)
+                            player.sendTitle("","§a試合開始まで後2秒", 5, 5, 10);
+                        if(s == 9)
+                            player.sendTitle("","§a試合開始まで後1秒", 5, 5, 10);
+                        if(s == 10){
+                            StartMatch(match);
+                            cancel();
+                        }
+                        s++;
+                    }
+                };
+                task.runTaskTimer(Main.getPlugin(), 0, 20);
+                
             }
         }else{
             player.sendMessage("§c§n上限人数を超えているため参加できません");
@@ -97,7 +123,7 @@ public class MatchMgr {
         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getMatch() == match){
-                player.sendTitle("","§a試合開始まで後10秒", 10, 70, 20);
+                
                 
                 
                 BukkitRunnable task = new BukkitRunnable(){
@@ -112,7 +138,7 @@ public class MatchMgr {
                     @Override
                     public void run(){
                         
-                        if(s == 100){
+                        if(s == 0){
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
                                 int i = (DataMgr.getPlayerData(p).getPlayerNumber()+1)/2;
@@ -152,22 +178,26 @@ public class MatchMgr {
                             
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                         }
-                        if(s >= 101 && s <= 200){
+                        if(s >= 1 && s <= 100){
                             Location introl = match.getMapData().getIntro();
                             p.teleport(introl);
                         }
-                        if(s >= 201 && s <= 260){
+                        if(s >= 101 && s <= 160){
                             Location introl = match.getMapData().getTeam0Intro();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
-                                if(s >= 201 && s <= 220){
+                                if(s >= 101 && s <= 120){
                                     //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
-                                    introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
+                                    //introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
+                                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                                    introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
+                                    
                                 }
-                                if(s == 220){
+                                if(s == 120){
                                     squid.remove();
                                 }
-                                if(s == 201){
+                                if(s == 101){
+                                    introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                                     NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                                     //p.getWorld().playEffect(introl, Effect.CLICK2, DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool());
                                 }
@@ -175,18 +205,20 @@ public class MatchMgr {
                                 //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                             }
                         }
-                        if(s >= 261 && s <= 320){
+                        if(s >= 161 && s <= 220){
                             Location introl = match.getMapData().getTeam1Intro();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
-                                if(s >= 261 && s <= 280){
+                                if(s >= 161 && s <= 180){
                                     //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
-                                    introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
+                                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                                    introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                                 }
-                                if(s == 280){
+                                if(s == 180){
                                     squid.remove();
                                 }
-                                if(s == 261){
+                                if(s == 161){
+                                    introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                                     NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                                 }
                             }
@@ -195,12 +227,13 @@ public class MatchMgr {
                                 //npcle = (LivingEntity)npc.getEntity();
                                 //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
-                        if(s == 401){
+                        if(s == 301){
                             //playerclass
-                            p.getInventory().setItemInMainHand(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+                            p.getInventory().setItem(0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+                            //Shooter.ShooterRunnable(p);
                         }
                         
-                        if(s >= 321 && s <= 400){
+                        if(s >= 221 && s <= 300){
                             p.setGameMode(GameMode.ADVENTURE);
                             
                             Location introl = DataMgr.getPlayerData(p).getMatchLocation();
@@ -214,7 +247,7 @@ public class MatchMgr {
                         
                     }
                 };
-                task.runTaskTimer(Main.getPlugin(), 100, 1);
+                task.runTaskTimer(Main.getPlugin(), 0, 1);
             }
         }
     }

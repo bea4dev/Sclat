@@ -17,6 +17,8 @@ public class PlayerData {
     private MainWeapon mainweapon;
     private Location matchloc;
     private int playernumber;
+    private boolean canshoot;
+    private int tick;
     
     public PlayerData(Player player){this.player = player;}
    
@@ -26,6 +28,8 @@ public class PlayerData {
    
     public boolean isInMatch(){return inmatch;}
     
+    public boolean getCanShoot(){return canshoot;}
+    
     public WeaponClass getWeaponClass(){return weaponclass;}
     
     //public MainWeapon getMainWeapon(){return mainweapon;}
@@ -33,6 +37,8 @@ public class PlayerData {
     public Location getMatchLocation(){return this.matchloc;}
     
     public int getPlayerNumber(){return this.playernumber;}
+    
+    public int getTick(){return this.tick;}
     
     
     public void setMatch(Match match){this.match = match;}
@@ -49,5 +55,8 @@ public class PlayerData {
     
     public void setPlayerNumber(int i){this.playernumber = i;}
     
+    public void setTick(int i){this.tick = i;}
+    
+    public void setCanShoot(boolean canshoot){this.canshoot = canshoot;}
     
 }
