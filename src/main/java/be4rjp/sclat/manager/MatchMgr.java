@@ -229,8 +229,24 @@ public class MatchMgr {
                         }
                         if(s == 301){
                             //playerclass
-                            p.getInventory().setItem(0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+                            p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                             //Shooter.ShooterRunnable(p);
+                            BukkitRunnable delay = new BukkitRunnable(){
+                            Player p2 = p;
+                            
+                            @Override
+                            public void run(){
+                                PlayerData data = DataMgr.getPlayerData(p2);
+                                data.setTick(data.getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
+                                if(data.getTick() < 5){
+                                    Shooter.Shoot(p);
+                                    //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
+                                    //DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
+                                    
+                                }
+                            }
+                            };
+                            delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                         }
                         
                         if(s >= 221 && s <= 300){

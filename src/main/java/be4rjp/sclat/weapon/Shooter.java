@@ -51,7 +51,7 @@ public class Shooter {
                     Vector origvec = vec;
                     Snowball inkball = ball;
                     Player p = player;
-                    Vector fallvec = new Vector(inkball.getVelocity().getX(), 0, inkball.getVelocity().getZ()).multiply(0.2);
+                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(0.2);
                     @Override
                     public void run(){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();

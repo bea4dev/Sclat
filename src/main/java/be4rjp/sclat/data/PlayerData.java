@@ -18,7 +18,7 @@ public class PlayerData {
     private Location matchloc;
     private int playernumber;
     private boolean canshoot;
-    private int tick;
+    private int tick = 0;
     
     public PlayerData(Player player){this.player = player;}
    
