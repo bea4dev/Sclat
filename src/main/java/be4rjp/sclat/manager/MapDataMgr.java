@@ -29,6 +29,10 @@ public class MapDataMgr {
             Location il = new Location(w, ix, iy, iz);
             il.setYaw(iyaw);
             
+            double intromovex = conf.getMapConfig().getDouble("Maps." + mapname + ".Intro.MoveX");
+            double intromovey = conf.getMapConfig().getDouble("Maps." + mapname + ".Intro.MoveY");
+            double intromovez = conf.getMapConfig().getDouble("Maps." + mapname + ".Intro.MoveZ");
+            
             int t0x = conf.getMapConfig().getInt("Maps." + mapname + ".Team0.X");
             int t0y = conf.getMapConfig().getInt("Maps." + mapname + ".Team0.Y");
             int t0z = conf.getMapConfig().getInt("Maps." + mapname + ".Team0.Z");
@@ -67,6 +71,10 @@ public class MapDataMgr {
             map.setTeam1Loc(t1l);
             map.setTeam0Intro(t0intl);
             map.setTeam1Intro(t1intl);
+            
+            map.setIntroMoveX(intromovex);
+            map.setIntroMoveY(intromovey);
+            map.setIntroMoveZ(intromovez);
             
             //Main.getPlugin().getServer().createWorld(new WorldCreator(WorldName));
             

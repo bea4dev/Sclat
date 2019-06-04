@@ -130,6 +130,7 @@ public class MatchMgr {
                     int s = 0;
                     Player p = player;
                     World w = Main.getPlugin().getServer().getWorld(match.getMapData().getWorldName());
+                    Location intromove;
                     
                     LivingEntity squid;
                     //LivingEntity npcle;
@@ -179,8 +180,10 @@ public class MatchMgr {
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                         }
                         if(s >= 1 && s <= 100){
-                            Location introl = match.getMapData().getIntro();
-                            p.teleport(introl);
+                            intromove = match.getMapData().getIntro();
+                            MapData map = DataMgr.getPlayerData(p).getMatch().getMapData();
+                            intromove.add(map.getIntroMoveX(), map.getIntroMoveY(), map.getIntroMoveZ());
+                            p.teleport(intromove);
                         }
                         if(s >= 101 && s <= 160){
                             Location introl = match.getMapData().getTeam0Intro();
@@ -231,22 +234,10 @@ public class MatchMgr {
                             //playerclass
                             p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                             //Shooter.ShooterRunnable(p);
-                            BukkitRunnable delay = new BukkitRunnable(){
-                            Player p2 = p;
-                            
-                            @Override
-                            public void run(){
-                                PlayerData data = DataMgr.getPlayerData(p2);
-                                data.setTick(data.getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
-                                if(data.getTick() < 5){
-                                    Shooter.Shoot(p);
-                                    //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
-                                    //DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
-                                    
-                                }
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick() < 5){
+                                DataMgr.getPlayerData(p).setTick(0);
+                                Shooter.ShooterRunnable(p);
                             }
-                            };
-                            delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                         }
                         
                         if(s >= 221 && s <= 300){

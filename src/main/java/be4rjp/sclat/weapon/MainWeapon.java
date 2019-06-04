@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -58,6 +60,10 @@ public class MainWeapon implements Listener{
                 
             }
         }
+    }
+    
+    public void onBlockHit(ProjectileHitEvent event){
+        PaintMgr.Paint(event.getHitBlock().getLocation(), (Player)event.getEntity().getShooter());
     }
    
 }

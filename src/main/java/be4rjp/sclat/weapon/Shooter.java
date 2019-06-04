@@ -17,24 +17,21 @@ import org.bukkit.util.Vector;
  * @author Be4rJP
  */
 public class Shooter {
-    public static void ShooterRunnable(Player p){
-        BukkitRunnable task = new BukkitRunnable(){
-            Player player = p;
-            //int firetick = tick;
+    public static void ShooterRunnable(Player player){
+        BukkitRunnable delay = new BukkitRunnable(){
+            Player p = player;
+                            
             @Override
             public void run(){
-                if(DataMgr.getPlayerData(player).getCanShoot() != true)
-                    return;
-                PlayerData data = DataMgr.getPlayerData(player);
-                int tick = data.getTick();
-		if(tick > 0) {
-			tick--;
-			data.setTick(tick);
-			Shoot(player);
-		} 
+                PlayerData data = DataMgr.getPlayerData(p);
+                //data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
+                if(data.getTick() < 5){
+                    Shooter.Shoot(p);
+                    data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
+                }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
+        delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
     }
     
     public static void Shoot(Player player){
@@ -44,6 +41,7 @@ public class Shooter {
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
                 vec.add(new Vector(Math.random() * random - random/2, 0, Math.random() * random - random/2));
                 ball.setVelocity(vec);
+                ball.setShooter(player);
                 BukkitRunnable task = new BukkitRunnable(){
                     int i = 0;
                     int tick = distick;

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 /**
@@ -22,6 +23,8 @@ public class DataMgr {
     private static Map<String, MainWeapon> weapondata = new HashMap<>();  
     private static Map<String, MapData> mapdata = new HashMap<>(); 
     private static Map<MapData, TeamLoc> locdata = new HashMap<>(); 
+    private static Map<Block, PaintData> blockdata = new HashMap<>(); 
+    private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list;
     private static List<MapData> maplist;
     
@@ -33,6 +36,8 @@ public class DataMgr {
     public static MainWeapon getWeapon(String name){return weapondata.get(name);}
     public static MapData getMap(String name){return mapdata.get(name);}
     public static TeamLoc getTeamLoc(MapData map){return locdata.get(map);}
+    public static PaintData getPaintDataFromBlock(Block block){return blockdata.get(block);}
+    public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
     public static void setPlayerData(Player player, PlayerData data){playerdata.put(player, data);}
@@ -43,7 +48,11 @@ public class DataMgr {
     public static void setMainWeapon(String MWname, MainWeapon mw){weapondata.put(MWname, mw);}
     public static void setMap(String Mname, MapData map){mapdata.put(Mname, map);}
     public static void setTeamLoc(MapData map, TeamLoc loc){locdata.put(map, loc);}
+    public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
+    public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
     
+    public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
+    public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){
         list = new ArrayList<>(colordata.values());
