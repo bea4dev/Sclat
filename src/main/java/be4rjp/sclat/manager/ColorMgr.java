@@ -21,5 +21,11 @@ public class ColorMgr {
             aqua.setColorCode("§b");
             aqua.setBukkitColor(org.bukkit.Color.AQUA);
         DataMgr.setColor("Aqua", aqua);
+        
+        Color orange = new Color("Orange");
+            aqua.setWool(Material.ORANGE_WOOL);
+            aqua.setColorCode("§b");
+            aqua.setBukkitColor(org.bukkit.Color.ORANGE);
+        DataMgr.setColor("Orange", orange);
     }
 }

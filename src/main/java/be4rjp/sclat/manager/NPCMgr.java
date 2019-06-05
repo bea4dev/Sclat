@@ -41,7 +41,7 @@ public class NPCMgr {
                     Player npcPlayer = npc.getBukkitEntity().getPlayer();
         
 
-                    npc.setLocation(location.getX(), location.getY() - 4, location.getZ(), location.getYaw(), 0);
+                    npc.setLocation(location.getX(), location.getY() - 15, location.getZ(), location.getYaw(), 0);
         
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;

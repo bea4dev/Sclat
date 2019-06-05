@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Match;
+import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.data.TeamLoc;
@@ -20,7 +21,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
@@ -45,7 +45,7 @@ public class MatchMgr {
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.isInMatch()){
             player.sendMessage("§c§n既にチームに参加しています");
-            System.exit(0);
+            return;
         }
         Match match = DataMgr.getMatchFromId(matchcount);
         match.addPlayerCount();
@@ -117,6 +117,15 @@ public class MatchMgr {
         //teamloc.SetupTeam0Loc();
         //teamloc.SetupTeam1Loc();
         //DataMgr.setTeamLoc(map, teamloc);
+    }
+    
+    public static void RollBack(Match match){
+        for(PaintData data : DataMgr.getBlockDataMap().values()){
+            if(data.getMatch() == match){
+                data.getBlock().setType(data.getOriginalType());
+                data = null;
+            }
+        }
     }
     
     public static void StartMatch(Match match){

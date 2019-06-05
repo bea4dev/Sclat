@@ -19,6 +19,7 @@ public class PlayerData {
     private int playernumber;
     private boolean canshoot;
     private int tick = 0;
+    private boolean issquid;
     
     public PlayerData(Player player){this.player = player;}
    
@@ -40,6 +41,8 @@ public class PlayerData {
     
     public int getTick(){return this.tick;}
     
+    public boolean getIsSquid(){return this.issquid;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -58,5 +61,7 @@ public class PlayerData {
     public void setTick(int i){this.tick = i;}
     
     public void setCanShoot(boolean canshoot){this.canshoot = canshoot;}
+    
+    public void setIsSquid(boolean is){this.issquid = is;}
     
 }

@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -60,8 +61,12 @@ public class MainWeapon implements Listener{
                 
             }
         }
+        if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
+            MatchMgr.RollBack(DataMgr.getPlayerData(player).getMatch());
+        }
     }
     
+    @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
         PaintMgr.Paint(event.getHitBlock().getLocation(), (Player)event.getEntity().getShooter());
     }

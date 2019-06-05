@@ -24,7 +24,7 @@ public class DataMgr {
     private static Map<String, MapData> mapdata = new HashMap<>(); 
     private static Map<MapData, TeamLoc> locdata = new HashMap<>(); 
     private static Map<Block, PaintData> blockdata = new HashMap<>(); 
-    private static Map<Match, PaintData> paintdata = new HashMap<>(); 
+    //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list;
     private static List<MapData> maplist;
     
@@ -37,7 +37,7 @@ public class DataMgr {
     public static MapData getMap(String name){return mapdata.get(name);}
     public static TeamLoc getTeamLoc(MapData map){return locdata.get(map);}
     public static PaintData getPaintDataFromBlock(Block block){return blockdata.get(block);}
-    public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
+    //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
     public static void setPlayerData(Player player, PlayerData data){playerdata.put(player, data);}
@@ -49,10 +49,10 @@ public class DataMgr {
     public static void setMap(String Mname, MapData map){mapdata.put(Mname, map);}
     public static void setTeamLoc(MapData map, TeamLoc loc){locdata.put(map, loc);}
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
-    public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
+    //public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
     
     public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
-    public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
+    //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){
         list = new ArrayList<>(colordata.values());
