@@ -59,7 +59,7 @@ public class NPCMgr {
                     }
                     
                 }
-                if(s == 4){
+                if(s == 3){
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutEntityDestroy(npc.getBukkitEntity().getEntityId()));

@@ -4,7 +4,10 @@ package be4rjp.sclat.weapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.PaintMgr;
+import java.util.Random;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.block.Action;
@@ -52,14 +55,21 @@ public class Shooter {
                     Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(0.2);
                     @Override
                     public void run(){
+                        i++;
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         inkball.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
-                        
+                        if(i <= tick){
+                            Random random = new Random();
+                            int r = random.nextInt(3);
+                            if(r == 0){
+                                Location loc = inkball.getLocation();
+                                //PaintMgr.Paint(loc.getWorld().getHighestBlockAt(loc).getLocation(), p);
+                            }
+                        }
                         if(i == tick)
                             inkball.setVelocity(fallvec);                        
                         if(inkball.isDead())
                             cancel();
-                        i++;
                     }
                 };
                 task.runTaskTimer(Main.getPlugin(), 0, 1);

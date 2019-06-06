@@ -14,6 +14,8 @@ public class MainWeapon {
     private int distancetick;
     private double shootspeed;
     private int shoottick;
+    private int paintrandom;
+    private int maxpaintdis;
     
     public MainWeapon(String weaponname){this.WeaponName = weaponname;}
     
@@ -29,6 +31,10 @@ public class MainWeapon {
     
     public int getShootTick(){return shoottick;}
     
+    public int getPaintRandom(){return this.paintrandom;}
+    
+    public int getMaxPaintDis(){return this.maxpaintdis;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -41,4 +47,8 @@ public class MainWeapon {
     public void setShootSpeed(double speed){this.shootspeed = speed;}
     
     public void setShootTick(int shoottick){this.shoottick = shoottick;}
+    
+    public void setPaintRandom(int r){this.paintrandom = r;}
+    
+    public void setMaxPaintDis(int max){this.maxpaintdis = max;}
 }

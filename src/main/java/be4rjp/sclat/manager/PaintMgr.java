@@ -3,7 +3,9 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.MainWeapon;
 import be4rjp.sclat.data.PaintData;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +23,22 @@ import org.bukkit.entity.Player;
  */
 public class PaintMgr {
     public static void Paint(Location location, Player player){
-        List<Block> blocks = generateSphere(location, 2, 1, false, true, 0);
+        //List<Block> blocks = generateSphere(location, 2, 1, false, true, 0);
+        be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
+        List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
             if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS"))){
             if(DataMgr.getBlockDataMap().containsKey(block)){
                 PaintData data = DataMgr.getPaintDataFromBlock(block);
                 Team BTeam = data.getTeam();
                 Team ATeam = DataMgr.getPlayerData(player).getTeam();
-                if(BTeam == ATeam)
-                    return;
+                if(BTeam != ATeam){
                 BTeam.subtractPaintCount();
                 ATeam.addPaintCount();
                 block.setType(ATeam.getTeamColor().getWool());
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                 block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                }
             }else{
                 Team team = DataMgr.getPlayerData(player).getTeam();
                 team.addPaintCount(); 
@@ -51,15 +55,15 @@ public class PaintMgr {
         }
     }
     
-    /*
+    
     public static synchronized List<Block> getTargetBlocks(Location loc, int r, boolean loop, int loopc, int max)
     {
-        Main.getPlugin().getLogger().info("test");
+        
         Block b0 = loc.getBlock();
         Block b1 = loc.add(1, 0, 0).getBlock();
-        Block b2 = loc.add(1, 0, 1).getBlock();
+        Block b2 = loc.add(0, 0, 1).getBlock();
         Block b3 = loc.add(-1, 0, 0).getBlock();
-        Block b4 = loc.add(-1, 0, -1).getBlock();
+        Block b4 = loc.add(0, 0, -1).getBlock();
         Block b5 = loc.add(0, 1, 0).getBlock();
         Block b6 = loc.add(0, -1, 0).getBlock();
         
@@ -78,7 +82,7 @@ public class PaintMgr {
             int c = random.nextInt(r);
             boolean b = false;
             int loopc2 = loopc;
-            if(c == 1 && loopc <= max){
+            if(c == 0 && loopc <= max){
                 b = true;
             }
             loopc2++;
@@ -86,12 +90,12 @@ public class PaintMgr {
             tempList.addAll(getTargetBlocks(b2.getLocation(), r, b, loopc2, max));
             tempList.addAll(getTargetBlocks(b3.getLocation(), r, b, loopc2, max));
             tempList.addAll(getTargetBlocks(b4.getLocation(), r, b, loopc2, max));
-            tempList.addAll(getTargetBlocks(b5.getLocation(), r, b, loopc2, max));
-            tempList.addAll(getTargetBlocks(b6.getLocation(), r, b, loopc2, max));
+            tempList.addAll(getTargetBlocks(b5.getLocation(), r, false, loopc2, max));
+            tempList.addAll(getTargetBlocks(b6.getLocation(), r, false, loopc2, max));
         }
         return tempList;
         
-    }*/
+    }
     
     public static synchronized List<Block> generateSphere(Location loc, int r, int h, boolean hollow, boolean sphere, int plus_y) {
         List<Block> circleblocks = new ArrayList<Block>();
