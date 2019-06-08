@@ -155,6 +155,7 @@ public class MatchMgr {
                     p.sendTitle("     ?", "", 2, 6, 2);
                 if(i == 80)
                     p.sendTitle(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "GO!", "", 2, 6, 2);
+                i++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 260, 1);
