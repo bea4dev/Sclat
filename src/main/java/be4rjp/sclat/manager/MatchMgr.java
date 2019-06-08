@@ -142,15 +142,15 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 10)
-                    p.sendTitle("R     ", "", 2, 6, 2);
+                    p.sendTitle("R     ", "", 2, 56, 2);
                 if(i == 20)
-                    p.sendTitle(" E    ", "", 2, 6, 2);
+                    p.sendTitle(" E    ", "", 2, 46, 2);
                 if(i == 30)
-                    p.sendTitle("  A   ", "", 2, 6, 2);
+                    p.sendTitle("  A   ", "", 2, 36, 2);
                 if(i == 40)
-                    p.sendTitle("   D  ", "", 2, 6, 2);
+                    p.sendTitle("   D  ", "", 2, 26, 2);
                 if(i == 50)
-                    p.sendTitle("    Y ", "", 2, 6, 2);
+                    p.sendTitle("    Y ", "", 2, 16, 2);
                 if(i == 60)
                     p.sendTitle("     ?", "", 2, 6, 2);
                 if(i == 80)
@@ -158,7 +158,7 @@ public class MatchMgr {
                 i++;
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 260, 1);
+        task.runTaskTimer(Main.getPlugin(), 220, 1);
     }
     
     public static void StartMatch(Match match){
@@ -188,11 +188,11 @@ public class MatchMgr {
                                 if(i == 1)
                                     DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
                             }
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
@@ -200,11 +200,11 @@ public class MatchMgr {
                                 if(i == 1)
                                     DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 1.5D, l.getBlockY(), l.getBlockZ() - 1.5D));
+                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
                             }
                             
                             Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
@@ -282,7 +282,7 @@ public class MatchMgr {
                                 DataMgr.getPlayerData(p).setTick(10);
                                 Shooter.ShooterRunnable(p);
                             }
-                            SquidMgr.SquidRunnable(player);
+                            SquidMgr.SquidRunnable(p);
                             
                         }
                         
