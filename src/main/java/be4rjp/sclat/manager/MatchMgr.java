@@ -64,6 +64,7 @@ public class MatchMgr {
             if(playercount == 1){//-------------------test--------------------//
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
+                    Player p = player;
                     @Override
                     public void run(){
                         if(s == 0)
@@ -80,6 +81,12 @@ public class MatchMgr {
                             player.sendTitle("","§a試合開始まで後1秒", 5, 5, 10);
                         if(s == 10){
                             StartMatch(match);
+                            for(Entity entity : p.getWorld().getEntities()){
+                                if(!(entity instanceof Player)){
+                                    entity.remove();
+                                }
+                            }
+                            
                             cancel();
                         }
                         s++;
@@ -126,6 +133,31 @@ public class MatchMgr {
                 data = null;
             }
         }
+    }
+    
+    public static void StartCount(Player player){
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            int i = 0;
+            @Override
+            public void run(){
+                if(i == 10)
+                    p.sendTitle("R     ", "", 2, 6, 2);
+                if(i == 20)
+                    p.sendTitle(" E    ", "", 2, 6, 2);
+                if(i == 30)
+                    p.sendTitle("  A   ", "", 2, 6, 2);
+                if(i == 40)
+                    p.sendTitle("   D  ", "", 2, 6, 2);
+                if(i == 50)
+                    p.sendTitle("    Y ", "", 2, 6, 2);
+                if(i == 60)
+                    p.sendTitle("     ?", "", 2, 6, 2);
+                if(i == 80)
+                    p.sendTitle(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "GO!", "", 2, 6, 2);
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 260, 1);
     }
     
     public static void StartMatch(Match match){
@@ -187,6 +219,8 @@ public class MatchMgr {
                             p.teleport(introl);
                             
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
+                            
+                            StartCount(p);
                         }
                         if(s >= 1 && s <= 100){
                             intromove = match.getMapData().getIntro();
@@ -247,6 +281,8 @@ public class MatchMgr {
                                 DataMgr.getPlayerData(p).setTick(10);
                                 Shooter.ShooterRunnable(p);
                             }
+                            SquidMgr.SquidRunnable(player);
+                            
                         }
                         
                         if(s >= 221 && s <= 300){

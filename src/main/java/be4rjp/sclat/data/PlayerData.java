@@ -19,8 +19,8 @@ public class PlayerData {
     private int playernumber;
     private boolean canshoot;
     private int tick = 0;
-    private boolean issquid;
-    private boolean isonink;
+    private boolean issquid = false;
+    private boolean isonink = false;
     
     public PlayerData(Player player){this.player = player;}
    

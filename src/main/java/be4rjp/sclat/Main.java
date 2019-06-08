@@ -1,6 +1,7 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.manager.ColorMgr;
 import be4rjp.sclat.manager.GameMgr;
 import be4rjp.sclat.manager.MainWeaponMgr;
@@ -38,6 +39,7 @@ public class Main extends JavaPlugin {
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
+        pm.registerEvents(new SquidListener(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
         ColorMgr.SetupColor();
         MainWeaponMgr.SetupMainWeapon();

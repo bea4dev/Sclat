@@ -55,21 +55,16 @@ public class Shooter {
                     Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(0.2);
                     @Override
                     public void run(){
-                        i++;
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         inkball.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
-                        if(i <= tick){
-                            Random random = new Random();
-                            int r = random.nextInt(3);
-                            if(r == 0){
-                                Location loc = inkball.getLocation();
-                                //PaintMgr.Paint(loc.getWorld().getHighestBlockAt(loc).getLocation(), p);
-                            }
-                        }
+                        
                         if(i == tick)
-                            inkball.setVelocity(fallvec);                        
+                            inkball.setVelocity(fallvec);
+                        if(i != tick)
+                            PaintMgr.PaintHightestBlock(inkball.getLocation(), p);
                         if(inkball.isDead())
                             cancel();
+                        i++;
                     }
                 };
                 task.runTaskTimer(Main.getPlugin(), 0, 1);
@@ -83,4 +78,6 @@ public class Shooter {
                 };
                 delay.runTaskLater(Main.getPlugin(), DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
     }
+    
+    
 }

@@ -37,7 +37,7 @@ public class PaintMgr {
                 ATeam.addPaintCount();
                 block.setType(ATeam.getTeamColor().getWool());
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                 }
             }else{
                 Team team = DataMgr.getPlayerData(player).getTeam();
@@ -49,7 +49,7 @@ public class PaintMgr {
                 DataMgr.setPaintDataFromBlock(block, data);
                 block.setType(team.getTeamColor().getWool());
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
             }
             }
         }
@@ -82,14 +82,17 @@ public class PaintMgr {
             int c = random.nextInt(r);
             boolean b = false;
             int loopc2 = loopc;
-            if(c == 0 && loopc <= max){
-                b = true;
-            }
+            if(c == 0)
+                tempList.addAll(getTargetBlocks(b1.getLocation(), r, false, loopc2, max));
+            if(c == 1)
+                tempList.addAll(getTargetBlocks(b2.getLocation(), r, false, loopc2, max));
+            if(c == 2)
+                tempList.addAll(getTargetBlocks(b3.getLocation(), r, false, loopc2, max));
+            if(c == 3)
+                tempList.addAll(getTargetBlocks(b4.getLocation(), r, false, loopc2, max));
+            
             loopc2++;
-            tempList.addAll(getTargetBlocks(b1.getLocation(), r, b, loopc2, max));
-            tempList.addAll(getTargetBlocks(b2.getLocation(), r, b, loopc2, max));
-            tempList.addAll(getTargetBlocks(b3.getLocation(), r, b, loopc2, max));
-            tempList.addAll(getTargetBlocks(b4.getLocation(), r, b, loopc2, max));
+            
             tempList.addAll(getTargetBlocks(b5.getLocation(), r, false, loopc2, max));
             tempList.addAll(getTargetBlocks(b6.getLocation(), r, false, loopc2, max));
         }
@@ -116,6 +119,47 @@ public class PaintMgr {
         return circleblocks;
     }
     
+    public static void PaintInLine(Location l1, Location l2, Player player){
+        double xSlope = (l1.getBlockX() - l2.getBlockX());
+        double ySlope = (l1.getBlockY() - l2.getBlockY()) / xSlope;
+        double zSlope = (l1.getBlockZ() - l2.getBlockZ()) / xSlope;
+        double y = l1.getBlockY();
+        double z = l1.getBlockZ();
+        double interval = 1 / (Math.abs(ySlope) > Math.abs(zSlope) ? ySlope : zSlope);
+        for (double x = l1.getBlockX(); x - l1.getBlockX() < Math.abs(xSlope); x += interval, y += ySlope, z += zSlope) {
+            int i = (int)y;
+            while(i>0){
+                if(new Location(player.getWorld(), x, i, z).getBlock().getType() != Material.AIR){
+                    Random random = new Random();
+                    int r = random.nextInt(10);
+                    if(r == 0){
+                        Paint(new Location(player.getWorld(), x, i, z), player);
+                        
+                    }
+                    break;
+                }
+                i--;
+            }
+            
+        }
+    }
+    
+    public static void PaintHightestBlock(Location loc, Player player){
+        int i = loc.getBlockY();
+        int x = loc.getBlockX();
+        int z = loc.getBlockZ();
+            while(i>0){
+                if(new Location(player.getWorld(), x, i, z).getBlock().getType() != Material.AIR){
+                    Random random = new Random();
+                    int r = random.nextInt(10);
+                    if(r == 0){
+                        Paint(new Location(player.getWorld(), x, i, z), player);
+                    }
+                    break;
+                }
+                i--;
+            }
+    }
     
     
 }
