@@ -7,6 +7,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.Random;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -38,6 +39,11 @@ public class Shooter {
     }
     
     public static void Shoot(Player player){
+        if(player.getExp() <= 0.01F){
+            player.sendTitle("", ChatColor.RED + "インクが足りません", 2, 4, 2);
+            return;
+        }
+        player.setExp(player.getExp() - 0.01F);
         Snowball ball = player.launchProjectile(Snowball.class);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
