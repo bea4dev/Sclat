@@ -59,7 +59,7 @@ public class MatchMgr {
                 data.setTeam(match.getTeam0());
                 //data.setMatchLocation(DataMgr.getTeamLoc(match.getMapData()).getTeam0Loc((matchcount+1)/2));
             }
-            data.setIsInMatch(true);
+            
             data.setMatch(match);
             if(playercount == 1){//-------------------test--------------------//
                 BukkitRunnable task = new BukkitRunnable(){
@@ -142,23 +142,23 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 10)
-                    p.sendTitle("R     ", "", 2, 56, 2);
+                    p.sendTitle("R§7E    ", "", 0, 56, 0);
+                if(i == 12)
+                    p.sendTitle("RE§7A   ", "", 0, 46, 0);
+                if(i == 14)
+                    p.sendTitle("REA§7D  ", "", 0, 36, 0);
+                if(i == 16)
+                    p.sendTitle("READ§7Y ", "", 0, 26, 0);
+                if(i == 18)
+                    p.sendTitle("READY§7?", "", 0, 16, 0);
                 if(i == 20)
-                    p.sendTitle(" E    ", "", 2, 46, 2);
-                if(i == 30)
-                    p.sendTitle("  A   ", "", 2, 36, 2);
+                    p.sendTitle("READY?", "", 0, 6, 2);
                 if(i == 40)
-                    p.sendTitle("   D  ", "", 2, 26, 2);
-                if(i == 50)
-                    p.sendTitle("    Y ", "", 2, 16, 2);
-                if(i == 60)
-                    p.sendTitle("     ?", "", 2, 6, 2);
-                if(i == 80)
                     p.sendTitle(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "GO!", "", 2, 6, 2);
                 i++;
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 220, 1);
+        task.runTaskTimer(Main.getPlugin(), 230, 1);
     }
     
     public static void StartMatch(Match match){
@@ -229,7 +229,7 @@ public class MatchMgr {
                             intromove.add(map.getIntroMoveX(), map.getIntroMoveY(), map.getIntroMoveZ());
                             p.teleport(intromove);
                         }
-                        if(s >= 101 && s <= 160){
+                        if(s >= 100 && s <= 160){
                             Location introl = match.getMapData().getTeam0Intro();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
@@ -243,7 +243,7 @@ public class MatchMgr {
                                 if(s == 120){
                                     squid.remove();
                                 }
-                                if(s == 101){
+                                if(s == 100){
                                     introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                                     NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                                     //p.getWorld().playEffect(introl, Effect.CLICK2, DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool());
@@ -252,7 +252,7 @@ public class MatchMgr {
                                 //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                             }
                         }
-                        if(s >= 161 && s <= 220){
+                        if(s >= 160 && s <= 220){
                             Location introl = match.getMapData().getTeam1Intro();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
@@ -264,7 +264,7 @@ public class MatchMgr {
                                 if(s == 180){
                                     squid.remove();
                                 }
-                                if(s == 161){
+                                if(s == 160){
                                     introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                                     NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                                 }
@@ -274,7 +274,7 @@ public class MatchMgr {
                                 //npcle = (LivingEntity)npc.getEntity();
                                 //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
-                        if(s == 301){
+                        if(s == 281){
                             //playerclass
                             p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                             //Shooter.ShooterRunnable(p);
@@ -283,10 +283,11 @@ public class MatchMgr {
                                 Shooter.ShooterRunnable(p);
                             }
                             SquidMgr.SquidRunnable(p);
+                            DataMgr.getPlayerData(p).setIsInMatch(true);
                             
                         }
                         
-                        if(s >= 221 && s <= 300){
+                        if(s >= 221 && s <= 280){
                             p.setGameMode(GameMode.ADVENTURE);
                             
                             Location introl = DataMgr.getPlayerData(p).getMatchLocation();

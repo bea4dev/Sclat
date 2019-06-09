@@ -36,14 +36,14 @@ public class SquidMgr {
                 if(data.getIsOnInk() && data.getIsSquid()){
                     
                     if(!is){
-                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.3F, 0.3F);  
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 1F);  
                         is = true;
                     }
                     
                         if(p.getExp() <= 0.999F){
                             p.setExp(p.getExp() + 0.005F);
                         }
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 200, 3));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                         p.setFoodLevel(20);
                         p.setSprinting(true);

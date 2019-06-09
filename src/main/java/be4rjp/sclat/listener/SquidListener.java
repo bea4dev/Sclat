@@ -21,13 +21,16 @@ public class SquidListener implements Listener{
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = (Player)event.getPlayer();
+        PlayerData data = DataMgr.getPlayerData(player);
+        if(!data.isInMatch())
+            return;
         Location loc = player.getLocation();
-        Block b1 = player.getLocation().getBlock().getRelative(BlockFace.DOWN);
+        Block b1 = loc.add(0, -0.5, 0).getBlock();
         Block b2 = player.getLocation().getBlock().getRelative(BlockFace.NORTH);
         Block b3 = player.getLocation().getBlock().getRelative(BlockFace.EAST);
         Block b4 = player.getLocation().getBlock().getRelative(BlockFace.SOUTH);
         Block b5 = player.getLocation().getBlock().getRelative(BlockFace.WEST);
-        PlayerData data = DataMgr.getPlayerData(player);
+        
         Material wool = data.getTeam().getTeamColor().getWool();
         if(b2.getType().equals(wool) || b3.getType().equals(wool) || b4.getType().equals(wool) || b5.getType().equals(wool)){
             if(!data.getIsSquid())
@@ -42,8 +45,8 @@ public class SquidListener implements Listener{
             if(!data.getIsSquid())
                 return;
             data.setIsOnInk(true);
-            player.setAllowFlight(false);
             player.setFlying(false);
+            player.setAllowFlight(false);
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
             player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
             return;

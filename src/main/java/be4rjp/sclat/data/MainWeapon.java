@@ -16,6 +16,8 @@ public class MainWeapon {
     private int shoottick;
     private int paintrandom;
     private int maxpaintdis;
+    private float needink;
+    
     
     public MainWeapon(String weaponname){this.WeaponName = weaponname;}
     
@@ -35,6 +37,8 @@ public class MainWeapon {
     
     public int getMaxPaintDis(){return this.maxpaintdis;}
     
+    public float getNeedInk(){return this.needink;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -51,4 +55,7 @@ public class MainWeapon {
     public void setPaintRandom(int r){this.paintrandom = r;}
     
     public void setMaxPaintDis(int max){this.maxpaintdis = max;}
+    
+    public void setNeedInk(float ink){this.needink = ink;}
+    
 }

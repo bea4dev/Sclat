@@ -23,6 +23,7 @@ public class MainWeaponMgr {
             int shoottick = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".ShootTick");
             int paintrandom = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".PaintRandom");
             int maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
+            float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".ShootRandom");
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
