@@ -24,6 +24,7 @@ public class NPCMgr {
     public static void createNPC(Player player1, String npcName1, Location location1) {
         BukkitRunnable task = new BukkitRunnable(){
             EntityPlayer npc;
+            
             int s = 0;
             
             Player player = player1;

@@ -3,16 +3,21 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -68,7 +73,36 @@ public class MainWeapon implements Listener{
     
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
-        PaintMgr.Paint(event.getHitBlock().getLocation(), (Player)event.getEntity().getShooter());
+        Player shooter = (Player)event.getEntity().getShooter();
+        PaintMgr.Paint(event.getHitBlock().getLocation(), shooter);
+    }
+    
+    @EventHandler
+    public void onEntityHit(EntityDamageByEntityEvent event) {
+        Projectile projectile = (Projectile)event.getDamager();
+        Player shooter = (Player)projectile.getShooter();
+        if(event.getDamager() instanceof Player){
+            Player target = (Player)event.getDamager();
+            if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam()){
+                if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
+                    target.setHealth(target.getHealth() - DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                }else{
+                    DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
+                }
+            }
+        }
+        
+    }
+    
+    @EventHandler
+    public void onEntityDamage (EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player player = (Player) e.getEntity();
+            if (e.getCause() == DamageCause.VOID) {
+                e.setCancelled(true);
+                DeathMgr.PlayerDeathRunnable(player, player, "fall");
+            }
+        }
     }
    
 }

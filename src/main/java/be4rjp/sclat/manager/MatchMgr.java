@@ -31,6 +31,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 
 /**
  *
@@ -104,21 +106,27 @@ public class MatchMgr {
     public static synchronized void MatchSetup(){
         int id = matchcount;
         Match match = new Match(id);
-        DataMgr.setMatch(id, match);
         Team team0 = new Team(id * 2);
         Team team1 = new Team(id * 2 + 1);
         DataMgr.setTeam(id * 2, team0);
         DataMgr.setTeam(id * 2 + 1, team1);
-        match.setTeam0(team0);
-        match.setTeam1(team1);
         
+        DataMgr.ColorShuffle();
         Color color0 = DataMgr.getColorRandom(0);
         Color color1 = DataMgr.getColorRandom(1);
         team0.setTeamColor(color0);
         team1.setTeamColor(color1);
         
+        match.setTeam0(team0);
+        match.setTeam1(team1);
+        
+        Main.getPlugin().getLogger().info(team0.getTeamColor().getColorCode() + "Team0SetColor");
+        Main.getPlugin().getLogger().info(team1.getTeamColor().getColorCode() + "Team1SetColor");
+        
         MapData map = DataMgr.getMapRandom(id);
         match.setMapData(map);
+        
+        DataMgr.setMatch(id, match);
         
         //TeamLoc teamloc = new TeamLoc(map);
         //teamloc.SetupTeam0Loc();
@@ -130,6 +138,7 @@ public class MatchMgr {
         for(PaintData data : DataMgr.getBlockDataMap().values()){
             if(data.getMatch() == match){
                 data.getBlock().setType(data.getOriginalType());
+                
                 data = null;
             }
         }
@@ -168,13 +177,15 @@ public class MatchMgr {
                 
                 
                 
-                BukkitRunnable task = new BukkitRunnable(){
+                BukkitRunnable task;
+                task = new BukkitRunnable(){
                     int s = 0;
                     Player p = player;
                     World w = Main.getPlugin().getServer().getWorld(match.getMapData().getWorldName());
                     Location intromove;
+                    EntitySquid squid;
                     
-                    LivingEntity squid;
+                    //LivingEntity squid;
                     //LivingEntity npcle;
                     
                     
@@ -207,17 +218,32 @@ public class MatchMgr {
                                     DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
                             }
                             
+                            /*
                             Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
                             squid = (LivingEntity)e;
                             squid.setAI(false);
                             squid.setSwimming(true);
                             squid.setCustomName(p.getDisplayName());
                             squid.setCustomNameVisible(true);
-                            
-                            Location introl = match.getMapData().getIntro();
-                            
+                            */
                             p.setGameMode(GameMode.SPECTATOR);
+                            Location introl = match.getMapData().getIntro();
                             p.teleport(introl);
+                            Location location = DataMgr.getPlayerData(p).getMatchLocation();
+                            MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
+                            WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
+                            squid = new EntitySquid(nmsWorld);
+                            squid.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
+                            squid.setCustomName(new ChatMessage(p.getDisplayName()));
+                            squid.setCustomNameVisible(true);
+                            
+                            
+                            for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(squid));
+                                //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
+                            }
+
                             
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                             
@@ -241,7 +267,11 @@ public class MatchMgr {
                                     
                                 }
                                 if(s == 120){
-                                    squid.remove();
+                                    //squid.remove();
+                                    for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                        PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                                        connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
+                                    }
                                 }
                                 if(s == 100){
                                     introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
@@ -262,17 +292,21 @@ public class MatchMgr {
                                     introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                                 }
                                 if(s == 180){
-                                    squid.remove();
+                                    //squid.remove();
+                                    for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                        PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                                        connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
+                                    }
                                 }
                                 if(s == 160){
                                     introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                                     NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                                 }
                             }
-                                
-                                
-                                //npcle = (LivingEntity)npc.getEntity();
-                                //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
+                            
+                            
+                            //npcle = (LivingEntity)npc.getEntity();
+                            //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
                         if(s == 281){
                             //playerclass
@@ -288,14 +322,15 @@ public class MatchMgr {
                         }
                         
                         if(s >= 221 && s <= 280){
+                            
                             p.setGameMode(GameMode.ADVENTURE);
-                            
+                            p.setExp(0.99F);
                             Location introl = DataMgr.getPlayerData(p).getMatchLocation();
-                            p.teleport(introl); 
-                        }  
-                            
+                            p.teleport(introl);
+                        }
                         
-                            s++;
+
+                        s++;
                         
                         
                         

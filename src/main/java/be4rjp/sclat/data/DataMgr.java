@@ -25,7 +25,7 @@ public class DataMgr {
     private static Map<MapData, TeamLoc> locdata = new HashMap<>(); 
     private static Map<Block, PaintData> blockdata = new HashMap<>(); 
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
-    private static List<Color> list;
+    private static List<Color> list = new ArrayList<>();
     private static List<MapData> maplist;
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}
@@ -49,17 +49,21 @@ public class DataMgr {
     public static void setMap(String Mname, MapData map){mapdata.put(Mname, map);}
     public static void setTeamLoc(MapData map, TeamLoc loc){locdata.put(map, loc);}
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
+    public static void addColorList(Color color){list.add(color);}
     //public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
     
     public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){
-        list = new ArrayList<>(colordata.values());
-        Collections.shuffle(list);
+        
         Color color = list.get(number);
         color.setIsUsed(true);
         return color;   //RandomColor
+    }
+    
+    public static void ColorShuffle(){
+        Collections.shuffle(list);
     }
     
     public static MapData getMapRandom(int i){

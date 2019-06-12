@@ -46,6 +46,7 @@ public class PaintMgr {
                 data.setMatch(DataMgr.getPlayerData(player).getMatch());
                 data.setTeam(team);
                 data.setOrigianlType(block.getType());
+                //data.setOriginalState(block.getState());
                 DataMgr.setPaintDataFromBlock(block, data);
                 block.setType(team.getTeamColor().getWool());
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();

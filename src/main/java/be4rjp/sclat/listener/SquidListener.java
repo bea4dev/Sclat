@@ -3,6 +3,7 @@ package be4rjp.sclat.listener;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.DeathMgr;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +26,7 @@ public class SquidListener implements Listener{
         if(!data.isInMatch())
             return;
         Location loc = player.getLocation();
+        Block playerblock = player.getLocation().getBlock();
         Block b1 = loc.add(0, -0.5, 0).getBlock();
         Block b2 = player.getLocation().getBlock().getRelative(BlockFace.NORTH);
         Block b3 = player.getLocation().getBlock().getRelative(BlockFace.EAST);
@@ -51,10 +53,12 @@ public class SquidListener implements Listener{
             player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
             return;
         }
-        
+            
             data.setIsOnInk(false);
             player.setAllowFlight(false);
             player.setFlying(false);
+            if(playerblock.getType() == Material.WATER)
+                DeathMgr.PlayerDeathRunnable(player, player, "water");
             return;
         
     }

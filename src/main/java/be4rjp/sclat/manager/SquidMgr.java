@@ -68,8 +68,8 @@ public class SquidMgr {
                     */
                 else{
                     is = false;
-                    if(p.hasPotionEffect(PotionEffectType.HEALTH_BOOST))
-                        p.removePotionEffect(PotionEffectType.HEALTH_BOOST);
+                    if(p.hasPotionEffect(PotionEffectType.REGENERATION))
+                        p.removePotionEffect(PotionEffectType.REGENERATION);
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);

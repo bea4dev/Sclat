@@ -15,17 +15,20 @@ public class ColorMgr {
             blue.setColorCode("§9");
             blue.setBukkitColor(org.bukkit.Color.BLUE);
         DataMgr.setColor("Blue", blue);
+        DataMgr.addColorList(blue);
             
         Color aqua = new Color("Aqua");
             aqua.setWool(Material.LIGHT_BLUE_WOOL);
             aqua.setColorCode("§b");
             aqua.setBukkitColor(org.bukkit.Color.AQUA);
         DataMgr.setColor("Aqua", aqua);
+        DataMgr.addColorList(aqua);
         
         Color orange = new Color("Orange");
             aqua.setWool(Material.ORANGE_WOOL);
             aqua.setColorCode("§6");
             aqua.setBukkitColor(org.bukkit.Color.ORANGE);
         DataMgr.setColor("Orange", orange);
+        DataMgr.addColorList(orange);
     }
 }

@@ -39,11 +39,12 @@ public class Shooter {
     }
     
     public static void Shoot(Player player){
-        if(player.getExp() <= 0.01F){
-            player.sendTitle("", ChatColor.RED + "インクが足りません", 2, 4, 2);
+        PlayerData data = DataMgr.getPlayerData(player);
+        if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+            player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
             return;
         }
-        player.setExp(player.getExp() - 0.01F);
+        player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
         Snowball ball = player.launchProjectile(Snowball.class);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();

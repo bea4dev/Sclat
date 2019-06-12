@@ -23,7 +23,8 @@ public class MainWeaponMgr {
             int shoottick = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".ShootTick");
             int paintrandom = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".PaintRandom");
             int maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
-            float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".ShootRandom");
+            float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".NeedInk");
+            int damage = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Damage");
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
@@ -38,6 +39,8 @@ public class MainWeaponMgr {
             mw.setShootTick(shoottick);
             mw.setPaintRandom(paintrandom);
             mw.setMaxPaintDis(maxpaintdis);
+            mw.setNeedInk(needink);
+            mw.setDamage(damage);
             DataMgr.setMainWeapon(weaponname, mw);
         }
     }
