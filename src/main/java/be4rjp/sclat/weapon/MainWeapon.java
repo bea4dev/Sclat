@@ -81,11 +81,11 @@ public class MainWeapon implements Listener{
     public void onEntityHit(EntityDamageByEntityEvent event) {
         Projectile projectile = (Projectile)event.getDamager();
         Player shooter = (Player)projectile.getShooter();
-        if(event.getDamager() instanceof Player){
-            Player target = (Player)event.getDamager();
+        if(event.getEntity() instanceof Player){
+            Player target = (Player)event.getEntity();
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam()){
                 if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
-                    target.setHealth(target.getHealth() - DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                    target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                 }else{
                     DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
                 }

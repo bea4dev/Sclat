@@ -24,7 +24,7 @@ public class MainWeaponMgr {
             int paintrandom = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".PaintRandom");
             int maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
             float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".NeedInk");
-            int damage = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Damage");
+            double damage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".Damage");
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);

@@ -33,8 +33,13 @@ public class DeathMgr {
                     ((CraftPlayer) t).getHandle().setSpectatorTarget(((CraftEntity) s).getHandle());
                     PlayerData sdata = DataMgr.getPlayerData(s);
                     String msg = sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！";
-                    if(i == 0)
+                    if(i == 0){
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", msg, 0, 21, 0);
+                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(t).getMatch() == DataMgr.getPlayerData(player).getMatch())
+                                player.sendMessage(sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "が" + DataMgr.getPlayerData(s).getTeam().getTeamColor() + ChatColor.RESET + "を" + s.getDisplayName() + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "で倒した！");
+                        }
+                    }
                     if(i == 20)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 4秒", msg, 0, 21, 0);
                     if(i == 40)
@@ -50,6 +55,7 @@ public class DeathMgr {
                         t.teleport(loc);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
+                        
                         cancel();
                     }
                 }

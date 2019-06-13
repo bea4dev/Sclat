@@ -33,6 +33,10 @@ import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 /**
  *
@@ -41,6 +45,8 @@ import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 public class MatchMgr {
     
     public static int matchcount = 0;
+    public static org.bukkit.scoreboard.Scoreboard board;
+    public static Objective objective;
     
     
     public static void PlayerJoinMatch(Player player){
@@ -248,6 +254,17 @@ public class MatchMgr {
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                             
                             StartCount(p);
+                            ScoreboardManager manager = Bukkit.getScoreboardManager();
+                            board = manager.getNewScoreboard();
+                            objective = board.registerNewObjective("MapName", "Time", "Match");
+                            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                            objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                            Score score = objective.getScore(ChatColor.GREEN + "3:00");
+                            score.setScore(0);
+                            
+                            p.setScoreboard(board);
+                            //Score score = objective.getScore("3:00");
+                            //score.setScore(0);
                         }
                         if(s >= 1 && s <= 100){
                             intromove = match.getMapData().getIntro();
@@ -340,4 +357,30 @@ public class MatchMgr {
             }
         }
     }
+        
+    public static void InMatchCounter(Match match){
+        
+            BukkitRunnable task = new BukkitRunnable(){
+                int s = 180;
+                @Override
+                public void run(){
+                    board.resetScores(ChatColor.GREEN + String.valueOf(s/60) + String.valueOf(s%60));
+                    s--;
+                    Score score = objective.getScore(ChatColor.GREEN + String.valueOf(s/60) + String.valueOf(s%60));
+                    score.setScore(0);
+                    if(s == 0){
+                        FinishMatch(match);
+                        cancel();
+                    }
+                }
+            };
+            task.runTaskTimer(Main.getPlugin(), 20, 20);
+        
+        
+    }
+    
+    public static void FinishMatch(Match match){
+        
+    }
+    
 }
