@@ -59,7 +59,7 @@ public class Shooter {
                     Vector origvec = vec;
                     Snowball inkball = ball;
                     Player p = player;
-                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(0.2);
+                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/3);
                     @Override
                     public void run(){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
@@ -67,6 +67,8 @@ public class Shooter {
                         
                         if(i == tick)
                             inkball.setVelocity(fallvec);
+                        if(i >= tick)
+                            inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -1, 0)));
                         if(i != tick)
                             PaintMgr.PaintHightestBlock(inkball.getLocation(), p);
                         if(inkball.isDead())
