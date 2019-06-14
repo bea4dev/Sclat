@@ -45,8 +45,8 @@ import org.bukkit.scoreboard.ScoreboardManager;
 public class MatchMgr {
     
     public static int matchcount = 0;
-    public static org.bukkit.scoreboard.Scoreboard board;
-    public static Objective objective;
+    
+    
     
     
     public static void PlayerJoinMatch(Player player){
@@ -255,11 +255,12 @@ public class MatchMgr {
                             
                             StartCount(p);
                             ScoreboardManager manager = Bukkit.getScoreboardManager();
-                            board = manager.getNewScoreboard();
-                            objective = board.registerNewObjective("MapName", "Time", "Match");
+                            org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
+                            Objective objective = board.registerNewObjective("MapName", "Time", "Match");
+                            
                             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                             objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-                            Score score = objective.getScore(ChatColor.GREEN + "3:00");
+                            Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + "3:00");
                             score.setScore(0);
                             
                             p.setScoreboard(board);
@@ -335,6 +336,7 @@ public class MatchMgr {
                             }
                             SquidMgr.SquidRunnable(p);
                             DataMgr.getPlayerData(p).setIsInMatch(true);
+                            InMatchCounter(p);
                             
                         }
                         
@@ -358,28 +360,38 @@ public class MatchMgr {
         }
     }
         
-    public static void InMatchCounter(Match match){
+    public static void InMatchCounter(Player player){
         
             BukkitRunnable task = new BukkitRunnable(){
                 int s = 180;
+                Player p = player;
                 @Override
                 public void run(){
-                    board.resetScores(ChatColor.GREEN + String.valueOf(s/60) + String.valueOf(s%60));
-                    s--;
-                    Score score = objective.getScore(ChatColor.GREEN + String.valueOf(s/60) + String.valueOf(s%60));
+                    ScoreboardManager manager = Bukkit.getScoreboardManager();
+                    org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
+                    //board.clearSlot(DisplaySlot.SIDEBAR);
+                    Objective objective = board.registerNewObjective("MapName", "Time", "Match");
+                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                    Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + String.valueOf(s%60));
                     score.setScore(0);
+                    p.setScoreboard(board);
+
+                    if(s == 60)
+                        p.sendTitle("", ChatColor.GOLD + "残り1分！", 4, 10, 4);
                     if(s == 0){
-                        FinishMatch(match);
+                        FinishMatch(p);
                         cancel();
                     }
+                    s--;
                 }
             };
-            task.runTaskTimer(Main.getPlugin(), 20, 20);
+            task.runTaskTimer(Main.getPlugin(), 0, 20);
         
         
     }
     
-    public static void FinishMatch(Match match){
+    public static void FinishMatch(Player player){
         
     }
     
