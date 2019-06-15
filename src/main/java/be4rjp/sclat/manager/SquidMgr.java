@@ -36,7 +36,7 @@ public class SquidMgr {
                 if(data.getIsOnInk() && data.getIsSquid()){
                     
                     if(!is){
-                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 1F);  
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
                         is = true;
                     }
                     
@@ -47,6 +47,7 @@ public class SquidMgr {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                         p.setFoodLevel(20);
                         p.setSprinting(true);
+                        p.setWalkSpeed(0.25F);
                         
                         
                     
@@ -73,7 +74,7 @@ public class SquidMgr {
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);
-                    
+                    player.setWalkSpeed(0.2F);
                 }
             } 
         };

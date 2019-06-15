@@ -21,6 +21,8 @@ public class Color {
     
     public String getColorCode(){return colorcode;}
     
+    public String getColorName(){return colorname;}
+    
     public boolean getIsUsed(){return isUsed;}
     
     public Material getWool(){return wool;}

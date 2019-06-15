@@ -86,8 +86,10 @@ public class MainWeapon implements Listener{
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam()){
                 if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                     target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                    PaintMgr.Paint(target.getLocation(), shooter);
                 }else{
                     DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
+                    PaintMgr.Paint(target.getLocation(), shooter);
                 }
             }
         }

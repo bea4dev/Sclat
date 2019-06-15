@@ -26,6 +26,8 @@ public class GameMgr implements Listener{
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
         MatchMgr.PlayerJoinMatch(player);
+        player.setWalkSpeed(0.2F);
+        
         //SquidMgr.SquidRunnable(player);
     }
     

@@ -14,6 +14,8 @@ public class Team {
     
     public Color getTeamColor(){return teamcolor;}
     
+    public int getPoint(){return this.paintcount;}
+    
     public void addPaintCount(){paintcount++;}
     
     public void subtractPaintCount(){paintcount--;}

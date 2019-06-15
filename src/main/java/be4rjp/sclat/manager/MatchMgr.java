@@ -1,7 +1,9 @@
 
 package be4rjp.sclat.manager;
 
+import be4rjp.sclat.Animation;
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.Color;
 import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
@@ -30,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import net.minecraft.server.v1_13_R1.*;
+import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
@@ -168,7 +171,7 @@ public class MatchMgr {
                     p.sendTitle("READY§7?", "", 0, 16, 0);
                 if(i == 20)
                     p.sendTitle("READY?", "", 0, 6, 2);
-                if(i == 40)
+                if(i == 45)
                     p.sendTitle(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "GO!", "", 2, 6, 2);
                 i++;
             }
@@ -242,10 +245,11 @@ public class MatchMgr {
                             squid.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
                             squid.setCustomName(new ChatMessage(p.getDisplayName()));
                             squid.setCustomNameVisible(true);
+                            squid.setSwimming(true);
                             
                             
-                            for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
                                 connection.sendPacket(new PacketPlayOutSpawnEntityLiving(squid));
                                 //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
                             }
@@ -286,8 +290,8 @@ public class MatchMgr {
                                 }
                                 if(s == 120){
                                     //squid.remove();
-                                    for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                        PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
                                         connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
                                     }
                                 }
@@ -311,8 +315,8 @@ public class MatchMgr {
                                 }
                                 if(s == 180){
                                     //squid.remove();
-                                    for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                        PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
+                                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
                                         connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
                                     }
                                 }
@@ -337,6 +341,7 @@ public class MatchMgr {
                             SquidMgr.SquidRunnable(p);
                             DataMgr.getPlayerData(p).setIsInMatch(true);
                             InMatchCounter(p);
+                            p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
                             
                         }
                         
@@ -358,6 +363,14 @@ public class MatchMgr {
                 task.runTaskTimer(Main.getPlugin(), 0, 1);
             }
         }
+        BukkitRunnable task2 = new BukkitRunnable(){
+            @Override
+            public void run(){
+                //Animation.ResultAnimation(match);
+            }
+        };
+        task2.runTaskTimer(Main.getPlugin(), 3881, 1);
+        
     }
         
     public static void InMatchCounter(Player player){
@@ -373,13 +386,16 @@ public class MatchMgr {
                     Objective objective = board.registerNewObjective("MapName", "Time", "Match");
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-                    Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + String.valueOf(s%60));
+                    String min = String.valueOf(s%60);
+                    
+                    Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
                     score.setScore(0);
                     p.setScoreboard(board);
 
                     if(s == 60)
                         p.sendTitle("", ChatColor.GOLD + "残り1分！", 4, 10, 4);
                     if(s == 0){
+                        p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                         FinishMatch(p);
                         cancel();
                     }
@@ -392,7 +408,84 @@ public class MatchMgr {
     }
     
     public static void FinishMatch(Player player){
-        
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            Location loc;
+            int i = 0;
+            @Override
+            public void run(){
+                if(i == 0){
+                    p.sendTitle(ChatColor.AQUA + "試合終了！", "", 3, 30, 10);
+                    loc = p.getLocation();
+                    DataMgr.getPlayerData(p).setIsInMatch(false);
+                }
+                if(i >= 1 && i <= 45){
+                    p.teleport(loc);
+                }
+                if(i == 46){
+                    Match match = DataMgr.getPlayerData(p).getMatch();
+                    int team0;
+                    int team1;
+                    double dper;
+                    int per;
+                    String team0code;
+                    String team1code;
+                    Team winteam = match.getTeam0();
+                    Boolean hikiwake = false;
+                    if(match.getTeam0() == DataMgr.getPlayerData(p).getTeam()){
+                        team0 = match.getTeam0().getPoint();
+                        team1 = match.getTeam1().getPoint();
+                        team0code = match.getTeam0().getTeamColor().getColorCode();
+                        team1code = match.getTeam1().getTeamColor().getColorCode();
+                        dper =  (double)team0/(double)(team0 + team1)*100.0;
+                        per = (int)dper;
+                        
+                        if(match.getTeam0().getPoint() - match.getTeam1().getPoint() > 0){
+                            winteam = match.getTeam0();
+                        }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
+                            hikiwake = true;
+                        }else{
+                            winteam = match.getTeam1();
+                        }
+                    }else{
+                        team0 = match.getTeam1().getPoint();
+                        team1 = match.getTeam0().getPoint();
+                        team0code = match.getTeam1().getTeamColor().getColorCode();
+                        team1code = match.getTeam0().getTeamColor().getColorCode();
+                        dper =  (double)team0/(double) (team0 + team1)*100.0;
+                        per = (int)dper;
+                        if(match.getTeam1().getPoint() - match.getTeam0().getPoint() > 0){
+                            winteam = match.getTeam1();
+                        }else if(match.getTeam1().getPoint() == match.getTeam0().getPoint()){
+                            hikiwake = true;
+                        }else{
+                            winteam = match.getTeam0();
+                        }
+                    }
+                    
+                    Animation.ResultAnimation(p, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                }
+                if(i >= 46 && i <= 146){
+                    p.teleport(DataMgr.getPlayerData(p).getMatch().getMapData().getResultLoc());
+                }
+                if(i == 147){
+                    String WorldName = conf.getConfig().getString("Lobby.WorldName");
+                    World w = getServer().getWorld(WorldName);
+            
+                    int ix = conf.getConfig().getInt("Lobby.X");
+                    int iy = conf.getConfig().getInt("Lobby.Y");
+                    int iz = conf.getConfig().getInt("Lobby.Z");
+                    int iyaw = conf.getConfig().getInt("Lobby.Yaw");
+                    Location il = new Location(w, ix, iy, iz);
+                    il.setYaw(iyaw);
+                    p.teleport(il);
+                }
+                                    
+                    
+                i++;
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
 }

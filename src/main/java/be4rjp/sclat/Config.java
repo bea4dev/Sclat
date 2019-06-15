@@ -17,10 +17,10 @@ public class Config {
     private File psf = new File("plugins/Sclat", "class.yml");
     private File weaponf = new File("plugins/Sclat", "mainnweapon.yml");
     private File mapf = new File("plugins/Sclat", "maps.yml");
-    //private File conff = new File("plugins/Sclat", "config.yml");
+    private File conff = new File("plugins/Sclat", "config.yml");
     public synchronized void LoadConfig(){
         ps = YamlConfiguration.loadConfiguration(psf);
-        //conf = YamlConfiguration.loadConfiguration(conff);
+        conf = YamlConfiguration.loadConfiguration(conff);
         weapon = YamlConfiguration.loadConfiguration(weaponf);
         map = YamlConfiguration.loadConfiguration(mapf);
     }

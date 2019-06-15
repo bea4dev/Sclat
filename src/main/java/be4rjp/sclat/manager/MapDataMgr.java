@@ -65,12 +65,21 @@ public class MapDataMgr {
             Location t1intl = new Location(w, t1intx, t1inty, t1intz);
             t1intl.setYaw(t1intyaw);
             
+            int rlocx = conf.getMapConfig().getInt("Maps." + mapname + ".ResultLoc.X");
+            int rlocy = conf.getMapConfig().getInt("Maps." + mapname + ".ResultLoc.Y");
+            int rlocz = conf.getMapConfig().getInt("Maps." + mapname + ".ResultLoc.Z");
+            int rlocyaw = conf.getMapConfig().getInt("Maps." + mapname + ".ResultLoc.Yaw");
+            Location rloc = new Location(w, rlocx, rlocy, rlocz);
+            rloc.setYaw(rlocyaw);
+            rloc.setPitch(90);
+            
             
             map.setIntro(il);
             map.setTeam0Loc(t0l);
             map.setTeam1Loc(t1l);
             map.setTeam0Intro(t0intl);
             map.setTeam1Intro(t1intl);
+            map.setResultLoc(rloc);
             
             map.setIntroMoveX(intromovex);
             map.setIntroMoveY(intromovey);

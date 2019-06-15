@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
  * @author Be4rJP
  */
 public class GaugeAPI {
-    public String toGauge(int value, int max, String color1, String color2){
+    public static String toGauge(int value, int max, String color1, String color2){
         String m = "|";
         StringBuilder ms = new StringBuilder();
         ms.append(ChatColor.RESET + color1);

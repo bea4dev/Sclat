@@ -11,6 +11,8 @@ import be4rjp.sclat.manager.NPCMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
 import java.util.logging.Level;
+import static org.bukkit.Bukkit.getServer;
+import org.bukkit.World;
 
 import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
@@ -37,6 +39,8 @@ public class Main extends JavaPlugin {
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
+        String WorldName = conf.getConfig().getString("Lobby.WorldName");
+        getServer().createWorld(new WorldCreator(WorldName));
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);

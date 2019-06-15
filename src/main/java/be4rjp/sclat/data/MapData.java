@@ -23,6 +23,8 @@ public class MapData {
     
     private Location team1intro;
     
+    private Location resultloc;
+    
     private double intromovex;
     
     private double intromovey;
@@ -49,6 +51,8 @@ public class MapData {
     
     public Location getTeam1Intro(){return this.team1intro;}
     
+    public Location getResultLoc(){return this.resultloc;}
+    
     public double getIntroMoveX(){return this.intromovex;}
     
     public double getIntroMoveY(){return this.intromovey;}
@@ -69,6 +73,8 @@ public class MapData {
     public void setTeam0Intro(Location l){this.team0intro = l;}
     
     public void setTeam1Intro(Location l){this.team1intro = l;}
+    
+    public void setResultLoc(Location l){this.resultloc = l;}
     
     public void setIntroMoveX(double x){this.intromovex = x;}
     
