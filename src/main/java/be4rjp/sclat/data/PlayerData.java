@@ -16,7 +16,7 @@ public class PlayerData {
     private WeaponClass weaponclass;
     private MainWeapon mainweapon;
     private Location matchloc;
-    private int playernumber;
+    private int playernumber = 0;
     private boolean canshoot;
     private int tick = 0;
     private boolean issquid = false;
@@ -68,5 +68,13 @@ public class PlayerData {
     public void setIsSquid(boolean is){this.issquid = is;}
     
     public void setIsOnInk(boolean is){this.isonink = is;}
+    
+    public void reset(){
+        this.inmatch = false;
+        this.playernumber = 0;
+        this.tick = 0;
+        this.inmatch = false;
+        this.isonink = false;
+    }
     
 }

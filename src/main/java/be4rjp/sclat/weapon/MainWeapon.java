@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -51,7 +52,8 @@ public class MainWeapon implements Listener{
                         //DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
                         
                         if(i < 5){
-                            Shooter.Shoot(p);
+                            if(DataMgr.getPlayerData(p).isInMatch())
+                                Shooter.Shoot(p);
                             //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
                             DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
                             //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
@@ -67,7 +69,7 @@ public class MainWeapon implements Listener{
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
-            MatchMgr.RollBack(DataMgr.getPlayerData(player).getMatch());
+            //MatchMgr.RollBack(DataMgr.getPlayerData(player).getMatch());
         }
     }
     
@@ -75,6 +77,7 @@ public class MainWeapon implements Listener{
     public void onBlockHit(ProjectileHitEvent event){
         Player shooter = (Player)event.getEntity().getShooter();
         PaintMgr.Paint(event.getHitBlock().getLocation(), shooter);
+        shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
     }
     
     @EventHandler
@@ -103,6 +106,7 @@ public class MainWeapon implements Listener{
             if (e.getCause() == DamageCause.VOID) {
                 e.setCancelled(true);
                 DeathMgr.PlayerDeathRunnable(player, player, "fall");
+                
             }
         }
     }

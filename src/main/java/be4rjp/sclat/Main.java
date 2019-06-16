@@ -1,5 +1,6 @@
 package be4rjp.sclat;
 
+import be4rjp.sclat.GUI.ClickListener;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.manager.ColorMgr;
@@ -39,17 +40,24 @@ public class Main extends JavaPlugin {
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
-        String WorldName = conf.getConfig().getString("Lobby.WorldName");
-        getServer().createWorld(new WorldCreator(WorldName));
+        //String WorldName = conf.getConfig().getString("Lobby.WorldName");
+        //getServer().createWorld(new WorldCreator(WorldName));
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);
+        pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
+        getLogger().info("ok");
         ColorMgr.SetupColor();
+        getLogger().info("ok");
         MainWeaponMgr.SetupMainWeapon();
+        getLogger().info("ok");
         WeaponClassMgr.WeaponClassSetup();
+        getLogger().info("ok");
         MapDataMgr.SetupMap();
+        getLogger().info("ok");
         MatchMgr.MatchSetup();
+        getLogger().info("ok");
     }
 
 

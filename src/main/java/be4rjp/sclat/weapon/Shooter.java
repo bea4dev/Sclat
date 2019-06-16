@@ -9,6 +9,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.block.Action;
@@ -46,6 +47,7 @@ public class Shooter {
         }
         player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
         Snowball ball = player.launchProjectile(Snowball.class);
+        player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
@@ -59,7 +61,7 @@ public class Shooter {
                     Vector origvec = vec;
                     Snowball inkball = ball;
                     Player p = player;
-                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/15);
+                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
                     @Override
                     public void run(){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();

@@ -14,6 +14,7 @@ public class Match {
     private Team team1;
     private int playercount = 0;
     private MapData map;
+    private boolean canjoin = true;
     
     public Match(int id){this.id = id;}
     
@@ -27,6 +28,8 @@ public class Match {
     
     public MapData getMapData(){return this.map;}
     
+    public boolean canJoin(){return this.canjoin;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -35,4 +38,6 @@ public class Match {
     public void addPlayerCount(){playercount++;}
     
     public void setMapData(MapData map){this.map = map;}
+    
+    public void setCanJoin(boolean is){this.canjoin = is;}
 }

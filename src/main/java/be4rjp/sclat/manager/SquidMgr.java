@@ -27,6 +27,8 @@ public class SquidMgr {
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
+                if(!data.isInMatch())
+                    return;
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     data.setIsSquid(true);
                 }else{

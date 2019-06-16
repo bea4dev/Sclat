@@ -92,6 +92,7 @@ public class MapDataMgr {
             map.setWorldName(WorldName);
             
             DataMgr.setMap(mapname, map);
+            DataMgr.addMapList(map);
         }
     }
 }

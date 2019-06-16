@@ -27,7 +27,7 @@ public class PaintMgr {
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
         List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE"))){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("NETHER"))){
             if(DataMgr.getBlockDataMap().containsKey(block)){
                 PaintData data = DataMgr.getPaintDataFromBlock(block);
                 Team BTeam = data.getTeam();

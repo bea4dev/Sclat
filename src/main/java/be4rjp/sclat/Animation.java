@@ -1,6 +1,7 @@
 
 package be4rjp.sclat;
 
+import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Team;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -19,15 +20,16 @@ public class Animation {
             @Override
             public void run(){
                 
-                if(i <= 5){
+                if(i <= 15){
                     player.sendTitle("", String.valueOf(g) + "% [" + GaugeAPI.toGauge(g,50,team0color,"§7") + GaugeAPI.toGauge(50 - g,50,"§7",team1color) + "] " + String.valueOf(g) + "%", 0, 40, 0);
                     g = g + 2;
                 }
+                /*
                 if(i >= 6 && i <= 10){
                     player.sendTitle("", String.valueOf(g) + "% [" + GaugeAPI.toGauge(g,50,team0color,"§7") + GaugeAPI.toGauge(50 - g,50,"§7",team1color) + "] " + String.valueOf(g) + "%", 0, 40, 0);
                     g++;
-                }
-                if(i == 25){
+                }*/
+                if(i == 35){
                     if(hikiwake){
                         player.sendTitle("引き分け！", "[" + GaugeAPI.toGauge(50,100, team0color, team1color) + "]", 0, 40, 10);
                     }else{
@@ -35,8 +37,9 @@ public class Animation {
                     }
                     player.playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 13.0F, 1.5F);
                 }
-                if(i == 30){
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                if(i == 40){
+                    if(winteam == DataMgr.getPlayerData(player).getTeam())
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
                     cancel();
                 }
                 i++;
