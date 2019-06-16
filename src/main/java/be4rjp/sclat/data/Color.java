@@ -16,6 +16,7 @@ public class Color {
     private boolean isUsed = false;
     private Material wool;
     private org.bukkit.Color bukkitcolor;
+    private Material glass;
     
     public Color(String colorname){this.colorname = colorname;}
     
@@ -27,10 +28,14 @@ public class Color {
     
     public Material getWool(){return wool;}
     
+    public Material getGlass(){return glass;}
+    
     public org.bukkit.Color getBukkitColor(){return bukkitcolor;}
     
     
     public void setWool(Material Wool){wool = Wool;}
+    
+    public void setGlass(Material glass){this.glass = glass;}
     
     public void setIsUsed(boolean isused){isUsed = isused;}
     

@@ -12,6 +12,7 @@ public class ColorMgr {
     public synchronized static void SetupColor(){
         Color blue = new Color("Blue");
             blue.setWool(Material.BLUE_WOOL);
+            blue.setGlass(Material.BLUE_STAINED_GLASS);
             blue.setColorCode("§9");
             blue.setBukkitColor(org.bukkit.Color.BLUE);
         DataMgr.setColor("Blue", blue);
@@ -19,6 +20,7 @@ public class ColorMgr {
             
         Color aqua = new Color("Aqua");
             aqua.setWool(Material.LIGHT_BLUE_WOOL);
+            aqua.setGlass(Material.LIGHT_BLUE_STAINED_GLASS);
             aqua.setColorCode("§b");
             aqua.setBukkitColor(org.bukkit.Color.AQUA);
         DataMgr.setColor("Aqua", aqua);
@@ -26,6 +28,7 @@ public class ColorMgr {
         
         Color orange = new Color("Orange");
             orange.setWool(Material.ORANGE_WOOL);
+            orange.setGlass(Material.ORANGE_STAINED_GLASS);
             orange.setColorCode("§6");
             orange.setBukkitColor(org.bukkit.Color.ORANGE);
         DataMgr.setColor("Orange", orange);
