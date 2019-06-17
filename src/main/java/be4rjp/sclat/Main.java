@@ -47,17 +47,17 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new SquidListener(), this);
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
-        getLogger().info("ok");
+        getLogger().info("registerEvents ok");
         ColorMgr.SetupColor();
-        getLogger().info("ok");
+        getLogger().info("SetupColor() ok");
         MainWeaponMgr.SetupMainWeapon();
-        getLogger().info("ok");
+        getLogger().info("SetupMainWeapon() ok");
         WeaponClassMgr.WeaponClassSetup();
-        getLogger().info("ok");
+        getLogger().info("WeaponClassSetup() ok");
         MapDataMgr.SetupMap();
-        getLogger().info("ok");
+        getLogger().info("SetupMap() ok");
         MatchMgr.MatchSetup();
-        getLogger().info("ok");
+        getLogger().info("MatchSetup() ok");
     }
 
 

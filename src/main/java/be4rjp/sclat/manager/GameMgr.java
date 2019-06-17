@@ -31,6 +31,10 @@ public class GameMgr implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        if(DataMgr.getPlayerDataMap().containsKey(player)){
+            if(DataMgr.getPlayerData(player).isInMatch())
+                return;
+        }
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
@@ -55,6 +59,7 @@ public class GameMgr implements Listener{
         join.setItemMeta(joinmeta);
         player.getInventory().setItem(0, join);
         Shooter.ShooterRunnable(player);
+        
         //SquidMgr.SquidRunnable(player);
     }
     

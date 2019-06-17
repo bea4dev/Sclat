@@ -366,6 +366,16 @@ public class MatchMgr {
                             //npcle = (LivingEntity)npc.getEntity();
                             //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
+                        
+                        
+                        if(s >= 221 && s <= 280){
+                            p.getInventory().setItem(0, new ItemStack(org.bukkit.Material.AIR));
+                            p.setGameMode(GameMode.ADVENTURE);
+                            p.setExp(0.99F);
+                            Location introl = DataMgr.getPlayerData(p).getMatchLocation();
+                            p.teleport(introl);
+                        }
+                        
                         if(s == 281){
                             //playerclass
                             for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
@@ -381,15 +391,7 @@ public class MatchMgr {
                             DataMgr.getPlayerData(p).setIsInMatch(true);
                             InMatchCounter(p);
                             p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
-                            
-                        }
-                        
-                        if(s >= 221 && s <= 280){
-                            p.getInventory().setItem(0, new ItemStack(org.bukkit.Material.AIR));
-                            p.setGameMode(GameMode.ADVENTURE);
-                            p.setExp(0.99F);
-                            Location introl = DataMgr.getPlayerData(p).getMatchLocation();
-                            p.teleport(introl);
+                            cancel();
                         }
                         
 
@@ -402,13 +404,7 @@ public class MatchMgr {
                 task.runTaskTimer(Main.getPlugin(), 0, 1);
             }
         }
-        BukkitRunnable task2 = new BukkitRunnable(){
-            @Override
-            public void run(){
-                //Animation.ResultAnimation(match);
-            }
-        };
-        task2.runTaskTimer(Main.getPlugin(), 3881, 1);
+        
         
     }
         
