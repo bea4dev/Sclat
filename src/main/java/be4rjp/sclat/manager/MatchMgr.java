@@ -382,6 +382,7 @@ public class MatchMgr {
                                 p.showPlayer(Main.getPlugin(), player);
                             }
                             p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+                            SubWeaponMgr.setSubWeapon(p);
                             //Shooter.ShooterRunnable(p);
                             if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick() < 5){
                                 DataMgr.getPlayerData(p).setTick(10);
@@ -404,7 +405,13 @@ public class MatchMgr {
                 task.runTaskTimer(Main.getPlugin(), 0, 1);
             }
         }
-        
+        BukkitRunnable task2 = new BukkitRunnable(){
+            @Override
+            public void run(){
+                //Animation.ResultAnimation(match);
+            }
+        };
+        task2.runTaskTimer(Main.getPlugin(), 3881, 1);
         
     }
         

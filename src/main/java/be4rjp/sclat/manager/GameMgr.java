@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -64,11 +65,19 @@ public class GameMgr implements Listener{
     }
     
     @EventHandler
-    public void noDamageByFall(EntityDamageEvent event){
+    public void onDamageByFall(EntityDamageEvent event){
         if (event.getEntity() instanceof Player){
             if(event.getCause() == DamageCause.FALL)
                 event.setCancelled(true);
         }
+    }
+    
+    @EventHandler
+    public void onPlaceBlockByEntity(EntityChangeBlockEvent event){
+        if (!(event.getEntity() instanceof Player)){
+            event.setCancelled(true);
+        }
+    
     }
     
 }
