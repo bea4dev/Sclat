@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class SubWeaponMgr {
     public static void setSubWeapon(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
+        player.sendMessage(data.getWeaponClass().getSubWeaponName());
         if("スプラッシュボム".equals(data.getWeaponClass().getSubWeaponName())){
             ItemStack is = new ItemStack(data.getTeam().getTeamColor().getGlass());
             ItemMeta ism = is.getItemMeta();

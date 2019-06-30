@@ -6,7 +6,7 @@ package be4rjp.sclat.data;
  */
 public class WeaponClass {
     
-    private String WeaponClassName;
+    private final String WeaponClassName;
     private MainWeapon mainweapon;
     private String subweaponname;
     

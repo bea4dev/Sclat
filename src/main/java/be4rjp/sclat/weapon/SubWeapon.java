@@ -12,6 +12,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -22,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * @author Be4rJP
  */
-public class SubWeapon {
+public class SubWeapon implements Listener{
     //サブウエポンのリスナー部分
     @EventHandler
     public void onClickSubWeapon(PlayerInteractEvent event){
@@ -47,7 +48,8 @@ public class SubWeapon {
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass().createBlockData();
                             fb = p.getWorld().spawnFallingBlock(zonbi.getLocation(), bd);
                             fb.setGravity(false);
-                            zonbi.setPassenger(fb);
+                            //zonbi.setPassenger(fb);
+                            zonbi.addPassenger(fb);
                             zonbi.setVelocity(p.getLocation().getDirection().multiply(0.3));
                         }
                         if(zonbi.isOnGround()){

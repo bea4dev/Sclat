@@ -47,6 +47,8 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new SquidListener(), this);
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
+        pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
+        
         getLogger().info("registerEvents ok");
         ColorMgr.SetupColor();
         getLogger().info("SetupColor() ok");
