@@ -59,7 +59,7 @@ public class GameMgr implements Listener{
         joinmeta.setDisplayName("メインメニュー");
         join.setItemMeta(joinmeta);
         player.getInventory().setItem(0, join);
-        Shooter.ShooterRunnable(player);
+        //Shooter.ShooterRunnable(player);
         
         //SquidMgr.SquidRunnable(player);
     }

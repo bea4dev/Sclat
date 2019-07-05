@@ -34,6 +34,8 @@ public class Shooter {
                     Shooter.Shoot(p);
                     data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                 }
+                if(!DataMgr.getPlayerData(p).isInMatch())
+                    cancel();
             }
         };
         delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
@@ -75,6 +77,7 @@ public class Shooter {
                             PaintMgr.PaintHightestBlock(inkball.getLocation(), p);
                         if(inkball.isDead())
                             cancel();
+                        
                         i++;
                     }
                 };

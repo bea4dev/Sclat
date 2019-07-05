@@ -383,7 +383,7 @@ public class MatchMgr {
                             }
                             p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                             SubWeaponMgr.setSubWeapon(p);
-                            //Shooter.ShooterRunnable(p);
+                            Shooter.ShooterRunnable(p);
                             if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick() < 5){
                                 DataMgr.getPlayerData(p).setTick(10);
                                 //Shooter.ShooterRunnable(p);
