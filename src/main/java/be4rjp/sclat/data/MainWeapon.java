@@ -18,6 +18,7 @@ public class MainWeapon {
     private int maxpaintdis;
     private float needink;
     private double damage;
+    private int maxcharge;
     
     
     
@@ -43,6 +44,8 @@ public class MainWeapon {
     
     public double getDamage(){return this.damage;}
     
+    public int getMaxCharge(){return this.maxcharge;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -63,5 +66,7 @@ public class MainWeapon {
     public void setNeedInk(float ink){this.needink = ink;}
     
     public void setDamage(double damage){this.damage = damage;}
+    
+    public void setMaxCharge(int max){this.maxcharge = max;}
     
 }

@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -35,37 +36,8 @@ public class MainWeapon implements Listener{
         Player player = e.getPlayer();
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName())){
-                //e.setCancelled(true);
-                //DataMgr.getPlayerData(player).setCanShoot(true);
-                //Shooter.Shoot(player);
+            if(equalWeapon(player)){
                 DataMgr.getPlayerData(player).setTick(0);
-                
-                BukkitRunnable delay = new BukkitRunnable(){
-                    Player p = player;
-                    int i = 0;
-                    @Override
-                    public void run(){
-                        //p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                        //DataMgr.getPlayerData(p).setCanShoot(false);
-                        i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
-                        //DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
-                        
-                        if(i < 5){
-                            if(DataMgr.getPlayerData(p).isInMatch())
-                                Shooter.Shoot(p);
-                            //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
-                            DataMgr.getPlayerData(p).setTick(DataMgr.getPlayerData(p).getTick() + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
-                            //i = i + DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick();
-                        }else{
-                            DataMgr.getPlayerData(p).setTick(0);
-                            cancel();
-                        }     
-                    }
-                };
-                //if(DataMgr.getPlayerData(player).getTick() < 5)
-                    //delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
-                
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
@@ -82,6 +54,11 @@ public class MainWeapon implements Listener{
     
     @EventHandler
     public void onEntityHit(EntityDamageByEntityEvent event) {
+        event.setCancelled(true);
+        
+        
+        
+        
         Projectile projectile = (Projectile)event.getDamager();
         Player shooter = (Player)projectile.getShooter();
         if(event.getEntity() instanceof Player){
@@ -94,6 +71,15 @@ public class MainWeapon implements Listener{
                     DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
                     PaintMgr.Paint(target.getLocation(), shooter);
                 }
+                //AntiDamageTime
+                BukkitRunnable task = new BukkitRunnable(){
+                    Player p = target;
+                    @Override
+                    public void run(){
+                        target.setNoDamageTicks(0);
+                    }
+                };
+                task.runTaskLater(Main.getPlugin(), 1);
             }
         }
         
@@ -109,6 +95,15 @@ public class MainWeapon implements Listener{
                 
             }
         }
+    }
+    
+    public boolean equalWeapon(Player player){
+        PlayerData data = DataMgr.getPlayerData(player);
+        String wname = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName();
+        String itemname = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+        if(wname.equals(itemname.substring(0, wname.length())))
+            return true;
+        return false;
     }
    
 }

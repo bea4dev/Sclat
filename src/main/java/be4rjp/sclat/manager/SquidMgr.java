@@ -1,6 +1,7 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ public class SquidMgr {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             boolean is = false;
-            boolean is2 = false;
+            boolean is2 = true;
             //LivingEntity squid;
             @Override
             public void run(){
@@ -36,18 +37,18 @@ public class SquidMgr {
                 }
             
                 if(data.getIsOnInk() && data.getIsSquid()){
-                    
+                    is2 = false;
                     if(!is){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
                         is = true;
-                    }
+                    }                                                                                   
                     
-                        if(p.getExp() <= 0.999F){
-                            p.setExp(p.getExp() + 0.005F);
+                        if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
+                            p.setExp(p.getExp() + (float)conf.getConfig().getDouble("SquidRecovery"));
                         }
                         p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-                        p.setFoodLevel(20);
+                        p.setFoodLevel(20);                                                   
                         p.setSprinting(true);
                         p.setWalkSpeed(0.25F);
                         
@@ -70,6 +71,10 @@ public class SquidMgr {
                     squid.teleport(p);
                     */
                 else{
+                    if(!is2){
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
+                        is2 = true;
+                    }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))
                         p.removePotionEffect(PotionEffectType.REGENERATION);

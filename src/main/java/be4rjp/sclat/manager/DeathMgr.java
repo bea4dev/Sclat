@@ -5,6 +5,8 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -28,17 +30,21 @@ public class DeathMgr {
             
             @Override
             public void run(){
-                if(type == "killed"){
+                if(type.equals("killed")){
                     t.setGameMode(GameMode.SPECTATOR);
-                    DataMgr.getPlayerData(t).setTick(6);
+                    t.getInventory().clear();
+                    DataMgr.getPlayerData(t).setTick(10);
                     ((CraftPlayer) t).getHandle().setSpectatorTarget(((CraftEntity) s).getHandle());
                     PlayerData sdata = DataMgr.getPlayerData(s);
                     String msg = sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！";
                     if(i == 0){
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", msg, 0, 21, 0);
                         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(t).getMatch() == DataMgr.getPlayerData(player).getMatch())
+                            if(DataMgr.getPlayerData(t).getMatch() == DataMgr.getPlayerData(player).getMatch()){
                                 player.sendMessage(sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "が" + DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "で倒した！");
+                                s.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を倒した！"));
+                                s.playSound(s.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 10);
+                            }
                         }
                     }
                     if(i == 20)
@@ -58,12 +64,14 @@ public class DeathMgr {
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);
                         t.setHealth(20);
-                        
+                        WeaponClassMgr.setWeaponClass(t);
                         cancel();
                     }
                 }
-                if(type == "water"){
+                if(type.equals("water")){
                     t.setGameMode(GameMode.SPECTATOR);
+                    DataMgr.getPlayerData(t).setTick(10);
+                    t.getInventory().clear();
                     if(i == 0)
                         loc = t.getLocation();
                     t.teleport(loc);
@@ -86,11 +94,14 @@ public class DeathMgr {
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);
                         t.setHealth(20);
+                        WeaponClassMgr.setWeaponClass(t);
                         cancel();
                     }
                 }
-                if(type == "fall"){
+                if(type.equals("fall")){
                     t.setGameMode(GameMode.SPECTATOR);
+                    DataMgr.getPlayerData(t).setTick(10);
+                    t.getInventory().clear();
                     if(i == 0)
                         loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
                     t.teleport(loc);
@@ -113,6 +124,7 @@ public class DeathMgr {
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);
                         t.setHealth(20);
+                        WeaponClassMgr.setWeaponClass(t);
                         cancel();
                     }
                 }

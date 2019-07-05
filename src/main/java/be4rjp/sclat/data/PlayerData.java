@@ -21,6 +21,7 @@ public class PlayerData {
     private int tick = 0;
     private boolean issquid = false;
     private boolean isonink = false;
+    private boolean isHolding = false;
     
     public PlayerData(Player player){this.player = player;}
    
@@ -46,6 +47,8 @@ public class PlayerData {
     
     public boolean getIsOnInk(){return this.isonink;}
     
+    public boolean getIsHolding(){return this.isHolding;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -69,12 +72,15 @@ public class PlayerData {
     
     public void setIsOnInk(boolean is){this.isonink = is;}
     
+    public void setIsHolding(boolean is){this.isHolding = is;}
+    
     public void reset(){
         this.inmatch = false;
         this.playernumber = 0;
         this.tick = 0;
         this.inmatch = false;
         this.isonink = false;
+        this.isHolding = false;
     }
     
 }

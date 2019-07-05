@@ -146,7 +146,7 @@ public class PaintMgr {
         }
     }
     
-    public static void PaintHightestBlock(Location loc, Player player){
+    public static void PaintHightestBlock(Location loc, Player player, boolean randomb){
         int i = loc.getBlockY();
         int x = loc.getBlockX();
         int z = loc.getBlockZ();
@@ -154,9 +154,11 @@ public class PaintMgr {
                 if(new Location(player.getWorld(), x, i, z).getBlock().getType() != Material.AIR){
                     Random random = new Random();
                     int r = random.nextInt(10);
-                    if(r == 0){
+                    if(r == 0 && randomb){
                         Paint(new Location(player.getWorld(), x, i, z), player);
                     }
+                    if(!randomb)
+                        Paint(new Location(player.getWorld(), x, i, z), player);
                     break;
                 }
                 i--;

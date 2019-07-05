@@ -4,7 +4,9 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -23,6 +25,13 @@ public class WeaponClassMgr {
                 wc.setSubWeaponName(SubWeaponName);
             DataMgr.setWeaponClass(classname, wc);
         }
+    }
+    
+    public static void setWeaponClass(Player player){
+        player.getInventory().clear();
+        PlayerData data = DataMgr.getPlayerData(player);
+        player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
+        SubWeaponMgr.setSubWeapon(player);
     }
     
 }

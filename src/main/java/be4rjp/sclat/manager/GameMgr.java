@@ -58,6 +58,7 @@ public class GameMgr implements Listener{
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("メインメニュー");
         join.setItemMeta(joinmeta);
+        player.getInventory().clear();
         player.getInventory().setItem(0, join);
         //Shooter.ShooterRunnable(player);
         

@@ -65,7 +65,9 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        MatchMgr.RollBack();
         conf.SaveConfig();
+        
     }
     
     public static Main getPlugin(){

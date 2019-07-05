@@ -14,6 +14,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.data.TeamLoc;
 import be4rjp.sclat.data.WeaponClass;
+import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -77,6 +78,7 @@ public class MatchMgr {
             }
             
             data.setMatch(match);
+            data.setIsInMatch(true);
             if(playercount == 1){//-------------------test--------------------//
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
@@ -158,12 +160,12 @@ public class MatchMgr {
         //DataMgr.setTeamLoc(map, teamloc);
     }
     
-    public static void RollBack(Match match){
+    public static void RollBack(){
         for(PaintData data : DataMgr.getBlockDataMap().values()){
-            if(data.getMatch() == match){
+            
                 data.getBlock().setType(data.getOriginalType());
                 data = null;
-            }
+            
         }
         DataMgr.getBlockDataMap().clear();
     }
@@ -256,6 +258,7 @@ public class MatchMgr {
                             }
                           
                             p.setGameMode(GameMode.SPECTATOR);
+                            p.getInventory().clear();
                             Location introl = match.getMapData().getIntro();
                             p.teleport(introl);
                             Location location = DataMgr.getPlayerData(p).getMatchLocation();
@@ -306,7 +309,7 @@ public class MatchMgr {
                             p.teleport(intromove);
                         }
                         if(s >= 100 && s <= 160){
-                            Location introl = match.getMapData().getTeam0Intro();
+                            Location introl = match.getMapData().getTeam0Intro().clone();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                                 if(s >= 101 && s <= 120){
@@ -381,13 +384,18 @@ public class MatchMgr {
                             for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 p.showPlayer(Main.getPlugin(), player);
                             }
-                            p.getInventory().setItem(0, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                            SubWeaponMgr.setSubWeapon(p);
-                            Shooter.ShooterRunnable(p);
-                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick() < 5){
-                                DataMgr.getPlayerData(p).setTick(10);
+                            WeaponClassMgr.setWeaponClass(p);
+                            
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter"))
+                                Shooter.ShooterRunnable(p);
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
+                                Charger.ChargerRunnable(p);
+                            
+                            
+                            
+                            DataMgr.getPlayerData(p).setTick(10);
                                 //Shooter.ShooterRunnable(p);
-                            }
+                            
                             //SquidMgr.SquidRunnable(p);
                             DataMgr.getPlayerData(p).setIsInMatch(true);
                             InMatchCounter(p);
@@ -438,6 +446,7 @@ public class MatchMgr {
                         p.sendTitle(ChatColor.GOLD + "残り1分！", "", 4, 28, 4);
                     if(s == 0){
                         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                        p.getInventory().clear();
                         FinishMatch(p);
                         cancel();
                     }
@@ -530,7 +539,7 @@ public class MatchMgr {
                     join.setItemMeta(joinmeta);
                     p.getInventory().setItem(0, join);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                        RollBack(DataMgr.getPlayerData(p).getMatch());
+                        RollBack();
                         matchcount++;
                         MatchSetup();
                         DataMgr.getPlayerData(p).reset();

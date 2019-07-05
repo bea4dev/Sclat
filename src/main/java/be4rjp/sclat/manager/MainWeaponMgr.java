@@ -25,6 +25,7 @@ public class MainWeaponMgr {
             int maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
             float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".NeedInk");
             double damage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".Damage");
+            int maxcharge = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxCharge");
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
@@ -41,6 +42,7 @@ public class MainWeaponMgr {
             mw.setMaxPaintDis(maxpaintdis);
             mw.setNeedInk(needink);
             mw.setDamage(damage);
+            mw.setMaxCharge(maxcharge);
             DataMgr.setMainWeapon(weaponname, mw);
         }
     }
