@@ -52,9 +52,11 @@ public class Charger {
                     p.getInventory().setItem(0, w);
                     RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
                     ArrayList<Vector> positions = rayTrace.traverse(charge,0.7);
-                    for(int i = 0; i < positions.size();i++){
+                    check : for(int i = 0; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(player.getWorld());
-                        if(i > 10 && position.getBlock().getType().equals(Material.AIR)){
+                        if(position.getBlock().getType().equals(Material.AIR))
+                            break check;
+                        if(i > 10){
                             Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                             position.getWorld().spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 50, dustOptions);
                         }
@@ -63,7 +65,7 @@ public class Charger {
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
-                        Charger.Shoot(p, charge, data.getWeaponClass().getMainWeapon().getDamage() * charge);
+                        Charger.Shoot(p, charge / 2, data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
                         player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
                     }

@@ -22,6 +22,7 @@ public class PlayerData {
     private boolean issquid = false;
     private boolean isonink = false;
     private boolean isHolding = false;
+    private boolean isjoined = false;
     
     public PlayerData(Player player){this.player = player;}
    
@@ -49,6 +50,8 @@ public class PlayerData {
     
     public boolean getIsHolding(){return this.isHolding;}
     
+    public boolean getIsJoined(){return this.isjoined;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -73,6 +76,8 @@ public class PlayerData {
     public void setIsOnInk(boolean is){this.isonink = is;}
     
     public void setIsHolding(boolean is){this.isHolding = is;}
+    
+    public void setIsJoined(boolean is){this.isjoined = is;}
     
     public void reset(){
         this.inmatch = false;

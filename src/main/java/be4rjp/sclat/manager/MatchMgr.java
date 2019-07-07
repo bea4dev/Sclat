@@ -57,7 +57,7 @@ public class MatchMgr {
     
     public static void PlayerJoinMatch(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(!data.isInMatch()){
+        if(!data.getIsJoined()){
             
         
         Match match = DataMgr.getMatchFromId(matchcount);
@@ -78,7 +78,7 @@ public class MatchMgr {
             }
             
             data.setMatch(match);
-            data.setIsInMatch(true);
+            data.setIsJoined(true);
             if(playercount == 1){//-------------------test--------------------//
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
@@ -263,25 +263,7 @@ public class MatchMgr {
                             p.teleport(introl);
                             Location location = DataMgr.getPlayerData(p).getMatchLocation();
                             
-                            /*
-                            MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
-                            WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
-                            squid = new EntitySquid(nmsWorld);
-                            squid.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
-                            squid.setCustomName(new ChatMessage(p.getDisplayName()));
-                            squid.setCustomNameVisible(true);
-                            squid.setSwimming(true);
-                            
-                            
-                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-                                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(squid));
-                                //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-                            }
-                            */
 
-
-                            
                             p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
                             
                             StartCount(p);
@@ -298,12 +280,11 @@ public class MatchMgr {
                             for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 p.hidePlayer(Main.getPlugin(), player);
                             }
-                            //Score score = objective.getScore("3:00");
-                            //score.setScore(0);
+                            
                         }
                         if(s >= 1 && s <= 100){
                             if(s == 1)
-                                intromove = match.getMapData().getIntro();
+                                intromove = match.getMapData().getIntro().clone();
                             MapData map = DataMgr.getPlayerData(p).getMatch().getMapData();
                             intromove.add(map.getIntroMoveX(), map.getIntroMoveY(), map.getIntroMoveZ());
                             p.teleport(intromove);
@@ -340,7 +321,7 @@ public class MatchMgr {
                             }
                         }
                         if(s >= 160 && s <= 220){
-                            Location introl = match.getMapData().getTeam1Intro();
+                            Location introl = match.getMapData().getTeam1Intro().clone();
                             p.teleport(introl);
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                                 if(s >= 161 && s <= 180){
@@ -385,6 +366,8 @@ public class MatchMgr {
                                 p.showPlayer(Main.getPlugin(), player);
                             }
                             WeaponClassMgr.setWeaponClass(p);
+                            
+                            
                             
                             if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter"))
                                 Shooter.ShooterRunnable(p);
@@ -545,7 +528,7 @@ public class MatchMgr {
                         DataMgr.getPlayerData(p).reset();
                     }
                     
-                    
+                    DataMgr.getPlayerData(p).setIsJoined(false);
                     
                     p.setWalkSpeed(0.2F);
                     p.setHealth(20);
