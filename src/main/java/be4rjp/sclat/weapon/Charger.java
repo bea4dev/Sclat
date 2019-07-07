@@ -54,7 +54,7 @@ public class Charger {
                     ArrayList<Vector> positions = rayTrace.traverse(charge,0.7);
                     check : for(int i = 0; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(player.getWorld());
-                        if(position.getBlock().getType().equals(Material.AIR))
+                        if(!position.getBlock().getType().equals(Material.AIR))
                             break check;
                         if(i > 10){
                             Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
@@ -92,7 +92,12 @@ public class Charger {
 
             Location position = positions.get(i).toLocation(player.getWorld());
             Block block = player.getWorld().getBlockAt(position);
+            
+            if(!block.getType().equals(Material.AIR))
+                break loop;
             PaintMgr.PaintHightestBlock(position, player, false);
+            
+            
             
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
             position.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
