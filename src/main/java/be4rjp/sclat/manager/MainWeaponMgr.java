@@ -22,7 +22,7 @@ public class MainWeaponMgr {
             double shootspeed = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".ShootSpeed");
             int shoottick = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".ShootTick");
             int paintrandom = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".PaintRandom");
-            int maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
+            double maxpaintdis = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxPaintDistance");
             float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".NeedInk");
             double damage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".Damage");
             int maxcharge = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxCharge");

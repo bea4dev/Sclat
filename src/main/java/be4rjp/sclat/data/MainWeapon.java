@@ -15,7 +15,7 @@ public class MainWeapon {
     private double shootspeed;
     private int shoottick;
     private int paintrandom;
-    private int maxpaintdis;
+    private double maxpaintdis;
     private float needink;
     private double damage;
     private int maxcharge;
@@ -38,7 +38,7 @@ public class MainWeapon {
     
     public int getPaintRandom(){return this.paintrandom;}
     
-    public int getMaxPaintDis(){return this.maxpaintdis;}
+    public double getMaxPaintDis(){return this.maxpaintdis;}
     
     public float getNeedInk(){return this.needink;}
     
@@ -61,7 +61,7 @@ public class MainWeapon {
     
     public void setPaintRandom(int r){this.paintrandom = r;}
     
-    public void setMaxPaintDis(int max){this.maxpaintdis = max;}
+    public void setMaxPaintDis(double max){this.maxpaintdis = max;}
     
     public void setNeedInk(float ink){this.needink = ink;}
     

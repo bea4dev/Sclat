@@ -23,9 +23,10 @@ import org.bukkit.entity.Player;
  */
 public class PaintMgr {
     public static void Paint(Location location, Player player){
-        //List<Block> blocks = generateSphere(location, 2, 1, false, true, 0);
+        
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
-        List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
+        List<Block> blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0);
+        //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
             if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("NETHER") || block.getType() == Material.WATER)){
             if(DataMgr.getBlockDataMap().containsKey(block)){
@@ -102,14 +103,14 @@ public class PaintMgr {
         
     }
     
-    public static synchronized List<Block> generateSphere(Location loc, int r, int h, boolean hollow, boolean sphere, int plus_y) {
+    public static synchronized List<Block> generateSphere(Location loc, double r, double h, boolean hollow, boolean sphere, double plus_y) {
         List<Block> circleblocks = new ArrayList<Block>();
-        int cx = loc.getBlockX();
-        int cy = loc.getBlockY();
-        int cz = loc.getBlockZ();
-        for (int x = cx - r; x <= cx + r; x++) {
-            for (int z = cz - r; z <= cz + r; z++) {
-                for (int y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
+        double cx = loc.getX();
+        double cy = loc.getY();
+        double cz = loc.getZ();
+        for (double x = cx - r; x <= cx + r; x++) {
+            for (double z = cz - r; z <= cz + r; z++) {
+                for (double y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
                     double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
                     if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
                         Location l = new Location(loc.getWorld(), x, y + plus_y, z);

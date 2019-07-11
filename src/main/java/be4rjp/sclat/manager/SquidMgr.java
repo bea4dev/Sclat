@@ -28,8 +28,15 @@ public class SquidMgr {
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
-                if(!data.isInMatch())
+                if(!data.isInMatch()){
+                    if(p.hasPotionEffect(PotionEffectType.REGENERATION))
+                        p.removePotionEffect(PotionEffectType.REGENERATION);
+                    if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
+                        p.removePotionEffect(PotionEffectType.INVISIBILITY);
+                    p.setFoodLevel(4);
+                    player.setWalkSpeed(0.2F);
                     return;
+                }
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     data.setIsSquid(true);
                 }else{

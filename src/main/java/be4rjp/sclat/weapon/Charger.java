@@ -67,7 +67,7 @@ public class Charger {
                         p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
                         Charger.Shoot(p, charge / 2, data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
-                        player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+                        player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
