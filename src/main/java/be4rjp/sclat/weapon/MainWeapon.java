@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -37,7 +38,13 @@ public class MainWeapon implements Listener{
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(equalWeapon(player)){
-                DataMgr.getPlayerData(player).setTick(0);
+                PlayerData data = DataMgr.getPlayerData(player);
+                data.setTick(0);
+                data.setIsHolding(true);
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+                    data.setCanShoot(false);
+                    Roller.ShootPaintRunnable(player);
+                }  
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
@@ -63,7 +70,7 @@ public class MainWeapon implements Listener{
         Player shooter = (Player)projectile.getShooter();
         if(event.getEntity() instanceof Player){
             Player target = (Player)event.getEntity();
-            if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam()){
+            if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                 if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                     target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                     PaintMgr.Paint(target.getLocation(), shooter);

@@ -19,6 +19,7 @@ public class MainWeapon {
     private float needink;
     private double damage;
     private int maxcharge;
+    private int rollershootquantity;
     
     
     
@@ -46,6 +47,8 @@ public class MainWeapon {
     
     public int getMaxCharge(){return this.maxcharge;}
     
+    public int getRollerShootQuantity(){return this.rollershootquantity;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -68,5 +71,7 @@ public class MainWeapon {
     public void setDamage(double damage){this.damage = damage;}
     
     public void setMaxCharge(int max){this.maxcharge = max;}
+    
+    public void setRollerShootQuantity(int i){this.rollershootquantity = i;}
     
 }

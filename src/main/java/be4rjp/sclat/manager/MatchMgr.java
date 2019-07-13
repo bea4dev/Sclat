@@ -15,6 +15,7 @@ import be4rjp.sclat.data.Team;
 import be4rjp.sclat.data.TeamLoc;
 import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Charger;
+import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -373,6 +374,10 @@ public class MatchMgr {
                                 Shooter.ShooterRunnable(p);
                             if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
                                 Charger.ChargerRunnable(p);
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
+                                Roller.HoldRunnable(p);
+                                Roller.RollPaintRunnable(p);
+                            }
                             
                             
                             

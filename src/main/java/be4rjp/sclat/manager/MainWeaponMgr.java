@@ -26,6 +26,7 @@ public class MainWeaponMgr {
             float needink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".NeedInk");
             double damage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".Damage");
             int maxcharge = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxCharge");
+            int rollershootQuantity = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".RollerShootQuantity");
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
@@ -43,6 +44,7 @@ public class MainWeaponMgr {
             mw.setNeedInk(needink);
             mw.setDamage(damage);
             mw.setMaxCharge(maxcharge);
+            mw.setRollerShootQuantity(rollershootQuantity);
             DataMgr.setMainWeapon(weaponname, mw);
         }
     }

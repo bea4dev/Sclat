@@ -33,8 +33,11 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.REGENERATION);
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
-                    p.setFoodLevel(4);
+                    p.setFoodLevel(20);
+                    p.setHealth(20);
                     player.setWalkSpeed(0.2F);
+                    player.setAllowFlight(false);
+                    player.setFlying(false);
                     return;
                 }
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
@@ -88,7 +91,10 @@ public class SquidMgr {
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);
-                    player.setWalkSpeed(0.2F);
+                    if(!data.getIsHolding() && !data.getCanPaint())
+                        player.setWalkSpeed(0.15F);
+                    player.setAllowFlight(false);
+                    player.setFlying(false);
                 }
             } 
         };

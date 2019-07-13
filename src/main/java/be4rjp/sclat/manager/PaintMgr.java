@@ -25,7 +25,7 @@ public class PaintMgr {
     public static void Paint(Location location, Player player){
         
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
-        List<Block> blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0);
+        List<Block> blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
             if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("NETHER") || block.getType() == Material.WATER)){
@@ -103,11 +103,14 @@ public class PaintMgr {
         
     }
     
-    public static synchronized List<Block> generateSphere(Location loc, double r, double h, boolean hollow, boolean sphere, double plus_y) {
+    public static synchronized List<Block> generateSphere(Location loc, double r, double h, boolean hollow, boolean sphere, double plus_y, int random) {
         List<Block> circleblocks = new ArrayList<Block>();
         double cx = loc.getX();
         double cy = loc.getY();
         double cz = loc.getZ();
+        
+        int i = 0;
+        
         for (double x = cx - r; x <= cx + r; x++) {
             for (double z = cz - r; z <= cz + r; z++) {
                 for (double y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
@@ -115,6 +118,13 @@ public class PaintMgr {
                     if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
                         Location l = new Location(loc.getWorld(), x, y + plus_y, z);
                         circleblocks.add(l.getWorld().getBlockAt(l));
+                        if(random < i){
+                            Random ran = new Random();
+                            int rani = ran.nextInt(2);
+                            if(rani == 0)
+                                return circleblocks;
+                        }
+                        i++;
                     }
                 }
             }

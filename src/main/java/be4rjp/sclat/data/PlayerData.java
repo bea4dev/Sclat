@@ -17,12 +17,14 @@ public class PlayerData {
     private MainWeapon mainweapon;
     private Location matchloc;
     private int playernumber = 0;
-    private boolean canshoot;
+    private boolean canshoot = true;
     private int tick = 0;
     private boolean issquid = false;
     private boolean isonink = false;
     private boolean isHolding = false;
     private boolean isjoined = false;
+    private boolean canpaint = false;
+
     
     public PlayerData(Player player){this.player = player;}
    
@@ -52,6 +54,8 @@ public class PlayerData {
     
     public boolean getIsJoined(){return this.isjoined;}
     
+    public boolean getCanPaint(){return this.canpaint;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -79,6 +83,8 @@ public class PlayerData {
     
     public void setIsJoined(boolean is){this.isjoined = is;}
     
+    public void setCanPaint(boolean is){this.canpaint = is;}
+    
     public void reset(){
         this.inmatch = false;
         this.playernumber = 0;
@@ -86,6 +92,8 @@ public class PlayerData {
         this.inmatch = false;
         this.isonink = false;
         this.isHolding = false;
+        this.canpaint = false;
+        this.canshoot = true;
     }
     
 }
