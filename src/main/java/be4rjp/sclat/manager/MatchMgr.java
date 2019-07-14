@@ -518,7 +518,8 @@ public class MatchMgr {
                     
                     
                     p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "##########################");
+                    p.sendMessage(ChatColor.GREEN + "");
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
@@ -536,15 +537,16 @@ public class MatchMgr {
                         }
                     }
                     
-                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "");
+                    p.sendMessage(ChatColor.GREEN + "##########################");
                     p.sendMessage(ChatColor.GREEN + "");
                     
                     
-                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "##########################");
                     p.sendMessage(ChatColor.GREEN + "          試合結果");
                     p.sendMessage(ChatColor.GOLD + "     Kills  : " + ChatColor.YELLOW + kill);
                     p.sendMessage(ChatColor.GOLD + "     Points : " + ChatColor.YELLOW + paint);
-                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "##########################");
                     
                     
 
