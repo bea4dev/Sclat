@@ -34,7 +34,8 @@ public class DeathMgr {
                     t.setGameMode(GameMode.SPECTATOR);
                     t.getInventory().clear();
                     DataMgr.getPlayerData(t).setTick(10);
-                    ((CraftPlayer) t).getHandle().setSpectatorTarget(((CraftEntity) s).getHandle());
+                    if(s.getGameMode().equals(GameMode.ADVENTURE)) 
+                        t.setSpectatorTarget(s);
                     PlayerData sdata = DataMgr.getPlayerData(s);
                     String msg = sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！";
                     if(i == 0){
@@ -57,9 +58,10 @@ public class DeathMgr {
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", msg, 0, 18, 2);
                     //t.sendTitle("", sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！", 0, 5, 2);
                     if(i == 100){
-                        t.setGameMode(GameMode.ADVENTURE);
+                        
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
+                        t.setGameMode(GameMode.ADVENTURE);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);
@@ -87,9 +89,10 @@ public class DeathMgr {
                     if(i == 80)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "溺れてしまった！", 0, 18, 2);
                     if(i == 100){
-                        t.setGameMode(GameMode.ADVENTURE);
+                        
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
+                        t.setGameMode(GameMode.ADVENTURE);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);
@@ -117,9 +120,10 @@ public class DeathMgr {
                     if(i == 80)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "奈落に落ちてしまった！", 0, 18, 2);
                     if(i == 100){
-                        t.setGameMode(GameMode.ADVENTURE);
+                        
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
+                        t.setGameMode(GameMode.ADVENTURE);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                         t.setExp(0.99F);

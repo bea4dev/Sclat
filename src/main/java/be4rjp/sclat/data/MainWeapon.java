@@ -20,6 +20,11 @@ public class MainWeapon {
     private double damage;
     private int maxcharge;
     private int rollershootquantity;
+    private float UsingWalkSpeed;
+    private int rollerWidth;
+    private boolean Tatehuri;
+    private double rollerdamage;
+    private float rollerneedink;
     
     
     
@@ -49,6 +54,16 @@ public class MainWeapon {
     
     public int getRollerShootQuantity(){return this.rollershootquantity;}
     
+    public float getUsingWalkSpeed(){return this.UsingWalkSpeed;}
+    
+    public int getRollerWidth(){return this.rollerWidth;}
+    
+    public boolean getCanTatehuri(){return this.Tatehuri;}
+    
+    public double getRollerDamage(){return this.rollerdamage;}
+    
+    public float getRollerNeedInk(){return this.rollerneedink;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -73,5 +88,15 @@ public class MainWeapon {
     public void setMaxCharge(int max){this.maxcharge = max;}
     
     public void setRollerShootQuantity(int i){this.rollershootquantity = i;}
+    
+    public void setUsingWalkSpeed(float f){this.UsingWalkSpeed = f;}
+    
+    public void setRollerWidth(int w){this.rollerWidth = w;}
+    
+    public void setCanTatehuri(boolean t){this.Tatehuri = t;}
+    
+    public void setRollerDamage(double damage){this.rollerdamage = damage;}
+    
+    public void setRollerNeedInk(float ink){this.rollerneedink = ink;}
     
 }

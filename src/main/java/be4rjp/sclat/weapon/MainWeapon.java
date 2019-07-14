@@ -36,20 +36,19 @@ public class MainWeapon implements Listener{
     public void onClickWeapon(PlayerInteractEvent e){
         Player player = e.getPlayer();
         Action action = e.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
             if(equalWeapon(player)){
                 PlayerData data = DataMgr.getPlayerData(player);
                 data.setTick(0);
-                data.setIsHolding(true);
+                if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter"))
+                    data.setIsHolding(true);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                     data.setCanShoot(false);
                     Roller.ShootPaintRunnable(player);
                 }  
             }
         }
-        if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
-            //MatchMgr.RollBack(DataMgr.getPlayerData(player).getMatch());
-        }
+        
     }
     
     @EventHandler
@@ -75,6 +74,7 @@ public class MainWeapon implements Listener{
                     target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                     PaintMgr.Paint(target.getLocation(), shooter);
                 }else{
+                    target.setGameMode(GameMode.SPECTATOR);
                     DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
                     PaintMgr.Paint(target.getLocation(), shooter);
                 }

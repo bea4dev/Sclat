@@ -27,6 +27,12 @@ public class MainWeaponMgr {
             double damage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".Damage");
             int maxcharge = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxCharge");
             int rollershootQuantity = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".RollerShootQuantity");
+            float usinwalkspeed = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".UsingWalkSpeed");
+            int rollerWidth = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".RollerWidth");
+            boolean tatehuri = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".RollerTatehuri");
+            double rollerdamage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerDamage");
+            float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
+            
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
@@ -45,6 +51,11 @@ public class MainWeaponMgr {
             mw.setDamage(damage);
             mw.setMaxCharge(maxcharge);
             mw.setRollerShootQuantity(rollershootQuantity);
+            mw.setUsingWalkSpeed(usinwalkspeed);
+            mw.setRollerWidth(rollerWidth);
+            mw.setRollerDamage(rollerdamage);
+            mw.setRollerNeedInk(rollerneedink);
+            mw.setCanTatehuri(tatehuri);
             DataMgr.setMainWeapon(weaponname, mw);
         }
     }

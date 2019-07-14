@@ -23,7 +23,7 @@ public class SquidMgr {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             boolean is = false;
-            boolean is2 = true;
+             boolean is2 = true;
             //LivingEntity squid;
             @Override
             public void run(){
@@ -36,8 +36,10 @@ public class SquidMgr {
                     p.setFoodLevel(20);
                     p.setHealth(20);
                     player.setWalkSpeed(0.2F);
-                    player.setAllowFlight(false);
-                    player.setFlying(false);
+                    if(!p.isOp()){
+                        p.setAllowFlight(false);
+                        p.setFlying(false);
+                    }
                     return;
                 }
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
@@ -92,9 +94,11 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);
                     if(!data.getIsHolding() && !data.getCanPaint())
-                        player.setWalkSpeed(0.15F);
-                    player.setAllowFlight(false);
-                    player.setFlying(false);
+                        p.setWalkSpeed(0.15F);
+                    
+                    p.setAllowFlight(false);
+                    p.setFlying(false);
+                    
                 }
             } 
         };

@@ -102,7 +102,7 @@ public class Charger {
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
             position.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
             
-            double maxDist = 2;// whatever
+            double maxDist = 2;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
@@ -110,6 +110,7 @@ public class Charger {
                             target.damage(damage);
                             PaintMgr.Paint(target.getLocation(), player);
                         }else{
+                            target.setGameMode(GameMode.SPECTATOR);
                             DeathMgr.PlayerDeathRunnable(target, player, "killed");
                             PaintMgr.Paint(target.getLocation(), player);
                         }
