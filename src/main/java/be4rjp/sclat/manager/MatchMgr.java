@@ -64,7 +64,7 @@ public class MatchMgr {
         Match match = DataMgr.getMatchFromId(matchcount);
         if(match.canJoin()){
             
-        
+        Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " joined the match");
             
         match.addPlayerCount();
         int playercount = match.getPlayerCount();
@@ -510,6 +510,44 @@ public class MatchMgr {
                     p.teleport(DataMgr.getPlayerData(p).getMatch().getMapData().getResultLoc());
                 }
                 if(i == 157){
+                    
+                    PlayerData data = DataMgr.getPlayerData(p);
+                    
+                    int kill = data.getKillCount();
+                    int paint = data.getPaintCount();
+                    
+                    
+                    p.sendMessage(ChatColor.GREEN + "");
+                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    
+                    for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                        PlayerData odata = DataMgr.getPlayerData(op);
+                        if(odata.getTeam().equals(data.getTeam()) && !op.equals(p)){
+                            p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                        }
+                    }
+                    
+                    p.sendMessage(ChatColor.GREEN + "");
+                    
+                    for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                        PlayerData odata = DataMgr.getPlayerData(op);
+                        if(!odata.getTeam().equals(data.getTeam()) && !op.equals(p)){
+                            p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                        }
+                    }
+                    
+                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "");
+                    
+                    
+                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    p.sendMessage(ChatColor.GREEN + "          試合結果");
+                    p.sendMessage(ChatColor.GOLD + "     Kills  : " + ChatColor.YELLOW + kill);
+                    p.sendMessage(ChatColor.GOLD + "     Points : " + ChatColor.YELLOW + paint);
+                    p.sendMessage(ChatColor.GREEN + "#####################");
+                    
+                    
+
                     String WorldName = conf.getConfig().getString("Lobby.WorldName");
                     World w = getServer().getWorld(WorldName);
             
@@ -534,6 +572,7 @@ public class MatchMgr {
                     }
                     
                     DataMgr.getPlayerData(p).setIsJoined(false);
+                    DataMgr.getPlayerData(p).setWeaponClass(wc);
                     
                     p.setWalkSpeed(0.2F);
                     p.setHealth(20);

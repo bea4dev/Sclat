@@ -24,6 +24,8 @@ public class PlayerData {
     private boolean isHolding = false;
     private boolean isjoined = false;
     private boolean canpaint = false;
+    private int killcount = 0;
+    private int paintcount = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -56,6 +58,10 @@ public class PlayerData {
     
     public boolean getCanPaint(){return this.canpaint;}
     
+    public int getKillCount(){return this.killcount;}
+    
+    public int getPaintCount(){return this.paintcount;}
+    
     
     public void setMatch(Match match){this.match = match;}
     
@@ -85,6 +91,10 @@ public class PlayerData {
     
     public void setCanPaint(boolean is){this.canpaint = is;}
     
+    public void addKillCount(){this.killcount++;}
+    
+    public void addPaintCount(){this.paintcount++;}
+    
     public void reset(){
         this.inmatch = false;
         this.playernumber = 0;
@@ -94,6 +104,8 @@ public class PlayerData {
         this.isHolding = false;
         this.canpaint = false;
         this.canshoot = true;
+        this.killcount = 0;
+        this.paintcount = 0;
     }
     
 }

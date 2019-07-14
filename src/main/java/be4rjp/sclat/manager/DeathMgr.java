@@ -22,6 +22,9 @@ import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
         
+        if(type.equals("killed"))
+            DataMgr.getPlayerData(shooter).addKillCount();
+        
         BukkitRunnable task = new BukkitRunnable(){
             Player t = target;
             Player s = shooter;
