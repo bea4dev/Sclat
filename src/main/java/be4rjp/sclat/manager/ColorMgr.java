@@ -33,5 +33,21 @@ public class ColorMgr {
             orange.setBukkitColor(org.bukkit.Color.ORANGE);
         DataMgr.setColor("Orange", orange);
         DataMgr.addColorList(orange);
+        
+        Color lime = new Color("Lime");
+            lime.setWool(Material.LIME_WOOL);
+            lime.setGlass(Material.LIME_STAINED_GLASS);
+            lime.setColorCode("§a");
+            lime.setBukkitColor(org.bukkit.Color.LIME);
+        DataMgr.setColor("Lime", lime);
+        DataMgr.addColorList(lime);
+        
+        Color y = new Color("Yellow");
+            y.setWool(Material.YELLOW_WOOL);
+            y.setGlass(Material.YELLOW_STAINED_GLASS);
+            y.setColorCode("§e");
+            y.setBukkitColor(org.bukkit.Color.YELLOW);
+        DataMgr.setColor("Yellow", y);
+        DataMgr.addColorList(y);
     }
 }

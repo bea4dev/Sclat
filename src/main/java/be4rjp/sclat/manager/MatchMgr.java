@@ -52,7 +52,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 public class MatchMgr {
     
     public static int matchcount = 0;
-    
+    public static int mapcount = 0;
     
     
     
@@ -64,11 +64,11 @@ public class MatchMgr {
         Match match = DataMgr.getMatchFromId(matchcount);
         if(match.canJoin()){
             
-        Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + player.getDisplayName() + " joined the match");
+        Main.getPlugin().getServer().broadcastMessage("§b§n" + player.getDisplayName() + " joined the match");
             
         match.addPlayerCount();
         int playercount = match.getPlayerCount();
-        if(playercount <= 20){
+        if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
             data.setPlayerNumber(playercount);
             if(playercount%2==0){
                 data.setTeam(match.getTeam1());
@@ -80,25 +80,27 @@ public class MatchMgr {
             
             data.setMatch(match);
             data.setIsJoined(true);
-            if(playercount == 1){//-------------------test--------------------//
+            if(playercount == conf.getConfig().getInt("StartPlayerCount")){
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
                     Player p = player;
                     @Override
                     public void run(){
                         if(s == 0)
+                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後20秒");
+                        if(s == 10)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後10秒");
-                        if(s == 5)
+                        if(s == 15)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後5秒");
-                        if(s == 6)
+                        if(s == 16)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後4秒");
-                        if(s == 7)
+                        if(s == 17)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後3秒");
-                        if(s == 8)
+                        if(s == 18)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後2秒");
-                        if(s == 9)
+                        if(s == 19)
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後1秒");
-                        if(s == 10){
+                        if(s == 20){
                             match.setCanJoin(false);
                             StartMatch(match);
                             for(Entity entity : p.getWorld().getEntities()){
@@ -149,9 +151,19 @@ public class MatchMgr {
         Main.getPlugin().getLogger().info(team0.getTeamColor().getColorCode() + "Team0SetColor");
         Main.getPlugin().getLogger().info(team1.getTeamColor().getColorCode() + "Team1SetColor");
         
-        DataMgr.MapDataShuffle();
-        MapData map = DataMgr.getMapRandom(0);
+        //if(mapcount == 0)
+            //DataMgr.MapDataShuffle();
+        
+        
+        MapData map = DataMgr.getMapRandom(mapcount);
         match.setMapData(map);
+        
+        mapcount++;
+        
+        if(mapcount == MapDataMgr.allmapcount){
+            mapcount = 0;
+            //DataMgr.MapDataShuffle();
+        }
         
         DataMgr.setMatch(id, match);
         
@@ -386,6 +398,7 @@ public class MatchMgr {
                             
                             //SquidMgr.SquidRunnable(p);
                             DataMgr.getPlayerData(p).setIsInMatch(true);
+                            p.setExp(0.99F);
                             InMatchCounter(p);
                             p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
                             cancel();
@@ -454,7 +467,7 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){
-                    p.sendTitle(ChatColor.AQUA + "試合終了！", "", 3, 30, 10);
+                    p.sendTitle(ChatColor.YELLOW + "=== Finish! ===", "", 3, 30, 10);
                     loc = p.getLocation();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
                 }
@@ -516,6 +529,7 @@ public class MatchMgr {
                     int kill = data.getKillCount();
                     int paint = data.getPaintCount();
                     
+                    /*
                     
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage(ChatColor.GREEN + "##########################");
@@ -539,7 +553,7 @@ public class MatchMgr {
                     
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage(ChatColor.GREEN + "##########################");
-                    p.sendMessage(ChatColor.GREEN + "");
+                    p.sendMessage(ChatColor.GREEN + "");*/
                     
                     
                     p.sendMessage(ChatColor.GREEN + "##########################");
@@ -569,9 +583,12 @@ public class MatchMgr {
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         RollBack();
                         matchcount++;
+                        
                         MatchSetup();
-                        DataMgr.getPlayerData(p).reset();
+                        //DataMgr.getPlayerData(p).reset();
                     }
+                    
+                    DataMgr.getPlayerData(p).reset();
                     
                     DataMgr.getPlayerData(p).setIsJoined(false);
                     DataMgr.getPlayerData(p).setWeaponClass(wc);

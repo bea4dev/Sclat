@@ -28,7 +28,7 @@ public class PaintMgr {
         List<Block> blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("NETHER") || block.getType() == Material.WATER)){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN)){
             if(DataMgr.getBlockDataMap().containsKey(block)){
                 PaintData data = DataMgr.getPaintDataFromBlock(block);
                 Team BTeam = data.getTeam();
@@ -163,14 +163,14 @@ public class PaintMgr {
         int x = loc.getBlockX();
         int z = loc.getBlockZ();
             while(i>0){
-                if(new Location(player.getWorld(), x, i, z).getBlock().getType() != Material.AIR){
+                if(new Location(player.getLocation().getWorld(), x, i, z).getBlock().getType() != Material.AIR){
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if(r == 0 && randomb){
-                        Paint(new Location(player.getWorld(), x, i, z), player);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player);
                     }
                     if(!randomb)
-                        Paint(new Location(player.getWorld(), x, i, z), player);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player);
                     break;
                 }
                 i--;

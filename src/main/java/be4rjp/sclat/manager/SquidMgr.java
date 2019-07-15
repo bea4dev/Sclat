@@ -35,15 +35,19 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(20);
                     p.setHealth(20);
-                    player.setWalkSpeed(0.2F);
+                    p.setWalkSpeed(0.2F);
+                    p.setExp(0);
                     if(!p.isOp()){
                         p.setAllowFlight(false);
                         p.setFlying(false);
+                    }else{
+                        p.setAllowFlight(true);
                     }
                     return;
                 }
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     data.setIsSquid(true);
+                    
                 }else{
                     data.setIsSquid(false);
                 }

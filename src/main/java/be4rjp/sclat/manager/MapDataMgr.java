@@ -16,6 +16,9 @@ import org.bukkit.WorldCreator;
  * @author Be4rJP
  */
 public class MapDataMgr {
+    
+    public static int allmapcount = 0;
+    
     public synchronized static void SetupMap(){
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false)){
             MapData map = new MapData(mapname);
@@ -91,7 +94,9 @@ public class MapDataMgr {
             
             map.setWorldName(WorldName);
             
-            DataMgr.setMap(mapname, map);
+            allmapcount++;
+            
+            //DataMgr.setMap(mapname, map);
             DataMgr.addMapList(map);
         }
     }

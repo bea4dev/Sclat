@@ -37,18 +37,22 @@ public class DeathMgr {
                     t.setGameMode(GameMode.SPECTATOR);
                     t.getInventory().clear();
                     DataMgr.getPlayerData(t).setTick(10);
-                    if(s.getGameMode().equals(GameMode.ADVENTURE)) 
+                    if(s.getGameMode().equals(GameMode.ADVENTURE)){
                         t.setSpectatorTarget(s);
+                    }else{
+                        loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
+                        t.teleport(loc);
+                    }
+                        
                     PlayerData sdata = DataMgr.getPlayerData(s);
                     String msg = sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！";
                     if(i == 0){
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", msg, 0, 21, 0);
                         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(t).getMatch() == DataMgr.getPlayerData(player).getMatch()){
-                                player.sendMessage(sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "が" + DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "で倒した！");
-                                s.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を倒した！"));
-                                s.playSound(s.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 10);
-                            }
+                            player.sendMessage(sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "が" + DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "で倒した！");
+                            s.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "を倒した！"));
+                            s.playSound(s.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 10);
+                            
                         }
                     }
                     if(i == 20)
@@ -77,10 +81,16 @@ public class DeathMgr {
                     t.setGameMode(GameMode.SPECTATOR);
                     DataMgr.getPlayerData(t).setTick(10);
                     t.getInventory().clear();
-                    if(i == 0)
+                    if(i == 0){
                         loc = t.getLocation();
+                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            player.sendMessage(DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "は溺れてしまった！");
+                        }
+                    }
                     t.teleport(loc);
-                    PlayerData sdata = DataMgr.getPlayerData(s);
+                    
+                    
+                    
                     if(i == 0)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", "溺れてしまった！", 0, 21, 0);
                     if(i == 20)
@@ -108,10 +118,16 @@ public class DeathMgr {
                     t.setGameMode(GameMode.SPECTATOR);
                     DataMgr.getPlayerData(t).setTick(10);
                     t.getInventory().clear();
-                    if(i == 0)
+                    if(i == 0){
                         loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
+                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            player.sendMessage(DataMgr.getPlayerData(t).getTeam().getTeamColor().getColorCode() + t.getDisplayName() + ChatColor.RESET + "は奈落に落ちてしまった！");
+                        }
+                    }
                     t.teleport(loc);
-                    PlayerData sdata = DataMgr.getPlayerData(s);
+                    
+                    
+                    
                     if(i == 0)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", "奈落に落ちてしまった！", 0, 21, 0);
                     if(i == 20)

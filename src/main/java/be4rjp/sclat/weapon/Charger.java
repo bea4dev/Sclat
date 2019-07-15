@@ -41,19 +41,21 @@ public class Charger {
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 
+                data.setTick(data.getTick() + 1);
+                
                 if(data.getTick() <= 5 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
                     ItemMeta wm = w.getItemMeta();
-                    data.setTick(data.getTick() + 1);
+                    //data.setTick(data.getTick() + 1);
                     if(charge < max)
                         charge++;
                     wm.setDisplayName(wm.getDisplayName() + "[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
-                    RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
+                    RayTrace rayTrace = new RayTrace(p.getEyeLocation().toVector(),p.getEyeLocation().getDirection());
                     ArrayList<Vector> positions = rayTrace.traverse(charge,0.7);
                     check : for(int i = 0; i < positions.size();i++){
-                        Location position = positions.get(i).toLocation(player.getWorld());
+                        Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                         if(!position.getBlock().getType().equals(Material.AIR))
                             break check;
                         if(i > 10){
@@ -65,9 +67,9 @@ public class Charger {
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
-                        Charger.Shoot(p, charge / 2, data.getWeaponClass().getMainWeapon().getDamage() * charge);
+                        Charger.Shoot(p, charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
-                        player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
+                        p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
@@ -90,11 +92,13 @@ public class Charger {
         
         loop : for(int i = 0; i < positions.size();i++){
 
-            Location position = positions.get(i).toLocation(player.getWorld());
-            Block block = player.getWorld().getBlockAt(position);
+            Location position = positions.get(i).toLocation(player.getLocation().getWorld());
+            Block block = player.getLocation().getWorld().getBlockAt(position);
             
-            if(!block.getType().equals(Material.AIR))
+            if(!block.getType().equals(Material.AIR)){
+                PaintMgr.Paint(position, player);
                 break loop;
+            }
             PaintMgr.PaintHightestBlock(position, player, false);
             
             

@@ -36,8 +36,10 @@ public class Roller {
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 
+                data.setTick(data.getTick() + 1);
+                
                 if(data.getTick() <= 5 && data.isInMatch()){
-                    data.setTick(data.getTick() + 1);
+                    //data.setTick(data.getTick() + 1);
                 }
                 if(data.getTick() >= 6 && data.isInMatch()){
                     data.setTick(7);
@@ -77,11 +79,12 @@ public class Roller {
                     
                     //法線ベクトルでロール部分の取得
                     
+                    
                     RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
                     ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
                     loop : for(int i = 0; i < positions1.size();i++){
-                        Location position = positions1.get(i).toLocation(player.getWorld());
-                        Block block = player.getWorld().getBlockAt(position);
+                        Location position = positions1.get(i).toLocation(p.getLocation().getWorld());
+                        Block block = p.getLocation().getWorld().getBlockAt(position);
                         if(!block.getType().equals(Material.AIR))
                             break loop;
                         PaintMgr.PaintHightestBlock(position, p, false);
@@ -90,17 +93,17 @@ public class Roller {
                         double maxDist = 2;
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if (target.getLocation().distance(position) <= maxDist) {
-                                if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
                                     if(target.getHealth() > damage){
                                         target.damage(damage);
-                                        PaintMgr.Paint(target.getLocation(), player);
+                                        PaintMgr.Paint(target.getLocation(), p);
                                     }else{
                                         target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                                        PaintMgr.Paint(target.getLocation(), player);
+                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                        PaintMgr.Paint(target.getLocation(), p);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-1));
                                     }
                         
@@ -123,8 +126,8 @@ public class Roller {
                     RayTrace rayTrace2 = new RayTrace(front.toVector(), vec2);
                     ArrayList<Vector> positions2 = rayTrace2.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
                     loop : for(int i = 0; i < positions2.size();i++){
-                        Location position = positions2.get(i).toLocation(player.getWorld());
-                        Block block = player.getWorld().getBlockAt(position);
+                        Location position = positions2.get(i).toLocation(p.getLocation().getWorld());
+                        Block block = p.getLocation().getWorld().getBlockAt(position);
                         if(!block.getType().equals(Material.AIR))
                             break loop;
                         PaintMgr.PaintHightestBlock(position, p, false);
@@ -133,17 +136,17 @@ public class Roller {
                         double maxDist = 2;
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if (target.getLocation().distance(position) <= maxDist) {
-                                if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
                                     if(target.getHealth() > damage){
                                         target.damage(damage);
-                                        PaintMgr.Paint(target.getLocation(), player);
+                                        PaintMgr.Paint(target.getLocation(), p);
                                     }else{
                                         target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                                        PaintMgr.Paint(target.getLocation(), player);
+                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                        PaintMgr.Paint(target.getLocation(), p);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-1));
                                     }
                         
@@ -210,7 +213,7 @@ public class Roller {
                     vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
                 if(!player.isOnGround()){
                     if(data.getWeaponClass().getMainWeapon().getCanTatehuri())
-                        vec.add(new Vector(Math.random() * random / 4 - random/8, Math.random() * random - random, Math.random() * random / 4 - random/8));
+                        vec.add(new Vector(Math.random() * random / 4 - random/8, Math.random() * random, Math.random() * random / 4 - random/8));
                     if(!data.getWeaponClass().getMainWeapon().getCanTatehuri())
                         vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
                 }

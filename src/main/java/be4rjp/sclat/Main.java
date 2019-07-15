@@ -40,8 +40,8 @@ public class Main extends JavaPlugin {
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
-        //String WorldName = conf.getConfig().getString("Lobby.WorldName");
-        //getServer().createWorld(new WorldCreator(WorldName));
+        String WorldName = conf.getConfig().getString("Lobby.WorldName");
+        getServer().createWorld(new WorldCreator(WorldName));
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);
