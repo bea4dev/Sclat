@@ -4,6 +4,7 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -66,7 +67,7 @@ public class SquidMgr {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                         p.setFoodLevel(20);                                                   
                         p.setSprinting(true);
-                        p.setWalkSpeed(0.25F);
+                        p.setWalkSpeed((float)conf.getConfig().getDouble("SquidSpeed"));
                         
                         
                     
@@ -98,7 +99,7 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);
                     if(!data.getIsHolding() && !data.getCanPaint())
-                        p.setWalkSpeed(0.15F);
+                        p.setWalkSpeed((float)conf.getConfig().getDouble("PlayerWalkSpeed"));
                     
                     p.setAllowFlight(false);
                     p.setFlying(false);
