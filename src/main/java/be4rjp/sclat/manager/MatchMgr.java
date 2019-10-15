@@ -12,7 +12,6 @@ import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
-import be4rjp.sclat.data.TeamLoc;
 import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
@@ -24,21 +23,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
-import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import net.minecraft.server.v1_13_R1.*;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -529,7 +518,7 @@ public class MatchMgr {
                     int kill = data.getKillCount();
                     int paint = data.getPaintCount();
                     
-                    /*
+                    
                     
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage(ChatColor.GREEN + "##########################");
@@ -537,7 +526,7 @@ public class MatchMgr {
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(odata.getTeam().equals(data.getTeam()) && !op.equals(p)){
+                        if(odata.getTeam() == data.getTeam() && !op.equals(p)){
                             p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                         }
                     }
@@ -546,14 +535,14 @@ public class MatchMgr {
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(!odata.getTeam().equals(data.getTeam()) && !op.equals(p)){
+                        if(odata.getTeam() != data.getTeam() && !op.equals(p)){
                             p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                         }
                     }
                     
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage(ChatColor.GREEN + "##########################");
-                    p.sendMessage(ChatColor.GREEN + "");*/
+                    p.sendMessage(ChatColor.GREEN + "");
                     
                     
                     p.sendMessage(ChatColor.GREEN + "##########################");
