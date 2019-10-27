@@ -526,16 +526,16 @@ public class MatchMgr {
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(odata.getTeam() == data.getTeam() && !op.equals(p)){
+                        if(odata.getTeam().getID() == data.getTeam().getID() && !op.equals(p)){
                             p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                         }
                     }
                     
-                    p.sendMessage(ChatColor.GREEN + "");
+                    p.sendMessage(ChatColor.GREEN + "");       
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(odata.getTeam() != data.getTeam() && !op.equals(p)){
+                        if(odata.getTeam().getID() != data.getTeam().getID() && !op.equals(p)){
                             p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                         }
                     }

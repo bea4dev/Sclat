@@ -12,6 +12,8 @@ public class Team {
     
     public Team(int id){this.teamid = id;}
     
+    public int getID(){return this.teamid;}
+    
     public Color getTeamColor(){return teamcolor;}
     
     public int getPoint(){return this.paintcount;}
