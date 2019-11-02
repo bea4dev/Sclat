@@ -463,7 +463,7 @@ public class MatchMgr {
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
                 }
-                if(i == 46){
+                if(i == 46 && DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                     Match match = DataMgr.getPlayerData(p).getMatch();
                     int team0;
                     int team1;
@@ -473,61 +473,57 @@ public class MatchMgr {
                     String team1code;
                     Team winteam = match.getTeam0();
                     Boolean hikiwake = false;
-                    if(match.getTeam0() == DataMgr.getPlayerData(p).getTeam()){
-                        team0 = match.getTeam0().getPoint();
-                        team1 = match.getTeam1().getPoint();
-                        team0code = match.getTeam0().getTeamColor().getColorCode();
-                        team1code = match.getTeam1().getTeamColor().getColorCode();
-                        dper =  (double)team0/(double)(team0 + team1)*100.0;
-                        per = (int)dper;
+                    
+                    team0 = match.getTeam0().getPoint();
+                    team1 = match.getTeam1().getPoint();
+                    team0code = match.getTeam0().getTeamColor().getColorCode();
+                    team1code = match.getTeam1().getTeamColor().getColorCode();
+                    dper =  (double)team0/(double)(team0 + team1)*100.0;
+                    per = (int)dper;
                         
-                        if(match.getTeam0().getPoint() - match.getTeam1().getPoint() > 0){
-                            winteam = match.getTeam0();
-                        }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
-                            hikiwake = true;
-                        }else{
-                            winteam = match.getTeam1();
-                        }
+                    if(match.getTeam0().getPoint() - match.getTeam1().getPoint() > 0){
+                        winteam = match.getTeam0();
+                        match.getTeam0().addPaintCount();
+                    }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
+                        hikiwake = true;
                     }else{
-                        team0 = match.getTeam1().getPoint();
-                        team1 = match.getTeam0().getPoint();
-                        team0code = match.getTeam1().getTeamColor().getColorCode();
-                        team1code = match.getTeam0().getTeamColor().getColorCode();
-                        dper =  (double)team0/(double) (team0 + team1)*100.0;
-                        per = (int)dper;
-                        if(match.getTeam1().getPoint() - match.getTeam0().getPoint() > 0){
-                            winteam = match.getTeam1();
-                        }else if(match.getTeam1().getPoint() == match.getTeam0().getPoint()){
-                            hikiwake = true;
-                        }else{
-                            winteam = match.getTeam0();
-                        }
+                        winteam = match.getTeam1();
                     }
+                    
                     for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         p.hidePlayer(Main.getPlugin(), player);
                     }
-                    Animation.ResultAnimation(p, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                        Animation.ResultAnimation(p, per++, 101 - per, team0code, team1code, winteam, hikiwake);
+                    }
+
                 }
                 if(i >= 46 && i <= 156){
                     p.teleport(DataMgr.getPlayerData(p).getMatch().getMapData().getResultLoc());
                 }
-                if(i == 157){
-                    
+                
+                if(i == 137){
                     PlayerData data = DataMgr.getPlayerData(p);
                     
-                    int kill = data.getKillCount();
-                    int paint = data.getPaintCount();
+                    //int kill = data.getKillCount();
+                    //int paint = data.getPaintCount();
                     
                     
                     
                     p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage(ChatColor.GREEN + "##########################");
+                    p.sendMessage("§a§l§n_______________________________");
+                    p.sendMessage("");
+                    p.sendMessage("§a§l                 [ 試合結果 ]");
                     p.sendMessage(ChatColor.GREEN + "");
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(odata.getTeam().getID() == data.getTeam().getID() && !op.equals(p)){
-                            p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                        if(odata.getTeam().getID() == data.getTeam().getID()){
+                            if(op.equals(p)){
+                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                            }else{
+                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                            }
                         }
                     }
                     
@@ -535,22 +531,34 @@ public class MatchMgr {
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
-                        if(odata.getTeam().getID() != data.getTeam().getID() && !op.equals(p)){
-                            p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                        if(odata.getTeam().getID() != data.getTeam().getID()){
+                            if(op.equals(p)){
+                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                            }else{
+                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                            }
                         }
                     }
                     
+                    
                     p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage(ChatColor.GREEN + "##########################");
                     p.sendMessage(ChatColor.GREEN + "");
+                    p.sendMessage("§a§l§n_______________________________");
+                    p.sendMessage(ChatColor.GREEN + "");
+                
+                }
+                
+                if(i == 157){
                     
                     
+                    
+                    /*
                     p.sendMessage(ChatColor.GREEN + "##########################");
                     p.sendMessage(ChatColor.GREEN + "          試合結果");
                     p.sendMessage(ChatColor.GOLD + "     Kills  : " + ChatColor.YELLOW + kill);
                     p.sendMessage(ChatColor.GOLD + "     Points : " + ChatColor.YELLOW + paint);
                     p.sendMessage(ChatColor.GREEN + "##########################");
-                    
+                    */
                     
 
                     String WorldName = conf.getConfig().getString("Lobby.WorldName");
