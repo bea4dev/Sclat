@@ -16,7 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -79,6 +82,16 @@ public class GameMgr implements Listener{
             event.setCancelled(true);
         }
     
+    }
+    
+    @EventHandler
+    public void onPickItem(EntityPickupItemEvent event){
+        event.setCancelled(true);
+    }
+    
+    @EventHandler
+    public void onbWeatherChange(WeatherChangeEvent event){
+        event.setCancelled(true);
     }
     
 }

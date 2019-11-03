@@ -77,6 +77,11 @@ public class MapDataMgr {
             rloc.setPitch(90);
             
             
+            boolean canpaintbblock = false;
+            if(conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock") == true)
+                canpaintbblock = true;
+            
+            
             map.setIntro(il);
             map.setTeam0Loc(t0l);
             map.setTeam1Loc(t1l);
@@ -87,6 +92,9 @@ public class MapDataMgr {
             map.setIntroMoveX(intromovex);
             map.setIntroMoveY(intromovey);
             map.setIntroMoveZ(intromovez);
+            
+            
+            map.setCanPaintBBlock(canpaintbblock);
             
             //Main.getPlugin().getServer().createWorld(new WorldCreator(WorldName));
             

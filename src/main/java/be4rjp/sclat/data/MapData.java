@@ -31,6 +31,8 @@ public class MapData {
     
     private double intromovez;
     
+    private boolean canpaintBBlock = false;
+    
     
     
     public MapData(String mapname){this.mapname = mapname;}
@@ -59,6 +61,8 @@ public class MapData {
     
     public double getIntroMoveZ(){return this.intromovez;}
     
+    public Boolean canPaintBBlock(){return this.canpaintBBlock;}
+    
     
     public void setIntro(Location l){this.Intro = l;}
     
@@ -81,4 +85,6 @@ public class MapData {
     public void setIntroMoveY(double y){this.intromovey = y;}
     
     public void setIntroMoveZ(double z){this.intromovez = z;}
+    
+    public void setCanPaintBBlock(boolean is){this.canpaintBBlock = is;}
 }

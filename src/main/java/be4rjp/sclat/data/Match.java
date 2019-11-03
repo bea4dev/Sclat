@@ -16,6 +16,7 @@ public class Match {
     private MapData map;
     private boolean canjoin = true;
     
+    
     public Match(int id){this.id = id;}
     
     public World getWorld(){return world;}
@@ -40,4 +41,6 @@ public class Match {
     public void setMapData(MapData map){this.map = map;}
     
     public void setCanJoin(boolean is){this.canjoin = is;}
+    
+    
 }
