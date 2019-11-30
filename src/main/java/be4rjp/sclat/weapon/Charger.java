@@ -108,6 +108,8 @@ public class Charger {
             
             double maxDist = 2;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                if(!DataMgr.getPlayerData(target).isInMatch())
+                    continue;
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                         if(target.getHealth() > damage){
@@ -119,7 +121,7 @@ public class Charger {
                             PaintMgr.Paint(target.getLocation(), player);
                         }
                         
-                        //AntiDamageTime
+                        //AntiNoDamageTime
                         BukkitRunnable task = new BukkitRunnable(){
                             Player p = target;
                             @Override

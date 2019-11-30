@@ -3,6 +3,7 @@ package be4rjp.sclat.manager;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.data.PlayerSettings;
 import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
@@ -17,6 +18,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -41,6 +43,8 @@ public class GameMgr implements Listener{
         }
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
+        PlayerSettings settings = new PlayerSettings(player);
+        data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
         //MatchMgr.PlayerJoinMatch(player);
@@ -91,6 +95,11 @@ public class GameMgr implements Listener{
     
     @EventHandler
     public void onbWeatherChange(WeatherChangeEvent event){
+        event.setCancelled(true);
+    }
+    
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
         event.setCancelled(true);
     }
     

@@ -3,7 +3,9 @@ package be4rjp.sclat.GUI;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.MatchMgr;
+import org.bukkit.Instrument;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,14 +25,25 @@ public class ClickListener implements Listener{
         player.closeInventory();
         //player.sendMessage(name);
         
-        if("試合に参加".equals(name))
+        if(name.equals("試合に参加 / JOIN THE MATCH"))
             MatchMgr.PlayerJoinMatch(player);
-        if("武器選択".equals(name))
+        if(name.equals("武器選択 / CHOSE WEAPONS"))
             OpenGUI.openWeaponSelect(player);
+        if(name.equals("設定 / SETTINGS"))
+            OpenGUI.openSettingsUI(player);
         if(event.getClickedInventory().getTitle().equals("武器選択")){
             DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             player.sendMessage(name + "を選択しました");
         }
+        
+        if(event.getClickedInventory().getTitle().equals("設定")){
+            if(name.equals("シューターのパーティクル")){
+                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Sooter();
+                OpenGUI.openSettingsUI(player);
+                player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
+            }
+        }
+        
         event.setCancelled(true);
     }
     

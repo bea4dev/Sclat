@@ -432,8 +432,11 @@ public class MatchMgr {
                     score.setScore(0);
                     p.setScoreboard(board);
 
-                    if(s == 60)
-                        p.sendTitle(ChatColor.GOLD + "残り1分！", "", 4, 28, 4);
+                    if(s == 60){
+                        p.sendMessage("");
+                        p.sendMessage("§6§l残り1分！");
+                        p.sendMessage("");
+                    }
                     if(s == 0){
                         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                         p.getInventory().clear();

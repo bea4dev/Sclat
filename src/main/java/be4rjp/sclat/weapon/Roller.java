@@ -92,6 +92,8 @@ public class Roller {
                         
                         double maxDist = 2;
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
                             if (target.getLocation().distance(position) <= maxDist) {
                                 if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     
@@ -136,6 +138,8 @@ public class Roller {
                         
                         double maxDist = 2;
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
                             if (target.getLocation().distance(position) <= maxDist) {
                                 if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     

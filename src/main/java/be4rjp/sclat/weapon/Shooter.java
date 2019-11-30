@@ -67,7 +67,10 @@ public class Shooter {
                     @Override
                     public void run(){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                        inkball.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Sooter())
+                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                        }
                         
                         if(i == tick)
                             inkball.setVelocity(fallvec);

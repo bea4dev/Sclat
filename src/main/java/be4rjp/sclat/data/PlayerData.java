@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
  */
 public class PlayerData {
     private Player player;
+    private PlayerSettings settings;
     private String classname;
     private Match match;
     private Team team;
@@ -29,6 +30,8 @@ public class PlayerData {
 
     
     public PlayerData(Player player){this.player = player;}
+    
+    public PlayerSettings getSettings(){return settings;}
    
     public Match getMatch(){return match;}
    
@@ -62,6 +65,8 @@ public class PlayerData {
     
     public int getPaintCount(){return this.paintcount;}
     
+    
+    public void setSettings(PlayerSettings settings){this.settings = settings;}
     
     public void setMatch(Match match){this.match = match;}
     

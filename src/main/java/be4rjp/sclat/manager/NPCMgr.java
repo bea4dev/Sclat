@@ -41,21 +41,21 @@ public class NPCMgr {
                     npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile, new PlayerInteractManager(nmsWorld));
                     Player npcPlayer = npc.getBukkitEntity().getPlayer();
         
-
-                    npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
+                    //見えないところにスポーンさせて、クライアントにスキンを先に読み込ませる
+                    npc.setLocation(location.getX(), location.getY() - 20, location.getZ(), location.getYaw(), 0);
         
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
-                        //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
+                        connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
                     }
                 }
                 if(s == 1){
-                    //npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
+                    npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-                        //connection.sendPacket(new PacketPlayOutEntityTeleport(npc));
+                        connection.sendPacket(new PacketPlayOutEntityTeleport(npc));
                         connection.sendPacket(new PacketPlayOutEntityEquipment(npc.getBukkitEntity().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack())));
                     }
                     
