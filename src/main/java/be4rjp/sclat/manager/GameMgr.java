@@ -1,5 +1,6 @@
 package be4rjp.sclat.manager;
 
+import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -43,7 +44,19 @@ public class GameMgr implements Listener{
         }
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
+        
+        String uuid = player.getUniqueId().toString();
         PlayerSettings settings = new PlayerSettings(player);
+        
+        if(conf.getPlayerSetiings().contains("Settings." + uuid)){
+            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(0,1).equals("0"))
+                settings.S_ShowEffect_Sooter();             
+            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(1,2).equals("0"))
+                settings.S_ShowEffect_ChargerLine();
+        }else{
+            conf.getPlayerSetiings().set("Settings." + uuid, "111111");
+        }
+            
         data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);

@@ -1,6 +1,7 @@
 
 package be4rjp.sclat.GUI;
 
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import org.bukkit.Instrument;
@@ -42,6 +43,18 @@ public class ClickListener implements Listener{
                 OpenGUI.openSettingsUI(player);
                 player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             }
+            
+            String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter() ? "1" : "0";
+            String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";
+            String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot() ? "1" : "0";
+            String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll() ? "1" : "0";
+            String E_RS = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot() ? "1" : "0";
+            String E_Sq = DataMgr.getPlayerData(player).getSettings().ShowEffect_Squid() ? "1" : "0";
+            
+            String s_data = E_S + E_CL + E_CS + E_RR + E_RS + E_Sq;
+            
+            String uuid = player.getUniqueId().toString();
+            conf.getPlayerSetiings().set("Settings." + uuid, s_data);
         }
         
         event.setCancelled(true);
