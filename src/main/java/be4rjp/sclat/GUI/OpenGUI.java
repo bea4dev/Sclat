@@ -73,7 +73,7 @@ public class OpenGUI {
             shooter_r.add("§7§l[Disable]");
         shooter_m.setLore(shooter_r);
         shooter.setItemMeta(shooter_m);
-        inv.setItem(10, shooter);
+        inv.setItem(9, shooter);
         
         ItemStack shooter_p;
         if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter())
@@ -89,8 +89,69 @@ public class OpenGUI {
             shooter_p_r.add("§7§l[Disable]");
         shooter_p_m.setLore(shooter_p_r);
         shooter_p.setItemMeta(shooter_p_m);
-        inv.setItem(19, shooter_p);
+        inv.setItem(18, shooter_p);
         
+        
+        
+        
+        ItemStack charger = new ItemStack(Material.WOODEN_SWORD);
+        ItemMeta charger_m = charger.getItemMeta();
+        charger_m.setDisplayName("チャージャーのレーザー");
+        ArrayList<String> charger_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine())
+            charger_r.add("§a§l[Enable]");
+        else
+            charger_r.add("§7§l[Disable]");
+        charger_m.setLore(charger_r);
+        charger.setItemMeta(charger_m);
+        inv.setItem(10, charger);
+        
+        ItemStack charger_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine())
+            charger_p = new ItemStack(Material.LIME_DYE);
+        else
+            charger_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta charger_p_m = charger_p.getItemMeta();
+        charger_p_m.setDisplayName("チャージャーのレーザー");
+        ArrayList<String> charger_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine())
+            charger_p_r.add("§a§l[Enable]");
+        else
+            charger_p_r.add("§7§l[Disable]");
+        charger_p_m.setLore(charger_p_r);
+        charger_p.setItemMeta(charger_p_m);
+        inv.setItem(19, charger_p);
+        
+        
+        
+        
+        ItemStack chargerS = new ItemStack(Material.WOODEN_SWORD);
+        ItemMeta chargerS_m = chargerS.getItemMeta();
+        chargerS_m.setDisplayName("チャージャーの射撃エフェクト");
+        ArrayList<String> chargerS_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot())
+            chargerS_r.add("§a§l[Enable]");
+        else
+            chargerS_r.add("§7§l[Disable]");
+        chargerS_m.setLore(chargerS_r);
+        chargerS.setItemMeta(chargerS_m);
+        inv.setItem(11, chargerS);
+        
+        ItemStack chargerS_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot())
+            chargerS_p = new ItemStack(Material.LIME_DYE);
+        else
+            chargerS_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta chargerS_p_m = chargerS_p.getItemMeta();
+        chargerS_p_m.setDisplayName("チャージャーの射撃エフェクト");
+        ArrayList<String> chargerS_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot())
+            chargerS_p_r.add("§a§l[Enable]");
+        else
+            chargerS_p_r.add("§7§l[Disable]");
+        chargerS_p_m.setLore(chargerS_p_r);
+        chargerS_p.setItemMeta(chargerS_p_m);
+        inv.setItem(20, chargerS_p);
         
         player.openInventory(inv);
     }

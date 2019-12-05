@@ -41,8 +41,17 @@ public class ClickListener implements Listener{
             if(name.equals("シューターのパーティクル")){
                 DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Sooter();
                 OpenGUI.openSettingsUI(player);
-                player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             }
+            if(name.equals("チャージャーのレーザー")){
+                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerLine();
+                OpenGUI.openSettingsUI(player);
+            }
+            if(name.equals("チャージャーの射撃エフェクト")){
+                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerShot();
+                OpenGUI.openSettingsUI(player);
+            }
+            
+            player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             
             String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter() ? "1" : "0";
             String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";

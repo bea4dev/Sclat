@@ -58,9 +58,13 @@ public class Charger {
                         Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                         if(!position.getBlock().getType().equals(Material.AIR))
                             break check;
-                        if(i > 10){
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
-                            position.getWorld().spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 50, dustOptions);
+                        if(i % 2 == 0){
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(target.equals(p) || !DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine())
+                                    continue;
+                                Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
+                                target.spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 50, dustOptions);
+                            }
                         }
                     }
                 }
@@ -101,10 +105,14 @@ public class Charger {
             }
             PaintMgr.PaintHightestBlock(position, player, false);
             
+            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerShot())
+                    continue;
+                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+            }
             
             
-            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-            position.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
             
             double maxDist = 2;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
