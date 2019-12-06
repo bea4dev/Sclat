@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.DeathMgr;
@@ -94,6 +95,12 @@ public class Charger {
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
         ArrayList<Vector> positions = rayTrace.traverse(reach,0.2);
         
+        List<Location> locations = Sphere.getSphere(player.getLocation(), 3);
+        for(Location loc : locations){
+            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+            loc.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 2, 0, 0, 0, 1, bd);
+        }
+        
         loop : for(int i = 0; i < positions.size();i++){
 
             Location position = positions.get(i).toLocation(player.getLocation().getWorld());
@@ -147,6 +154,8 @@ public class Charger {
             
             
         }
+        
+        
     }
             
 }

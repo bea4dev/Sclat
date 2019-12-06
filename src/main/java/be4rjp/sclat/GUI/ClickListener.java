@@ -38,22 +38,29 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("設定")){
-            if(name.equals("シューターのパーティクル")){
-                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Sooter();
-                OpenGUI.openSettingsUI(player);
+            switch (name){
+                case "シューターのパーティクル":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Shooter();
+                    break;
+                case "チャージャーのレーザー":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerLine();
+                    break;
+                case "チャージャーの射撃エフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerShot();
+                    break;
+                case "ローラーのロール":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_RollerRoll();
+                    break;
+                case "ローラーのしぶき":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_RollerShot();
+                    break;
             }
-            if(name.equals("チャージャーのレーザー")){
-                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerLine();
-                OpenGUI.openSettingsUI(player);
-            }
-            if(name.equals("チャージャーの射撃エフェクト")){
-                DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerShot();
-                OpenGUI.openSettingsUI(player);
-            }
+            
+            OpenGUI.openSettingsUI(player);
             
             player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             
-            String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter() ? "1" : "0";
+            String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter() ? "1" : "0";
             String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";
             String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot() ? "1" : "0";
             String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll() ? "1" : "0";

@@ -68,7 +68,7 @@ public class Shooter {
                     public void run(){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Sooter())
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
                         

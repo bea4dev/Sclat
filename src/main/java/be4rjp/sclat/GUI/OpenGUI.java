@@ -67,7 +67,7 @@ public class OpenGUI {
         ItemMeta shooter_m = shooter.getItemMeta();
         shooter_m.setDisplayName("シューターのパーティクル");
         ArrayList<String> shooter_r = new ArrayList<String>();
-        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter())
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter())
             shooter_r.add("§a§l[Enable]");
         else
             shooter_r.add("§7§l[Disable]");
@@ -76,14 +76,14 @@ public class OpenGUI {
         inv.setItem(9, shooter);
         
         ItemStack shooter_p;
-        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter())
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter())
             shooter_p = new ItemStack(Material.LIME_DYE);
         else
             shooter_p = new ItemStack(Material.GUNPOWDER);
         ItemMeta shooter_p_m = shooter_p.getItemMeta();
         shooter_p_m.setDisplayName("シューターのパーティクル");
         ArrayList<String> shooter_p_r = new ArrayList<String>();
-        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Sooter())
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter())
             shooter_p_r.add("§a§l[Enable]");
         else
             shooter_p_r.add("§7§l[Disable]");
@@ -152,6 +152,66 @@ public class OpenGUI {
         chargerS_p_m.setLore(chargerS_p_r);
         chargerS_p.setItemMeta(chargerS_p_m);
         inv.setItem(20, chargerS_p);
+        
+        
+        
+        ItemStack rollaerL = new ItemStack(Material.WOODEN_PICKAXE);
+        ItemMeta rollaerL_m = rollaerL.getItemMeta();
+        rollaerL_m.setDisplayName("ローラーのロール");
+        ArrayList<String> rollaerL_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll())
+            rollaerL_r.add("§a§l[Enable]");
+        else
+            rollaerL_r.add("§7§l[Disable]");
+        rollaerL_m.setLore(rollaerL_r);
+        rollaerL.setItemMeta(rollaerL_m);
+        inv.setItem(12, rollaerL);
+        
+        ItemStack rollaerL_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll())
+            rollaerL_p = new ItemStack(Material.LIME_DYE);
+        else
+            rollaerL_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta rollaerL_p_m = rollaerL_p.getItemMeta();
+        rollaerL_p_m.setDisplayName("ローラーのロール");
+        ArrayList<String> rollaerL_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll())
+            rollaerL_p_r.add("§a§l[Enable]");
+        else
+            rollaerL_p_r.add("§7§l[Disable]");
+        rollaerL_p_m.setLore(rollaerL_p_r);
+        rollaerL_p.setItemMeta(rollaerL_p_m);
+        inv.setItem(21, rollaerL_p);
+        
+        
+        
+        ItemStack rollerS = new ItemStack(Material.WOODEN_PICKAXE);
+        ItemMeta rollerS_m = rollerS.getItemMeta();
+        rollerS_m.setDisplayName("ローラーのしぶき");
+        ArrayList<String> rollerS_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot())
+            rollerS_r.add("§a§l[Enable]");
+        else
+            rollerS_r.add("§7§l[Disable]");
+        rollerS_m.setLore(rollerS_r);
+        rollerS.setItemMeta(rollerS_m);
+        inv.setItem(13, rollerS);
+        
+        ItemStack rollerS_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot())
+            rollerS_p = new ItemStack(Material.LIME_DYE);
+        else
+            rollerS_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta rollerS_p_m = rollerS_p.getItemMeta();
+        rollerS_p_m.setDisplayName("ローラーのしぶき");
+        ArrayList<String> rollerS_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot())
+            rollerS_p_r.add("§a§l[Enable]");
+        else
+            rollerS_p_r.add("§7§l[Disable]");
+        rollerS_p_m.setLore(rollerS_p_r);
+        rollerS_p.setItemMeta(rollerS_p_m);
+        inv.setItem(22, rollerS_p);
         
         player.openInventory(inv);
     }

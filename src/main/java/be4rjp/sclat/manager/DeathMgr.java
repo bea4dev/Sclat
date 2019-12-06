@@ -33,8 +33,10 @@ public class DeathMgr {
             
             @Override
             public void run(){
-                if(!DataMgr.getPlayerData(t).isInMatch())
+                if(!DataMgr.getPlayerData(t).isInMatch()){
+                    cancel();
                     return;
+                }
                 if(type.equals("killed")){
                     t.setGameMode(GameMode.SPECTATOR);
                     t.getInventory().clear();
