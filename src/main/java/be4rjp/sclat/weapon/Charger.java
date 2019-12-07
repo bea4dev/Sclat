@@ -98,7 +98,7 @@ public class Charger {
         List<Location> locations = Sphere.getSphere(player.getLocation(), 3);
         for(Location loc : locations){
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-            loc.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 2, 0, 0, 0, 1, bd);
+            loc.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
         }
         
         loop : for(int i = 0; i < positions.size();i++){

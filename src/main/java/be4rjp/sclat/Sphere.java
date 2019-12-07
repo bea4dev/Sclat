@@ -12,15 +12,21 @@ import org.bukkit.block.Block;
  */
 public class Sphere {
     
-    public static synchronized List<Location> getSphere(Location baseLoc, double r){
+    public static List<Location> getSphere(Location baseLoc, double r){
         List<Location> tempList = new ArrayList<Location>();
-        for(int i = 0; i > 180; i++){
-            int t = i * 2;
-            double x = r * Math.cos(Math.toRadians(i)) * Math.cos(Math.toRadians(t));
-            double y = r * Math.cos(Math.toRadians(i)) * Math.sin(Math.toRadians(t));
-            double z = r * Math.sin(Math.toRadians(i));
-            Location sphereLoc = new Location(baseLoc.getWorld(), baseLoc.getX() + x, baseLoc.getY() + y, baseLoc.getZ() + z);
-            tempList.add(sphereLoc);
+        int count = 0;
+        for(int i = 0; i < 180; i += 15){
+            for(int t = 0; t < 360; t += 15){
+                int s = 1;
+                if(count % 2 == 0)
+                    s = -1;
+                double x = r * Math.cos(Math.toRadians(i)) * Math.cos(Math.toRadians(t)) * s;
+                double y = r * Math.cos(Math.toRadians(i)) * Math.sin(Math.toRadians(t)) * s;
+                double z = r * Math.sin(Math.toRadians(i)) * s;
+                Location sphereLoc = new Location(baseLoc.getWorld(), baseLoc.getX() + x, baseLoc.getY() + y, baseLoc.getZ() + z);
+                tempList.add(sphereLoc);
+                count++;
+            }
         }
         return tempList;
     }
