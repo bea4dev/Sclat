@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon.subweapon;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
@@ -30,16 +31,17 @@ public class SplashBom {
                 }
                 
                 if(gc == 40){
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(target.equals(p) || !DataMgr.getPlayerData(target).getSettings().ShowEffect_SplashBom() || DataMgr.getPlayerData(p).getTeam().equals(DataMgr.getPlayerData(target).getTeam()))
-                            continue;
-                        
-                            
-                    }
+                    Sphere.getSphere(drop.getLocation(), 4);
+                    
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SplashBom()){
+                                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
+                            }       
+                        }
                 }
                 
-                Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                drop.getWorld().spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                
                 
                 c++;
                 gc++;
