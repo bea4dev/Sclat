@@ -17,6 +17,7 @@ public class PlayerSettings {
     private boolean ShowEffect_RollerRoll = true;
     private boolean ShowEffect_RollerShot = true;
     private boolean ShowEffect_Squid = true;
+    private boolean ShowEffect_SplashBom = true;
     
     public PlayerSettings (Player player){this.player = player;}
     
@@ -28,6 +29,7 @@ public class PlayerSettings {
     public boolean ShowEffect_RollerRoll(){return this.ShowEffect_RollerRoll;}
     public boolean ShowEffect_RollerShot(){return this.ShowEffect_RollerShot;}
     public boolean ShowEffect_Squid(){return this.ShowEffect_Squid;}
+    public boolean ShowEffect_SplashBom(){return this.ShowEffect_SplashBom;}
     
     public void S_ShowEffect_Shooter(){this.ShowEffect_Shooter = !ShowEffect_Shooter;}
     public void S_ShowEffect_ChargerLine(){this.ShowEffect_ChargerLine = !ShowEffect_ChargerLine;}
@@ -35,6 +37,6 @@ public class PlayerSettings {
     public void S_ShowEffect_RollerRoll(){this.ShowEffect_RollerRoll = !ShowEffect_RollerRoll;}
     public void S_ShowEffect_RollerShot(){this.ShowEffect_RollerShot = !ShowEffect_RollerShot;}
     public void S_ShowEffect_Squid(){this.ShowEffect_Squid = !ShowEffect_Squid;}
-
+    public void S_ShowEffect_SplashBom(){this.ShowEffect_SplashBom = !ShowEffect_SplashBom;}
     
 }

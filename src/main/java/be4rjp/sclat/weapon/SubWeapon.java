@@ -47,65 +47,7 @@ public class SubWeapon implements Listener{
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if("スプラッシュボム".equals(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName())){
-                
-                
-                    
-                
-                BukkitRunnable task = new BukkitRunnable(){
- 
-                    
-                    FallingBlock fb;
-                    FallingBlock fb2;
-                    Player p = player;
-                    int i = 0;
-                    int count = 0;
-                    @Override
-                    public void run(){
-                        if(i == 0){
-                            
-                            //m.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass().createBlockData();
-                            fb = p.getWorld().spawnFallingBlock(p.getEyeLocation(), bd);
-                            
-                            fb.setGravity(true);
-                            fb.setDropItem(false);
-                            fb.setVelocity(p.getEyeLocation().getDirection().multiply(0.4));
-                        }
-                        if(fb.isDead()){
-                            count++;
-                        }
-                        if(count == 1){
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass().createBlockData();
-                            fb2 = p.getWorld().spawnFallingBlock(fb.getLocation().add(0, 0.1, 0), bd);
-                            fb2.setGravity(false);
-                            fb2.setDropItem(false);
-                            Vector vec = fb.getVelocity();
-                            fb2.setVelocity(new Vector(vec.getX(), 0, vec.getZ()));
-                        }
-                        
-                        if(count == 30){
-                            //m.remove();
-                            fb.remove();
-                            fb2.remove();
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                            p.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, fb2.getLocation(), 50, 3, 3, 3, 1, bd);
-                            PaintMgr.Paint(fb2.getLocation().add(0, -1, 0), p);
-                            cancel();
-                        }
-                        if(i == 1000){
-                            fb.remove();
-                            fb2.remove();
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                            p.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, fb2.getLocation(), 50, 3, 3, 3, 1, bd);
-                            PaintMgr.Paint(fb2.getLocation().add(0, -1, 0), p);
-                            cancel();
-                        }
-                            
-                        i++;
-                    }
-                };
-                task.runTaskTimer(Main.getPlugin(), 0, 1);
-                
+
             }
         }
     }
