@@ -516,7 +516,7 @@ public class MatchMgr {
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage("§a§l§n_______________________________");
                     p.sendMessage("");
-                    p.sendMessage("§a§l                 [ 試合結果 ]");
+                    p.sendMessage("§a§l                  [ 試合結果 ]");
                     p.sendMessage(ChatColor.GREEN + "");
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){

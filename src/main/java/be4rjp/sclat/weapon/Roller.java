@@ -106,12 +106,12 @@ public class Roller {
                                     
                                     if(target.getHealth() > damage){
                                         target.damage(damage);
-                                        PaintMgr.Paint(target.getLocation(), p);
+                                        PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
                                     }else{
                                         target.setGameMode(GameMode.SPECTATOR);
                                         DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                        PaintMgr.Paint(target.getLocation(), p);
+                                        PaintMgr.Paint(target.getLocation(), p, true);
                                         
                                     }
                         
@@ -155,12 +155,12 @@ public class Roller {
                                     
                                     if(target.getHealth() > damage){
                                         target.damage(damage);
-                                        PaintMgr.Paint(target.getLocation(), p);
+                                        PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
                                     }else{
                                         target.setGameMode(GameMode.SPECTATOR);
                                         DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                        PaintMgr.Paint(target.getLocation(), p);
+                                        PaintMgr.Paint(target.getLocation(), p, true);
                                         
                                     }
                         

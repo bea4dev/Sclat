@@ -54,7 +54,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
         Player shooter = (Player)event.getEntity().getShooter();
-        PaintMgr.Paint(event.getHitBlock().getLocation(), shooter);
+        PaintMgr.Paint(event.getHitBlock().getLocation(), shooter, true);
         shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
     }
     
@@ -72,11 +72,11 @@ public class MainWeapon implements Listener{
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                 if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                     target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
-                    PaintMgr.Paint(target.getLocation(), shooter);
+                    PaintMgr.Paint(target.getLocation(), shooter, true);
                 }else{
                     target.setGameMode(GameMode.SPECTATOR);
                     DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
-                    PaintMgr.Paint(target.getLocation(), shooter);
+                    PaintMgr.Paint(target.getLocation(), shooter, true);
                 }
                 //AntiDamageTime
                 BukkitRunnable task = new BukkitRunnable(){

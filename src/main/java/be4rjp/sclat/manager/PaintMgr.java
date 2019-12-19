@@ -22,10 +22,13 @@ import org.bukkit.entity.Player;
  * @author Be4rJP
  */
 public class PaintMgr {
-    public static void Paint(Location location, Player player){
+    public static void Paint(Location location, Player player, boolean sphere){
         
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
-        List<Block> blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
+        List<Block> blocks = new ArrayList<Block>();
+        blocks.add(location.getBlock());
+        if(sphere)
+            blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
             if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
@@ -41,6 +44,7 @@ public class PaintMgr {
                         block.setType(ATeam.getTeamColor().getWool());
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
+                        DataMgr.getPlayerData(player).addPaintCount();
                         }
                     }else{
                         Team team = DataMgr.getPlayerData(player).getTeam();
@@ -54,9 +58,10 @@ public class PaintMgr {
                         block.setType(team.getTeamColor().getWool());
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
+                        DataMgr.getPlayerData(player).addPaintCount();
                     }
                 }
-                DataMgr.getPlayerData(player).addPaintCount();
+                
             }
         }
     }
@@ -149,7 +154,7 @@ public class PaintMgr {
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if(r == 0){
-                        Paint(new Location(player.getWorld(), x, i, z), player);
+                        Paint(new Location(player.getWorld(), x, i, z), player, true);
                         
                     }
                     break;
@@ -169,10 +174,10 @@ public class PaintMgr {
                     Random random = new Random();
                     int r = random.nextInt(10);
                     if(r == 0 && randomb){
-                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, true);
                     }
                     if(!randomb)
-                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, true);
                     break;
                 }
                 i--;

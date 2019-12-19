@@ -102,7 +102,7 @@ public class Charger {
             Block block = player.getLocation().getWorld().getBlockAt(position);
             
             if(!block.getType().equals(Material.AIR)){
-                PaintMgr.Paint(position, player);
+                PaintMgr.Paint(position, player, true);
                 break loop;
             }
             PaintMgr.PaintHightestBlock(position, player, false);
@@ -124,11 +124,11 @@ public class Charger {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                         if(target.getHealth() > damage){
                             target.damage(damage);
-                            PaintMgr.Paint(target.getLocation(), player);
+                            PaintMgr.Paint(target.getLocation(), player, true);
                         }else{
                             target.setGameMode(GameMode.SPECTATOR);
                             DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                            PaintMgr.Paint(target.getLocation(), player);
+                            PaintMgr.Paint(target.getLocation(), player, true);
                         }
                         
                         //AntiNoDamageTime

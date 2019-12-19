@@ -17,8 +17,8 @@ public class PlayerSettings {
     private boolean ShowEffect_RollerRoll = true;
     private boolean ShowEffect_RollerShot = true;
     private boolean ShowEffect_Squid = true;
-    private boolean ShowEffect_BomEx = true;
-    private boolean ShowEffect_Bom = true;
+    private boolean ShowEffect_BombEx = true;
+    private boolean ShowEffect_Bomb = true;
     
     public PlayerSettings (Player player){this.player = player;}
     
@@ -30,8 +30,8 @@ public class PlayerSettings {
     public boolean ShowEffect_RollerRoll(){return this.ShowEffect_RollerRoll;}
     public boolean ShowEffect_RollerShot(){return this.ShowEffect_RollerShot;}
     public boolean ShowEffect_Squid(){return this.ShowEffect_Squid;}
-    public boolean ShowEffect_BomEx(){return this.ShowEffect_BomEx;}
-    public boolean ShowEffect_Bom(){return this.ShowEffect_Bom;}
+    public boolean ShowEffect_BombEx(){return this.ShowEffect_BombEx;}
+    public boolean ShowEffect_Bomb(){return this.ShowEffect_Bomb;}
     
     public void S_ShowEffect_Shooter(){this.ShowEffect_Shooter = !ShowEffect_Shooter;}
     public void S_ShowEffect_ChargerLine(){this.ShowEffect_ChargerLine = !ShowEffect_ChargerLine;}
@@ -39,6 +39,6 @@ public class PlayerSettings {
     public void S_ShowEffect_RollerRoll(){this.ShowEffect_RollerRoll = !ShowEffect_RollerRoll;}
     public void S_ShowEffect_RollerShot(){this.ShowEffect_RollerShot = !ShowEffect_RollerShot;}
     public void S_ShowEffect_Squid(){this.ShowEffect_Squid = !ShowEffect_Squid;}
-    public void S_ShowEffect_BomEx(){this.ShowEffect_BomEx = !ShowEffect_BomEx;}
-    public void S_ShowEffect_Bom(){this.ShowEffect_Bom = !ShowEffect_Bom;}
+    public void S_ShowEffect_BombEx(){this.ShowEffect_BombEx = !ShowEffect_BombEx;}
+    public void S_ShowEffect_Bomb(){this.ShowEffect_Bomb = !ShowEffect_Bomb;}
 }
