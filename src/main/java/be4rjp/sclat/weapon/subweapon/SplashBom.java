@@ -4,10 +4,16 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.DeathMgr;
+import be4rjp.sclat.manager.PaintMgr;
+import java.util.List;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -25,26 +31,81 @@ public class SplashBom {
             @Override
             public void run(){
                 if(c == 0){
-                    ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass());
+                    ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass()).clone();
+                    ItemMeta bom_m = bom.getItemMeta();
+                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                    bom.setItemMeta(bom_m);
                     drop = p.getWorld().dropItem(p.getLocation(), bom);
                     drop.setVelocity(p.getEyeLocation().getDirection());
                 }
                 
                 if(gc == 40){
-                    Sphere.getSphere(drop.getLocation(), 4);
-                    
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SplashBom()){
+                    //爆発エフェクト
+                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), 5, 12);
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BomEx()){
+                            for(Location loc : s_locs){
                                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
-                            }       
+                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
+                            }
                         }
+                    }
+                    
+                    //攻撃判定の処理
+                    double maxDist = 5;
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(!DataMgr.getPlayerData(target).isInMatch())
+                            continue;
+                        if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 20;
+                            if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                if(target.getHealth() > damage){
+                                    target.damage(damage);
+                                    PaintMgr.Paint(target.getLocation(), player);
+                                }else{
+                                    target.setGameMode(GameMode.SPECTATOR);
+                                    DeathMgr.PlayerDeathRunnable(target, player, "killed");
+                                    PaintMgr.Paint(target.getLocation(), player);
+                                }
+
+                                //AntiNoDamageTime
+                                BukkitRunnable task = new BukkitRunnable(){
+                                    Player p = target;
+                                    @Override
+                                    public void run(){
+                                        target.setNoDamageTicks(0);
+                                    }
+                                };
+                                task.runTaskLater(Main.getPlugin(), 1);
+                                
+                                
+                            }
+                        }
+                    }
+                    drop.remove();
+                    cancel();
+                    return;
                 }
                 
-                
+                //ボムの視認用エフェクト
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bom()){
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(o_player).getTeam().getTeamColor().getBukkitColor(), 1);
+                        o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                    }
+                }
                 
                 c++;
-                gc++;
+                
+                if(c > 500){
+                    drop.remove();
+                    cancel();
+                    return;
+                }
+                
+                if(drop.isOnGround())
+                    gc++;
+                
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);

@@ -29,13 +29,14 @@ public class Main extends JavaPlugin {
     
     private static Main plugin;
     
-    public NPCMgr npcmgr;
+    //重複しない数字
+    //ボム等で使用
+    private static int NDNumber = 0;
     
 
     @Override
     public void onEnable() {
         plugin = this;	
-        this.npcmgr = new NPCMgr();
         getLogger().info("Loading config files...");
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
@@ -72,6 +73,11 @@ public class Main extends JavaPlugin {
     
     public static Main getPlugin(){
         return plugin;
+    }
+    
+    public static int getNotDuplicateNumber(){
+        NDNumber++;
+        return NDNumber;
     }
     
 }

@@ -12,11 +12,11 @@ import org.bukkit.block.Block;
  */
 public class Sphere {
     
-    public static List<Location> getSphere(Location baseLoc, double r){
+    public static List<Location> getSphere(Location baseLoc, double r ,int accuracy){
         List<Location> tempList = new ArrayList<Location>();
         int count = 0;
-        for(int i = 0; i < 180; i += 15){
-            for(int t = 0; t < 360; t += 15){
+        for(int i = 0; i < 180; i += accuracy){
+            for(int t = 0; t < 360; t += accuracy){
                 int s = 1;
                 if(count % 2 == 0)
                     s = -1;

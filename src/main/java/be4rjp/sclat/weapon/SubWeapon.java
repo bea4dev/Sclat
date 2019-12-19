@@ -6,6 +6,7 @@ import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.weapon.subweapon.SplashBom;
 import java.util.List;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Boat;
@@ -47,7 +48,7 @@ public class SubWeapon implements Listener{
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if("スプラッシュボム".equals(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName())){
-
+                SplashBom.SplashBomRunnable(player);
             }
         }
     }

@@ -94,12 +94,7 @@ public class Charger {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 5);
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
         ArrayList<Vector> positions = rayTrace.traverse(reach,0.2);
-        
-        List<Location> locations = Sphere.getSphere(player.getLocation(), 3);
-        for(Location loc : locations){
-            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-            loc.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-        }
+
         
         loop : for(int i = 0; i < positions.size();i++){
 
