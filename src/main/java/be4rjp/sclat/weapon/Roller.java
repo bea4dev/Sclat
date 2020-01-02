@@ -38,10 +38,8 @@ public class Roller {
                 
                 data.setTick(data.getTick() + 1);
                 
-                if(data.getTick() <= 5 && data.isInMatch()){
-                    //data.setTick(data.getTick() + 1);
-                }
-                if(data.getTick() >= 6 && data.isInMatch()){
+                
+                if(data.getTick() >= 5 && data.isInMatch()){
                     data.setTick(7);
                     data.setIsHolding(false);
                     data.setCanPaint(false);
@@ -204,7 +202,7 @@ public class Roller {
                     Roller.Shoot(p);
                 }
                 data.setCanPaint(true);
-                
+
             }
         
         };
