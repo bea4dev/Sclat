@@ -48,7 +48,7 @@ public class OpenGUI {
             ItemMeta itemm = item.getItemMeta();
             itemm.setDisplayName(ClassName);
             List lores = new ArrayList();
-            lores.add("");
+            lores.add("サブウエポン : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
             lores.add("");
             itemm.setLore(lores);
             item.setItemMeta(itemm);

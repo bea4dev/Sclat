@@ -76,6 +76,11 @@ public class MapDataMgr {
             rloc.setYaw(rlocyaw);
             rloc.setPitch(90);
             
+            int tlocx = conf.getMapConfig().getInt("Maps." + mapname + ".WaitLoc.X");
+            int tlocy = conf.getMapConfig().getInt("Maps." + mapname + ".WaitLoc.Y");
+            int tlocz = conf.getMapConfig().getInt("Maps." + mapname + ".WaitLoc.Z");
+            Location tloc = new Location(w, tlocx, tlocy, tlocz);
+            
             
             boolean canpaintbblock = false;
             if(conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock") == true)
@@ -88,6 +93,7 @@ public class MapDataMgr {
             map.setTeam0Intro(t0intl);
             map.setTeam1Intro(t1intl);
             map.setResultLoc(rloc);
+            map.setTaikibasyo(tloc);
             
             map.setIntroMoveX(intromovex);
             map.setIntroMoveY(intromovey);

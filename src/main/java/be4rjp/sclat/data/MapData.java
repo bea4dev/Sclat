@@ -33,6 +33,8 @@ public class MapData {
     
     private boolean canpaintBBlock = false;
     
+    private Location taikibasyo;
+    
     
     
     public MapData(String mapname){this.mapname = mapname;}
@@ -63,6 +65,8 @@ public class MapData {
     
     public Boolean canPaintBBlock(){return this.canpaintBBlock;}
     
+    public Location getTaikibayso(){return this.taikibasyo;}
+    
     
     public void setIntro(Location l){this.Intro = l;}
     
@@ -87,4 +91,6 @@ public class MapData {
     public void setIntroMoveZ(double z){this.intromovez = z;}
     
     public void setCanPaintBBlock(boolean is){this.canpaintBBlock = is;}
+    
+    public void setTaikibasyo(Location basyo){this.taikibasyo = basyo;}
 }

@@ -59,6 +59,9 @@ public class MatchMgr {
         int playercount = match.getPlayerCount();
         if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
             data.setPlayerNumber(playercount);
+            
+            player.teleport(match.getMapData().getTaikibayso());
+            
             if(playercount%2==0){
                 data.setTeam(match.getTeam1());
                 //data.setMatchLocation(DataMgr.getTeamLoc(match.getMapData()).getTeam1Loc(matchcount/2));
@@ -136,13 +139,6 @@ public class MatchMgr {
         
         match.setTeam0(team0);
         match.setTeam1(team1);
-        
-        Main.getPlugin().getLogger().info(team0.getTeamColor().getColorCode() + "Team0SetColor");
-        Main.getPlugin().getLogger().info(team1.getTeamColor().getColorCode() + "Team1SetColor");
-        
-        //if(mapcount == 0)
-            //DataMgr.MapDataShuffle();
-        
         
         MapData map = DataMgr.getMapRandom(mapcount);
         match.setMapData(map);
@@ -224,39 +220,55 @@ public class MatchMgr {
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
                                 int i = (DataMgr.getPlayerData(p).getPlayerNumber()+1)/2;
+                                Location sl = null;
                                 if(i == 1)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
+                                sl.setYaw(l.getYaw());
+                                DataMgr.getPlayerData(p).setMatchLocation(sl);
                             }
                             if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                                 Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
                                 int i = DataMgr.getPlayerData(p).getPlayerNumber()/2;
+                                Location sl = null;
                                 if(i == 1)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
                                 if(i == 2)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
                                 if(i == 3)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
                                 if(i == 4)
-                                    DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D));
+                                    sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
+                                sl.setYaw(l.getYaw());
+                                DataMgr.getPlayerData(p).setMatchLocation(sl);
                             }
                             
                             if(DataMgr.getPlayerData(p).getPlayerNumber() < 8){
-
-                            Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
-                            squid = (LivingEntity)e;
-                            squid.setAI(false);
-                            squid.setSwimming(true);
-                            squid.setCustomName(p.getDisplayName());
-                            squid.setCustomNameVisible(true);
+                                Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
+                                squid = (LivingEntity)e;
+                                squid.setAI(false);
+                                squid.setSwimming(true);
+                                squid.setCustomName(p.getDisplayName());
+                                squid.setCustomNameVisible(true);
                             }else{
-                                Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
-                                DataMgr.getPlayerData(p).setMatchLocation(new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D));
+                                Location sl = null;
+                                if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
+                                    Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
+                                    sl.setYaw(l.getYaw());
+                                }
+                                if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
+                                    Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
+                                    sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
+                                    sl.setYaw(l.getYaw());
+                                }
+                                DataMgr.getPlayerData(p).setMatchLocation(sl);
+                                
                             }
                           
                             p.setGameMode(GameMode.SPECTATOR);
