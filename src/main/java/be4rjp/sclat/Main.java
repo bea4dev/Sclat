@@ -13,6 +13,7 @@ import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
 import java.util.logging.Level;
 import static org.bukkit.Bukkit.getServer;
+import org.bukkit.Location;
 import org.bukkit.World;
 
 import org.bukkit.WorldCreator;
@@ -29,6 +30,8 @@ public class Main extends JavaPlugin {
     
     private static Main plugin;
     
+    public static Location lobby;
+    
     //重複しない数字
     //ボム等で使用
     private static int NDNumber = 0;
@@ -43,6 +46,15 @@ public class Main extends JavaPlugin {
             getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
         String WorldName = conf.getConfig().getString("Lobby.WorldName");
         getServer().createWorld(new WorldCreator(WorldName));
+
+        World w = getServer().getWorld(WorldName);
+        int ix = conf.getConfig().getInt("Lobby.X");
+        int iy = conf.getConfig().getInt("Lobby.Y");
+        int iz = conf.getConfig().getInt("Lobby.Z");
+        int iyaw = conf.getConfig().getInt("Lobby.Yaw");
+        lobby = new Location(w, ix, iy, iz);
+        lobby.setYaw(iyaw);
+        
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);

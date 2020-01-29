@@ -4,6 +4,7 @@ package be4rjp.sclat.GUI;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.MatchMgr;
+import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
@@ -73,7 +74,8 @@ public class ClickListener implements Listener{
             conf.getPlayerSetiings().set("Settings." + uuid, s_data);
         }
         
-        event.setCancelled(true);
+        if(!player.getGameMode().equals(GameMode.CREATIVE))
+            event.setCancelled(true);
     }
     
     @EventHandler

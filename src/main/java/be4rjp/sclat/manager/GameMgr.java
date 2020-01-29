@@ -69,17 +69,9 @@ public class GameMgr implements Listener{
         //MatchMgr.PlayerJoinMatch(player);
         player.setWalkSpeed(0.2F);
         SquidMgr.SquidRunnable(player);
-        String WorldName = conf.getConfig().getString("Lobby.WorldName");
-        World w = getServer().getWorld(WorldName);
-            
-        int ix = conf.getConfig().getInt("Lobby.X");
-        int iy = conf.getConfig().getInt("Lobby.Y");
-        int iz = conf.getConfig().getInt("Lobby.Z");
-        int iyaw = conf.getConfig().getInt("Lobby.Yaw");
-        Location il = new Location(w, ix, iy, iz);
-        il.setYaw(iyaw);
         
-        player.teleport(il);
+        
+        player.teleport(Main.lobby);
         ItemStack join = new ItemStack(Material.CHEST);
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("メインメニュー");
