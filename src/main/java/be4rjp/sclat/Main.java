@@ -12,6 +12,7 @@ import be4rjp.sclat.manager.NPCMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -43,11 +44,13 @@ public class Main extends JavaPlugin {
         getLogger().info("Loading config files...");
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
-            getServer().createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
+            Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
         String WorldName = conf.getConfig().getString("Lobby.WorldName");
-        getServer().createWorld(new WorldCreator(WorldName));
+        Bukkit.createWorld(new WorldCreator(WorldName));
+        //getServer().getWorlds().add(w);
 
-        World w = getServer().getWorld(WorldName);
+        World w = Bukkit.getWorld(WorldName);
+        getLogger().info(w.getName());
         int ix = conf.getConfig().getInt("Lobby.X");
         int iy = conf.getConfig().getInt("Lobby.Y");
         int iz = conf.getConfig().getInt("Lobby.Z");
