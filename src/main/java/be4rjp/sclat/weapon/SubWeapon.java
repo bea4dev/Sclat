@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,8 +26,13 @@ public class SubWeapon implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
-            if("スプラッシュボム".equals(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName())){
-                SplashBomb.SplashBomRunnable(player);
+            switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()) {
+                case "スプラッシュボム":
+                    SplashBomb.SplashBomRunnable(player);
+                    break;
+                case "クイックボム":
+                    QuickBomb.QuickBomRunnable(player);
+                    break;
             }
         }
     }
