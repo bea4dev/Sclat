@@ -102,7 +102,7 @@ public class Roller {
                                     
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
-                                    if(target.getHealth() > damage){
+                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                         target.damage(damage);
                                         PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
@@ -151,7 +151,7 @@ public class Roller {
                                     
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
-                                    if(target.getHealth() > damage){
+                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                         target.damage(damage);
                                         PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));

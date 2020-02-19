@@ -70,7 +70,7 @@ public class MainWeapon implements Listener{
         if(event.getEntity() instanceof Player){
             Player target = (Player)event.getEntity();
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                if(target.getHealth() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
+                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                     target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                     PaintMgr.Paint(target.getLocation(), shooter, true);
                 }else{

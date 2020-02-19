@@ -27,6 +27,7 @@ public class PlayerData {
     private boolean canpaint = false;
     private int killcount = 0;
     private int paintcount = 0;
+    private double armor = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -65,6 +66,8 @@ public class PlayerData {
     
     public int getPaintCount(){return this.paintcount;}
     
+    public double getArmor(){return this.armor;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -95,6 +98,8 @@ public class PlayerData {
     public void setIsJoined(boolean is){this.isjoined = is;}
     
     public void setCanPaint(boolean is){this.canpaint = is;}
+    
+    public void setArmor(double armor){this.armor = armor;}
     
     public void addKillCount(){this.killcount++;}
     

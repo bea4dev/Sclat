@@ -29,8 +29,8 @@ public class QuickBomb {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             Vector p_vec;
-            int x = 0;
-            int z = 0;
+            double x = 0;
+            double z = 0;
             boolean collision = false;
             int c = 0;
             Item drop;
@@ -48,16 +48,8 @@ public class QuickBomb {
                 }
                 
                 if(c != 0){
-                    Location loc = drop.getLocation();
-                    Location loc1 = new Location(loc.getWorld(), loc.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ() + 1);
-                    Location loc2 = new Location(loc.getWorld(), loc.getBlockX() - 0.1, loc.getBlockY(), loc.getBlockZ() + 1);
-                    Location loc3 = new Location(loc.getWorld(), loc.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ() - 0.1);
-                    Location loc4 = new Location(loc.getWorld(), loc.getBlockX() - 0.1, loc.getBlockY(), loc.getBlockZ() - 0.1);
-                    if(!loc1.getBlock().getType().equals(Material.AIR) || !loc2.getBlock().getType().equals(Material.AIR) || !loc3.getBlock().getType().equals(Material.AIR) || !loc4.getBlock().getType().equals(Material.AIR)){
+                    if(p_vec.getX() != 0 && p_vec.getZ() != 0 && (p_vec.getX() * (drop.getLocation().getX() - x) == 0 || p_vec.getZ() * (drop.getLocation().getZ() - z) == 0))
                         collision = true;
-                        if((loc1.getBlock().getType().equals(Material.BARRIER) || loc2.getBlock().getType().equals(Material.BARRIER) || loc3.getBlock().getType().equals(Material.BARRIER) || loc4.getBlock().getType().equals(Material.BARRIER)) && !DataMgr.getPlayerData(p).getMatch().getMapData().canPaintBBlock())
-                            collision = false;
-                    }
                 }
                 
                 
@@ -133,6 +125,8 @@ public class QuickBomb {
                 }
                 
                 c++;
+                x = drop.getLocation().getX();
+                z = drop.getLocation().getZ();
 
                 
                 if(c > 500){

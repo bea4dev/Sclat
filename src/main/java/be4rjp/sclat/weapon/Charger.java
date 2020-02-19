@@ -122,7 +122,7 @@ public class Charger {
                     continue;
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                        if(target.getHealth() > damage){
+                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                             target.damage(damage);
                             PaintMgr.Paint(target.getLocation(), player, true);
                         }else{
