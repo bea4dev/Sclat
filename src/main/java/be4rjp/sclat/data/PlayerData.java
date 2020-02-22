@@ -28,6 +28,7 @@ public class PlayerData {
     private int killcount = 0;
     private int paintcount = 0;
     private double armor = 0;
+    private int spgauge = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -68,6 +69,8 @@ public class PlayerData {
     
     public double getArmor(){return this.armor;}
     
+    public int getSPGauge(){return this.spgauge;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -104,6 +107,10 @@ public class PlayerData {
     public void addKillCount(){this.killcount++;}
     
     public void addPaintCount(){this.paintcount++;}
+    
+    public void addSPGauge(){this.spgauge++;}
+    
+    public void resetSPGauge(){this.spgauge = 0;}
     
     public void reset(){
         this.inmatch = false;
