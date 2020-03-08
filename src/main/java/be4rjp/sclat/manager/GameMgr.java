@@ -8,6 +8,7 @@ import be4rjp.sclat.data.PlayerSettings;
 import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +27,11 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 
 
@@ -82,6 +88,8 @@ public class GameMgr implements Listener{
         //Shooter.ShooterRunnable(player);
         
         //SquidMgr.SquidRunnable(player);
+        
+        
     }
     
     @EventHandler
