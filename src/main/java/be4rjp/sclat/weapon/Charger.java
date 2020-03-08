@@ -6,6 +6,7 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.raytrace.BoundingBox;
@@ -123,7 +124,7 @@ public class Charger {
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                         if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                            target.damage(damage);
+                            DamageMgr.SclatGiveDamage(target, damage);
                             PaintMgr.Paint(target.getLocation(), player, true);
                         }else{
                             target.setGameMode(GameMode.SPECTATOR);

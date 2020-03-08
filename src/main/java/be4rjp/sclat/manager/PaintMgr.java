@@ -38,13 +38,15 @@ public class PaintMgr {
                         Team BTeam = data.getTeam();
                         Team ATeam = DataMgr.getPlayerData(player).getTeam();
                         if(BTeam != ATeam){
-                        data.setTeam(ATeam);
-                        BTeam.subtractPaintCount();
-                        ATeam.addPaintCount();
-                        block.setType(ATeam.getTeamColor().getWool());
-                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                        block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
-                        DataMgr.getPlayerData(player).addPaintCount();
+                            data.setTeam(ATeam);
+                            BTeam.subtractPaintCount();
+                            ATeam.addPaintCount();
+                            block.setType(ATeam.getTeamColor().getWool());
+                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                            block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
+                            DataMgr.getPlayerData(player).addPaintCount();
+                            if(new Random().nextInt(2) == 1)
+                                DataMgr.getPlayerData(player).addSPGauge();
                         }
                     }else{
                         Team team = DataMgr.getPlayerData(player).getTeam();
@@ -59,6 +61,8 @@ public class PaintMgr {
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                         DataMgr.getPlayerData(player).addPaintCount();
+                        if(new Random().nextInt(3) == 1)
+                                DataMgr.getPlayerData(player).addSPGauge();
                     }
                 }
                 

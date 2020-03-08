@@ -104,6 +104,8 @@ public class PlayerData {
     
     public void setArmor(double armor){this.armor = armor;}
     
+    public void setSPGauge(int spgauge){this.spgauge = spgauge;}
+    
     public void addKillCount(){this.killcount++;}
     
     public void addPaintCount(){this.paintcount++;}

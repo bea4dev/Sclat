@@ -34,6 +34,8 @@ public class NPCMgr {
             @Override
             public void run(){
                 if(s == 0){
+                    location.setYaw(location1.getYaw());
+                    
                     MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
                     WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
                     GameProfile gameProfile = new GameProfile(player.getUniqueId(), npcName);
@@ -54,7 +56,7 @@ public class NPCMgr {
                     npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
-                        connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
+                        //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
                         connection.sendPacket(new PacketPlayOutEntityTeleport(npc));
                         connection.sendPacket(new PacketPlayOutEntityEquipment(npc.getBukkitEntity().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack())));
                     }

@@ -17,7 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class SPWeapon {
     //スペシャルウエポンのリスナー部分
-    @EventHandler
+    //@EventHandler
     public void onClickSPWeapon(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Action action = event.getAction();
@@ -26,7 +26,7 @@ public class SPWeapon {
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()) {
                 case "スーパーアーマー":
-                    SuperArmor.setArmor(player, 20, 120);
+                    SuperArmor.setArmor(player, 20, 120, true);
                     break;
                 case "ボムラッシュ":
                     

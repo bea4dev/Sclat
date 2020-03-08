@@ -12,10 +12,20 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Be4rJP
  */
 public class SuperArmor {
-    public static void setArmor(Player player, double armor, long delay){
+    public static void setArmor(Player player, double armor, long delay, boolean effect){
         
         PlayerData data = DataMgr.getPlayerData(player);
         data.setArmor(armor);
+        
+        //エフェクト
+        BukkitRunnable effect_r = new BukkitRunnable(){
+            @Override
+            public void run(){
+                
+            }
+        };
+        if(effect)
+            effect_r.runTaskTimer(Main.getPlugin(), 0, 1);
         
         BukkitRunnable task = new BukkitRunnable(){
             @Override

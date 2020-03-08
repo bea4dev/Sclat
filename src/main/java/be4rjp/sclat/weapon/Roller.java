@@ -5,6 +5,7 @@ import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.raytrace.RayTrace;
@@ -103,7 +104,7 @@ public class Roller {
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
                                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        target.damage(damage);
+                                        DamageMgr.SclatGiveDamage(target, damage);
                                         PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
                                     }else{
@@ -152,7 +153,7 @@ public class Roller {
                                     double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                     
                                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        target.damage(damage);
+                                        DamageMgr.SclatGiveDamage(target, damage);
                                         PaintMgr.Paint(target.getLocation(), p, true);
                                         p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
                                     }else{

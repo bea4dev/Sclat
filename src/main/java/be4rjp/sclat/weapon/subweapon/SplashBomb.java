@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.List;
@@ -73,7 +74,7 @@ public class SplashBomb {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 20;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
-                                    target.damage(damage);
+                                    DamageMgr.SclatGiveDamage(target, damage);
                                     PaintMgr.Paint(target.getLocation(), player, true);
                                 }else{
                                     target.setGameMode(GameMode.SPECTATOR);

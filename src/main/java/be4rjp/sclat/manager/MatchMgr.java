@@ -175,13 +175,13 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 10)
-                    p.sendTitle("R§7E    ", "", 0, 56, 0);
+                    p.sendTitle("R§7EADY?", "", 0, 56, 0);
                 if(i == 12)
-                    p.sendTitle("RE§7A   ", "", 0, 46, 0);
+                    p.sendTitle("RE§7ADY?", "", 0, 46, 0);
                 if(i == 14)
-                    p.sendTitle("REA§7D  ", "", 0, 36, 0);
+                    p.sendTitle("REA§7DY?", "", 0, 36, 0);
                 if(i == 16)
-                    p.sendTitle("READ§7Y ", "", 0, 26, 0);
+                    p.sendTitle("READ§7Y?", "", 0, 26, 0);
                 if(i == 18)
                     p.sendTitle("READY§7?", "", 0, 16, 0);
                 if(i == 20)
@@ -282,13 +282,18 @@ public class MatchMgr {
                             
                             StartCount(p);
                             ScoreboardManager manager = Bukkit.getScoreboardManager();
-                            org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
-                            Objective objective = board.registerNewObjective("MapName", "Time", "Match");
+                            final org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
                             
+                            final Objective objective = board.registerNewObjective("MapName", "Time");
                             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                            objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-                            Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + "3:00");
-                            score.setScore(0);
+                            objective.setDisplayName("MapName: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                            Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft: " + ChatColor.GREEN + "3:00");
+                            score.setScore(1);
+
+                            //Score score1 = objective.getScore(ChatColor.YELLOW + "SPGauge: " + SPWeaponMgr.getSPGauge(p));
+                            //score1.setScore(0);
+                            
+                            Main.getPlugin().getLogger().info(SPWeaponMgr.getSPGauge(p));
                             
                             p.setScoreboard(board);
                             for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
@@ -433,15 +438,19 @@ public class MatchMgr {
                 @Override
                 public void run(){
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
+                    final org.bukkit.scoreboard.Scoreboard board = manager.getNewScoreboard();
                     //board.clearSlot(DisplaySlot.SIDEBAR);
-                    Objective objective = board.registerNewObjective("MapName", "Time", "Match");
+                    final Objective objective = board.registerNewObjective("MapName", "Time");
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    objective.setDisplayName("マップ名: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                    objective.setDisplayName("MapName: " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
                     String min = String.format("%02d", s%60);
                     
-                    Score score = objective.getScore(ChatColor.YELLOW + "残り時間: " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
-                    score.setScore(0);
+                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft: " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
+                    score.setScore(1);
+                    
+                    //Score score1 = objective.getScore(ChatColor.YELLOW + "SPGauge: " + ChatColor.RESET+ SPWeaponMgr.getSPGauge(p));
+                    //score1.setScore(0);
+                    
                     p.setScoreboard(board);
 
                     if(s == 60){

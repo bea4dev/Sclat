@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -71,7 +72,7 @@ public class MainWeapon implements Listener{
             Player target = (Player)event.getEntity();
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                 if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
-                    target.damage(DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                    DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                     PaintMgr.Paint(target.getLocation(), shooter, true);
                 }else{
                     target.setGameMode(GameMode.SPECTATOR);
