@@ -45,7 +45,7 @@ public class PaintMgr {
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                             block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                             DataMgr.getPlayerData(player).addPaintCount();
-                            if(new Random().nextInt(4) == 1)
+                            if(new Random().nextInt(10) == 1)
                                 SPWeaponMgr.addSPCharge(player);
                         }
                     }else{
@@ -61,7 +61,7 @@ public class PaintMgr {
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                         DataMgr.getPlayerData(player).addPaintCount();
-                        if(new Random().nextInt(5) == 1)
+                        if(new Random().nextInt(12) == 1)
                             SPWeaponMgr.addSPCharge(player);
                     }
                 }

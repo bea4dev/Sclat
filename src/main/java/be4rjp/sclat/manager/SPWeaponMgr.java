@@ -29,6 +29,6 @@ public class SPWeaponMgr {
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.getSPGauge() == 100)
             return "§b§n! READY !";
-        return GaugeAPI.toGauge(data.getSPGauge() / 8, 13, "§a", "§7");
+        return GaugeAPI.toGauge(data.getSPGauge() / 5, 20, "§a", "§7");
     }
 }

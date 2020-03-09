@@ -293,7 +293,7 @@ public class MatchMgr {
 
                             Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); //create a line for the board
                             Score s2 = objective.getScore(""); //blank space
-                            Score s3 = objective.getScore(ChatColor.YELLOW + "SP:   " + SPWeaponMgr.getSPGauge(p));
+                            Score s3 = objective.getScore(ChatColor.YELLOW + "SPWeapon: " + SPWeaponMgr.getSPGauge(p));
 
                             score.setScore(3);
                             s2.setScore(2);
@@ -453,7 +453,7 @@ public class MatchMgr {
 
                     Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min); //create a line for the board
                     Score s2 = objective.getScore(""); //blank space
-                    Score s3 = objective.getScore(ChatColor.YELLOW + "SP:   " + SPWeaponMgr.getSPGauge(p));
+                    Score s3 = objective.getScore(ChatColor.YELLOW + "SPWeapon: " + SPWeaponMgr.getSPGauge(p));
 
                     score.setScore(3);
                     s2.setScore(2);
