@@ -16,6 +16,7 @@ import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
+import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -402,7 +403,8 @@ public class MatchMgr {
                                 Roller.RollPaintRunnable(p);
                             }
                             
-                            
+                            SuperArmor.setArmor(p, 20, 100, false);
+                            SPWeaponMgr.SPWeaponRunnable(p);
                             
                             DataMgr.getPlayerData(p).setTick(10);
                                 //Shooter.ShooterRunnable(p);
@@ -451,7 +453,7 @@ public class MatchMgr {
                     
                     String min = String.format("%02d", s%60);
 
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min); //create a line for the board
+                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:      " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min); //create a line for the board
                     Score s2 = objective.getScore(""); //blank space
                     Score s3 = objective.getScore(ChatColor.YELLOW + "SPWeapon: " + SPWeaponMgr.getSPGauge(p));
 

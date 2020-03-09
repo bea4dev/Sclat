@@ -64,6 +64,7 @@ public class Main extends JavaPlugin {
         pm.registerEvents(new ClickListener(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
+        pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
         
         getLogger().info("registerEvents ok");
         ColorMgr.SetupColor();

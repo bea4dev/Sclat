@@ -125,6 +125,7 @@ public class PlayerData {
         this.canshoot = true;
         this.killcount = 0;
         this.paintcount = 0;
+        this.armor = 0;
         this.spgauge = 0;
     }
     

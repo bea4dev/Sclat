@@ -4,6 +4,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -78,6 +79,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
+                        SuperArmor.setArmor(t, 20, 100, false);
                         cancel();
                     }
                 }
@@ -123,6 +125,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
+                        SuperArmor.setArmor(t, 20, 100, false);
                         cancel();
                     }
                 }
@@ -161,6 +164,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
+                        SuperArmor.setArmor(t, 20, 100, false);
                         cancel();
                     }
                 }
@@ -198,6 +202,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
+                        SuperArmor.setArmor(t, 20, 100, false);
                         cancel();
                     }
                 }

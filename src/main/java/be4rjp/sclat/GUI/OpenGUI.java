@@ -48,8 +48,8 @@ public class OpenGUI {
             ItemMeta itemm = item.getItemMeta();
             itemm.setDisplayName(ClassName);
             List lores = new ArrayList();
-            lores.add("サブウエポン : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-            lores.add("");
+            lores.add("サブウエポン       : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
+            lores.add("スペシャルウエポン : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
             if (slotnum <= 53){
