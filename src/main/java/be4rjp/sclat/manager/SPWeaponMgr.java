@@ -40,32 +40,31 @@ public class SPWeaponMgr {
     public static void SPWeaponRunnable(Player player){
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
-            ItemStack is = null;
-            ItemMeta ism = null;
             
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
-                if(data.getSPGauge() == 100 && p.getInventory().getItem(4).equals(Material.AIR)){
+                if(data.getSPGauge() == 100){
                     switch (data.getWeaponClass().getSPWeaponName()) {
                         case "スーパーアーマー":
-                            is = new ItemStack(Material.TOTEM_OF_UNDYING);
-                            ism = is.getItemMeta();
+                            ItemStack is = new ItemStack(Material.TOTEM_OF_UNDYING);
+                            ItemMeta ism = is.getItemMeta();
                             ism.setDisplayName("スーパーアーマー");
+                            is.setItemMeta(ism);
+                            p.getInventory().setItem(4, is); 
                             break;
                         case "ボムラッシュ":
-                            is = new ItemStack(Material.DISPENSER);
-                            ism = is.getItemMeta();
-                            ism.setDisplayName("ボムラッシュ");
+                            ItemStack is1 = new ItemStack(Material.FEATHER);
+                            ItemMeta ism1 = is1.getItemMeta();
+                            ism1.setDisplayName("ボムラッシュ");
+                            is1.setItemMeta(ism1);
+                            p.getInventory().setItem(4, is1);
                             break;
                     }
-
-                    is.setItemMeta(ism);
-                    p.getInventory().setItem(4, is);  
-
-                    if(!DataMgr.getPlayerData(p).isInMatch())
-                        cancel();
+                    
                 }
+                if(!DataMgr.getPlayerData(p).isInMatch())
+                    cancel();
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 20);

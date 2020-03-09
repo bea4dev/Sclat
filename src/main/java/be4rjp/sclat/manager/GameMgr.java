@@ -90,6 +90,8 @@ public class GameMgr implements Listener{
         //SquidMgr.SquidRunnable(player);
         
         
+      
+        
     }
     
     @EventHandler

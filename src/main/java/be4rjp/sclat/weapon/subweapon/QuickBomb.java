@@ -38,7 +38,8 @@ public class QuickBomb {
             @Override
             public void run(){
                 if(c == 0){
-                    p.setExp(p.getExp() - 0.39F);
+                    if(!DataMgr.getPlayerData(player).getIsBombRush())
+                        p.setExp(p.getExp() - 0.39F);
                     ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
                     bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
@@ -139,7 +140,7 @@ public class QuickBomb {
             }
         };
         
-        if(player.getExp() > 0.4)
+        if(player.getExp() > 0.4 || DataMgr.getPlayerData(player).getIsBombRush())
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);

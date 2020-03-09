@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.spweapon.BombRush;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
@@ -29,14 +30,16 @@ public class SPWeapon implements Listener{
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()) {
                 case "スーパーアーマー":
-                    SuperArmor.setArmor(player, 10, 120, true);
-                    player.getInventory().setItem(0, new ItemStack(Material.AIR));
+                    SuperArmor.setArmor(player, 25, 160, true);
+                    player.getInventory().setItem(4, new ItemStack(Material.AIR));
                     data.setSPGauge(0);
+                    player.setExp(0.99F);
                     break;
                 case "ボムラッシュ":
-                    SuperArmor.setArmor(player, 10, 120, true);
-                    player.getInventory().setItem(0, new ItemStack(Material.AIR));
+                    BombRush.BombRushRunnable(player);
+                    player.getInventory().setItem(4, new ItemStack(Material.AIR));
                     data.setSPGauge(0);
+                    player.setExp(0.99F);
                     break;
             }
         }

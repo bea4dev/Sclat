@@ -28,6 +28,7 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import static org.bukkit.Bukkit.getServer;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -462,6 +463,7 @@ public class MatchMgr {
                     s3.setScore(1);
 
                     p.setScoreboard(scoreboard);
+                    
 
                     if(s == 60){
                         p.sendMessage("");
@@ -493,6 +495,7 @@ public class MatchMgr {
                     p.sendTitle(ChatColor.YELLOW + "=== Finish! ===", "", 3, 30, 10);
                     loc = p.getLocation();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
+                    p.getInventory().clear();
                 }
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);

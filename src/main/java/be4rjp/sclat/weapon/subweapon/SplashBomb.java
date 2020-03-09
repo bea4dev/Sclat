@@ -33,7 +33,8 @@ public class SplashBomb {
             @Override
             public void run(){
                 if(c == 0){
-                    p.setExp(p.getExp() - 0.59F);
+                    if(!DataMgr.getPlayerData(player).getIsBombRush())
+                        p.setExp(p.getExp() - 0.59F);
                     ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
                     bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
@@ -123,7 +124,7 @@ public class SplashBomb {
             }
         };
         
-        if(player.getExp() > 0.6)
+        if(player.getExp() > 0.6 || DataMgr.getPlayerData(player).getIsBombRush())
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);

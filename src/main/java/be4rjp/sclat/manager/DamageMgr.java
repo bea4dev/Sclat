@@ -12,16 +12,10 @@ import org.bukkit.entity.Player;
 public class DamageMgr {
     public static void SclatGiveDamage(Player player, double damage){
         PlayerData data = DataMgr.getPlayerData(player);
-        double armor = data.getArmor();
-        if(armor > 0){
-            if(armor < damage){
-                player.damage(damage - armor);
-                data.setArmor(0);
-            }
-            if(damage < armor)
-                data.setArmor(data.getArmor() - damage);
+        if(data.getArmor() > 0){
+            data.setArmor(data.getArmor() - damage);
         }
-        if(armor <= 0)
+        if(data.getArmor() <= 0)
             player.damage(damage);
         
     }

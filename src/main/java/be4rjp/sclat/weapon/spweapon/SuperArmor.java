@@ -21,7 +21,11 @@ public class SuperArmor {
         BukkitRunnable effect_r = new BukkitRunnable(){
             @Override
             public void run(){
-                
+                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player))
+                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getEyeLocation(), 2, 0.5, 1, 0.5, 2, bd);
+                }
             }
         };
         if(effect)
@@ -31,6 +35,7 @@ public class SuperArmor {
             @Override
             public void run(){
                 data.setArmor(0);
+                effect_r.cancel();
             }
         };
         task.runTaskLater(Main.getPlugin(), delay);

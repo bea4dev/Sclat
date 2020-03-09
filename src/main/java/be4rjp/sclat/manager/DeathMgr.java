@@ -79,7 +79,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
-                        SuperArmor.setArmor(t, 20, 100, false);
+                        SuperArmor.setArmor(t, 100, 100, false);
                         cancel();
                     }
                 }
@@ -125,7 +125,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
-                        SuperArmor.setArmor(t, 20, 100, false);
+                        SuperArmor.setArmor(t, 100, 100, false);
                         cancel();
                     }
                 }
@@ -164,7 +164,7 @@ public class DeathMgr {
                         t.setExp(0.99F);
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
-                        SuperArmor.setArmor(t, 20, 100, false);
+                        SuperArmor.setArmor(t, 100, 100, false);
                         cancel();
                     }
                 }

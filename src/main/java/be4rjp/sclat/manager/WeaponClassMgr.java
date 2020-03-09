@@ -17,11 +17,12 @@ public class WeaponClassMgr {
         for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
             String WeaponName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
             String SubWeaponName = conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName");
-            String SPWeaponName = conf.getMapConfig().getString("WeaponClass." + classname + ".SPWeaponName");
+            String SPWeaponName = conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName");
             WeaponClass wc = new WeaponClass(classname);
                 wc.setMainWeapon(DataMgr.getWeapon(WeaponName));
                 wc.setSubWeaponName(SubWeaponName);
                 wc.setSPWeaponName(SPWeaponName);
+            
             DataMgr.setWeaponClass(classname, wc);
         }
     }
