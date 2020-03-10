@@ -500,6 +500,11 @@ public class MatchMgr {
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
                 }
+                if(i == 46){
+                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                        p.hidePlayer(Main.getPlugin(), player);
+                    }
+                }
                 if(i == 46 && DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                     Match match = DataMgr.getPlayerData(p).getMatch();
                     int team0;
@@ -527,11 +532,9 @@ public class MatchMgr {
                         winteam = match.getTeam1();
                     }
                     
+                    
                     for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        p.hidePlayer(Main.getPlugin(), player);
-                    }
-                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        Animation.ResultAnimation(p, per++, 101 - per, team0code, team1code, winteam, hikiwake);
+                        Animation.ResultAnimation(player, per++, 101 - per, team0code, team1code, winteam, hikiwake);
                     }
 
                 }

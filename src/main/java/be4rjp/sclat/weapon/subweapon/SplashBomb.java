@@ -128,6 +128,14 @@ public class SplashBomb {
             }
         };
         
+        BukkitRunnable cooltime = new BukkitRunnable(){
+            @Override
+            public void run(){
+                DataMgr.getPlayerData(player).setCanUseSubWeapon(true);
+            }
+        };
+        cooltime.runTaskLater(Main.getPlugin(), 10);
+        
         if(player.getExp() > 0.6 || DataMgr.getPlayerData(player).getIsBombRush())
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else

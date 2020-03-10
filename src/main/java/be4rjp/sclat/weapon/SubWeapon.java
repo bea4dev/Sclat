@@ -26,12 +26,15 @@ public class SubWeapon implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
+            if(!data.getCanUseSubWeapon()) return;
             switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()) {
                 case "スプラッシュボム":
                     SplashBomb.SplashBomRunnable(player);
+                    data.setCanUseSubWeapon(false);
                     break;
                 case "クイックボム":
                     QuickBomb.QuickBomRunnable(player);
+                    data.setCanUseSubWeapon(false);
                     break;
             }
         }

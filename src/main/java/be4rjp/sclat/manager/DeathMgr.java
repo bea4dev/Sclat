@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  *
@@ -22,6 +23,9 @@ import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
  */
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
+        
+        if(target.hasPotionEffect(PotionEffectType.GLOWING))
+            target.removePotionEffect(PotionEffectType.GLOWING);
         
         if(type.equals("killed") || type.equals("subWeapon"))
             DataMgr.getPlayerData(shooter).addKillCount();

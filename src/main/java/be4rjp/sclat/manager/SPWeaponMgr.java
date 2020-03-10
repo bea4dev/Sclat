@@ -49,6 +49,7 @@ public class SPWeaponMgr {
                     if(!DataMgr.getPlayerData(p).getIsSP()){
                         setSPWeapon(p);
                         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8F, 2);
+                        p.sendMessage("§6§l！ スペシャルウエポン使用可能 ！");
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
@@ -70,7 +71,6 @@ public class SPWeaponMgr {
                 ism.setDisplayName("スーパーアーマー");
                 is.setItemMeta(ism);
                 p.getInventory().setItem(4, is); 
-                p.sendMessage("§6§l！ スペシャルウエポン使用可能 ！");
                 break;
             case "ボムラッシュ":
                 ItemStack is1 = new ItemStack(Material.FEATHER);
@@ -78,7 +78,13 @@ public class SPWeaponMgr {
                 ism1.setDisplayName("ボムラッシュ");
                 is1.setItemMeta(ism1);
                 p.getInventory().setItem(4, is1);
-                p.sendMessage("§6§l！ スペシャルウエポン使用可能 ！");
+                break;
+            case "スーパーセンサー":
+                ItemStack is2 = new ItemStack(Material.NETHER_STAR);
+                ItemMeta ism2 = is2.getItemMeta();
+                ism2.setDisplayName("スーパーセンサー");
+                is2.setItemMeta(ism2);
+                p.getInventory().setItem(4, is2);
                 break;
         }
     }

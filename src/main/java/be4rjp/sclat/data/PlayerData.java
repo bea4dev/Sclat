@@ -31,6 +31,7 @@ public class PlayerData {
     private int spgauge = 0;
     private boolean bombrush = false;
     private boolean sp = false;
+    private boolean canusesub = true;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -77,6 +78,8 @@ public class PlayerData {
     
     public boolean getIsSP(){return this.sp;}
     
+    public boolean getCanUseSubWeapon(){return this.canusesub;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -116,6 +119,8 @@ public class PlayerData {
     
     public void setIsSP(boolean is){this.sp = is;}
     
+    public void setCanUseSubWeapon(boolean is){this.canusesub = is;}
+    
     public void addKillCount(){this.killcount++;}
     
     public void addPaintCount(){this.paintcount++;}
@@ -137,6 +142,8 @@ public class PlayerData {
         this.paintcount = 0;
         this.armor = 0;
         this.spgauge = 0;
+        this.sp = false;
+        this.canusesub = true;
     }
     
 }
