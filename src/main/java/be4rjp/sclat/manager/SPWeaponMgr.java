@@ -7,6 +7,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -45,28 +46,40 @@ public class SPWeaponMgr {
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 if(data.getSPGauge() == 100){
-                    switch (data.getWeaponClass().getSPWeaponName()) {
-                        case "スーパーアーマー":
-                            ItemStack is = new ItemStack(Material.TOTEM_OF_UNDYING);
-                            ItemMeta ism = is.getItemMeta();
-                            ism.setDisplayName("スーパーアーマー");
-                            is.setItemMeta(ism);
-                            p.getInventory().setItem(4, is); 
-                            break;
-                        case "ボムラッシュ":
-                            ItemStack is1 = new ItemStack(Material.FEATHER);
-                            ItemMeta ism1 = is1.getItemMeta();
-                            ism1.setDisplayName("ボムラッシュ");
-                            is1.setItemMeta(ism1);
-                            p.getInventory().setItem(4, is1);
-                            break;
+                    if(!DataMgr.getPlayerData(p).getIsSP()){
+                        setSPWeapon(p);
+                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8F, 2);
                     }
-                    
+                    DataMgr.getPlayerData(p).setIsSP(true);
+                }else{
+                    DataMgr.getPlayerData(p).setIsSP(false);
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch())
                     cancel();
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 20);
+    }
+    
+    public static void setSPWeapon(Player p){
+        PlayerData data = DataMgr.getPlayerData(p);
+        switch (data.getWeaponClass().getSPWeaponName()){
+            case "スーパーアーマー":
+                ItemStack is = new ItemStack(Material.TOTEM_OF_UNDYING);
+                ItemMeta ism = is.getItemMeta();
+                ism.setDisplayName("スーパーアーマー");
+                is.setItemMeta(ism);
+                p.getInventory().setItem(4, is); 
+                p.sendMessage("§6§l！ スペシャルウエポン使用可能 ！");
+                break;
+            case "ボムラッシュ":
+                ItemStack is1 = new ItemStack(Material.FEATHER);
+                ItemMeta ism1 = is1.getItemMeta();
+                ism1.setDisplayName("ボムラッシュ");
+                is1.setItemMeta(ism1);
+                p.getInventory().setItem(4, is1);
+                p.sendMessage("§6§l！ スペシャルウエポン使用可能 ！");
+                break;
+        }
     }
 }

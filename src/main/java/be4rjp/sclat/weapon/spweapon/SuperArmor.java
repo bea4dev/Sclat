@@ -4,6 +4,9 @@ package be4rjp.sclat.weapon.spweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import org.bukkit.GameMode;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,10 +24,13 @@ public class SuperArmor {
         BukkitRunnable effect_r = new BukkitRunnable(){
             @Override
             public void run(){
-                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                if(!DataMgr.getPlayerData(player).isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE))
+                    cancel();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player))
-                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getEyeLocation(), 2, 0.5, 1, 0.5, 2, bd);
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player)){
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
+                        o_player.spawnParticle(Particle.REDSTONE, player.getEyeLocation(), 5, 0.5, 0.4, 0.5, 5, dustOptions);
+                    }
                 }
             }
         };
@@ -36,6 +42,7 @@ public class SuperArmor {
             public void run(){
                 data.setArmor(0);
                 effect_r.cancel();
+                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
             }
         };
         task.runTaskLater(Main.getPlugin(), delay);

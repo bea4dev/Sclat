@@ -80,6 +80,8 @@ public class DeathMgr {
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
                         SuperArmor.setArmor(t, 100, 100, false);
+                        if(DataMgr.getPlayerData(t).getSPGauge() == 100)
+                            SPWeaponMgr.setSPWeapon(t);
                         cancel();
                     }
                 }
@@ -126,6 +128,8 @@ public class DeathMgr {
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
                         SuperArmor.setArmor(t, 100, 100, false);
+                        if(DataMgr.getPlayerData(t).getSPGauge() == 100)
+                            SPWeaponMgr.setSPWeapon(t);
                         cancel();
                     }
                 }
@@ -165,6 +169,8 @@ public class DeathMgr {
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
                         SuperArmor.setArmor(t, 100, 100, false);
+                        if(DataMgr.getPlayerData(t).getSPGauge() == 100)
+                            SPWeaponMgr.setSPWeapon(t);
                         cancel();
                     }
                 }
@@ -203,6 +209,8 @@ public class DeathMgr {
                         t.setHealth(20);
                         WeaponClassMgr.setWeaponClass(t);
                         SuperArmor.setArmor(t, 20, 100, false);
+                        if(DataMgr.getPlayerData(t).getSPGauge() == 100)
+                            SPWeaponMgr.setSPWeapon(t);
                         cancel();
                     }
                 }

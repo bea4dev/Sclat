@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +45,9 @@ public class SplashBomb {
                 }
                 
                 if(gc == 40){
+                    //爆発音
+                    player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
+                    
                     //爆発エフェクト
                     List<Location> s_locs = Sphere.getSphere(drop.getLocation(), 5, 12);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

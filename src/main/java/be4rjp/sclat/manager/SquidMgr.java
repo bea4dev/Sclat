@@ -58,7 +58,7 @@ public class SquidMgr {
                     if(!is){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
                         is = true;
-                    }                                                                                   
+                    }                                                                      
                     
                         if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
                             p.setExp(p.getExp() + (float)conf.getConfig().getDouble("SquidRecovery"));

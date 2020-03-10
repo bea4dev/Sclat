@@ -13,6 +13,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,6 +61,9 @@ public class QuickBomb {
                     
                     //半径
                     double maxDist = 3;
+                    
+                    //爆発音
+                    player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                     
                     //爆発エフェクト
                     List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 20);

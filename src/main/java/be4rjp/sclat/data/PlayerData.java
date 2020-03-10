@@ -30,6 +30,7 @@ public class PlayerData {
     private double armor = 0;
     private int spgauge = 0;
     private boolean bombrush = false;
+    private boolean sp = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -74,6 +75,8 @@ public class PlayerData {
     
     public boolean getIsBombRush(){return this.bombrush;}
     
+    public boolean getIsSP(){return this.sp;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -110,6 +113,8 @@ public class PlayerData {
     public void setSPGauge(int spgauge){this.spgauge = spgauge;}
     
     public void setIsBombRush(boolean is){this.bombrush = is;}
+    
+    public void setIsSP(boolean is){this.sp = is;}
     
     public void addKillCount(){this.killcount++;}
     
