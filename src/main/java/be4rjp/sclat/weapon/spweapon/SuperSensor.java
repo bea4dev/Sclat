@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,5 +19,12 @@ public class SuperSensor {
             if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(o_player).getTeam().getID())
                 o_player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
         }
+        BukkitRunnable sound = new BukkitRunnable(){
+            @Override
+            public void run(){
+                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+            }
+        };
+        sound.runTaskLater(Main.getPlugin(), 200);
     }
 }

@@ -5,6 +5,11 @@ import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.spweapon.BombRush;
+import be4rjp.sclat.weapon.spweapon.SuperArmor;
+import be4rjp.sclat.weapon.spweapon.SuperSensor;
+import be4rjp.sclat.weapon.subweapon.QuickBomb;
+import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -85,6 +90,33 @@ public class SPWeaponMgr {
                 ism2.setDisplayName("スーパーセンサー");
                 is2.setItemMeta(ism2);
                 p.getInventory().setItem(4, is2);
+                break;
+        }
+    }
+    
+    public static void UseSPWeapon(Player player, String name){
+        PlayerData data = DataMgr.getPlayerData(player);
+        switch (name) {
+            case "スーパーアーマー":
+                SuperArmor.setArmor(player, 25, 160, true);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                data.setSPGauge(0);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "ボムラッシュ":
+                BombRush.BombRushRunnable(player);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                data.setSPGauge(0);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "スーパーセンサー":
+                SuperSensor.SuperSensorRunnable(player);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                data.setSPGauge(0);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
         }
     }

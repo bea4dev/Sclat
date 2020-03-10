@@ -377,6 +377,12 @@ public class MatchMgr {
                             //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                         }
                         
+                        if(s == 221){
+                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                p.showPlayer(Main.getPlugin(), player);
+                            }
+                        }
+                            
                         
                         if(s >= 221 && s <= 280){
                             p.getInventory().setItem(0, new ItemStack(org.bukkit.Material.AIR));
@@ -388,9 +394,6 @@ public class MatchMgr {
                         
                         if(s == 281){
                             //playerclass
-                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                p.showPlayer(Main.getPlugin(), player);
-                            }
                             WeaponClassMgr.setWeaponClass(p);
                             
                             

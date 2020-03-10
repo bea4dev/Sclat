@@ -24,13 +24,18 @@ public class SuperArmor {
         BukkitRunnable effect_r = new BukkitRunnable(){
             @Override
             public void run(){
-                if(!DataMgr.getPlayerData(player).isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE))
+                if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE))
                     cancel();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                         o_player.spawnParticle(Particle.REDSTONE, player.getEyeLocation(), 5, 0.5, 0.4, 0.5, 5, dustOptions);
                     }
+                }
+                if(data.getArmor() <= 0){
+                    player.playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 1.2F, 1.8F);
+                    player.sendMessage("§c§l！ アーマーが破壊された ！");
+                    cancel();
                 }
             }
         };

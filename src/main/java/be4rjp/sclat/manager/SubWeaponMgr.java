@@ -3,8 +3,11 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
+import be4rjp.sclat.weapon.subweapon.Sensor;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,8 +34,40 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("クイックボム");
                 break;
+            case "センサー":
+                is = new ItemStack(Material.DISPENSER);
+                ism = is.getItemMeta();
+                ism.setDisplayName("センサー");
+                break;
+            case "ポイズン":
+                is = new ItemStack(Material.PRISMARINE);
+                ism = is.getItemMeta();
+                ism.setDisplayName("ポイズン");
+                break;
         }
         is.setItemMeta(ism);
         player.getInventory().setItem(2, is);  
+    }
+    
+    public static void UseSubWeapon(Player player, String name){
+        PlayerData data = DataMgr.getPlayerData(player);
+        switch (name) {
+            case "スプラッシュボム":
+                SplashBomb.SplashBomRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "クイックボム":
+                QuickBomb.QuickBomRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "センサー":
+                Sensor.SensorRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "ポイズン":
+                Poison.PoisonRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+        }
     }
 }

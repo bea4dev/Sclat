@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.SubWeaponMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -37,7 +38,7 @@ public class MainWeapon implements Listener{
     public void onClickWeapon(PlayerInteractEvent e){
         Player player = e.getPlayer();
         Action action = e.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(equalWeapon(player)){
                 PlayerData data = DataMgr.getPlayerData(player);
                 data.setTick(0);
@@ -49,6 +50,9 @@ public class MainWeapon implements Listener{
                 }  
             }
         }
+        if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK))
+            if(DataMgr.getPlayerData(player).isInMatch())
+                SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
         
     }
     

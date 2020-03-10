@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.SubWeaponMgr;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import org.bukkit.entity.Player;
@@ -27,16 +28,7 @@ public class SubWeapon implements Listener{
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(!data.getCanUseSubWeapon()) return;
-            switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()) {
-                case "スプラッシュボム":
-                    SplashBomb.SplashBomRunnable(player);
-                    data.setCanUseSubWeapon(false);
-                    break;
-                case "クイックボム":
-                    QuickBomb.QuickBomRunnable(player);
-                    data.setCanUseSubWeapon(false);
-                    break;
-            }
+            SubWeaponMgr.UseSubWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
         }
     }
 }

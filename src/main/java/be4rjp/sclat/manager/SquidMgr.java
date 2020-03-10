@@ -5,8 +5,11 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -46,6 +49,18 @@ public class SquidMgr {
                     }
                     return;
                 }
+                
+                Block down = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
+                if(DataMgr.getBlockDataMap().containsKey(down) && !down.getType().equals(data.getTeam().getTeamColor().getWool()) && p.getGameMode().equals(GameMode.ADVENTURE)){
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 2));
+                }else{
+                    if(p.hasPotionEffect(PotionEffectType.POISON))
+                        p.removePotionEffect(PotionEffectType.POISON);
+                    if(p.hasPotionEffect(PotionEffectType.SLOW))
+                        p.removePotionEffect(PotionEffectType.SLOW);
+                }
+                
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     data.setIsSquid(true);
                     
@@ -56,7 +71,7 @@ public class SquidMgr {
                 if(data.getIsOnInk() && data.getIsSquid()){
                     is2 = false;
                     if(!is){
-                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 9F);  
                         is = true;
                     }                                                                      
                     
