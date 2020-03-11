@@ -122,11 +122,11 @@ public class GameMgr implements Listener{
     
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
+        event.setCancelled(true);
         Player player = (Player)event.getPlayer();
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.isInMatch() && data.getSPGauge() == 100)
             SPWeaponMgr.UseSPWeapon(player, data.getWeaponClass().getSPWeaponName());
-        event.setCancelled(true);
     }
     
 }

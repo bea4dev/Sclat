@@ -117,7 +117,7 @@ public class Charger {
             
             
             
-            double maxDist = 2;
+            double maxDist = 1.7;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                 if(!DataMgr.getPlayerData(target).isInMatch())
                     continue;
