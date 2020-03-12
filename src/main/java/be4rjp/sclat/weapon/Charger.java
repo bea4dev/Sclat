@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -26,6 +27,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -53,6 +56,13 @@ public class Charger {
                     if(charge < max)
                         charge++;
                     
+                    if(data.getWeaponClass().getMainWeapon().getScope()){
+                        if(charge != max)
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, (int)charge / 2));
+                        else
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 2));
+                    }
+                    
                     wm.setDisplayName(wm.getDisplayName() + "§7[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
@@ -73,6 +83,8 @@ public class Charger {
                     }
                 }
                 if(data.getTick() == 6 && data.isInMatch()){
+                    if(player.hasPotionEffect(PotionEffectType.SLOW))
+                        player.removePotionEffect(PotionEffectType.SLOW);
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
                         Charger.Shoot(p, charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * charge);
@@ -94,6 +106,8 @@ public class Charger {
     }
     
     public static void Shoot(Player player, int reach, double damage){
+        
+        
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 5);
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
         ArrayList<Vector> positions = rayTrace.traverse(reach,0.2);
@@ -152,7 +166,7 @@ public class Charger {
             
             
         }
-        
+       
         
     }
             

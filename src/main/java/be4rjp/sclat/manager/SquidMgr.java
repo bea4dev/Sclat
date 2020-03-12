@@ -82,7 +82,11 @@ public class SquidMgr {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                         p.setFoodLevel(20);                                                   
                         p.setSprinting(true);
-                        p.setWalkSpeed((float)conf.getConfig().getDouble("SquidSpeed"));
+                        final double speed = conf.getConfig().getDouble("SquidSpeed");
+                        if(!DataMgr.getPlayerData(p).getPoison())
+                            p.setWalkSpeed((float)speed);
+                        else
+                            p.setWalkSpeed((float)(speed - speed / 3));
                         
                         
                     
@@ -113,8 +117,14 @@ public class SquidMgr {
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setFoodLevel(4);
-                    if(!data.getIsHolding() && !data.getCanPaint())
-                        p.setWalkSpeed((float)conf.getConfig().getDouble("PlayerWalkSpeed"));
+                    
+                    final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");
+                    
+                    if((!data.getIsHolding() && !data.getCanPaint()) && !DataMgr.getPlayerData(p).getPoison())
+                        p.setWalkSpeed((float)speed);
+                    if(DataMgr.getPlayerData(p).getPoison())
+                        p.setWalkSpeed((float)(speed - speed / 3));
+
                     
                     p.setAllowFlight(false);
                     p.setFlying(false);

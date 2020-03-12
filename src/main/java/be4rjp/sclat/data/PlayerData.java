@@ -33,6 +33,8 @@ public class PlayerData {
     private boolean sp = false;
     private boolean canusesub = true;
     private boolean charge = false;
+    private boolean poison = false;
+    private boolean canrollershoot = true;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -83,6 +85,10 @@ public class PlayerData {
     
     public boolean getIsCharging(){return this.charge;}
     
+    public boolean getPoison(){return this.poison;}
+    
+    public boolean getCanRollerShoot(){return this.canrollershoot;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -126,6 +132,10 @@ public class PlayerData {
     
     public void setIsCharging(boolean is){this.charge = is;}
     
+    public void setPoison(boolean is){this.poison = is;}
+    
+    public void setCanRollerShoot(boolean is){this.canrollershoot = is;}
+    
     public void addKillCount(){this.killcount++;}
     
     public void addPaintCount(){this.paintcount++;}
@@ -149,6 +159,9 @@ public class PlayerData {
         this.spgauge = 0;
         this.sp = false;
         this.canusesub = true;
+        this.charge = false;
+        this.poison = false;
+        this.canrollershoot = true;
     }
     
 }

@@ -34,6 +34,7 @@ public class MainWeaponMgr {
             float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
             
             
+            
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
             ItemStack is = new ItemStack(WeaponMaterial);
@@ -56,6 +57,11 @@ public class MainWeaponMgr {
             mw.setRollerDamage(rollerdamage);
             mw.setRollerNeedInk(rollerneedink);
             mw.setCanTatehuri(tatehuri);
+            
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
+                mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));
+                
+            
             DataMgr.setMainWeapon(weaponname, mw);
         }
     }

@@ -25,6 +25,7 @@ public class MainWeapon {
     private boolean Tatehuri;
     private double rollerdamage;
     private float rollerneedink;
+    private boolean scope;
     
     
     
@@ -64,6 +65,8 @@ public class MainWeapon {
     
     public float getRollerNeedInk(){return this.rollerneedink;}
     
+    public boolean getScope(){return this.scope;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -98,5 +101,7 @@ public class MainWeapon {
     public void setRollerDamage(double damage){this.rollerdamage = damage;}
     
     public void setRollerNeedInk(float ink){this.rollerneedink = ink;}
+    
+    public void setScope(boolean is){this.scope = is;}
     
 }

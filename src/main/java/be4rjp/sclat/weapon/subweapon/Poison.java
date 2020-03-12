@@ -85,7 +85,9 @@ public class Poison {
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Shooter() && DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
-                                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 180, 2));
+                                target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 2));
+                                DataMgr.getPlayerData(target).setPoison(true);
+                                PoisonRunnable2(target);
                             }
                             
                         }
@@ -129,5 +131,15 @@ public class Poison {
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+    }
+    
+    public static void PoisonRunnable2(Player player){
+        BukkitRunnable cooltime = new BukkitRunnable(){
+            @Override
+            public void run(){
+                DataMgr.getPlayerData(player).setPoison(false);
+            }
+        };
+        cooltime.runTaskLater(Main.getPlugin(), 180);
     }
 }

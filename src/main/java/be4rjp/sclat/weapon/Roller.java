@@ -199,15 +199,30 @@ public class Roller {
                 p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 1F, 1F);
                 if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
                     return;
-                for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
-                    Roller.Shoot(p);
+                if(data.getCanRollerShoot()){
+                    data.setCanRollerShoot(false);
+                    for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
+                        Roller.Shoot(p);
+                    }
+                    ShootRunnable(p);
+                    data.setCanPaint(true);
                 }
-                data.setCanPaint(true);
 
             }
         
         };
         task.runTaskLater(Main.getPlugin(), pdata.getWeaponClass().getMainWeapon().getShootTick());
+    }
+    
+    public static void ShootRunnable(Player player){
+        PlayerData data = DataMgr.getPlayerData(player);
+        BukkitRunnable task = new BukkitRunnable(){
+            @Override
+            public void run(){
+                data.setCanRollerShoot(true);
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getShootTick());
     }
     
     public static void Shoot(Player player){
