@@ -32,6 +32,7 @@ public class PlayerData {
     private boolean bombrush = false;
     private boolean sp = false;
     private boolean canusesub = true;
+    private boolean charge = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -80,6 +81,8 @@ public class PlayerData {
     
     public boolean getCanUseSubWeapon(){return this.canusesub;}
     
+    public boolean getIsCharging(){return this.charge;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -120,6 +123,8 @@ public class PlayerData {
     public void setIsSP(boolean is){this.sp = is;}
     
     public void setCanUseSubWeapon(boolean is){this.canusesub = is;}
+    
+    public void setIsCharging(boolean is){this.charge = is;}
     
     public void addKillCount(){this.killcount++;}
     

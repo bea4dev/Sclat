@@ -127,7 +127,7 @@ public class MatchMgr {
     }
     
     public static synchronized void MatchSetup(){
-        int id = matchcount;
+        final int id = matchcount;
         Match match = new Match(id);
         Team team0 = new Team(id * 2);
         Team team1 = new Team(id * 2 + 1);
@@ -154,6 +154,29 @@ public class MatchMgr {
         }
         
         DataMgr.setMatch(id, match);
+        
+        //lobby待機者用
+        final int id2 = Integer.MAX_VALUE;
+        Match lobby_m = new Match(id2);
+        Team lobby_t0 = new Team(id2);
+        Team lobby_t1 = new Team(id2 - 1);
+        DataMgr.setTeam(id2, lobby_t0);
+        DataMgr.setTeam(id2 - 1, lobby_t1);
+        
+        DataMgr.ColorShuffle();
+        Color lc0 = DataMgr.getColorRandom(0);
+        Color lc1 = DataMgr.getColorRandom(1);
+        team0.setTeamColor(lc0);
+        team1.setTeamColor(lc1);
+        
+        lobby_m.setTeam0(lobby_t0);
+        lobby_m.setTeam1(lobby_t1);
+        
+        MapData map1 = DataMgr.getMapRandom(0);
+        lobby_m.setMapData(map);
+        
+        
+        DataMgr.setMatch(id2, lobby_m);
         
         //TeamLoc teamloc = new TeamLoc(map);
         //teamloc.SetupTeam0Loc();
@@ -647,6 +670,10 @@ public class MatchMgr {
                     for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         p.showPlayer(Main.getPlugin(), player);
                     }
+                    
+                    Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);
+                    DataMgr.getPlayerData(p).setMatch(match);
+                    DataMgr.getPlayerData(p).setTeam(match.getTeam0());
                     
                     cancel();
                     

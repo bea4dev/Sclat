@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SuperSensor {
     public static void SuperSensorRunnable(Player player){
         for(Player o_player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-            if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(o_player).getTeam())
+            if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(o_player).getTeam() && DataMgr.getPlayerData(o_player).isInMatch())
                 o_player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
         }
         BukkitRunnable sound = new BukkitRunnable(){

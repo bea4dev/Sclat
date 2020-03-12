@@ -48,10 +48,12 @@ public class Charger {
                 if(data.getTick() <= 5 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
                     ItemMeta wm = w.getItemMeta();
+                    
                     //data.setTick(data.getTick() + 1);
                     if(charge < max)
                         charge++;
-                    wm.setDisplayName(wm.getDisplayName() + "[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
+                    
+                    wm.setDisplayName(wm.getDisplayName() + "§7[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
                     RayTrace rayTrace = new RayTrace(p.getEyeLocation().toVector(),p.getEyeLocation().getDirection());

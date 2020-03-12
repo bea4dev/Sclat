@@ -1,8 +1,10 @@
 package be4rjp.sclat.manager;
 
+import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
 import be4rjp.sclat.weapon.Shooter;
@@ -13,25 +15,24 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+
 
 
 
@@ -89,6 +90,9 @@ public class GameMgr implements Listener{
         
         //SquidMgr.SquidRunnable(player);
         
+        Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);
+        data.setMatch(match);
+        data.setTeam(match.getTeam0());
         
       
         
@@ -129,4 +133,25 @@ public class GameMgr implements Listener{
             SPWeaponMgr.UseSPWeapon(player, data.getWeaponClass().getSPWeaponName());
     }
     
+    //sign
+    @EventHandler
+    public void onClickSign(PlayerInteractEvent e){
+        Player player = (Player) e.getPlayer();
+        Action action = e.getAction();
+        if(e.getClickedBlock() != null){
+            Sign sign = (Sign) e.getClickedBlock().getState();
+            String line = sign.getLine(2);
+            switch(line){
+                case "[ Join ]":
+                    MatchMgr.PlayerJoinMatch(player);
+                    break;
+                case "[ Chose Weapon ]":
+                    OpenGUI.openWeaponSelect(player);
+                    break;
+                case "[ OpenMenu ]":
+                    OpenGUI.openMenu(player);
+                    break;
+            }
+        }
+    }
 }
