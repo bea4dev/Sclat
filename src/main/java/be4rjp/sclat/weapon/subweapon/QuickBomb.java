@@ -43,7 +43,7 @@ public class QuickBomb {
                         p.setExp(p.getExp() - 0.39F);
                     ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
-                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                    //bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                     bom.setItemMeta(bom_m);
                     drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
                     drop.setVelocity(p.getEyeLocation().getDirection());
@@ -51,8 +51,22 @@ public class QuickBomb {
                 }
                 
                 if(c != 0){
-                    if(p_vec.getX() != 0 && p_vec.getZ() != 0 && (p_vec.getX() * (drop.getLocation().getX() - x) == 0 || p_vec.getZ() * (drop.getLocation().getZ() - z) == 0))
-                        collision = true;
+                    if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
+                        if(p_vec.getX() == 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() == 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                    }
                 }
                 
                 
