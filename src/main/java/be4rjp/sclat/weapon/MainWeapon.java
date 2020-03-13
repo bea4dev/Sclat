@@ -103,7 +103,10 @@ public class MainWeapon implements Listener{
             Player player = (Player) e.getEntity();
             if (e.getCause() == DamageCause.VOID) {
                 e.setCancelled(true);
-                DeathMgr.PlayerDeathRunnable(player, player, "fall");
+                if(DataMgr.getPlayerData(player).isInMatch())
+                    DeathMgr.PlayerDeathRunnable(player, player, "fall");
+                else
+                    player.teleport(Main.lobby);
                 
             }
         }

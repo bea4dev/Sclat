@@ -77,7 +77,7 @@ public class GameMgr implements Listener{
         player.setWalkSpeed(0.2F);
         SquidMgr.SquidRunnable(player);
         
-        Main.getPlugin().getLogger().info(Main.lobby.getWorld().getName());
+        //Main.getPlugin().getLogger().info(Main.lobby.getWorld().getName());
         
         player.teleport(Main.lobby);
         ItemStack join = new ItemStack(Material.CHEST);

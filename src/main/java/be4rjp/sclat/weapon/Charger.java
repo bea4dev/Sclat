@@ -58,9 +58,9 @@ public class Charger {
                     
                     if(data.getWeaponClass().getMainWeapon().getScope()){
                         if(charge != max)
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, (int)charge / 2));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, (int)charge / 3));
                         else
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 2));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 3));
                     }
                     
                     wm.setDisplayName(wm.getDisplayName() + "§7[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
@@ -133,7 +133,7 @@ public class Charger {
             
             
             
-            double maxDist = 1.7;
+            double maxDist = 2;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                 if(!DataMgr.getPlayerData(target).isInMatch())
                     continue;

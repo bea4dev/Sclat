@@ -33,6 +33,8 @@ public class ClickListener implements Listener{
             OpenGUI.openWeaponSelect(player);
         if(name.equals("設定 / SETTINGS"))
             OpenGUI.openSettingsUI(player);
+        if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOUCEPACK"))
+            player.setResourcePack("https://github.com/Be4rJP/Sclat/releases/download/0/Sclat.zip");
         if(event.getClickedInventory().getTitle().equals("武器選択")){
             DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             player.sendMessage(name + "を選択しました");

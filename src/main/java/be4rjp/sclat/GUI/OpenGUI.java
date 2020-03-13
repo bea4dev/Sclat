@@ -38,6 +38,13 @@ public class OpenGUI {
         w.setItemMeta(wmeta);
         inv.setItem(6, w);
         player.openInventory(inv);
+        
+        ItemStack t = new ItemStack(Material.GRASS_BLOCK);
+        ItemMeta tmeta = t.getItemMeta();
+        tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOUCEPACK");
+        t.setItemMeta(tmeta);
+        inv.setItem(8, t);
+        player.openInventory(inv);
     }
     public static void openWeaponSelect(Player player){
         int slotnum = 0;
