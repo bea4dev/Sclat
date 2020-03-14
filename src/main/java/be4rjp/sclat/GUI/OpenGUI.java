@@ -20,7 +20,7 @@ public class OpenGUI {
     public static void openMenu(Player player){
         Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
         
-        ItemStack join = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+        ItemStack join = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("試合に参加 / JOIN THE MATCH");
         join.setItemMeta(joinmeta);
