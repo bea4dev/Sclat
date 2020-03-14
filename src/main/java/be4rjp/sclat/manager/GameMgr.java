@@ -46,7 +46,7 @@ public class GameMgr implements Listener{
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         if(DataMgr.getPlayerDataMap().containsKey(player)){
-            if(DataMgr.getPlayerData(player).isInMatch())
+            if(DataMgr.getPlayerData(player).getIsJoined())
                 return;
         }
         player.setGameMode(GameMode.ADVENTURE);
@@ -145,12 +145,16 @@ public class GameMgr implements Listener{
                 case "[ Join ]":
                     MatchMgr.PlayerJoinMatch(player);
                     break;
-                case "[ Chose Weapon ]":
+                case "[ Weapon Select ]":
                     OpenGUI.openWeaponSelect(player);
                     break;
                 case "[ OpenMenu ]":
                     OpenGUI.openMenu(player);
                     break;
+                case "Click to Download":
+                    player.setResourcePack("https://github.com/Be4rJP/Sclat/releases/download/0/Sclat.zip");
+                    break;
+                    
             }
         }
     }

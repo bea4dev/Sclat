@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +34,7 @@ public class Poison {
             double x = 0;
             double z = 0;
             boolean collision = false;
+            boolean block_check = false;
             int c = 0;
             Item drop;
             @Override
@@ -49,13 +52,38 @@ public class Poison {
                 }
                 
                 if(c != 0){
-                    if(p_vec.getX() != 0 && p_vec.getZ() != 0 && (p_vec.getX() * (drop.getLocation().getX() - x) == 0 || p_vec.getZ() * (drop.getLocation().getZ() - z) == 0))
-                        collision = true;
+                    if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
+                        if(p_vec.getX() == 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() == 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                    }
                 }
                 
                 
                 
-                if(drop.isOnGround() || collision){
+                Block block = drop.getLocation().getBlock();
+                Block block1 = block.getRelative(BlockFace.UP);
+                Block block2 = block.getRelative(BlockFace.DOWN);
+                Block block3 = block.getRelative(BlockFace.EAST);
+                Block block4 = block.getRelative(BlockFace.SOUTH);
+                Block block5 = block.getRelative(BlockFace.NORTH);
+                Block block6 = block.getRelative(BlockFace.WEST);
+                if(!block.getType().equals(Material.AIR) || !block1.getType().equals(Material.AIR) || !block2.getType().equals(Material.AIR) || !block3.getType().equals(Material.AIR) || !block4.getType().equals(Material.AIR) || !block5.getType().equals(Material.AIR) || !block6.getType().equals(Material.AIR))
+                    block_check = true;
+                
+                
+                if((drop.isOnGround() || collision) && block_check){
                     
                     //半径
                     double maxDist = 5;

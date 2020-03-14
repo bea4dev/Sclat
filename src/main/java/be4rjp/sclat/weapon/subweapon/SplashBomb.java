@@ -44,6 +44,8 @@ public class SplashBomb {
                     drop.setVelocity(p.getEyeLocation().getDirection());
                 }
                 
+                
+                
                 if(gc == 40){
                     //爆発音
                     player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);

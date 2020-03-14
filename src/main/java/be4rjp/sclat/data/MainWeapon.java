@@ -26,6 +26,7 @@ public class MainWeapon {
     private double rollerdamage;
     private float rollerneedink;
     private boolean scope;
+    private double exh;
     
     
     
@@ -67,6 +68,8 @@ public class MainWeapon {
     
     public boolean getScope(){return this.scope;}
     
+    public double getBlasterExHankei(){return this.exh;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -103,5 +106,7 @@ public class MainWeapon {
     public void setRollerNeedInk(float ink){this.rollerneedink = ink;}
     
     public void setScope(boolean is){this.scope = is;}
+    
+    public void setBlasterExHankei(double d){this.exh = d;}
     
 }

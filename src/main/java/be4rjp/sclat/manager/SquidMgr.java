@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -73,6 +74,7 @@ public class SquidMgr {
                     if(!is){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 9F);  
                         is = true;
+                        p.getEquipment().setHelmet(new ItemStack(Material.AIR));
                     }                                                                      
                     
                         if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
@@ -110,6 +112,7 @@ public class SquidMgr {
                     if(!is2){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
                         is2 = true;
+                        p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
                     }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))

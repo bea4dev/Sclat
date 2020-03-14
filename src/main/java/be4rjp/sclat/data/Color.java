@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -17,6 +18,8 @@ public class Color {
     private Material wool;
     private org.bukkit.Color bukkitcolor;
     private Material glass;
+    private Material concrete;
+    private ItemStack bougu;
     
     public Color(String colorname){this.colorname = colorname;}
     
@@ -30,6 +33,10 @@ public class Color {
     
     public Material getGlass(){return glass;}
     
+    public Material getConcrete(){return concrete;}
+    
+    public ItemStack getBougu(){return bougu;}
+    
     public org.bukkit.Color getBukkitColor(){return bukkitcolor;}
     
     
@@ -40,6 +47,10 @@ public class Color {
     public void setIsUsed(boolean isused){isUsed = isused;}
     
     public void setColorCode(String code){colorcode = code;}
+    
+    public void setConcrete(Material conc){this.concrete = conc;}
+    
+    public void setBougu(ItemStack bougu){this.bougu = bougu;}
     
     public void setBukkitColor(org.bukkit.Color color){this.bukkitcolor = color;}
     

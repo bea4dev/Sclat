@@ -41,7 +41,7 @@ public class OpenGUI {
         
         ItemStack t = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta tmeta = t.getItemMeta();
-        tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOUCEPACK");
+        tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK");
         t.setItemMeta(tmeta);
         inv.setItem(8, t);
         player.openInventory(inv);

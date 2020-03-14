@@ -32,6 +32,7 @@ public class MainWeaponMgr {
             boolean tatehuri = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".RollerTatehuri");
             double rollerdamage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerDamage");
             float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
+            double exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
             
             
             
@@ -57,6 +58,7 @@ public class MainWeaponMgr {
             mw.setRollerDamage(rollerdamage);
             mw.setRollerNeedInk(rollerneedink);
             mw.setCanTatehuri(tatehuri);
+            mw.setBlasterExHankei(exh);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

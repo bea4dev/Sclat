@@ -11,7 +11,7 @@ import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
-import be4rjp.sclat.data.Team;
+
 import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
@@ -29,6 +29,7 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Material;
+import be4rjp.sclat.data.Team;
 import org.bukkit.Sound;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -45,7 +46,7 @@ public class MatchMgr {
     
     public static int matchcount = 0;
     public static int mapcount = 0;
-    
+
     
     
     public static void PlayerJoinMatch(Player player){
@@ -60,6 +61,8 @@ public class MatchMgr {
             
         match.addPlayerCount();
         int playercount = match.getPlayerCount();
+        
+            
         if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
             data.setPlayerNumber(playercount);
             
@@ -430,6 +433,8 @@ public class MatchMgr {
                                 Roller.RollPaintRunnable(p);
                             }
                             
+                            p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
+                            
                             SuperArmor.setArmor(p, 20, 100, false);
                             SPWeaponMgr.SPWeaponRunnable(p);
                             
@@ -441,6 +446,10 @@ public class MatchMgr {
                             p.setExp(0.99F);
                             InMatchCounter(p);
                             p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
+                            
+                            
+                            p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
+                            
                             cancel();
                         }
                         
@@ -518,10 +527,12 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){
-                    p.sendTitle(ChatColor.YELLOW + "=== Finish! ===", "", 3, 30, 10);
+                    p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
                     loc = p.getLocation();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
                     p.getInventory().clear();
+                    p.setPlayerListName(p.getDisplayName());
+                        
                 }
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
