@@ -667,8 +667,6 @@ public class MatchMgr {
                     }
                     
                     DataMgr.getPlayerData(p).reset();
-                    
-                    DataMgr.getPlayerData(p).setIsJoined(false);
                     DataMgr.getPlayerData(p).setWeaponClass(wc);
                     
                     p.setWalkSpeed(0.2F);
@@ -682,9 +680,7 @@ public class MatchMgr {
                         p.showPlayer(Main.getPlugin(), player);
                     }
                     
-                    Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);
-                    DataMgr.getPlayerData(p).setMatch(match);
-                    DataMgr.getPlayerData(p).setTeam(match.getTeam0());
+                    
                     
                     cancel();
                     

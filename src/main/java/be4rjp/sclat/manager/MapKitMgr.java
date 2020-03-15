@@ -49,7 +49,7 @@ public class MapKitMgr {
         loc.setPitch(65);
         player.teleport(loc);
         
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, 10));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100000, 10));
         
         DataMgr.getPlayerData(player).setPlayerMapLoc(player.getLocation());
     }
@@ -57,8 +57,8 @@ public class MapKitMgr {
     public static Vector getMapLocationVector(Player player){
             Location loc = DataMgr.getPlayerData(player).getPlayerMapLoc();
             Location ploc = player.getLocation();
-            int x = (int)((ploc.getYaw() - loc.getYaw())*3);
-            int y = (int)((ploc.getPitch() - loc.getPitch())*3);
+            int x = (int)((ploc.getYaw() - loc.getYaw())*3/2);
+            int y = (int)((ploc.getPitch() - loc.getPitch())*3/2);
             if(x > 128)
                 x = 128;
             if(x < -128)

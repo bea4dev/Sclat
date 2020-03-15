@@ -9,6 +9,8 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MapKitMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
+import be4rjp.sclat.raytrace.RayTrace;
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -41,20 +43,38 @@ public class AirStrike {
         Vector vec = MapKitMgr.getMapLocationVector(player);
         //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
         int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
-        //Location loc = new Location(player.getWorld(), vec.getBlockX(), y, vec.getBlockX());
-        BukkitRunnable effect = new BukkitRunnable(){
+        Location tloc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX(), y, player.getLocation().getBlockZ() + vec.getBlockZ());
+        BukkitRunnable task = new BukkitRunnable(){
             int c = 0;
             @Override
             public void run(){
-                double random = 20;
-                Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + Math.random() * random - random/2, y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + Math.random() * random - random/2);
+                double random = 17;
+                Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
                 if(c == 15)
                     cancel();
                 c++;
             }
         };
-        effect.runTaskTimer(Main.getPlugin(), 50, 10);
+        task.runTaskTimer(Main.getPlugin(), 50, 10);
+        
+        BukkitRunnable effect = new BukkitRunnable(){
+            int c = 0;
+            @Override
+            public void run(){
+                RayTrace rayTrace = new RayTrace(tloc.toVector(),new Vector(0, 1, 0));
+                ArrayList<Vector> positions = rayTrace.traverse(50, 0.8);
+                check : for(int i = 0; i < positions.size();i++){
+                    Location position = positions.get(i).toLocation(player.getLocation().getWorld());
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor(), 1);
+                    player.getWorld().spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 1, dustOptions);
+                }
+                if(c == 150)
+                    cancel();
+                c++;
+            }
+        };
+        effect.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
     public static void StrikeRunnable(Player player, Location loc){

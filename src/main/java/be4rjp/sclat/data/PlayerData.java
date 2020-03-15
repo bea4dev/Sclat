@@ -156,6 +156,7 @@ public class PlayerData {
         this.inmatch = false;
         this.isonink = false;
         this.isHolding = false;
+        this.isjoined = false;
         this.canpaint = false;
         this.canshoot = true;
         this.killcount = 0;
