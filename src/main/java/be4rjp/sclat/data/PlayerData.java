@@ -35,6 +35,7 @@ public class PlayerData {
     private boolean charge = false;
     private boolean poison = false;
     private boolean canrollershoot = true;
+    private Location maploc;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -89,6 +90,8 @@ public class PlayerData {
     
     public boolean getCanRollerShoot(){return this.canrollershoot;}
     
+    public Location getPlayerMapLoc(){return this.maploc;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -135,6 +138,8 @@ public class PlayerData {
     public void setPoison(boolean is){this.poison = is;}
     
     public void setCanRollerShoot(boolean is){this.canrollershoot = is;}
+    
+    public void setPlayerMapLoc(Location loc){this.maploc = loc;}
     
     public void addKillCount(){this.killcount++;}
     

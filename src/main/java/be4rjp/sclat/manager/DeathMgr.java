@@ -26,6 +26,8 @@ public class DeathMgr {
         
         if(target.hasPotionEffect(PotionEffectType.GLOWING))
             target.removePotionEffect(PotionEffectType.GLOWING);
+        if(target.hasPotionEffect(PotionEffectType.SLOW))
+            target.removePotionEffect(PotionEffectType.SLOW);
         
         if(type.equals("killed") || type.equals("subWeapon"))
             DataMgr.getPlayerData(shooter).addKillCount();

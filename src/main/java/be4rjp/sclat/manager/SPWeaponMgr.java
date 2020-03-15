@@ -91,6 +91,13 @@ public class SPWeaponMgr {
                 is2.setItemMeta(ism2);
                 p.getInventory().setItem(4, is2);
                 break;
+            case "インクストライク":
+                ItemStack is3 = new ItemStack(Material.NETHER_STAR);
+                ItemMeta ism3 = is3.getItemMeta();
+                ism3.setDisplayName("インクストライク");
+                is3.setItemMeta(ism3);
+                p.getInventory().setItem(4, is3);
+                break;
         }
     }
     
@@ -114,6 +121,12 @@ public class SPWeaponMgr {
             case "スーパーセンサー":
                 SuperSensor.SuperSensorRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                data.setSPGauge(0);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "インクストライク":
+                MapKitMgr.setMapKit(player);
                 data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
