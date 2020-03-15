@@ -5,6 +5,7 @@ import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.spweapon.AirStrike;
 import be4rjp.sclat.weapon.spweapon.BombRush;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
@@ -130,6 +131,9 @@ public class SPWeaponMgr {
                 data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+             case "カーソルを合わせて右クリックで発射":
+                AirStrike.AirStrikeRunnable(player);
                 break;
         }
     }

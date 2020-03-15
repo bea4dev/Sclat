@@ -15,6 +15,9 @@ import org.bukkit.map.MapCursorCollection;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.map.MinecraftFont;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -33,6 +36,7 @@ public class MapKitMgr {
         ItemStack item = new ItemStack(Material.FILLED_MAP);
         MapMeta meta = (MapMeta) item.getItemMeta();
         meta.setMapId(view.getId());
+        meta.setDisplayName("カーソルを合わせて右クリックで発射");
         item.setItemMeta(meta);
         
         for (int count = 0; count < 9; count++){
@@ -42,10 +46,29 @@ public class MapKitMgr {
         player.updateInventory();
         
         Location loc = player.getLocation();
-        loc.setPitch(20);
+        loc.setPitch(65);
         player.teleport(loc);
         
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, 10));
+        
         DataMgr.getPlayerData(player).setPlayerMapLoc(player.getLocation());
+    }
+    
+    public static Vector getMapLocationVector(Player player){
+            Location loc = DataMgr.getPlayerData(player).getPlayerMapLoc();
+            Location ploc = player.getLocation();
+            int x = (int)((ploc.getYaw() - loc.getYaw())*3);
+            int y = (int)((ploc.getPitch() - loc.getPitch())*3);
+            if(x > 128)
+                x = 128;
+            if(x < -128)
+                x = -128;
+            if(y > 128)
+                y = 128;
+            if(y < -128)
+                y = -128;
+            
+            return new Vector(x, 0, y);
     }
     
 
