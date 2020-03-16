@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
  */
 public class DataMgr {
     private static Map<Player, PlayerData> playerdata = new HashMap<>();
+    private static Map<String, PlayerData> uuiddata = new HashMap<>();
     private static Map<Integer, Match> matchdata = new HashMap<>();
     private static Map<Integer, Team> teamdata = new HashMap<>();
     private static Map<String, Color> colordata = new HashMap<>();  
@@ -29,6 +30,7 @@ public class DataMgr {
     private static List<MapData> maplist = new ArrayList<>();
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}
+    public static PlayerData getUUIDData(String uuid){return uuiddata.get(uuid);}
     public static Match getMatchFromId(int id){return matchdata.get(id);}
     public static Team getTeamFromId(int id){return teamdata.get(id);}
     public static Color getColor(String name){return colordata.get(name);}
@@ -41,6 +43,7 @@ public class DataMgr {
     
     
     public static void setPlayerData(Player player, PlayerData data){playerdata.put(player, data);}
+    public static void setUUIDData(String uuid, PlayerData data){uuiddata.put(uuid, data);}
     public static void setMatch(int id, Match match){matchdata.put(id, match);}
     public static void setColor(String name, Color color){colordata.put(name, color);}
     public static void setTeam(int id, Team team){teamdata.put(id, team);}
@@ -57,6 +60,7 @@ public class DataMgr {
     
     public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
     public static Map<Player, PlayerData> getPlayerDataMap(){return playerdata;}
+    public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

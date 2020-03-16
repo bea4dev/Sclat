@@ -93,7 +93,7 @@ public class SPWeaponMgr {
                 p.getInventory().setItem(4, is2);
                 break;
             case "インクストライク":
-                ItemStack is3 = new ItemStack(Material.NETHER_STAR);
+                ItemStack is3 = new ItemStack(Material.ARROW);
                 ItemMeta ism3 = is3.getItemMeta();
                 ism3.setDisplayName("インクストライク");
                 is3.setItemMeta(ism3);

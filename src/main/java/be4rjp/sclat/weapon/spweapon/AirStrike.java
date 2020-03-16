@@ -42,13 +42,23 @@ public class AirStrike {
         WeaponClassMgr.setWeaponClass(player);
         Vector vec = MapKitMgr.getMapLocationVector(player);
         //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
-        int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
+        int c = 0;
+        for (int i = 256; i > 0; i--){
+            Location locc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX(), i, player.getLocation().getBlockZ() + vec.getBlockZ());
+            Block block = player.getWorld().getBlockAt(locc);
+            if(!block.getType().equals(Material.AIR))
+                c = i;
+        }
+        int y = c;
+        //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
         Location tloc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX(), y, player.getLocation().getBlockZ() + vec.getBlockZ());
+        //double random = 17;
+        //Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
         BukkitRunnable task = new BukkitRunnable(){
             int c = 0;
             @Override
             public void run(){
-                double random = 17;
+                final double random = 17;
                 Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
                 if(c == 15)
@@ -133,7 +143,7 @@ public class AirStrike {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 18;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);

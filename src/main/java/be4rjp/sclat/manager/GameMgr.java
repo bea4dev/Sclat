@@ -45,9 +45,12 @@ public class GameMgr implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        if(DataMgr.getPlayerDataMap().containsKey(player)){
-            if(DataMgr.getPlayerData(player).getIsJoined())
+        if(DataMgr.getUUIDDataMap().containsKey(player.getUniqueId().toString())){
+            if(DataMgr.getUUIDData(player.getUniqueId().toString()).getIsJoined()){
+                PlayerData data = DataMgr.getUUIDData(player.getUniqueId().toString());
+                DataMgr.setPlayerData(player, data);
                 return;
+            }
         }
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
@@ -73,6 +76,7 @@ public class GameMgr implements Listener{
         data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
+        DataMgr.setUUIDData(player.getUniqueId().toString(), data);
         //MatchMgr.PlayerJoinMatch(player);
         player.setWalkSpeed(0.2F);
         SquidMgr.SquidRunnable(player);

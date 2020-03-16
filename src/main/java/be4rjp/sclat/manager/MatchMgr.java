@@ -32,6 +32,7 @@ import org.bukkit.Material;
 import be4rjp.sclat.data.Team;
 import org.bukkit.Sound;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -106,7 +107,6 @@ public class MatchMgr {
                                     entity.remove();
                                 }
                             }
-                            
                             cancel();
                         }
                         s++;
@@ -527,6 +527,8 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){
+                    if(p.hasPotionEffect(PotionEffectType.SLOW))
+                        p.removePotionEffect(PotionEffectType.SLOW);
                     p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
                     loc = p.getLocation();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
@@ -668,6 +670,8 @@ public class MatchMgr {
                     
                     DataMgr.getPlayerData(p).reset();
                     DataMgr.getPlayerData(p).setWeaponClass(wc);
+                    
+                    
                     
                     p.setWalkSpeed(0.2F);
                     p.setHealth(20);
