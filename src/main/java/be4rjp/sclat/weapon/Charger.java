@@ -97,7 +97,7 @@ public class Charger {
                     data.setIsHolding(false);
                 }
                 
-                if(!data.isInMatch())
+                if(!data.isInMatch() || !p.isOnline())
                     cancel();
                 
             }

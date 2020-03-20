@@ -36,10 +36,18 @@ import org.bukkit.util.Vector;
 public class AirStrike {
     public static void AirStrikeRunnable(Player player){
         Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
-        if(player.hasPotionEffect(PotionEffectType.SLOW))
-            player.removePotionEffect(PotionEffectType.SLOW);
         player.getInventory().clear();
-        WeaponClassMgr.setWeaponClass(player);
+        
+        BukkitRunnable clear = new BukkitRunnable(){
+            @Override
+            public void run(){
+                WeaponClassMgr.setWeaponClass(player);
+                if(player.hasPotionEffect(PotionEffectType.SLOW))
+                    player.removePotionEffect(PotionEffectType.SLOW);
+            }
+        };
+        clear.runTaskLater(Main.getPlugin(), 20);
+        
         Vector vec = MapKitMgr.getMapLocationVector(player);
         //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
         int c = 0;
@@ -50,16 +58,14 @@ public class AirStrike {
                 c = i;
         }
         int y = c;
-        //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
+        Location ploc = player.getLocation();
         Location tloc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX(), y, player.getLocation().getBlockZ() + vec.getBlockZ());
-        //double random = 17;
-        //Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
         BukkitRunnable task = new BukkitRunnable(){
             int c = 0;
             @Override
             public void run(){
                 final double random = 17;
-                Location loc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, player.getLocation().getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
+                Location loc = new Location(ploc.getWorld(), ploc.getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, ploc.getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
                 if(c == 15)
                     cancel();
@@ -143,7 +149,7 @@ public class AirStrike {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 18;
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 16;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);

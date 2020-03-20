@@ -2,6 +2,7 @@
 package be4rjp.sclat.data;
 
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -15,6 +16,7 @@ public class Match {
     private int playercount = 0;
     private MapData map;
     private boolean canjoin = true;
+    private Player leader;
     
     
     public Match(int id){this.id = id;}
@@ -31,6 +33,8 @@ public class Match {
     
     public boolean canJoin(){return this.canjoin;}
     
+    public Player getLeaderPlayer(){return this.leader;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -42,5 +46,5 @@ public class Match {
     
     public void setCanJoin(boolean is){this.canjoin = is;}
     
-    
+    public void setLeaderPlayer(Player player){this.leader = player;}
 }

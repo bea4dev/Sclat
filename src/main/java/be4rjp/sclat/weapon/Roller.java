@@ -39,6 +39,10 @@ public class Roller {
                 
                 data.setTick(data.getTick() + 1);
                 
+                if(!data.isInMatch() || !p.isOnline()){
+                    cancel();
+                    return;
+                }
                 
                 if(data.getTick() >= 5 && data.isInMatch()){
                     data.setTick(7);
@@ -46,9 +50,6 @@ public class Roller {
                     data.setCanPaint(false);
                     data.setCanShoot(true);
                 }
-                
-                if(!data.isInMatch())
-                    cancel();
                 
             }
         };
@@ -181,7 +182,7 @@ public class Roller {
                     p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
                 }
                 
-                if(!data.isInMatch())
+                if(!data.isInMatch() || !p.isOnline())
                     cancel();
                 
             }

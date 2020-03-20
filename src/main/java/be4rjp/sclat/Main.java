@@ -1,6 +1,8 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.GUI.ClickListener;
+import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.manager.ColorMgr;
@@ -41,6 +43,15 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;	
+        
+        //APICheck
+        boolean NoteBlockAPI = true;
+        if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")){
+            getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
+            NoteBlockAPI = false;
+            return;
+        }
+        
         getLogger().info("Loading config files...");
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
@@ -82,7 +93,13 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        MatchMgr.RollBack();
+        //塗りリセット
+        for(PaintData data : DataMgr.getBlockDataMap().values()){
+            
+                data.getBlock().setType(data.getOriginalType());
+                data = null;
+        }
+        DataMgr.getBlockDataMap().clear();
         conf.SaveConfig();
         
     }

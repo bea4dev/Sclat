@@ -66,8 +66,7 @@ public class MapKitMgr {
             if(y > 128)
                 y = 128;
             if(y < -128)
-                y = -128;
-            
+                y = -128;      
             return new Vector(x, 0, y);
     }
     

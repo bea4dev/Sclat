@@ -1,9 +1,15 @@
 
 package be4rjp.sclat.GUI;
 
+import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.manager.MatchMgr;
+import be4rjp.sclat.manager.WeaponClassMgr;
+import be4rjp.sclat.weapon.Charger;
+import be4rjp.sclat.weapon.Roller;
+import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -14,6 +20,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -27,16 +36,59 @@ public class ClickListener implements Listener{
         player.closeInventory();
         //player.sendMessage(name);
         
-        if(name.equals("試合に参加 / JOIN THE MATCH"))
-            MatchMgr.PlayerJoinMatch(player);
-        if(name.equals("武器選択 / CHOSE WEAPONS"))
-            OpenGUI.openWeaponSelect(player);
-        if(name.equals("設定 / SETTINGS"))
-            OpenGUI.openSettingsUI(player);
+        switch(name){
+            case"試合に参加 / JOIN THE MATCH":
+                MatchMgr.PlayerJoinMatch(player);
+                break;
+            case"武器選択 / CHOSE WEAPONS":
+                OpenGUI.openWeaponSelect(player);
+                break;
+            case"設定 / SETTINGS":
+                OpenGUI.openSettingsUI(player);
+                break;
+            case"塗りをリセット / RESET INK":
+                MatchMgr.RollBack();
+                player.setExp(0.99F);
+                player.sendMessage("3分後に再リセットできるようになります");
+                break;
+        }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack("https://github.com/Be4rJP/Sclat/releases/download/0/Sclat.zip");
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
+            player.getInventory().clear();
+            DataMgr.getPlayerData(player).setIsInMatch(false);
+            DataMgr.getPlayerData(player).setIsJoined(false);
+            //試しうちモード
+            if(conf.getConfig().getString("WorkMode").equals("Trial")){
+                BukkitRunnable delay = new BukkitRunnable(){
+                    Player p = player;
+                    @Override
+                    public void run(){
+                        DataMgr.getPlayerData(player).setIsInMatch(true);
+                        DataMgr.getPlayerData(player).setIsJoined(true);
+                        WeaponClass wc = DataMgr.getWeaponClass(name);
+                        DataMgr.getPlayerData(player).setWeaponClass(wc);
+                        if(wc.getMainWeapon().getWeaponType().equals("Shooter"))
+                            Shooter.ShooterRunnable(p);
+                        if(wc.getMainWeapon().getWeaponType().equals("Charger"))
+                            Charger.ChargerRunnable(p);
+                        if(wc.getMainWeapon().getWeaponType().equals("Roller")){
+                            Roller.HoldRunnable(p);
+                            Roller.RollPaintRunnable(p);
+                        }
+                        WeaponClassMgr.setWeaponClass(p);
+                        ItemStack join = new ItemStack(Material.CHEST);
+                        ItemMeta joinmeta = join.getItemMeta();
+                        joinmeta.setDisplayName("メインメニュー");
+                        join.setItemMeta(joinmeta);
+                        player.getInventory().setItem(7, join);
+                        player.setExp(0.99F);
+                    }
+                };
+                delay.runTaskLater(Main.getPlugin(), 10);
+            }else{
+                DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
+            }
             player.sendMessage(name + "を選択しました");
         }
         
@@ -57,12 +109,16 @@ public class ClickListener implements Listener{
                 case "ローラーのしぶき":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_RollerShot();
                     break;
+                case "BGM":
+                    DataMgr.getPlayerData(player).getSettings().S_PlayBGM();
+                    break;
             }
             
             OpenGUI.openSettingsUI(player);
             
             player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             
+            String B = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
             String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter() ? "1" : "0";
             String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";
             String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot() ? "1" : "0";
@@ -70,7 +126,7 @@ public class ClickListener implements Listener{
             String E_RS = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot() ? "1" : "0";
             String E_Sq = DataMgr.getPlayerData(player).getSettings().ShowEffect_Squid() ? "1" : "0";
             
-            String s_data = E_S + E_CL + E_CS + E_RR + E_RS + E_Sq;
+            String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_Sq;
             
             String uuid = player.getUniqueId().toString();
             conf.getPlayerSetiings().set("Settings." + uuid, s_data);

@@ -24,7 +24,8 @@ public class OpenGUI {
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("試合に参加 / JOIN THE MATCH");
         join.setItemMeta(joinmeta);
-        inv.setItem(2, join);
+        if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+            inv.setItem(2, join);
         
         ItemStack setting = new ItemStack(Material.COMPARATOR);
         ItemMeta setting_m = setting.getItemMeta();
@@ -44,6 +45,14 @@ public class OpenGUI {
         tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK");
         t.setItemMeta(tmeta);
         inv.setItem(8, t);
+        
+        ItemStack r = new ItemStack(Material.MILK_BUCKET);
+        ItemMeta rmeta = r.getItemMeta();
+        rmeta.setDisplayName("塗りをリセット / RESET INK");
+        r.setItemMeta(rmeta);
+        if(conf.getConfig().getString("WorkMode").equals("Trial"))
+            inv.setItem(0, r);
+        
         player.openInventory(inv);
     }
     public static void openWeaponSelect(Player player){
@@ -219,6 +228,37 @@ public class OpenGUI {
         rollerS_p_m.setLore(rollerS_p_r);
         rollerS_p.setItemMeta(rollerS_p_m);
         inv.setItem(22, rollerS_p);
+        
+        
+        
+        
+        ItemStack bgm_p;
+        if(DataMgr.getPlayerData(player).getSettings().PlayBGM())
+            bgm_p = new ItemStack(Material.LIME_DYE);
+        else
+            bgm_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta bgm_p_m = bgm_p.getItemMeta();
+        bgm_p_m.setDisplayName("BGM");
+        ArrayList<String> bgm_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().PlayBGM())
+            bgm_p_r.add("§a§l[Enable]");
+        else
+            bgm_p_r.add("§7§l[Disable]");
+        bgm_p_m.setLore(bgm_p_r);
+        bgm_p.setItemMeta(bgm_p_m);
+        inv.setItem(26, bgm_p);
+        
+        ItemStack bgm = new ItemStack(Material.MUSIC_DISC_13);
+        ItemMeta bgm_m = bgm.getItemMeta();
+        bgm_m.setDisplayName("BGM");
+        ArrayList<String> bgm_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().PlayBGM())
+            bgm_r.add("§a§l[Enable]");
+        else
+            bgm_r.add("§7§l[Disable]");
+        bgm_m.setLore(bgm_r);
+        bgm.setItemMeta(bgm_m);
+        inv.setItem(17, bgm);
         
         player.openInventory(inv);
     }

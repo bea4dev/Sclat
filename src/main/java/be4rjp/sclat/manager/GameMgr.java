@@ -28,6 +28,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -45,13 +46,12 @@ public class GameMgr implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
-        if(DataMgr.getUUIDDataMap().containsKey(player.getUniqueId().toString())){
-            if(DataMgr.getUUIDData(player.getUniqueId().toString()).getIsJoined()){
-                PlayerData data = DataMgr.getUUIDData(player.getUniqueId().toString());
-                DataMgr.setPlayerData(player, data);
-                return;
-            }
+        
+        for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+            player.showPlayer(Main.getPlugin(), p);
         }
+            
+        
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
         
@@ -59,23 +59,50 @@ public class GameMgr implements Listener{
         PlayerSettings settings = new PlayerSettings(player);
         
         if(conf.getPlayerSetiings().contains("Settings." + uuid)){
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(0,1).equals("0"))
-                settings.S_ShowEffect_Shooter();             
             if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(1,2).equals("0"))
-                settings.S_ShowEffect_ChargerLine();
+                settings.S_ShowEffect_Shooter();             
             if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(2,3).equals("0"))
-                settings.S_ShowEffect_ChargerShot();
+                settings.S_ShowEffect_ChargerLine();
             if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(3,4).equals("0"))
-                settings.S_ShowEffect_RollerRoll();
+                settings.S_ShowEffect_ChargerShot();
             if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(4,5).equals("0"))
+                settings.S_ShowEffect_RollerRoll();
+            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(5,6).equals("0"))
                 settings.S_ShowEffect_RollerShot();
+            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(0,1).equals("0"))
+                settings.S_PlayBGM();
         }else{
-            conf.getPlayerSetiings().set("Settings." + uuid, "111111");
+            conf.getPlayerSetiings().set("Settings." + uuid, "1111111");
         }
             
         data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
+        
+        //試し撃ちモード
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            data.setTick(10);
+            data.setIsJoined(true);
+            data.setIsInMatch(true);
+            Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
+            data.setMatch(match);
+            data.setTeam(match.getTeam0());
+            player.teleport(Main.lobby);
+            WeaponClassMgr.setWeaponClass(player);
+            ItemStack join = new ItemStack(Material.CHEST);
+            ItemMeta joinmeta = join.getItemMeta();
+            joinmeta.setDisplayName("メインメニュー");
+            join.setItemMeta(joinmeta);
+            player.getInventory().clear();
+            Shooter.ShooterRunnable(player);
+            SPWeaponMgr.SPWeaponRunnable(player);
+            WeaponClassMgr.setWeaponClass(player);
+            SquidMgr.SquidRunnable(player);
+            player.setExp(0.99F);
+            player.getInventory().setItem(7, join);
+            return;
+        }
+        
         DataMgr.setUUIDData(player.getUniqueId().toString(), data);
         //MatchMgr.PlayerJoinMatch(player);
         player.setWalkSpeed(0.2F);
@@ -98,8 +125,8 @@ public class GameMgr implements Listener{
         data.setMatch(match);
         data.setTeam(match.getTeam0());
         
-      
-        
+        if(!DataMgr.getPlayerIsQuitMap().containsKey(player.getUniqueId().toString()))
+            DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);  
     }
     
     @EventHandler
@@ -160,6 +187,15 @@ public class GameMgr implements Listener{
                     break;
                     
             }
+        }
+    }
+    
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event){
+        Player player = (Player) event.getPlayer();
+        PlayerData data = DataMgr.getPlayerData(player);
+        if(data.getIsJoined()){
+            DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
         }
     }
 }

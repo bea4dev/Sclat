@@ -13,8 +13,9 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Be4rJP
  */
 public class Animation {
-    public static void ResultAnimation(Player player, int team0point, int team1point, String team0color, String team1color, Team winteam, Boolean hikiwake){
+    public static void ResultAnimation(Player p, int team0point, int team1point, String team0color, String team1color, Team winteam, Boolean hikiwake){
         BukkitRunnable task = new BukkitRunnable(){
+            Player player = p;
             int i = 0;
             int g = 0;
             @Override

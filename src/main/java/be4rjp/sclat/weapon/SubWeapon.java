@@ -7,6 +7,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.SubWeaponMgr;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +29,7 @@ public class SubWeapon implements Listener{
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(!data.getCanUseSubWeapon()) return;
+            if(player.getGameMode().equals(GameMode.SPECTATOR)) return;
             SubWeaponMgr.UseSubWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
         }
     }

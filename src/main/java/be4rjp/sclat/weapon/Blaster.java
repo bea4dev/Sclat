@@ -33,7 +33,7 @@ public class Blaster {
                 data.setCanRollerShoot(true);
             }
         };
-        delay1.runTaskLater(Main.getPlugin(), 20);
+        delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterCoolTime());
         
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
@@ -42,7 +42,7 @@ public class Blaster {
                 Shoot(player);
             }
         };
-        delay.runTaskLater(Main.getPlugin(), 4);
+        delay.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterDelay());
     }
     
     public static void Shoot(Player player){

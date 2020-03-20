@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.DamageMgr;
@@ -105,6 +106,10 @@ public class MainWeapon implements Listener{
             Player player = (Player) e.getEntity();
             if (e.getCause() == DamageCause.VOID) {
                 e.setCancelled(true);
+                if(conf.getConfig().getString("WorkMode").equals("Trial")){
+                    player.teleport(Main.lobby);
+                    return;
+                }
                 if(DataMgr.getPlayerData(player).isInMatch())
                     DeathMgr.PlayerDeathRunnable(player, player, "fall");
                 else

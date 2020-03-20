@@ -33,7 +33,7 @@ public class SuperArmor {
                     }
                 }
                 if(data.getArmor() <= 0){
-                    player.playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 2F, 1.8F);
+                    player.playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 3F, 1.8F);
                     player.sendMessage("§c§l！ アーマーが破壊された ！");
                     cancel();
                 }

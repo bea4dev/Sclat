@@ -19,6 +19,7 @@ public class PlayerSettings {
     private boolean ShowEffect_Squid = true;
     private boolean ShowEffect_BombEx = true;
     private boolean ShowEffect_Bomb = true;
+    private boolean PlayBGM = true;
     
     public PlayerSettings (Player player){this.player = player;}
     
@@ -32,6 +33,7 @@ public class PlayerSettings {
     public boolean ShowEffect_Squid(){return this.ShowEffect_Squid;}
     public boolean ShowEffect_BombEx(){return this.ShowEffect_BombEx;}
     public boolean ShowEffect_Bomb(){return this.ShowEffect_Bomb;}
+    public boolean PlayBGM(){return this.PlayBGM;}
     
     public void S_ShowEffect_Shooter(){this.ShowEffect_Shooter = !ShowEffect_Shooter;}
     public void S_ShowEffect_ChargerLine(){this.ShowEffect_ChargerLine = !ShowEffect_ChargerLine;}
@@ -41,4 +43,5 @@ public class PlayerSettings {
     public void S_ShowEffect_Squid(){this.ShowEffect_Squid = !ShowEffect_Squid;}
     public void S_ShowEffect_BombEx(){this.ShowEffect_BombEx = !ShowEffect_BombEx;}
     public void S_ShowEffect_Bomb(){this.ShowEffect_Bomb = !ShowEffect_Bomb;}
+    public void S_PlayBGM(){this.PlayBGM = !PlayBGM;}
 }

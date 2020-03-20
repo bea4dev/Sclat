@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author Be4rJP
  */
 public class SubWeaponMgr {
-    public static void setSubWeapon(Player player){
+    public static ItemStack getSubWeapon(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
         //player.sendMessage(data.getWeaponClass().getSubWeaponName());
         ItemStack is = null;
@@ -52,7 +52,8 @@ public class SubWeaponMgr {
                 break;
         }
         is.setItemMeta(ism);
-        player.getInventory().setItem(2, is);  
+        //player.getInventory().setItem(2, is);  
+        return is;
     }
     
     public static void UseSubWeapon(Player player, String name){

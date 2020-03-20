@@ -27,6 +27,8 @@ public class MainWeapon {
     private float rollerneedink;
     private boolean scope;
     private double exh;
+    private int delay;
+    private int cooltime;
     
     
     
@@ -70,6 +72,10 @@ public class MainWeapon {
     
     public double getBlasterExHankei(){return this.exh;}
     
+    public int getBlasterDelay(){return this.delay;}
+    
+    public int getBlasterCoolTime(){return this.cooltime;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -108,5 +114,9 @@ public class MainWeapon {
     public void setScope(boolean is){this.scope = is;}
     
     public void setBlasterExHankei(double d){this.exh = d;}
+    
+    public void setBlasterDelay(int i){this.delay = i;}
+    
+    public void setBlasterCoolTime(int i){this.cooltime = i;}
     
 }

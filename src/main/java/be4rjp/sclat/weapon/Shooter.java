@@ -29,13 +29,15 @@ public class Shooter {
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
-                //data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
+                
+                if(!data.isInMatch() || !p.isOnline()){
+                    cancel();
+                    return;
+                }
                 if(data.getTick() < 5 && data.isInMatch()){
                     Shooter.Shoot(p);
                     data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                 }
-                if(!DataMgr.getPlayerData(p).isInMatch())
-                    cancel();
             }
         };
         delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());

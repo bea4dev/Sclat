@@ -33,6 +33,8 @@ public class MainWeaponMgr {
             double rollerdamage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerDamage");
             float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
             double exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
+            int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterDelay");
+            int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterCooltime");
             
             
             
@@ -59,6 +61,8 @@ public class MainWeaponMgr {
             mw.setRollerNeedInk(rollerneedink);
             mw.setCanTatehuri(tatehuri);
             mw.setBlasterExHankei(exh);
+            mw.setBlasterDelay(delay);
+            mw.setBlasterCoolTime(cooltime);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

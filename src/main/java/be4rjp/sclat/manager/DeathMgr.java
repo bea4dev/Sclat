@@ -8,14 +8,18 @@ import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -23,6 +27,25 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
+        
+        Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+        Item drop2 = target.getWorld().dropItem(target.getEyeLocation(), SubWeaponMgr.getSubWeapon(target));
+        final double random = 0.5;
+        drop1.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
+        drop2.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
+        
+        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(shooter).getTeam().getTeamColor().getWool().createBlockData();
+        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1, 0, 1, 1, bd);
+        
+        BukkitRunnable clear = new BukkitRunnable(){
+            @Override
+            public void run(){
+                drop1.remove();
+                drop2.remove();
+            }
+        };
+        clear.runTaskLater(Main.getPlugin(), 50);
+        
         
         if(target.hasPotionEffect(PotionEffectType.GLOWING))
             target.removePotionEffect(PotionEffectType.GLOWING);

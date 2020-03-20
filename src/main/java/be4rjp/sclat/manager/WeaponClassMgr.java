@@ -7,6 +7,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -31,7 +32,8 @@ public class WeaponClassMgr {
         player.getInventory().clear();
         PlayerData data = DataMgr.getPlayerData(player);
         player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
-        SubWeaponMgr.setSubWeapon(player);
+        ItemStack is = SubWeaponMgr.getSubWeapon(player);
+        player.getInventory().setItem(2, is);
     }
     
 }

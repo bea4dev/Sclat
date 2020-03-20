@@ -78,7 +78,7 @@ public class SplashBomb {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 20;
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
