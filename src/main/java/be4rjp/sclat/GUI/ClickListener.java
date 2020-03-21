@@ -5,11 +5,15 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.WeaponClass;
+import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -51,15 +55,23 @@ public class ClickListener implements Listener{
                 player.setExp(0.99F);
                 player.sendMessage("3分後に再リセットできるようになります");
                 break;
+            case"ロビーへ戻る / RETURN TO LOBBY":
+                BungeeCordMgr.PlayerSendServer(player, "lobby");
+                break;
+            case"試し打ちサーバーへ接続 / TRAINING FIELD":
+                BungeeCordMgr.PlayerSendServer(player, "trial");
+                break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            player.getInventory().clear();
-            DataMgr.getPlayerData(player).setIsInMatch(false);
-            DataMgr.getPlayerData(player).setIsJoined(false);
             //試しうちモード
             if(conf.getConfig().getString("WorkMode").equals("Trial")){
+                
+                player.getInventory().clear();
+                DataMgr.getPlayerData(player).setIsInMatch(false);
+                DataMgr.getPlayerData(player).setIsJoined(false);
+
                 BukkitRunnable delay = new BukkitRunnable(){
                     Player p = player;
                     @Override

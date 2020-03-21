@@ -5,6 +5,7 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -69,10 +71,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onEntityHit(EntityDamageByEntityEvent event) {
         event.setCancelled(true);
-        
-        
-        
-        
+
         Projectile projectile = (Projectile)event.getDamager();
         Player shooter = (Player)projectile.getShooter();
         if(event.getEntity() instanceof Player){
@@ -96,6 +95,9 @@ public class MainWeapon implements Listener{
                 };
                 task.runTaskLater(Main.getPlugin(), 1);
             }
+        }else if(event.getEntity() instanceof ArmorStand){
+            ArmorStand as = (ArmorStand) event.getEntity();
+            ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage(), shooter);
         }
         
     }

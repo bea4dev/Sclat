@@ -62,7 +62,7 @@ public class OpenGUI {
         }else{
             ItemStack b = new ItemStack(Material.ARMOR_STAND);
             ItemMeta bmeta = b.getItemMeta();
-            bmeta.setDisplayName("試し打ち / TRIAL");
+            bmeta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
             b.setItemMeta(bmeta);
             inv.setItem(0, b);
         }

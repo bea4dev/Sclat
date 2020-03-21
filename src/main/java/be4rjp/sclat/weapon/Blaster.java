@@ -5,6 +5,7 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -13,6 +14,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -138,8 +141,13 @@ public class Blaster {
                                 
                             }
                         }
-                    inkball.remove();
                     }
+                    
+                    for(ArmorStand as : DataMgr.getArmorStandMap().keySet()){
+                        double damage = (maxDist - as.getLocation().distance(inkball.getLocation())) * 7;
+                        ArmorStandMgr.giveDamageArmorStand(as, damage, p);
+                    }
+                    inkball.remove();
                 }
                 if(i != tick)
                     PaintMgr.PaintHightestBlock(inkball.getLocation(), p, false);

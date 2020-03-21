@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +26,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -34,6 +36,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 
@@ -52,7 +55,9 @@ public class GameMgr implements Listener{
             player.showPlayer(Main.getPlugin(), p);
         }
         
-            
+        for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+            p.showPlayer(Main.getPlugin(), player);
+        }
         
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
@@ -102,6 +107,17 @@ public class GameMgr implements Listener{
             SquidMgr.SquidRunnable(player);
             player.setExp(0.99F);
             player.getInventory().setItem(7, join);
+            
+            BukkitRunnable armor = new BukkitRunnable(){
+                @Override
+                public void run(){
+                    ArmorStandMgr.ArmorStandSetup();
+                }
+            };
+            if(ArmorStandMgr.getIsSpawned()) return;
+            armor.runTaskLater(Main.getPlugin(), 50);
+            ArmorStandMgr.setIsSpawned(true);
+            
             return;
         }
         
@@ -131,6 +147,8 @@ public class GameMgr implements Listener{
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);  
         
         
+        
+        //player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
     }
     
     @EventHandler
@@ -151,7 +169,10 @@ public class GameMgr implements Listener{
     
     @EventHandler
     public void onPickItem(EntityPickupItemEvent event){
-        event.setCancelled(true);
+        if (event.getEntity() instanceof Player){
+            if(!((Player)event.getEntity()).getGameMode().equals(GameMode.CREATIVE))
+                event.setCancelled(true);
+        }
     }
     
     @EventHandler
@@ -166,6 +187,11 @@ public class GameMgr implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.isInMatch() && data.getSPGauge() == 100)
             SPWeaponMgr.UseSPWeapon(player, data.getWeaponClass().getSPWeaponName());
+    }
+    
+    @EventHandler
+    public void onArmorStand(PlayerArmorStandManipulateEvent event){
+        event.setCancelled(true);
     }
     
     //sign
@@ -187,7 +213,7 @@ public class GameMgr implements Listener{
                     OpenGUI.openMenu(player);
                     break;
                 case "Click to Download":
-                    player.setResourcePack("https://github.com/Be4rJP/Sclat/releases/download/0/Sclat.zip");
+                    player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
                     break;
                     
             }

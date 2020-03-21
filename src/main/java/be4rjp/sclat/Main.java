@@ -14,6 +14,8 @@ import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.NPCMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
@@ -21,14 +23,17 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 /**
  *
  * @author Be4rJP
  */
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static Config conf = new Config();
     
@@ -89,7 +94,22 @@ public class Main extends JavaPlugin {
         getLogger().info("SetupMap() ok");
         MatchMgr.MatchSetup();
         getLogger().info("MatchSetup() ok");
-        ArmorStandMgr.ArmorStandSetup();
+        //ArmorStandMgr.ArmorStandSetup();
+        
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+    }
+    
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (!channel.equals("BungeeCord")) {
+            return;
+        }
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String subchannel = in.readUTF();
+        if (subchannel.equals("SomeSubChannel")) {
+          
+        }
     }
 
 
@@ -102,6 +122,9 @@ public class Main extends JavaPlugin {
                 data = null;
         }
         DataMgr.getBlockDataMap().clear();
+        
+        for(ArmorStand as : DataMgr.getArmorStandMap().keySet())
+            as.remove();
         conf.SaveConfig();
         
     }

@@ -35,7 +35,7 @@ public class DeathMgr {
         drop2.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
         
         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(shooter).getTeam().getTeamColor().getWool().createBlockData();
-        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1, 0, 1, 1, bd);
+        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1, 1, 1, 1, bd);
         
         BukkitRunnable clear = new BukkitRunnable(){
             @Override

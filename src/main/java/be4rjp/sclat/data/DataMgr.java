@@ -74,6 +74,7 @@ public class DataMgr {
     public static Map<Player, PlayerData> getPlayerDataMap(){return playerdata;}
     public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
     public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;};
+    public static Map<ArmorStand, Double> getArmorStandMap(){return armorstand;};
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

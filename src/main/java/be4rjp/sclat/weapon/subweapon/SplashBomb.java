@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -13,6 +14,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -102,6 +104,11 @@ public class SplashBomb {
                                 
                             }
                         }
+                    }
+                    
+                    for(ArmorStand as : DataMgr.getArmorStandMap().keySet()){
+                        double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 12;
+                        ArmorStandMgr.giveDamageArmorStand(as, damage, p);
                     }
                     drop.remove();
                     cancel();
