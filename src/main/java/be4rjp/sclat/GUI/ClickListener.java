@@ -53,7 +53,7 @@ public class ClickListener implements Listener{
                 break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
-            player.setResourcePack("https://github.com/Be4rJP/Sclat/releases/download/0/Sclat.zip");
+            player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
         if(event.getClickedInventory().getTitle().equals("武器選択")){
             player.getInventory().clear();
             DataMgr.getPlayerData(player).setIsInMatch(false);
@@ -129,7 +129,7 @@ public class ClickListener implements Listener{
             String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_Sq;
             
             String uuid = player.getUniqueId().toString();
-            conf.getPlayerSetiings().set("Settings." + uuid, s_data);
+            conf.getPlayerSettings().set("Settings." + uuid, s_data);
         }
         
         if(!player.getGameMode().equals(GameMode.CREATIVE))

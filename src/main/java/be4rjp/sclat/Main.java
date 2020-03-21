@@ -5,6 +5,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.ColorMgr;
 import be4rjp.sclat.manager.GameMgr;
 import be4rjp.sclat.manager.MainWeaponMgr;
@@ -88,6 +89,7 @@ public class Main extends JavaPlugin {
         getLogger().info("SetupMap() ok");
         MatchMgr.MatchSetup();
         getLogger().info("MatchSetup() ok");
+        ArmorStandMgr.ArmorStandSetup();
     }
 
 

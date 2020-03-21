@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,6 +51,7 @@ public class GameMgr implements Listener{
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             player.showPlayer(Main.getPlugin(), p);
         }
+        
             
         
         player.setGameMode(GameMode.ADVENTURE);
@@ -58,21 +60,21 @@ public class GameMgr implements Listener{
         String uuid = player.getUniqueId().toString();
         PlayerSettings settings = new PlayerSettings(player);
         
-        if(conf.getPlayerSetiings().contains("Settings." + uuid)){
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(1,2).equals("0"))
+        if(conf.getPlayerSettings().contains("Settings." + uuid)){
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
                 settings.S_ShowEffect_Shooter();             
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(2,3).equals("0"))
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
                 settings.S_ShowEffect_ChargerLine();
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(3,4).equals("0"))
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(3,4).equals("0"))
                 settings.S_ShowEffect_ChargerShot();
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(4,5).equals("0"))
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
                 settings.S_ShowEffect_RollerRoll();
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(5,6).equals("0"))
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
                 settings.S_ShowEffect_RollerShot();
-            if(conf.getPlayerSetiings().getString("Settings." + uuid).substring(0,1).equals("0"))
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
                 settings.S_PlayBGM();
         }else{
-            conf.getPlayerSetiings().set("Settings." + uuid, "1111111");
+            conf.getPlayerSettings().set("Settings." + uuid, "1111111");
         }
             
         data.setSettings(settings);
@@ -127,6 +129,8 @@ public class GameMgr implements Listener{
         
         if(!DataMgr.getPlayerIsQuitMap().containsKey(player.getUniqueId().toString()))
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);  
+        
+        
     }
     
     @EventHandler

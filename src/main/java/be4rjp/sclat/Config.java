@@ -15,11 +15,13 @@ public class Config {
     private FileConfiguration weapon;
     private FileConfiguration map;
     private FileConfiguration playersettings;
+    private FileConfiguration as;
     private File psf = new File("plugins/Sclat", "class.yml");
     private File weaponf = new File("plugins/Sclat", "mainnweapon.yml");
     private File mapf = new File("plugins/Sclat", "maps.yml");
     private File conff = new File("plugins/Sclat", "config.yml");
     private File playersettings_f = new File("plugins/Sclat", "settings.yml");
+    private File asf = new File("plugins/Sclat", "armorstand.yml");
     
     public synchronized void LoadConfig(){
         ps = YamlConfiguration.loadConfiguration(psf);
@@ -27,6 +29,7 @@ public class Config {
         weapon = YamlConfiguration.loadConfiguration(weaponf);
         map = YamlConfiguration.loadConfiguration(mapf);
         playersettings = YamlConfiguration.loadConfiguration(playersettings_f);
+        as = YamlConfiguration.loadConfiguration(asf);
     }
     
     public synchronized void SaveConfig(){
@@ -53,7 +56,11 @@ public class Config {
         return map;
     }
     
-    public FileConfiguration getPlayerSetiings(){
+    public FileConfiguration getPlayerSettings(){
         return playersettings;
+    }
+    
+    public FileConfiguration getArmorStandSettings(){
+        return as;
     }
 }

@@ -6,8 +6,10 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -34,6 +36,13 @@ public class WeaponClassMgr {
         player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
         ItemStack is = SubWeaponMgr.getSubWeapon(player);
         player.getInventory().setItem(2, is);
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            ItemStack join = new ItemStack(Material.CHEST);
+            ItemMeta joinmeta = join.getItemMeta();
+            joinmeta.setDisplayName("メインメニュー");
+            join.setItemMeta(joinmeta);
+            player.getInventory().setItem(7, join);
+        }
     }
     
 }

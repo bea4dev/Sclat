@@ -30,7 +30,7 @@ public class DeathMgr {
         
         Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());
         Item drop2 = target.getWorld().dropItem(target.getEyeLocation(), SubWeaponMgr.getSubWeapon(target));
-        final double random = 0.5;
+        final double random = 0.4;
         drop1.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
         drop2.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
         

@@ -149,7 +149,7 @@ public class AirStrike {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 16;
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);

@@ -51,7 +51,21 @@ public class OpenGUI {
         rmeta.setDisplayName("塗りをリセット / RESET INK");
         r.setItemMeta(rmeta);
         if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(0, r);
+            inv.setItem(2, r);
+        
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            ItemStack b = new ItemStack(Material.OAK_DOOR);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
+            b.setItemMeta(bmeta);
+            inv.setItem(0, b);
+        }else{
+            ItemStack b = new ItemStack(Material.ARMOR_STAND);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("試し打ち / TRIAL");
+            b.setItemMeta(bmeta);
+            inv.setItem(0, b);
+        }
         
         player.openInventory(inv);
     }
