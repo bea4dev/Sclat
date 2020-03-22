@@ -117,7 +117,7 @@ public class Blaster {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(inkball.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * 7;
+                            double damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
@@ -143,9 +143,14 @@ public class Blaster {
                         }
                     }
                     
-                    for(ArmorStand as : DataMgr.getArmorStandMap().keySet()){
-                        double damage = (maxDist - as.getLocation().distance(inkball.getLocation())) * 7;
-                        ArmorStandMgr.giveDamageArmorStand(as, damage, p);
+                    
+                    for(Entity as : player.getWorld().getEntities()){
+                        if(as instanceof ArmorStand){
+                            if (as.getLocation().distance(inkball.getLocation()) <= maxDist) {
+                                double damage = (maxDist - as.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                            }
+                        }
                     }
                     inkball.remove();
                 }

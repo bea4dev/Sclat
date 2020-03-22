@@ -53,8 +53,10 @@ public class MatchMgr {
     public static int mapcount = 0;
     public static Song nowornever = NBSDecoder.parse(new File("plugins/Sclat/BGM", "nowornever.nbs"));
     public static Song splattack = NBSDecoder.parse(new File("plugins/Sclat/BGM", "splattack.nbs"));
+    public static byte volume = 20;
     
     public static boolean canRollback = true;
+    
     
     
     public static void PlayerJoinMatch(Player player){
@@ -466,6 +468,7 @@ public class MatchMgr {
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         RadioSongPlayer radio = new RadioSongPlayer(splattack);
+                        radio.setVolume(volume);
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
                                 radio.addPlayer(oplayer);
@@ -537,6 +540,7 @@ public class MatchMgr {
                         p.sendMessage("");
                         if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                             RadioSongPlayer radio = new RadioSongPlayer(nowornever);
+                            radio.setVolume(volume);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
                                     radio.addPlayer(oplayer);

@@ -106,7 +106,7 @@ public class SPWeaponMgr {
         PlayerData data = DataMgr.getPlayerData(player);
         switch (name) {
             case "スーパーアーマー":
-                SuperArmor.setArmor(player, 30, 160, true);
+                SuperArmor.setArmor(player, 20, 160, true);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 data.setSPGauge(0);
                 player.setExp(0.99F);

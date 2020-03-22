@@ -35,6 +35,7 @@ public class MainWeaponMgr {
             double exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
             int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterDelay");
             int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterCooltime");
+            double exd = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BlasterExDamage");
             
             
             
@@ -63,6 +64,7 @@ public class MainWeaponMgr {
             mw.setBlasterExHankei(exh);
             mw.setBlasterDelay(delay);
             mw.setBlasterCoolTime(cooltime);
+            mw.setBlasterExDamage(exd);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

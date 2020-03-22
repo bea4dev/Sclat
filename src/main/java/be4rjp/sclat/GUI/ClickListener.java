@@ -7,6 +7,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
@@ -95,6 +96,7 @@ public class ClickListener implements Listener{
                         join.setItemMeta(joinmeta);
                         player.getInventory().setItem(7, join);
                         player.setExp(0.99F);
+                        SPWeaponMgr.SPWeaponRunnable(player);
                     }
                 };
                 delay.runTaskLater(Main.getPlugin(), 10);

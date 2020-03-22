@@ -7,6 +7,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -22,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -67,7 +69,7 @@ public class Charger {
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
                     RayTrace rayTrace = new RayTrace(p.getEyeLocation().toVector(),p.getEyeLocation().getDirection());
-                    ArrayList<Vector> positions = rayTrace.traverse(charge,0.7);
+                    ArrayList<Vector> positions = rayTrace.traverse(charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(),0.7);
                     check : for(int i = 0; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                         if(!position.getBlock().getType().equals(Material.AIR))
@@ -162,9 +164,15 @@ public class Charger {
                 }
             }
             
+            for(Entity as : player.getWorld().getEntities()){
+                if (as.getLocation().distance(position) <= maxDist){
+                    if(as instanceof ArmorStand){
+                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                    }          
+                }
+            }
             
-            
-            
+           
         }
        
         

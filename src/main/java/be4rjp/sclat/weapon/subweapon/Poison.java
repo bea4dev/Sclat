@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -13,6 +14,8 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -112,7 +115,7 @@ public class Poison {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Shooter() && DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
+                            if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
                                 target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 2));
                                 DataMgr.getPlayerData(target).setPoison(true);
                                 PoisonRunnable2(target);
@@ -120,6 +123,15 @@ public class Poison {
                             
                         }
                     }
+                    
+                    for(Entity as : player.getWorld().getEntities()){
+                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                            if(as instanceof ArmorStand){
+                                ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
+                            }
+                        }
+                    }
+                    
                     drop.remove();
                     cancel();
                     return;

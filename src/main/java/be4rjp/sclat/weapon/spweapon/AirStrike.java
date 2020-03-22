@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.spweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MapKitMgr;
@@ -20,6 +21,8 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -174,6 +177,16 @@ public class AirStrike {
                             }
                         }
                     }
+                    
+                    for(Entity as : player.getWorld().getEntities()){
+                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                            if(as instanceof ArmorStand){
+                                double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                            }         
+                        }
+                    }
+                    
                     drop.remove();
                     cancel();
                     return;

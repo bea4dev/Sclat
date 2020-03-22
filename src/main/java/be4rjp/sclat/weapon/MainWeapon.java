@@ -27,6 +27,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -100,6 +102,41 @@ public class MainWeapon implements Listener{
             ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage(), shooter);
         }
         
+    }
+    
+    @EventHandler
+    public void PlayerRightClick(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        if(equalWeapon(player)){
+            PlayerData data = DataMgr.getPlayerData(player);
+            data.setTick(0);
+            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                data.setIsHolding(true);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+                data.setCanShoot(false);
+                Roller.ShootPaintRunnable(player);
+            }  
+        }
+    }
+    
+    @EventHandler
+    public void onArmorStand(PlayerArmorStandManipulateEvent event){
+        Player player = event.getPlayer();
+        if(equalWeapon(player)){
+            PlayerData data = DataMgr.getPlayerData(player);
+            data.setTick(0);
+            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                data.setIsHolding(true);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+                data.setCanShoot(false);
+                Roller.ShootPaintRunnable(player);
+            }  
+        }
+        event.setCancelled(true);
     }
     
     @EventHandler

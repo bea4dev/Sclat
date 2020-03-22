@@ -5,6 +5,7 @@ import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
@@ -18,6 +19,8 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
@@ -128,6 +131,15 @@ public class Roller {
                                 }
                             }
                         }
+                        
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(position) <= maxDist){
+                                if(as instanceof ArmorStand){
+                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                }
+                            }
+                        }
                     }
                     
                     
@@ -175,6 +187,15 @@ public class Roller {
                                     task.runTaskLater(Main.getPlugin(), 1);
                                     break loop;
                                 }
+                            }
+                        }
+                        
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(position) <= maxDist){
+                                if(as instanceof ArmorStand){
+                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                                }     
                             }
                         }
                     }

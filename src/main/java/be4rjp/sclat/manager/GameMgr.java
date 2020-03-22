@@ -7,6 +7,8 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
+import be4rjp.sclat.weapon.Blaster;
+import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
@@ -111,7 +113,7 @@ public class GameMgr implements Listener{
             BukkitRunnable armor = new BukkitRunnable(){
                 @Override
                 public void run(){
-                    ArmorStandMgr.ArmorStandSetup();
+                    ArmorStandMgr.ArmorStandSetup(player);
                 }
             };
             if(ArmorStandMgr.getIsSpawned()) return;
@@ -189,10 +191,7 @@ public class GameMgr implements Listener{
             SPWeaponMgr.UseSPWeapon(player, data.getWeaponClass().getSPWeaponName());
     }
     
-    @EventHandler
-    public void onArmorStand(PlayerArmorStandManipulateEvent event){
-        event.setCancelled(true);
-    }
+    
     
     //sign
     @EventHandler

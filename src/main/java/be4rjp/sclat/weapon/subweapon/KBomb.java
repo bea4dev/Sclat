@@ -18,6 +18,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -156,9 +157,13 @@ public class KBomb {
                         }
                     }
                     
-                    for(ArmorStand as : DataMgr.getArmorStandMap().keySet()){
-                        double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 12;
-                        ArmorStandMgr.giveDamageArmorStand(as, damage, p);
+                    for(Entity as : player.getWorld().getEntities()){
+                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                            if(as instanceof ArmorStand){
+                                double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 12;
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                            }        
+                        }
                     }
                     drop.remove();
                     cancel();

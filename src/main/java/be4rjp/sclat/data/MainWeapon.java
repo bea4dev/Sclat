@@ -29,6 +29,7 @@ public class MainWeapon {
     private double exh;
     private int delay;
     private int cooltime;
+    private double exd;
     
     
     
@@ -76,6 +77,8 @@ public class MainWeapon {
     
     public int getBlasterCoolTime(){return this.cooltime;}
     
+    public double getBlasterExDamage(){return this.exd;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -118,5 +121,7 @@ public class MainWeapon {
     public void setBlasterDelay(int i){this.delay = i;}
     
     public void setBlasterCoolTime(int i){this.cooltime = i;}
+    
+    public void setBlasterExDamage(double d){this.exd = d;}
     
 }

@@ -3,7 +3,10 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,6 +21,11 @@ public class SuperSensor {
         for(Player o_player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(o_player).getTeam() && DataMgr.getPlayerData(o_player).isInMatch())
                 o_player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
+        }
+        for(Entity as : player.getWorld().getEntities()){
+            if(as instanceof ArmorStand){
+                ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
+            }          
         }
         BukkitRunnable sound = new BukkitRunnable(){
             @Override
