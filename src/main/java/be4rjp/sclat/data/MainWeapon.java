@@ -30,6 +30,8 @@ public class MainWeapon {
     private int delay;
     private int cooltime;
     private double exd;
+    private boolean hude;
+    private double huder;
     
     
     
@@ -79,6 +81,10 @@ public class MainWeapon {
     
     public double getBlasterExDamage(){return this.exd;}
     
+    public boolean getIsHude(){return this.hude;}
+    
+    public double getHudeRandom(){return this.huder;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -123,5 +129,9 @@ public class MainWeapon {
     public void setBlasterCoolTime(int i){this.cooltime = i;}
     
     public void setBlasterExDamage(double d){this.exd = d;}
+    
+    public void setIsHude(boolean is){this.hude = is;}
+    
+    public void setHudeRandom(double d){this.huder = d;}
     
 }

@@ -79,6 +79,51 @@ public class Roller {
                     Vector vec1 = new Vector(locvec.getZ() * -1, 0, locvec.getX());
                     Vector vec2 = new Vector(locvec.getZ(), 0, locvec.getX() * -1);
                     
+                    //筆系武器
+                    if(data.getWeaponClass().getMainWeapon().getIsHude()){
+                        Location position = p.getLocation();
+                        PaintMgr.PaintHightestBlock(position, p, false);
+                        p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                        
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                        }
+                        
+                        double maxDist = 2;
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
+                            if (target.getLocation().distance(position) <= maxDist) {
+                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                    
+                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                    
+                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                        DamageMgr.SclatGiveDamage(target, damage);
+                                        PaintMgr.Paint(target.getLocation(), p, true);
+                                        p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                    }else{
+                                        target.setGameMode(GameMode.SPECTATOR);
+                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                        PaintMgr.Paint(target.getLocation(), p, true);
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(position) <= maxDist){
+                                if(as instanceof ArmorStand){
+                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                }
+                            }
+                        }
+                        p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
+                        return;
+                    }
                     
                     //法線ベクトルでロール部分の取得
                     
@@ -223,8 +268,14 @@ public class Roller {
                     return;
                 if(data.getCanRollerShoot()){
                     data.setCanRollerShoot(false);
+                    Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
+                    final double random = data.getWeaponClass().getMainWeapon().getHudeRandom();
+                    vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
                     for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
-                        Roller.Shoot(p);
+                        if(data.getWeaponClass().getMainWeapon().getIsHude())
+                            Roller.Shoot(p, vec);
+                        else
+                            Roller.Shoot(p, null);
                     }
                     ShootRunnable(p);
                     data.setCanPaint(true);
@@ -247,7 +298,7 @@ public class Roller {
         task.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getShootTick());
     }
     
-    public static void Shoot(Player player){
+    public static void Shoot(Player player, Vector v){
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
@@ -255,59 +306,62 @@ public class Roller {
         }
         player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
         Snowball ball = player.launchProjectile(Snowball.class);
-        //player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
-                Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
-                double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
-                int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
-                if(player.isOnGround())
+        Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
+        if(v != null)
+            vec = v;
+        double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
+        int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
+        if(!data.getWeaponClass().getMainWeapon().getIsHude()){
+            if(player.isOnGround())
+                vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
+            if(!player.isOnGround()){
+                if(data.getWeaponClass().getMainWeapon().getCanTatehuri())
+                    vec.add(new Vector(Math.random() * random / 4 - random/8, Math.random() * random, Math.random() * random / 4 - random/8));
+                if(!data.getWeaponClass().getMainWeapon().getCanTatehuri())
                     vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
-                if(!player.isOnGround()){
-                    if(data.getWeaponClass().getMainWeapon().getCanTatehuri())
-                        vec.add(new Vector(Math.random() * random / 4 - random/8, Math.random() * random, Math.random() * random / 4 - random/8));
-                    if(!data.getWeaponClass().getMainWeapon().getCanTatehuri())
-                        vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
+            }
+        }else{
+            vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
+        }
+        ball.setVelocity(vec);
+        ball.setShooter(player);
+        BukkitRunnable task = new BukkitRunnable(){
+            int i = 0;
+            int tick = distick;
+            Snowball inkball = ball;
+            Player p = player;
+            Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
+            @Override
+            public void run(){
+                for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
+                        continue;
+                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                    target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
-                ball.setVelocity(vec);
-                ball.setShooter(player);
-                BukkitRunnable task = new BukkitRunnable(){
-                    int i = 0;
-                    int tick = distick;
-                    //Vector fallvec;
-                    Vector origvec = vec;
-                    Snowball inkball = ball;
-                    Player p = player;
-                    Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
-                    @Override
-                    public void run(){
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
-                                continue;
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
-                        }
-                        
-                        if(i == tick)
-                            inkball.setVelocity(fallvec);
-                        if(i >= tick)
-                            inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
-                        if(i != tick)
-                            PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true);
-                        if(inkball.isDead())
-                            cancel();
-                        
-                        i++;
-                    }
-                };
-                task.runTaskTimer(Main.getPlugin(), 0, 1);
-                BukkitRunnable delay = new BukkitRunnable(){
-                    Player p = player;
-                    @Override
-                    public void run(){
-                        //p.getInventory().setItem(0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                        //DataMgr.getPlayerData(p).setCanShoot(true);
-                    }
-                };
-                delay.runTaskLater(Main.getPlugin(), DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
+
+                if(i == tick)
+                    inkball.setVelocity(fallvec);
+                if(i >= tick)
+                    inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
+                if(i != tick)
+                    PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true);
+                if(inkball.isDead())
+                    cancel();
+
+                i++;
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 1);
+        BukkitRunnable delay = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                //p.getInventory().setItem(0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
+                //DataMgr.getPlayerData(p).setCanShoot(true);
+            }
+        };
+        delay.runTaskLater(Main.getPlugin(), DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
     }
     
 }

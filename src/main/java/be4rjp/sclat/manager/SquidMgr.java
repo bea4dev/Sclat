@@ -92,23 +92,7 @@ public class SquidMgr {
                         
                         
                     
-                }
-                    /*
-                    is = false;
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 200, 3));
-                    if(!is2){
-                        Entity e = p.getLocation().getWorld().spawnEntity(p.getLocation(), EntityType.SQUID);
-                        squid = (LivingEntity)e;
-                        squid.setAI(false);
-                        squid.setSwimming(true);
-                        squid.setCustomName(p.getDisplayName());
-                        squid.setCustomNameVisible(true);
-                        is2 = true;
-                        p.setFoodLevel(4);
-                    }
-                    squid.teleport(p);
-                    */
-                else{
+                }else{
                     if(!is2){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
                         is2 = true;
@@ -123,14 +107,19 @@ public class SquidMgr {
                     
                     final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");
                     
-                    if((!data.getIsHolding() && !data.getCanPaint()) && !DataMgr.getPlayerData(p).getPoison())
-                        p.setWalkSpeed((float)speed);
-                    if(DataMgr.getPlayerData(p).getPoison())
-                        p.setWalkSpeed((float)(speed - speed / 3));
+                    if(data.getIsHolding() && data.getCanPaint()){
+                        p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
+                    }else{
+                        if((!data.getIsHolding() && !data.getCanPaint()) && !DataMgr.getPlayerData(p).getPoison())
+                            p.setWalkSpeed((float)speed);
+                        if(DataMgr.getPlayerData(p).getPoison())
+                            p.setWalkSpeed((float)(speed - speed / 3));
+                    }
 
-                    
-                    p.setAllowFlight(false);
-                    p.setFlying(false);
+                    if(!p.getGameMode().equals(GameMode.CREATIVE)){
+                        p.setAllowFlight(false);
+                        p.setFlying(false);
+                    }
                     
                 }
             } 

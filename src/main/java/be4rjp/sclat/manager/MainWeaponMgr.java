@@ -36,6 +36,8 @@ public class MainWeaponMgr {
             int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterDelay");
             int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterCooltime");
             double exd = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BlasterExDamage");
+            boolean hude = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".IsBrush");
+            double huder = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BrushRandom");
             
             
             
@@ -65,6 +67,8 @@ public class MainWeaponMgr {
             mw.setBlasterDelay(delay);
             mw.setBlasterCoolTime(cooltime);
             mw.setBlasterExDamage(exd);
+            mw.setIsHude(hude);
+            mw.setHudeRandom(huder);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));
