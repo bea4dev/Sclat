@@ -571,12 +571,12 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){
+                    DataMgr.getPlayerData(p).setIsInMatch(false);
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
                     p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 3, 1.3F);
                     p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
                     loc = p.getLocation();
-                    DataMgr.getPlayerData(p).setIsInMatch(false);
                     DataMgr.setPlayerIsQuit(p.getUniqueId().toString(), false);
                     p.getInventory().clear();
                     p.setPlayerListName(p.getDisplayName());
@@ -718,6 +718,7 @@ public class MatchMgr {
                         //DataMgr.getPlayerData(p).reset();
                         for(boolean is : DataMgr.getPlayerIsQuitMap().values())
                             is = false;
+                        
                     }
                     
                     DataMgr.getPlayerData(p).reset();

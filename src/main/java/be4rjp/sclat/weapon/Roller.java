@@ -73,11 +73,14 @@ public class Roller {
                     p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getRollerNeedInk());
                     Vector locvec = p.getEyeLocation().getDirection();
                     Location eloc = p.getEyeLocation();
-                    Location front = eloc.add(locvec.getX(), -0.9, locvec.getZ());
+                    Vector vec = new Vector(locvec.getX(), 0, locvec.getZ()).normalize();
+                    //RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
+                    //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
+                    Location front = eloc.add(vec.getX() * 3.3, -0.9, vec.getZ() * 3.3);
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
-                    Vector vec1 = new Vector(locvec.getZ() * -1, 0, locvec.getX());
-                    Vector vec2 = new Vector(locvec.getZ(), 0, locvec.getX() * -1);
+                    Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
+                    Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
                     
                     //筆系武器
                     if(data.getWeaponClass().getMainWeapon().getIsHude()){
@@ -248,7 +251,7 @@ public class Roller {
                     p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
                 }
                 
-                if(!data.isInMatch() || !p.isOnline())
+                if(!data.isInMatch())
                     cancel();
                 
             }

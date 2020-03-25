@@ -106,6 +106,7 @@ public class Blaster {
                         List<Location> p_locs = Sphere.getSphere(inkball.getLocation(), i, 20);
                         for(Location loc : p_locs){
                             PaintMgr.Paint(loc, p, false);
+                            PaintMgr.PaintHightestBlock(loc, p, false);
                         }
                     }
                     

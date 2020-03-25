@@ -181,7 +181,7 @@ public class PaintMgr {
                         Paint(new Location(player.getLocation().getWorld(), x, i, z), player, true);
                     }
                     if(!randomb)
-                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, true);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, false);
                     break;
                 }
                 i--;

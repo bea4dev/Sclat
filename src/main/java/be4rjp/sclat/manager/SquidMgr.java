@@ -108,9 +108,8 @@ public class SquidMgr {
                     final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");
                     
                     if(data.getIsHolding() && data.getCanPaint()){
-                        p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
                     }else{
-                        if((!data.getIsHolding() && !data.getCanPaint()) && !DataMgr.getPlayerData(p).getPoison())
+                        if(!DataMgr.getPlayerData(p).getPoison())
                             p.setWalkSpeed((float)speed);
                         if(DataMgr.getPlayerData(p).getPoison())
                             p.setWalkSpeed((float)(speed - speed / 3));
