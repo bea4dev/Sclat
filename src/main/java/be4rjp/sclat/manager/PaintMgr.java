@@ -31,7 +31,7 @@ public class PaintMgr {
             blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
                 if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
                     if(DataMgr.getBlockDataMap().containsKey(block)){
                         PaintData data = DataMgr.getPaintDataFromBlock(block);

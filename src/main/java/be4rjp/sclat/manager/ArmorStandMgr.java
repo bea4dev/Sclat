@@ -46,7 +46,7 @@ public class ArmorStandMgr {
             int iy = conf.getArmorStandSettings().getInt("ArmorStand." + name + ".Y");
             int iz = conf.getArmorStandSettings().getInt("ArmorStand." + name + ".Z");
             int iyaw = conf.getArmorStandSettings().getInt("ArmorStand." + name + ".Yaw");
-            Location il = new Location(w, ix, iy, iz);
+            Location il = new Location(w, ix + 0.5D, iy, iz + 0.5D);
             il.setYaw(iyaw);
             ArmorStand as = (ArmorStand) w.spawnEntity(il, EntityType.ARMOR_STAND);
             as.setHelmet(new ItemStack(Material.LEATHER_HELMET));

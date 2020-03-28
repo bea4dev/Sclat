@@ -85,7 +85,7 @@ public class Roller {
                     //筆系武器
                     if(data.getWeaponClass().getMainWeapon().getIsHude()){
                         Location position = p.getLocation();
-                        PaintMgr.PaintHightestBlock(position, p, false);
+                        PaintMgr.PaintHightestBlock(position, p, true);
                         p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -138,7 +138,7 @@ public class Roller {
                         Block block = p.getLocation().getWorld().getBlockAt(position);
                         if(!block.getType().equals(Material.AIR))
                             break loop;
-                        PaintMgr.PaintHightestBlock(position, p, false);
+                        PaintMgr.PaintHightestBlock(position, p, true);
                         p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -198,7 +198,7 @@ public class Roller {
                         Block block = p.getLocation().getWorld().getBlockAt(position);
                         if(!block.getType().equals(Material.AIR))
                             break loop;
-                        PaintMgr.PaintHightestBlock(position, p, false);
+                        PaintMgr.PaintHightestBlock(position, p, true);
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
                                 target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
