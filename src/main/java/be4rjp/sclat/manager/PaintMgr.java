@@ -31,7 +31,7 @@ public class PaintMgr {
             blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
                 if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
                     if(DataMgr.getBlockDataMap().containsKey(block)){
                         PaintData data = DataMgr.getPaintDataFromBlock(block);
@@ -169,19 +169,19 @@ public class PaintMgr {
         }
     }
     
-    public static void PaintHightestBlock(Location loc, Player player, boolean randomb){
+    public static void PaintHightestBlock(Location loc, Player player, boolean randomb, boolean inkrandom){
         int i = loc.getBlockY();
         int x = loc.getBlockX();
         int z = loc.getBlockZ();
             while(i>0){
                 if(new Location(player.getLocation().getWorld(), x, i, z).getBlock().getType() != Material.AIR){
                     Random random = new Random();
-                    int r = random.nextInt(10);
+                    int r = random.nextInt(8);
                     if(r == 0 && randomb){
-                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, true);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, inkrandom);
                     }
                     if(!randomb)
-                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, false);
+                        Paint(new Location(player.getLocation().getWorld(), x, i, z), player, inkrandom);
                     break;
                 }
                 i--;

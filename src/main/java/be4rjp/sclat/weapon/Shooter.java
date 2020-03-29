@@ -79,7 +79,7 @@ public class Shooter {
                         if(i >= tick)
                             inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                         if(i != tick)
-                            PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true);
+                            PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);
                         if(inkball.isDead())
                             cancel();
                         

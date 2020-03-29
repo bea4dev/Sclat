@@ -36,7 +36,8 @@ public class Blaster {
                 data.setCanRollerShoot(true);
             }
         };
-        delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterCoolTime());
+        if(data.getCanRollerShoot())
+            delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterCoolTime());
         
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
@@ -45,13 +46,14 @@ public class Blaster {
                 Shoot(player);
             }
         };
-        delay.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterDelay());
+        if(data.getCanRollerShoot()){
+            delay.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterDelay());
+            data.setCanRollerShoot(false);
+        }
     }
     
     public static void Shoot(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(!data.getCanRollerShoot())
-            return;
         data.setCanRollerShoot(false);
         if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
@@ -106,7 +108,7 @@ public class Blaster {
                         List<Location> p_locs = Sphere.getSphere(inkball.getLocation(), i, 20);
                         for(Location loc : p_locs){
                             PaintMgr.Paint(loc, p, false);
-                            PaintMgr.PaintHightestBlock(loc, p, false);
+                            PaintMgr.PaintHightestBlock(loc, p, false, false);
                         }
                     }
                     
@@ -156,7 +158,7 @@ public class Blaster {
                     inkball.remove();
                 }
                 if(i != tick)
-                    PaintMgr.PaintHightestBlock(inkball.getLocation(), p, false);
+                    PaintMgr.PaintHightestBlock(inkball.getLocation(), p, false, true);
                 if(inkball.isDead())
                     cancel();
                 i++;

@@ -124,7 +124,7 @@ public class Charger {
                 PaintMgr.Paint(position, player, true);
                 break loop;
             }
-            PaintMgr.PaintHightestBlock(position, player, true);
+            PaintMgr.PaintHightestBlock(position, player, false, true);
             
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                 if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerShot())

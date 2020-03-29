@@ -20,6 +20,7 @@ import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +29,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -199,23 +201,43 @@ public class GameMgr implements Listener{
         Player player = (Player) e.getPlayer();
         Action action = e.getAction();
         if(e.getClickedBlock() != null){
-            Sign sign = (Sign) e.getClickedBlock().getState();
-            String line = sign.getLine(2);
-            switch(line){
-                case "[ Join ]":
-                    MatchMgr.PlayerJoinMatch(player);
-                    break;
-                case "[ Weapon Select ]":
-                    OpenGUI.openWeaponSelect(player);
-                    break;
-                case "[ OpenMenu ]":
-                    OpenGUI.openMenu(player);
-                    break;
-                case "Click to Download":
-                    player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
-                    break;
-                    
+            if(e.getClickedBlock().getType() == Material.WALL_SIGN || e.getClickedBlock().getType() == Material.SIGN){
+                Sign sign = (Sign) e.getClickedBlock().getState();
+                String line = sign.getLine(2);
+                switch(line){
+                    case "[ Join ]":
+                        MatchMgr.PlayerJoinMatch(player);
+                        break;
+                    case "[ Weapon Select ]":
+                        OpenGUI.openWeaponSelect(player);
+                        break;
+                    case "[ OpenMenu ]":
+                        OpenGUI.openMenu(player);
+                        break;
+                    case "Click to Download":
+                        player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
+                        break;
+                    case "Click to Return":
+                        BungeeCordMgr.PlayerSendServer(player, "lobby");
+                        break;
+                    case "[ Training Mode ]":
+                        BungeeCordMgr.PlayerSendServer(player, "trial");
+                        break;
+
+                }
             }
+        }
+    }
+    
+    @EventHandler
+    public void onFrameBreak(HangingBreakByEntityEvent event) {
+        if(!(event.getRemover() instanceof Player))
+            return;
+        Player player = (Player) event.getRemover();
+        if(player.getGameMode().equals(GameMode.CREATIVE)) 
+            return;
+        if(event.getEntity() instanceof ItemFrame) {
+            event.setCancelled(true);
         }
     }
     
