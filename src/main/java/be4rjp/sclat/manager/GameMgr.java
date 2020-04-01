@@ -82,6 +82,10 @@ public class GameMgr implements Listener{
                 settings.S_ShowEffect_RollerShot();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
                 settings.S_PlayBGM();
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))
+                settings.S_ShowEffect_Bomb();
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
+                settings.S_ShowEffect_BombEx();
         }else{
             conf.getPlayerSettings().set("Settings." + uuid, "1111111");
         }

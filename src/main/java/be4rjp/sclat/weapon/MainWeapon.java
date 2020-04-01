@@ -55,6 +55,8 @@ public class MainWeapon implements Listener{
                     data.setCanShoot(false);
                     Roller.ShootPaintRunnable(player);
                 }  
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
+                    Bucket.ShootBucket(player);
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK))

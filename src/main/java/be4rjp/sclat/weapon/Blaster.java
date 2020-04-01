@@ -37,7 +37,7 @@ public class Blaster {
             }
         };
         if(data.getCanRollerShoot())
-            delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterCoolTime());
+            delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getCoolTime());
         
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
@@ -47,7 +47,7 @@ public class Blaster {
             }
         };
         if(data.getCanRollerShoot()){
-            delay.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getBlasterDelay());
+            delay.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getDelay());
             data.setCanRollerShoot(false);
         }
     }

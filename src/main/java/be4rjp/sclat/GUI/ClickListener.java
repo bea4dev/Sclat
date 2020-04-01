@@ -126,6 +126,12 @@ public class ClickListener implements Listener{
                 case "BGM":
                     DataMgr.getPlayerData(player).getSettings().S_PlayBGM();
                     break;
+                case "ボムの視認用エフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Bomb();
+                    break;
+                case "爆発エフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_BombEx();
+                    break;
             }
             
             OpenGUI.openSettingsUI(player);
@@ -138,9 +144,11 @@ public class ClickListener implements Listener{
             String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot() ? "1" : "0";
             String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll() ? "1" : "0";
             String E_RS = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot() ? "1" : "0";
-            String E_Sq = DataMgr.getPlayerData(player).getSettings().ShowEffect_Squid() ? "1" : "0";
+            //String E_BGM = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
+            String E_B = DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb() ? "1" : "0";
+            String E_BEx = DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx() ? "1" : "0";
             
-            String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_Sq;
+            String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_B + E_BEx;
             
             String uuid = player.getUniqueId().toString();
             conf.getPlayerSettings().set("Settings." + uuid, s_data);

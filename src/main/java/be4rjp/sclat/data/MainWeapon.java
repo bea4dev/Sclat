@@ -75,9 +75,9 @@ public class MainWeapon {
     
     public double getBlasterExHankei(){return this.exh;}
     
-    public int getBlasterDelay(){return this.delay;}
+    public int getDelay(){return this.delay;}
     
-    public int getBlasterCoolTime(){return this.cooltime;}
+    public int getCoolTime(){return this.cooltime;}
     
     public double getBlasterExDamage(){return this.exd;}
     
@@ -124,9 +124,9 @@ public class MainWeapon {
     
     public void setBlasterExHankei(double d){this.exh = d;}
     
-    public void setBlasterDelay(int i){this.delay = i;}
+    public void setDelay(int i){this.delay = i;}
     
-    public void setBlasterCoolTime(int i){this.cooltime = i;}
+    public void setCoolTime(int i){this.cooltime = i;}
     
     public void setBlasterExDamage(double d){this.exd = d;}
     

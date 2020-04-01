@@ -266,7 +266,8 @@ public class Roller {
             PlayerData data = pdata;
             @Override
             public void run(){
-                p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 1F, 1F);
+                if(player.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk())
+                    p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 1F, 1F);
                 if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
                     return;
                 if(data.getCanRollerShoot()){

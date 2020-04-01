@@ -33,8 +33,8 @@ public class MainWeaponMgr {
             double rollerdamage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerDamage");
             float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
             double exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
-            int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterDelay");
-            int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterCooltime");
+            int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Delay");
+            int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Cooltime");
             double exd = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BlasterExDamage");
             boolean hude = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".IsBrush");
             double huder = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BrushRandom");
@@ -64,8 +64,8 @@ public class MainWeaponMgr {
             mw.setRollerNeedInk(rollerneedink);
             mw.setCanTatehuri(tatehuri);
             mw.setBlasterExHankei(exh);
-            mw.setBlasterDelay(delay);
-            mw.setBlasterCoolTime(cooltime);
+            mw.setDelay(delay);
+            mw.setCoolTime(cooltime);
             mw.setBlasterExDamage(exd);
             mw.setIsHude(hude);
             mw.setHudeRandom(huder);

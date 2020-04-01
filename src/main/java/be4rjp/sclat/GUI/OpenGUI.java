@@ -274,6 +274,65 @@ public class OpenGUI {
         bgm.setItemMeta(bgm_m);
         inv.setItem(17, bgm);
         
+        
+        
+        ItemStack bomb = new ItemStack(Material.WHITE_STAINED_GLASS);
+        ItemMeta bomb_m = bomb.getItemMeta();
+        bomb_m.setDisplayName("ボムの視認用エフェクト");
+        ArrayList<String> bomb_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb())
+            bomb_r.add("§a§l[Enable]");
+        else
+            bomb_r.add("§7§l[Disable]");
+        bomb_m.setLore(bomb_r);
+        bomb.setItemMeta(bomb_m);
+        inv.setItem(14, bomb);
+        
+        ItemStack bomb_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb())
+            bomb_p = new ItemStack(Material.LIME_DYE);
+        else
+            bomb_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta bomb_p_m = bomb_p.getItemMeta();
+        bomb_p_m.setDisplayName("ボムの視認用エフェクト");
+        ArrayList<String> bomb_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb())
+            bomb_p_r.add("§a§l[Enable]");
+        else
+            bomb_p_r.add("§7§l[Disable]");
+        bomb_p_m.setLore(bomb_p_r);
+        bomb_p.setItemMeta(bomb_p_m);
+        inv.setItem(23, bomb_p);
+        
+        
+        ItemStack bombEx = new ItemStack(Material.WHITE_CONCRETE);
+        ItemMeta bombEx_m = bombEx.getItemMeta();
+        bombEx_m.setDisplayName("爆発エフェクト");
+        ArrayList<String> bombEx_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx())
+            bombEx_r.add("§a§l[Enable]");
+        else
+            bombEx_r.add("§7§l[Disable]");
+        bombEx_m.setLore(bombEx_r);
+        bombEx.setItemMeta(bombEx_m);
+        inv.setItem(15, bombEx);
+        
+        ItemStack bombEx_p;
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx())
+            bombEx_p = new ItemStack(Material.LIME_DYE);
+        else
+            bombEx_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta bombEx_p_m = bombEx_p.getItemMeta();
+        bombEx_p_m.setDisplayName("爆発エフェクト");
+        ArrayList<String> bombEx_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx())
+            bombEx_p_r.add("§a§l[Enable]");
+        else
+            bombEx_p_r.add("§7§l[Disable]");
+        bombEx_p_m.setLore(bombEx_p_r);
+        bombEx_p.setItemMeta(bombEx_p_m);
+        inv.setItem(24, bombEx_p);
+        
         player.openInventory(inv);
     }
 }
