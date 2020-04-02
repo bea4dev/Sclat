@@ -59,6 +59,7 @@ public class SPWeaponMgr {
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
+                    p.getInventory().setItem(4, new ItemStack(Material.AIR));
                     DataMgr.getPlayerData(p).setIsSP(false);
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch())

@@ -56,9 +56,10 @@ public class NPCMgr {
                     npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0);
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
-                        //connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
                         connection.sendPacket(new PacketPlayOutEntityTeleport(npc));
+                        connection.sendPacket(new PacketPlayOutEntityHeadRotation(npc, (byte) ((location.getYaw() * 256.0F) / 360.0F)));
                         connection.sendPacket(new PacketPlayOutEntityEquipment(npc.getBukkitEntity().getEntityId(), EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack())));
+                        connection.sendPacket(new PacketPlayOutAnimation(npc, 0));
                     }
                     
                 }

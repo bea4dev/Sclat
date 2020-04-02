@@ -357,15 +357,6 @@ public class Roller {
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
-        BukkitRunnable delay = new BukkitRunnable(){
-            Player p = player;
-            @Override
-            public void run(){
-                //p.getInventory().setItem(0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                //DataMgr.getPlayerData(p).setCanShoot(true);
-            }
-        };
-        delay.runTaskLater(Main.getPlugin(), DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
     }
     
 }

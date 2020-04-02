@@ -36,6 +36,7 @@ public class PlayerData {
     private boolean poison = false;
     private boolean canrollershoot = true;
     private Location maploc;
+    private boolean isusingsp = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -92,6 +93,8 @@ public class PlayerData {
     
     public Location getPlayerMapLoc(){return this.maploc;}
     
+    public boolean getIsUsingSP(){return this.isusingsp;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -140,6 +143,9 @@ public class PlayerData {
     public void setCanRollerShoot(boolean is){this.canrollershoot = is;}
     
     public void setPlayerMapLoc(Location loc){this.maploc = loc;}
+    
+    public void setIsUsingSP(boolean is){this.isusingsp = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     

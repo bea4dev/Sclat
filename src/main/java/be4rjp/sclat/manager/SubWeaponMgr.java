@@ -8,6 +8,7 @@ import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.Sensor;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,6 +59,8 @@ public class SubWeaponMgr {
     
     public static void UseSubWeapon(Player player, String name){
         PlayerData data = DataMgr.getPlayerData(player);
+        if(!data.getCanUseSubWeapon()) return;
+        if(player.getGameMode().equals(GameMode.SPECTATOR)) return;
         switch (name) {
             case "スプラッシュボム":
                 SplashBomb.SplashBomRunnable(player);

@@ -5,11 +5,14 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
+import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
 import be4rjp.sclat.weapon.Blaster;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.ChatColor;
@@ -17,6 +20,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -125,6 +130,28 @@ public class GameMgr implements Listener{
             if(ArmorStandMgr.getIsSpawned()) return;
             armor.runTaskLater(Main.getPlugin(), 50);
             ArmorStandMgr.setIsSpawned(true);
+            
+            List<Block> blocks = new ArrayList<Block>();
+            Block b0 = Main.lobby.getBlock().getRelative(BlockFace.DOWN);
+            blocks.add(b0);
+            blocks.add(b0.getRelative(BlockFace.EAST));
+            blocks.add(b0.getRelative(BlockFace.NORTH));
+            blocks.add(b0.getRelative(BlockFace.SOUTH));
+            blocks.add(b0.getRelative(BlockFace.WEST));
+            blocks.add(b0.getRelative(BlockFace.NORTH_EAST));
+            blocks.add(b0.getRelative(BlockFace.NORTH_WEST));
+            blocks.add(b0.getRelative(BlockFace.SOUTH_EAST));
+            blocks.add(b0.getRelative(BlockFace.SOUTH_WEST));
+            for(Block block : blocks) {
+                if(block.getType().equals(Material.WHITE_STAINED_GLASS)){
+                    PaintData pdata = new PaintData(block);
+                    pdata.setMatch(match);
+                    pdata.setTeam(match.getTeam0());
+                    pdata.setOrigianlType(block.getType());
+                    DataMgr.setPaintDataFromBlock(block, pdata);
+                    block.setType(match.getTeam0().getTeamColor().getGlass());
+                }
+            }
             
             return;
         }

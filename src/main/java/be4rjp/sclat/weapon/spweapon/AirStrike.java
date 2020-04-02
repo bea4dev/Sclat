@@ -67,6 +67,7 @@ public class AirStrike {
             int c = 0;
             @Override
             public void run(){
+                if(c == 0) DataMgr.getPlayerData(player).setIsUsingSP(true);
                 final double random = 17;
                 Location loc = new Location(ploc.getWorld(), ploc.getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, ploc.getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
@@ -88,12 +89,15 @@ public class AirStrike {
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor(), 1);
                     player.getWorld().spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 1, dustOptions);
                 }
-                if(c == 150 || !DataMgr.getPlayerData(player).isInMatch())
+                if(c == 100 || !DataMgr.getPlayerData(player).isInMatch()){
+                    DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
+                }
                 c++;
             }
         };
         effect.runTaskTimer(Main.getPlugin(), 0, 2);
+       
     }
     
     public static void StrikeRunnable(Player player, Location loc){
@@ -205,7 +209,7 @@ public class AirStrike {
                 z = drop.getLocation().getZ();
 
                 
-                if(c > 2000){
+                if(c > 2000 || !DataMgr.getPlayerData(p).isInMatch()){
                     drop.remove();
                     cancel();
                     return;

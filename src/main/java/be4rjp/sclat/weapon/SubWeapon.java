@@ -28,8 +28,6 @@ public class SubWeapon implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
-            if(!data.getCanUseSubWeapon()) return;
-            if(player.getGameMode().equals(GameMode.SPECTATOR)) return;
             SubWeaponMgr.UseSubWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
         }
     }

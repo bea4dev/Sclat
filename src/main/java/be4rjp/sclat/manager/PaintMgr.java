@@ -4,6 +4,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
+import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
@@ -31,7 +32,7 @@ public class PaintMgr {
             blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
                 if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
                     if(DataMgr.getBlockDataMap().containsKey(block)){
                         PaintData data = DataMgr.getPaintDataFromBlock(block);
@@ -45,7 +46,7 @@ public class PaintMgr {
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                             block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                             DataMgr.getPlayerData(player).addPaintCount();
-                            if(new Random().nextInt(10) == 1)
+                            if(new Random().nextInt(10) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                                 SPWeaponMgr.addSPCharge(player);
                         }
                     }else{
@@ -61,7 +62,7 @@ public class PaintMgr {
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                         DataMgr.getPlayerData(player).addPaintCount();
-                        if(new Random().nextInt(12) == 1)
+                        if(new Random().nextInt(12) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);
                     }
                 }
@@ -188,5 +189,54 @@ public class PaintMgr {
             }
     }
     
+    public static void PaintGlass(Match match){
+        //team0
+        List<Block> blocks = new ArrayList<Block>();
+        Block b0 = match.getMapData().getTeam0Loc().getBlock().getRelative(BlockFace.DOWN);
+        blocks.add(b0);
+        blocks.add(b0.getRelative(BlockFace.EAST));
+        blocks.add(b0.getRelative(BlockFace.NORTH));
+        blocks.add(b0.getRelative(BlockFace.SOUTH));
+        blocks.add(b0.getRelative(BlockFace.WEST));
+        blocks.add(b0.getRelative(BlockFace.NORTH_EAST));
+        blocks.add(b0.getRelative(BlockFace.NORTH_WEST));
+        blocks.add(b0.getRelative(BlockFace.SOUTH_EAST));
+        blocks.add(b0.getRelative(BlockFace.SOUTH_WEST));
+        for(Block block : blocks) {
+            if(block.getType().equals(Material.WHITE_STAINED_GLASS)){
+                PaintData data = new PaintData(block);
+                data.setMatch(match);
+                data.setTeam(match.getTeam0());
+                data.setOrigianlType(block.getType());
+                DataMgr.setPaintDataFromBlock(block, data);
+                block.setType(match.getTeam0().getTeamColor().getGlass());
+                match.getTeam0().addPaintCount();
+            }
+        }
+        
+        //team1
+        List<Block> blocks1 = new ArrayList<Block>();
+        Block b1 = match.getMapData().getTeam1Loc().getBlock().getRelative(BlockFace.DOWN);
+        blocks1.add(b1);
+        blocks1.add(b1.getRelative(BlockFace.EAST));
+        blocks1.add(b1.getRelative(BlockFace.NORTH));
+        blocks1.add(b1.getRelative(BlockFace.SOUTH));
+        blocks1.add(b1.getRelative(BlockFace.WEST));
+        blocks1.add(b1.getRelative(BlockFace.NORTH_EAST));
+        blocks1.add(b1.getRelative(BlockFace.NORTH_WEST));
+        blocks1.add(b1.getRelative(BlockFace.SOUTH_EAST));
+        blocks1.add(b1.getRelative(BlockFace.SOUTH_WEST));
+        for(Block block : blocks1) {
+            if(block.getType().equals(Material.WHITE_STAINED_GLASS)){
+                PaintData data = new PaintData(block);
+                data.setMatch(match);
+                data.setTeam(match.getTeam1());
+                data.setOrigianlType(block.getType());
+                DataMgr.setPaintDataFromBlock(block, data);
+                block.setType(match.getTeam1().getTeamColor().getGlass());
+                match.getTeam1().addPaintCount();
+            }
+        }
+    }
     
 }

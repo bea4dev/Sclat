@@ -16,14 +16,15 @@ public class BombRush {
     public static void BombRushRunnable(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
         data.setIsBombRush(true);
-        
+        data.setIsUsingSP(true);
         BukkitRunnable task = new BukkitRunnable(){
             @Override
             public void run(){
                 data.setIsBombRush(false);
                 player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                data.setIsUsingSP(false);
             }
         };
-        task.runTaskLater(Main.getPlugin(), 140);
+        task.runTaskLater(Main.getPlugin(), 120);
     }
 }

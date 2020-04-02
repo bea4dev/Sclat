@@ -262,6 +262,9 @@ public class MatchMgr {
             public void run(){
 
                 if(s == 0){
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1)
+                        PaintMgr.PaintGlass(match);
+                    
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                         Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
                         int i = (DataMgr.getPlayerData(p).getPlayerNumber()+1)/2;

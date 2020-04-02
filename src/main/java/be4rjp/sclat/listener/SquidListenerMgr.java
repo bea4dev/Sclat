@@ -37,7 +37,7 @@ public class SquidListenerMgr {
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
             player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
             return;
-        }if(b1.getType().equals(wool)){
+        }if(b1.getType().equals(wool) || b1.getType().equals(data.getTeam().getTeamColor().getGlass())){
             if(!data.getIsSquid())
                 return;
             data.setIsOnInk(true);
