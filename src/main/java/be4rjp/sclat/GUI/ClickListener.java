@@ -4,6 +4,9 @@ package be4rjp.sclat.GUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Match;
+import be4rjp.sclat.data.PaintData;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
@@ -14,11 +17,15 @@ import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,6 +62,28 @@ public class ClickListener implements Listener{
                 MatchMgr.RollBack();
                 player.setExp(0.99F);
                 player.sendMessage("3分後に再リセットできるようになります");
+                List<Block> blocks = new ArrayList<Block>();
+                Block b0 = Main.lobby.getBlock().getRelative(BlockFace.DOWN);
+                blocks.add(b0);
+                blocks.add(b0.getRelative(BlockFace.EAST));
+                blocks.add(b0.getRelative(BlockFace.NORTH));
+                blocks.add(b0.getRelative(BlockFace.SOUTH));
+                blocks.add(b0.getRelative(BlockFace.WEST));
+                blocks.add(b0.getRelative(BlockFace.NORTH_EAST));
+                blocks.add(b0.getRelative(BlockFace.NORTH_WEST));
+                blocks.add(b0.getRelative(BlockFace.SOUTH_EAST));
+                blocks.add(b0.getRelative(BlockFace.SOUTH_WEST));
+                for(Block block : blocks) {
+                    if(block.getType().equals(Material.WHITE_STAINED_GLASS)){
+                        PaintData pdata = new PaintData(block);
+                        Match match = DataMgr.getPlayerData(player).getMatch();
+                        pdata.setMatch(match);
+                        pdata.setTeam(match.getTeam0());
+                        pdata.setOrigianlType(block.getType());
+                        DataMgr.setPaintDataFromBlock(block, pdata);
+                        block.setType(match.getTeam0().getTeamColor().getGlass());
+                    }
+                }
                 break;
             case"ロビーへ戻る / RETURN TO LOBBY":
                 BungeeCordMgr.PlayerSendServer(player, "lobby");
