@@ -30,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Material;
 import be4rjp.sclat.data.Team;
+import be4rjp.sclat.weapon.Spinner;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
@@ -447,6 +448,8 @@ public class MatchMgr {
                         Shooter.ShooterRunnable(p);
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
                         Charger.ChargerRunnable(p);
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
+                        Spinner.SpinnerRunnable(p);
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
                         Roller.HoldRunnable(p);
                         Roller.RollPaintRunnable(p);

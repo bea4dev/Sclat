@@ -6,6 +6,7 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.AirStrike;
+import be4rjp.sclat.weapon.spweapon.Barrier;
 import be4rjp.sclat.weapon.spweapon.BombRush;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
@@ -59,7 +60,8 @@ public class SPWeaponMgr {
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
-                    p.getInventory().setItem(4, new ItemStack(Material.AIR));
+                    if(!data.getWeaponClass().getSPWeaponName().equals("インクストライク"))
+                        p.getInventory().setItem(4, new ItemStack(Material.AIR));
                     DataMgr.getPlayerData(p).setIsSP(false);
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch())
@@ -78,6 +80,13 @@ public class SPWeaponMgr {
                 ism.setDisplayName("スーパーアーマー");
                 is.setItemMeta(ism);
                 p.getInventory().setItem(4, is); 
+                break;
+            case "バリア":
+                ItemStack b = new ItemStack(Material.END_CRYSTAL);
+                ItemMeta bm = b.getItemMeta();
+                bm.setDisplayName("バリア");
+                b.setItemMeta(bm);
+                p.getInventory().setItem(4, b); 
                 break;
             case "ボムラッシュ":
                 ItemStack is1 = new ItemStack(Material.FEATHER);
@@ -108,6 +117,13 @@ public class SPWeaponMgr {
         switch (name) {
             case "スーパーアーマー":
                 SuperArmor.setArmor(player, 20, 160, true);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                data.setSPGauge(0);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "バリア":
+                Barrier.BarrierRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 data.setSPGauge(0);
                 player.setExp(0.99F);

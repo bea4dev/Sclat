@@ -92,7 +92,7 @@ public class GameMgr implements Listener{
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
                 settings.S_ShowEffect_BombEx();
         }else{
-            conf.getPlayerSettings().set("Settings." + uuid, "1111111");
+            conf.getPlayerSettings().set("Settings." + uuid, "111111111");
         }
             
         data.setSettings(settings);

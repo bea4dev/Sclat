@@ -15,6 +15,7 @@ import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
+import be4rjp.sclat.weapon.Spinner;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
@@ -114,6 +115,8 @@ public class ClickListener implements Listener{
                             Shooter.ShooterRunnable(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Charger"))
                             Charger.ChargerRunnable(p);
+                        if(wc.getMainWeapon().getWeaponType().equals("Spinner"))
+                            Spinner.SpinnerRunnable(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Roller")){
                             Roller.HoldRunnable(p);
                             Roller.RollPaintRunnable(p);
