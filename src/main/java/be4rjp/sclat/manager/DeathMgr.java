@@ -28,6 +28,8 @@ import org.bukkit.util.Vector;
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
         
+        target.setGameMode(GameMode.SPECTATOR);
+        
         Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());
         Item drop2 = target.getWorld().dropItem(target.getEyeLocation(), SubWeaponMgr.getSubWeapon(target));
         final double random = 0.4;
@@ -36,6 +38,8 @@ public class DeathMgr {
         
         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(shooter).getTeam().getTeamColor().getWool().createBlockData();
         target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1, 1, 1, 1, bd);
+        
+        DataMgr.getPlayerData(target).setSPGauge((int)(DataMgr.getPlayerData(target).getSPGauge() * 0.8));
         
         BukkitRunnable clear = new BukkitRunnable(){
             @Override
@@ -236,9 +240,8 @@ public class DeathMgr {
                     if(i == 80)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "溺れてしまった！", 0, 18, 2);
                     if(i == 100){
-                        
-                        Location loc = DataMgr.getPlayerData(t).getMatchLocation();
-                        t.teleport(loc);
+                        Location loc1 = DataMgr.getPlayerData(t).getMatchLocation();
+                        t.teleport(loc1);
                         t.setGameMode(GameMode.ADVENTURE);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
@@ -277,8 +280,8 @@ public class DeathMgr {
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "奈落に落ちてしまった！", 0, 18, 2);
                     if(i == 100){
                         
-                        Location loc = DataMgr.getPlayerData(t).getMatchLocation();
-                        t.teleport(loc);
+                        Location loc1 = DataMgr.getPlayerData(t).getMatchLocation();
+                        t.teleport(loc1);
                         t.setGameMode(GameMode.ADVENTURE);
                         t.getInventory().setItem(0, DataMgr.getPlayerData(t).getWeaponClass().getMainWeapon().getWeaponIteamStack());
                         t.getWorld().playSound(DataMgr.getPlayerData(t).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);

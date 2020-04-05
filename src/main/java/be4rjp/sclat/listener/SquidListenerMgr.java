@@ -4,6 +4,7 @@ package be4rjp.sclat.listener;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.DeathMgr;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -51,7 +52,7 @@ public class SquidListenerMgr {
             data.setIsOnInk(false);
             player.setAllowFlight(false);
             player.setFlying(false);
-            if(playerblock.getType() == Material.WATER)
+            if(playerblock.getType() == Material.WATER && player.getGameMode().equals(GameMode.ADVENTURE))
                 DeathMgr.PlayerDeathRunnable(player, player, "water");
             return;
         
