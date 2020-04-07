@@ -115,7 +115,7 @@ public class AirStrike {
                 if(c == 0){
                     ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
-                    //bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                     bom.setItemMeta(bom_m);
                     drop = p.getWorld().dropItem(loc, bom);
                     drop.setVelocity(new Vector(0, -1, 0));

@@ -10,6 +10,7 @@ import java.util.Random;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 
 /**
  *
@@ -28,6 +29,7 @@ public class DataMgr {
     private static Map<Block, PaintData> blockdata = new HashMap<>(); 
     private static Map<String, Boolean> playerquit = new HashMap<>(); 
     private static Map<ArmorStand, Double> armorstand = new HashMap<>(); 
+    private static Map<Snowball, Boolean> snowball = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
@@ -44,6 +46,7 @@ public class DataMgr {
     public static PaintData getPaintDataFromBlock(Block block){return blockdata.get(block);}
     public static boolean getPlayerIsQuit(String uuid){return playerquit.get(uuid);}
     public static double getArmorStandHealth(ArmorStand as){return armorstand.get(as);}
+    public static boolean getSnowballIsHit(Snowball ball){return snowball.get(ball);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -59,6 +62,7 @@ public class DataMgr {
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
     public static void setPlayerIsQuit(String uuid, boolean is){playerquit.put(uuid, is);}
     public static void setArmorStandHealth(ArmorStand as, double hp){armorstand.put(as, hp);}
+    public static void setSnowballIsHit(Snowball ball, boolean is){snowball.put(ball, is);}
     
     
     public static void addColorList(Color color){list.add(color);}
@@ -75,6 +79,7 @@ public class DataMgr {
     public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
     public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;};
     public static Map<ArmorStand, Double> getArmorStandMap(){return armorstand;};
+    public static Map<Snowball, Boolean> getSnowballIsHitMap(){return snowball;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

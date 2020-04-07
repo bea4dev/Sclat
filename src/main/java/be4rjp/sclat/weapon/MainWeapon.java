@@ -27,6 +27,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -46,7 +48,8 @@ public class MainWeapon implements Listener{
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(equalWeapon(player)){
                 PlayerData data = DataMgr.getPlayerData(player);
-                data.setTick(0);
+                if(data.getCanCharge())
+                    data.setTick(0);
                 if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                     data.setIsHolding(true);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
@@ -59,59 +62,30 @@ public class MainWeapon implements Listener{
                     Bucket.ShootBucket(player);
             }
         }
-        if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK))
+        if(action.equals(Action.LEFT_CLICK_AIR))
             if(DataMgr.getPlayerData(player).isInMatch())
                 SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
         
     }
     
     @EventHandler
-    public void onBlockHit(ProjectileHitEvent event){
-        Player shooter = (Player)event.getEntity().getShooter();
-        PaintMgr.Paint(event.getHitBlock().getLocation(), shooter, true);
-        shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
+    public void onPlayerClick(PlayerAnimationEvent event){
+        Player player = event.getPlayer();
+        if(event.getAnimationType() == PlayerAnimationType.ARM_SWING){
+            if(DataMgr.getPlayerData(player).isInMatch())
+                SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
+        }
     }
     
-    @EventHandler
-    public void onEntityHit(EntityDamageByEntityEvent event) {
-        event.setCancelled(true);
-
-        Projectile projectile = (Projectile)event.getDamager();
-        Player shooter = (Player)projectile.getShooter();
-        if(event.getEntity() instanceof Player){
-            Player target = (Player)event.getEntity();
-            if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
-                    DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
-                    PaintMgr.Paint(target.getLocation(), shooter, true);
-                }else{
-                    target.setGameMode(GameMode.SPECTATOR);
-                    DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
-                    PaintMgr.Paint(target.getLocation(), shooter, true);
-                }
-                //AntiDamageTime
-                BukkitRunnable task = new BukkitRunnable(){
-                    Player p = target;
-                    @Override
-                    public void run(){
-                        target.setNoDamageTicks(0);
-                    }
-                };
-                task.runTaskLater(Main.getPlugin(), 1);
-            }
-        }else if(event.getEntity() instanceof ArmorStand){
-            ArmorStand as = (ArmorStand) event.getEntity();
-            ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage(), shooter);
-        }
-        
-    }
+    
     
     @EventHandler
     public void PlayerRightClick(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         if(equalWeapon(player)){
             PlayerData data = DataMgr.getPlayerData(player);
-            data.setTick(0);
+            if(data.getCanCharge())
+                data.setTick(0);
             if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                 data.setIsHolding(true);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
@@ -128,7 +102,8 @@ public class MainWeapon implements Listener{
         Player player = event.getPlayer();
         if(equalWeapon(player)){
             PlayerData data = DataMgr.getPlayerData(player);
-            data.setTick(0);
+            if(data.getCanCharge())
+                data.setTick(0);
             if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                 data.setIsHolding(true);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))

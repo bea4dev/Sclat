@@ -91,7 +91,12 @@ public class Charger {
                         p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
                         Charger.Shoot(p, charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
-                        p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
+                        int reach = (int)(p.getExp() / data.getWeaponClass().getMainWeapon().getNeedInk());
+                        if(reach >= 2){
+                            Charger.Shoot(p, reach / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * reach);
+                            p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * reach);
+                        }else
+                            p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());

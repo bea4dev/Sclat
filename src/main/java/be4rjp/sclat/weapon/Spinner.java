@@ -71,13 +71,16 @@ public class Spinner {
     }
     
     public static void SpinnerShootRunnable(int charge, Player player){
+        DataMgr.getPlayerData(player).setCanCharge(false);
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             int c = 0;
             @Override
             public void run(){
-                if(c == charge || !p.isOnline() || DataMgr.getPlayerData(p).getIsSquid())
+                if(c == charge || !p.isOnline() || DataMgr.getPlayerData(p).getIsSquid()){
+                    DataMgr.getPlayerData(player).setCanCharge(true);
                     cancel();
+                }
                 Spinner.Shoot(p, charge);
                 c++;
             }

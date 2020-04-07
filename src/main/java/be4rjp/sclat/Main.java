@@ -14,6 +14,7 @@ import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.NPCMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
+import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import java.util.logging.Level;
@@ -25,6 +26,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -82,6 +84,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         pm.registerEvents(new be4rjp.sclat.weapon.MainWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
+        pm.registerEvents(new SnowballListener(), this);
         
         getLogger().info("registerEvents ok");
         ColorMgr.SetupColor();

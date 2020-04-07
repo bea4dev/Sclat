@@ -51,7 +51,7 @@ public class KBomb {
                         p.setExp(p.getExp() - 0.59F);
                     ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getConcrete()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
-                    //bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                     bom.setItemMeta(bom_m);
                     drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
                     drop.setVelocity(p.getEyeLocation().getDirection());
