@@ -36,6 +36,7 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import java.io.File;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -440,6 +441,8 @@ public class MatchMgr {
 
                 if(s == 281){
                     //playerclass
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
+                        ArmorStandMgr.BeaconArmorStandSetup(p);
                     WeaponClassMgr.setWeaponClass(p);
 
 
@@ -468,7 +471,8 @@ public class MatchMgr {
                     p.setExp(0.99F);
                     InMatchCounter(p);
                     p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
-
+                    
+                    
 
                     p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
@@ -576,7 +580,12 @@ public class MatchMgr {
             int i = 0;
             @Override
             public void run(){
-                if(i == 0){
+                if(i == 0){ 
+                    for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                        as.remove();
+                    }
+                    DataMgr.getBeaconMap().clear();
+                    DataMgr.getArmorStandMap().clear();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
@@ -715,6 +724,7 @@ public class MatchMgr {
                     ItemMeta joinmeta = join.getItemMeta();
                     joinmeta.setDisplayName("メインメニュー");
                     join.setItemMeta(joinmeta);
+                    p.getInventory().clear();
                     p.getInventory().setItem(0, join);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         RollBack();

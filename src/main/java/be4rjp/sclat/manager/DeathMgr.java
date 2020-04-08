@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
         
+        DataMgr.getPlayerData(target).setIsDead(true);
         target.setGameMode(GameMode.SPECTATOR);
         
         Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());
@@ -103,7 +104,7 @@ public class DeathMgr {
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", msg, 0, 18, 2);
                     //t.sendTitle("", sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！", 0, 5, 2);
                     if(i == 100){
-                        
+                        DataMgr.getPlayerData(target).setIsDead(false);
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
                         t.setGameMode(GameMode.ADVENTURE);
@@ -151,7 +152,7 @@ public class DeathMgr {
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", msg, 0, 18, 2);
                     //t.sendTitle("", sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！", 0, 5, 2);
                     if(i == 100){
-                        
+                        DataMgr.getPlayerData(target).setIsDead(false);
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
                         t.setGameMode(GameMode.ADVENTURE);
@@ -199,7 +200,7 @@ public class DeathMgr {
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", msg, 0, 18, 2);
                     //t.sendTitle("", sdata.getTeam().getTeamColor().getColorCode() + s.getDisplayName() + ChatColor.RESET + "に" + ChatColor.BOLD + sdata.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName() + ChatColor.RESET + "でやられた！", 0, 5, 2);
                     if(i == 100){
-                        
+                        DataMgr.getPlayerData(target).setIsDead(false);
                         Location loc = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc);
                         t.setGameMode(GameMode.ADVENTURE);
@@ -240,6 +241,7 @@ public class DeathMgr {
                     if(i == 80)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "溺れてしまった！", 0, 18, 2);
                     if(i == 100){
+                        DataMgr.getPlayerData(target).setIsDead(false);
                         Location loc1 = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc1);
                         t.setGameMode(GameMode.ADVENTURE);
@@ -279,7 +281,7 @@ public class DeathMgr {
                     if(i == 80)
                         t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "奈落に落ちてしまった！", 0, 18, 2);
                     if(i == 100){
-                        
+                        DataMgr.getPlayerData(target).setIsDead(false);
                         Location loc1 = DataMgr.getPlayerData(t).getMatchLocation();
                         t.teleport(loc1);
                         t.setGameMode(GameMode.ADVENTURE);

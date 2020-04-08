@@ -38,6 +38,7 @@ public class PlayerData {
     private Location maploc;
     private boolean isusingsp = false;
     private boolean cancharge = true;
+    private boolean isdead = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -98,6 +99,8 @@ public class PlayerData {
     
     public boolean getCanCharge(){return this.cancharge;}
     
+    public boolean getIsDead(){return this.isdead;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -151,6 +154,8 @@ public class PlayerData {
     
     public void setCanCharge(boolean is){this.cancharge = is;}
     
+    public void setIsDead(boolean is){this.isdead = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     
@@ -180,6 +185,7 @@ public class PlayerData {
         this.poison = false;
         this.canrollershoot = true;
         this.cancharge = true;
+        this.isdead = false;
     }
     
 }

@@ -3,6 +3,7 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.subweapon.Beacon;
 import be4rjp.sclat.weapon.subweapon.KBomb;
 import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
@@ -51,6 +52,11 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("キューバンボム");
                 break;
+            case "ビーコン":
+                is = new ItemStack(Material.IRON_TRAPDOOR);
+                ism = is.getItemMeta();
+                ism.setDisplayName("ビーコン");
+                break;
         }
         is.setItemMeta(ism);
         //player.getInventory().setItem(2, is);  
@@ -80,6 +86,10 @@ public class SubWeaponMgr {
                 break;
             case "キューバンボム":
                 KBomb.KBomRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "ビーコン":
+                Beacon.setBeacon(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

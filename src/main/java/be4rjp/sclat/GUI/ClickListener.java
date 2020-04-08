@@ -8,9 +8,11 @@ import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
+import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
+import be4rjp.sclat.manager.SuperJumpMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
@@ -27,6 +29,7 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -111,6 +114,13 @@ public class ClickListener implements Listener{
                         DataMgr.getPlayerData(player).setIsJoined(true);
                         WeaponClass wc = DataMgr.getWeaponClass(name);
                         DataMgr.getPlayerData(player).setWeaponClass(wc);
+                        for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                            as.remove();
+                        }
+                        DataMgr.getBeaconMap().clear();
+                        DataMgr.getArmorStandMap().clear();
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
+                            ArmorStandMgr.BeaconArmorStandSetup(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Shooter"))
                             Shooter.ShooterRunnable(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Charger"))
@@ -137,6 +147,18 @@ public class ClickListener implements Listener{
             }
             player.sendMessage(name + "を選択しました");
         }
+        
+        if(event.getClickedInventory().getTitle().equals("Chose a Player or Beacon")){
+            for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                if (p.getName().equals(name)){
+                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD) && p != player)
+                        SuperJumpMgr.SuperJumpCollTime(player, p.getLocation());
+                    if(event.getCurrentItem().getType().equals(Material.IRON_TRAPDOOR))
+                        SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(player).getLocation());
+                }
+            }
+        }
+        
         
         if(event.getClickedInventory().getTitle().equals("設定")){
             switch (name){
@@ -197,6 +219,8 @@ public class ClickListener implements Listener{
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(player.getInventory().getItemInMainHand().getType().equals(Material.CHEST))
                 OpenGUI.openMenu(player);
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("スーパージャンプ"))
+                OpenGUI.SuperJumpGUI(player);
         }
     }
 }

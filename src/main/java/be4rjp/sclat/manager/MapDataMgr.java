@@ -81,6 +81,11 @@ public class MapDataMgr {
             int tlocz = conf.getMapConfig().getInt("Maps." + mapname + ".WaitLoc.Z");
             Location tloc = new Location(w, tlocx, tlocy, tlocz);
             
+            int nlocx = conf.getMapConfig().getInt("Maps." + mapname + ".NoBlockLoc.X");
+            int nlocy = conf.getMapConfig().getInt("Maps." + mapname + ".NoBlockLoc.Y");
+            int nlocz = conf.getMapConfig().getInt("Maps." + mapname + ".NoBlockLoc.Z");
+            Location nloc = new Location(w, nlocx, nlocy, nlocz);
+            
             
             boolean canpaintbblock = false;
             if(conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock") == true)
@@ -94,6 +99,7 @@ public class MapDataMgr {
             map.setTeam1Intro(t1intl);
             map.setResultLoc(rloc);
             map.setTaikibasyo(tloc);
+            map.setNoBlockLocation(nloc);
             
             map.setIntroMoveX(intromovex);
             map.setIntroMoveY(intromovey);

@@ -28,7 +28,8 @@ public class DataMgr {
     private static Map<MapData, TeamLoc> locdata = new HashMap<>(); 
     private static Map<Block, PaintData> blockdata = new HashMap<>(); 
     private static Map<String, Boolean> playerquit = new HashMap<>(); 
-    private static Map<ArmorStand, Double> armorstand = new HashMap<>(); 
+    private static Map<ArmorStand, Player> armorstand = new HashMap<>();
+    private static Map<Player, ArmorStand> beacon = new HashMap<>();
     private static Map<Snowball, Boolean> snowball = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
@@ -45,8 +46,9 @@ public class DataMgr {
     public static TeamLoc getTeamLoc(MapData map){return locdata.get(map);}
     public static PaintData getPaintDataFromBlock(Block block){return blockdata.get(block);}
     public static boolean getPlayerIsQuit(String uuid){return playerquit.get(uuid);}
-    public static double getArmorStandHealth(ArmorStand as){return armorstand.get(as);}
+    public static Player getArmorStandPlayer(ArmorStand as){return armorstand.get(as);}
     public static boolean getSnowballIsHit(Snowball ball){return snowball.get(ball);}
+    public static ArmorStand getBeaconFromplayer(Player player){return beacon.get(player);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -61,8 +63,9 @@ public class DataMgr {
     public static void setTeamLoc(MapData map, TeamLoc loc){locdata.put(map, loc);}
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
     public static void setPlayerIsQuit(String uuid, boolean is){playerquit.put(uuid, is);}
-    public static void setArmorStandHealth(ArmorStand as, double hp){armorstand.put(as, hp);}
+    public static void setArmorStandHealth(ArmorStand as, Player player){armorstand.put(as, player);}
     public static void setSnowballIsHit(Snowball ball, boolean is){snowball.put(ball, is);}
+    public static void setBeaconFromPlayer(Player player, ArmorStand as){beacon.put(player, as);}
     
     
     public static void addColorList(Color color){list.add(color);}
@@ -70,16 +73,15 @@ public class DataMgr {
     //public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
     
     
-    public static void subtractArmorStandHealth(ArmorStand as, double hp){
-        setArmorStandHealth(as, getArmorStandHealth(as) - hp);
-    }
+    
     
     public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
     public static Map<Player, PlayerData> getPlayerDataMap(){return playerdata;}
     public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
     public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;};
-    public static Map<ArmorStand, Double> getArmorStandMap(){return armorstand;};
+    public static Map<ArmorStand, Player> getArmorStandMap(){return armorstand;};
     public static Map<Snowball, Boolean> getSnowballIsHitMap(){return snowball;}
+    public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

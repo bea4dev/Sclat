@@ -71,7 +71,7 @@ public class AirStrike {
                 final double random = 17;
                 Location loc = new Location(ploc.getWorld(), ploc.getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, ploc.getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
-                if(c == 15 || !DataMgr.getPlayerData(player).isInMatch())
+                if(c == 10 || !DataMgr.getPlayerData(player).isInMatch())
                     cancel();
                 c++;
             }

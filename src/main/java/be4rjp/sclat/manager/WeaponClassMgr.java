@@ -36,6 +36,11 @@ public class WeaponClassMgr {
         player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
         ItemStack is = SubWeaponMgr.getSubWeapon(player);
         player.getInventory().setItem(2, is);
+        ItemStack co = new ItemStack(Material.BOOK);
+        ItemMeta meta = co.getItemMeta();
+        meta.setDisplayName("スーパージャンプ");
+        co.setItemMeta(meta);
+        player.getInventory().setItem(6, co);
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();

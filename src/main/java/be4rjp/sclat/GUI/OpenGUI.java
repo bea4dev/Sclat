@@ -1,16 +1,19 @@
 
 package be4rjp.sclat.GUI;
 
+import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  *
@@ -69,6 +72,39 @@ public class OpenGUI {
         
         player.openInventory(inv);
     }
+    
+    public static void SuperJumpGUI(Player player){
+        int slotnum = 0;
+        Inventory inv = Bukkit.createInventory(null, 18, "Chose a Player or Beacon");
+        for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+            if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
+                ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+                SkullMeta skull = (SkullMeta) item.getItemMeta();
+                skull.setDisplayName(player.getName());
+                skull.setOwningPlayer(p);
+                item.setItemMeta(skull);
+                if (slotnum <= 17){
+                    inv.setItem(slotnum, item);
+                }
+                slotnum++;
+            }
+        }
+        for(ArmorStand as : DataMgr.getBeaconMap().values()){
+            if(as.getCustomName().equals("21")){
+                Player p = DataMgr.getArmorStandPlayer(as);
+                ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
+                ItemMeta im = item.getItemMeta();
+                im.setDisplayName(player.getName());
+                item.setItemMeta(im);
+                if (slotnum <= 17){
+                    inv.setItem(slotnum, item);
+                }
+                slotnum++;
+            }
+        }
+        player.openInventory(inv);
+    }
+    
     public static void openWeaponSelect(Player player){
         int slotnum = 0;
         Inventory inv = Bukkit.createInventory(null, 54, "武器選択");
