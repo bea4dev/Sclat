@@ -38,8 +38,10 @@ public class SuperJumpMgr {
             public void run(){
                 if(player.hasPotionEffect(PotionEffectType.SLOW))
                     player.removePotionEffect(PotionEffectType.SLOW);
-                p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
-                SuperJumpRunnable(p, loc);
+                if(!p.getGameMode().equals(GameMode.SPECTATOR)){
+                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
+                    SuperJumpRunnable(p, loc);
+                }
             }
         };
         task.runTaskLater(Main.getPlugin(), 15);
@@ -85,7 +87,7 @@ public class SuperJumpMgr {
             @Override
             public void run(){
 
-                if(ball2.getLocation().getY() <= vec.getY() + 13 || ball2.isDead() || !DataMgr.getPlayerData(p).isInMatch() || DataMgr.getPlayerData(p).getIsDead()){
+                if(ball2.getLocation().getY() <= vec.getY() + 13 || ball2.isDead() || !DataMgr.getPlayerData(p).isInMatch()){
                     packetPlayer.stopRiding();
                     PacketPlayOutMount packet4 = new PacketPlayOutMount(ball);
                     PacketPlayOutEntityDestroy packet5 = new PacketPlayOutEntityDestroy(ball.getBukkitEntity().getEntityId());

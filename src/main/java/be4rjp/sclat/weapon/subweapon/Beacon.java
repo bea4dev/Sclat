@@ -20,11 +20,17 @@ public class Beacon {
             ArmorStand as = DataMgr.getBeaconFromplayer(player);
             as.setVisible(false);
             as.setHelmet(new ItemStack(Material.AIR));
-            as.teleport(player.getLocation().add(0, -0.6, 0));
-            as.setVisible(true);
-            as.setHelmet(new ItemStack(Material.IRON_TRAPDOOR));
+            as.teleport(player.getLocation().add(0, -0.45, 0));
             as.setCustomName("21");
             player.setExp(player.getExp() - 0.39F);
+            BukkitRunnable delay = new BukkitRunnable(){
+                @Override
+                public void run(){
+                    as.setHelmet(new ItemStack(Material.IRON_TRAPDOOR));
+                    as.setVisible(true);
+                }
+            };
+            delay.runTaskLater(Main.getPlugin(), 10);
         }
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;

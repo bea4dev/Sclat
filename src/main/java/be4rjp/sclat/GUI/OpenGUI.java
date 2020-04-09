@@ -80,7 +80,7 @@ public class OpenGUI {
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta skull = (SkullMeta) item.getItemMeta();
-                skull.setDisplayName(player.getName());
+                skull.setDisplayName(p.getName());
                 skull.setOwningPlayer(p);
                 item.setItemMeta(skull);
                 if (slotnum <= 17){
@@ -94,7 +94,7 @@ public class OpenGUI {
                 Player p = DataMgr.getArmorStandPlayer(as);
                 ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
                 ItemMeta im = item.getItemMeta();
-                im.setDisplayName(player.getName());
+                im.setDisplayName(p.getName());
                 item.setItemMeta(im);
                 if (slotnum <= 17){
                     inv.setItem(slotnum, item);

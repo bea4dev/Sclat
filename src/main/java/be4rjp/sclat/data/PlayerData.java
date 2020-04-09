@@ -39,6 +39,7 @@ public class PlayerData {
     private boolean isusingsp = false;
     private boolean cancharge = true;
     private boolean isdead = false;
+    private String server = "";
 
     
     public PlayerData(Player player){this.player = player;}
@@ -101,6 +102,8 @@ public class PlayerData {
     
     public boolean getIsDead(){return this.isdead;}
     
+    public String getServername(){return this.server;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -155,6 +158,8 @@ public class PlayerData {
     public void setCanCharge(boolean is){this.cancharge = is;}
     
     public void setIsDead(boolean is){this.isdead = is;}
+    
+    public void setServerName(String server){this.server = server;}
     
     
     public void addKillCount(){this.killcount++;}

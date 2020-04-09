@@ -54,6 +54,8 @@ public class MainWeapon implements Listener{
                     data.setIsHolding(true);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                     Blaster.ShootBlaster(player);
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
+                    Burst.BurstCooltime(player);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                     data.setCanShoot(false);
                     Roller.ShootPaintRunnable(player);

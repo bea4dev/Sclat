@@ -250,9 +250,11 @@ public class GameMgr implements Listener{
                         break;
                     case "Click to Return":
                         BungeeCordMgr.PlayerSendServer(player, "lobby");
+                        DataMgr.getPlayerData(player).setServerName("Lobby");
                         break;
                     case "[ Training Mode ]":
                         BungeeCordMgr.PlayerSendServer(player, "trial");
+                        DataMgr.getPlayerData(player).setServerName("Trial");
                         break;
 
                 }
@@ -279,5 +281,14 @@ public class GameMgr implements Listener{
         if(data.getIsJoined()){
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
         }
+        
+        String server = DataMgr.getPlayerData(player).getServername();
+        if(!server.equals(""))
+            event.setQuitMessage("§6" + player.getName() + " switched to " + server);
+        
+        if(data.getWeaponClass().getSubWeaponName().equals("ビーコン"))
+            DataMgr.getBeaconFromplayer(player).remove();
+        if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+            DataMgr.getSprinklerFromplayer(player).remove();
     }
 }

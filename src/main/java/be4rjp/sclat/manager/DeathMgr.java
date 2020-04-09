@@ -27,8 +27,8 @@ import org.bukkit.util.Vector;
  */
 public class DeathMgr {
     public static void PlayerDeathRunnable(Player target, Player shooter, String type){
-        
-        DataMgr.getPlayerData(target).setIsDead(true);
+
+        //DataMgr.getPlayerData(target).setIsDead(true);
         target.setGameMode(GameMode.SPECTATOR);
         
         Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());

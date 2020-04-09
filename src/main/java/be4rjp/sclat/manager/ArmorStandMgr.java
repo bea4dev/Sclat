@@ -11,6 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -86,11 +88,28 @@ public class ArmorStandMgr {
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                     p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
                 }
-                if(!DataMgr.getPlayerData(p).isInMatch())
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();
             }
         };
         effect.runTaskTimer(Main.getPlugin(), 0, 2);
+        
+        BukkitRunnable task2 = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                Location loc = as.getLocation();
+                float yaw = as.getLocation().getYaw();
+                if(yaw >= 175)
+                    yaw = -180;
+                yaw+=3;
+                loc.setYaw(yaw);
+                as.teleport(loc);
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                    cancel();
+            }
+        };
+        task2.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
     public static void SprinklerArmorStandSetup(Player player){
@@ -116,7 +135,7 @@ public class ArmorStandMgr {
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                     p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
                 }
-                if(!DataMgr.getPlayerData(p).isInMatch())
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();
             }
         };
@@ -130,14 +149,52 @@ public class ArmorStandMgr {
                 float yaw = as.getLocation().getYaw();
                 if(yaw >= 175)
                     yaw = -180;
-                yaw+=2;
+                yaw+=3;
                 loc.setYaw(yaw);
                 as.teleport(loc);
-                if(!DataMgr.getPlayerData(p).isInMatch())
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();
             }
         };
         task2.runTaskTimer(Main.getPlugin(), 0, 1);
+        
+        BukkitRunnable shoot = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                if(as.getCustomName().equals("21")){
+                    Block b = as.getLocation().add(0, 0.5, 0).getBlock();
+                    Block u = b.getRelative(BlockFace.UP);
+                    Block n = b.getRelative(BlockFace.NORTH);
+                    Block s = b.getRelative(BlockFace.SOUTH);
+                    Block w = b.getRelative(BlockFace.WEST);
+                    Block e = b.getRelative(BlockFace.EAST);
+                    Block d = b.getRelative(BlockFace.DOWN);
+                    
+                    Vector vec = new Vector(0, 1, 0);
+                    
+                    if(!n.getType().equals(Material.AIR))
+                        vec = new Vector(0, 0, 0.5);
+                    if(!s.getType().equals(Material.AIR))
+                        vec = new Vector(0, 0, -0.5);
+                    if(!w.getType().equals(Material.AIR))
+                        vec = new Vector(0.5, 0, 0);
+                    if(!e.getType().equals(Material.AIR))
+                        vec = new Vector(-0.5, 0, 0);
+                    if(!u.getType().equals(Material.AIR))
+                        vec = new Vector(0, -0.5, 0);
+                    if(!d.getType().equals(Material.AIR))
+                        vec = new Vector(0, 0.5, 0);
+                    SprinklerMgr.sprinklerShoot(p, as, vec);
+                    if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                        cancel();
+                }
+            }
+        };
+        if(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
+            shoot.runTaskTimer(Main.getPlugin(), 0, 4);
+        else
+            shoot.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick() * 2);
         
     }
     

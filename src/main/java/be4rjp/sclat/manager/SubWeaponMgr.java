@@ -9,6 +9,7 @@ import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.Sensor;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import be4rjp.sclat.weapon.subweapon.Sprinkler;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -57,6 +58,11 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("ビーコン");
                 break;
+            case "スプリンクラー":
+                is = new ItemStack(Material.BIRCH_FENCE_GATE);
+                ism = is.getItemMeta();
+                ism.setDisplayName("スプリンクラー");
+                break;
         }
         is.setItemMeta(ism);
         //player.getInventory().setItem(2, is);  
@@ -90,6 +96,10 @@ public class SubWeaponMgr {
                 break;
             case "ビーコン":
                 Beacon.setBeacon(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "スプリンクラー":
+                Sprinkler.SprinklerRunnable(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

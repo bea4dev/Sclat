@@ -91,9 +91,11 @@ public class ClickListener implements Listener{
                 break;
             case"ロビーへ戻る / RETURN TO LOBBY":
                 BungeeCordMgr.PlayerSendServer(player, "lobby");
+                DataMgr.getPlayerData(player).setServerName("Lobby");
                 break;
             case"試し打ちサーバーへ接続 / TRAINING FIELD":
                 BungeeCordMgr.PlayerSendServer(player, "trial");
+                DataMgr.getPlayerData(player).setServerName("Trial");
                 break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
@@ -114,13 +116,17 @@ public class ClickListener implements Listener{
                         DataMgr.getPlayerData(player).setIsJoined(true);
                         WeaponClass wc = DataMgr.getWeaponClass(name);
                         DataMgr.getPlayerData(player).setWeaponClass(wc);
-                        for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                        for(ArmorStand as : DataMgr.getBeaconMap().values())
                             as.remove();
-                        }
+                        for(ArmorStand as : DataMgr.getSprinklerMap().values())
+                            as.remove();
                         DataMgr.getBeaconMap().clear();
+                        DataMgr.getSprinklerMap().clear();
                         DataMgr.getArmorStandMap().clear();
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                             ArmorStandMgr.BeaconArmorStandSetup(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+                            ArmorStandMgr.SprinklerArmorStandSetup(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Shooter"))
                             Shooter.ShooterRunnable(p);
                         if(wc.getMainWeapon().getWeaponType().equals("Charger"))

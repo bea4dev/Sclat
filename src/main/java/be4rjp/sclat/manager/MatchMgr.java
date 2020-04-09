@@ -443,6 +443,8 @@ public class MatchMgr {
                     //playerclass
                     if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                         ArmorStandMgr.BeaconArmorStandSetup(p);
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+                        ArmorStandMgr.SprinklerArmorStandSetup(p);
                     WeaponClassMgr.setWeaponClass(p);
 
 
@@ -581,10 +583,12 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){ 
-                    for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                    for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();
-                    }
+                    for(ArmorStand as : DataMgr.getSprinklerMap().values())
+                        as.remove();
                     DataMgr.getBeaconMap().clear();
+                    DataMgr.getSprinklerMap().clear();
                     DataMgr.getArmorStandMap().clear();
                     DataMgr.getPlayerData(p).setIsInMatch(false);
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
@@ -625,16 +629,23 @@ public class MatchMgr {
                         
                     if(match.getTeam0().getPoint() > match.getTeam1().getPoint()){
                         winteam = match.getTeam0();
+                        per++;
                         //match.getTeam0().addPaintCount();
                     }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
                         hikiwake = true;
                     }else{
                         winteam = match.getTeam1();
+                        per--;
                     }
+                    
+                    if(per > 100)
+                        per = 100;
+                    if(per < 0)
+                        per = 0;
                     
                     
                     for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        Animation.ResultAnimation(player, per++, 101 - per, team0code, team1code, winteam, hikiwake);
+                        Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
                     }
 
                 }
