@@ -18,6 +18,8 @@ public class Beacon {
     public static void setBeacon(Player player){
         if(player.isOnGround() && DataMgr.getPlayerData(player).isInMatch() && player.getExp() > 0.4){
             ArmorStand as = DataMgr.getBeaconFromplayer(player);
+            as.setVisible(false);
+            as.setHelmet(new ItemStack(Material.AIR));
             as.teleport(player.getLocation().add(0, -0.6, 0));
             as.setVisible(true);
             as.setHelmet(new ItemStack(Material.IRON_TRAPDOOR));

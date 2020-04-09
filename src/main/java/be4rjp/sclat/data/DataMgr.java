@@ -30,6 +30,7 @@ public class DataMgr {
     private static Map<String, Boolean> playerquit = new HashMap<>(); 
     private static Map<ArmorStand, Player> armorstand = new HashMap<>();
     private static Map<Player, ArmorStand> beacon = new HashMap<>();
+    private static Map<Player, ArmorStand> sprinkler = new HashMap<>();
     private static Map<Snowball, Boolean> snowball = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
@@ -49,6 +50,7 @@ public class DataMgr {
     public static Player getArmorStandPlayer(ArmorStand as){return armorstand.get(as);}
     public static boolean getSnowballIsHit(Snowball ball){return snowball.get(ball);}
     public static ArmorStand getBeaconFromplayer(Player player){return beacon.get(player);}
+    public static ArmorStand getSprinklerFromplayer(Player player){return sprinkler.get(player);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -63,9 +65,10 @@ public class DataMgr {
     public static void setTeamLoc(MapData map, TeamLoc loc){locdata.put(map, loc);}
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
     public static void setPlayerIsQuit(String uuid, boolean is){playerquit.put(uuid, is);}
-    public static void setArmorStandHealth(ArmorStand as, Player player){armorstand.put(as, player);}
+    public static void setArmorStandPlayer(ArmorStand as, Player player){armorstand.put(as, player);}
     public static void setSnowballIsHit(Snowball ball, boolean is){snowball.put(ball, is);}
     public static void setBeaconFromPlayer(Player player, ArmorStand as){beacon.put(player, as);}
+    public static void setSprinklerFromPlayer(Player player, ArmorStand as){sprinkler.put(player, as);}
     
     
     public static void addColorList(Color color){list.add(color);}
@@ -78,10 +81,11 @@ public class DataMgr {
     public static Map<Block, PaintData> getBlockDataMap(){return blockdata;}
     public static Map<Player, PlayerData> getPlayerDataMap(){return playerdata;}
     public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
-    public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;};
-    public static Map<ArmorStand, Player> getArmorStandMap(){return armorstand;};
+    public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;}
+    public static Map<ArmorStand, Player> getArmorStandMap(){return armorstand;}
     public static Map<Snowball, Boolean> getSnowballIsHitMap(){return snowball;}
     public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
+    public static Map<Player, ArmorStand> getSprinklerMap(){return sprinkler;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

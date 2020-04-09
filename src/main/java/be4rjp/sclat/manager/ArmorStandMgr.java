@@ -59,7 +59,7 @@ public class ArmorStandMgr {
             as.setCustomName("20");
             as.setCustomNameVisible(true);
             as.setVisible(true);
-            DataMgr.setArmorStandHealth(as, player);
+            DataMgr.setArmorStandPlayer(as, player);
         }
     }
     
@@ -76,7 +76,7 @@ public class ArmorStandMgr {
         as.setCustomName("100");
         as.setBasePlate(false);
         as.setCustomNameVisible(false);
-        DataMgr.setArmorStandHealth(as, player);
+        DataMgr.setArmorStandPlayer(as, player);
         DataMgr.setBeaconFromPlayer(player, as);
         BukkitRunnable effect = new BukkitRunnable(){
             Player p = player;
@@ -92,6 +92,55 @@ public class ArmorStandMgr {
         };
         effect.runTaskTimer(Main.getPlugin(), 0, 2);
     }
+    
+    public static void SprinklerArmorStandSetup(Player player){
+        Location al;
+        if(conf.getConfig().getString("WorkMode").equals("Trial"))
+            al = Main.lobby;
+        else
+            al = DataMgr.getPlayerData(player).getMatchLocation();
+        ArmorStand as = (ArmorStand) player.getWorld().spawnEntity(al, EntityType.ARMOR_STAND);
+        as.setVisible(false);
+        as.setSmall(true);
+        as.setGravity(false);
+        as.setCustomName("100");
+        as.setBasePlate(false);
+        as.setCustomNameVisible(false);
+        DataMgr.setArmorStandPlayer(as, player);
+        DataMgr.setSprinklerFromPlayer(player, as);
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                if(as.getCustomName().equals("21")){
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                    p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
+                }
+                if(!DataMgr.getPlayerData(p).isInMatch())
+                    cancel();
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 2);
+        
+        BukkitRunnable task2 = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                Location loc = as.getLocation();
+                float yaw = as.getLocation().getYaw();
+                if(yaw >= 175)
+                    yaw = -180;
+                yaw+=2;
+                loc.setYaw(yaw);
+                as.teleport(loc);
+                if(!DataMgr.getPlayerData(p).isInMatch())
+                    cancel();
+            }
+        };
+        task2.runTaskTimer(Main.getPlugin(), 0, 1);
+        
+    }
+    
     
     public static void giveDamageArmorStand(ArmorStand as, double damage, Player shooter){
         double health = Double.parseDouble(as.getCustomName());
@@ -150,7 +199,7 @@ public class ArmorStandMgr {
                 as.setCustomName("100");
                 as.setVisible(false);
                 as.setHelmet(new ItemStack(Material.AIR));
-                as.getLocation().getWorld().playSound(as.getLocation(), Sound.ENTITY_ARROW_HIT, 1, 1);
+                as.getLocation().getWorld().playSound(as.getLocation(), Sound.ENTITY_ARROW_HIT, 1, 2F);
                 as.teleport(as.getLocation().add(0, -1, 0));
             }
         }
