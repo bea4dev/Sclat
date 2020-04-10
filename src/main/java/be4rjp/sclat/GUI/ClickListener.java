@@ -116,13 +116,14 @@ public class ClickListener implements Listener{
                         DataMgr.getPlayerData(player).setIsJoined(true);
                         WeaponClass wc = DataMgr.getWeaponClass(name);
                         DataMgr.getPlayerData(player).setWeaponClass(wc);
-                        for(ArmorStand as : DataMgr.getBeaconMap().values())
-                            as.remove();
-                        for(ArmorStand as : DataMgr.getSprinklerMap().values())
-                            as.remove();
-                        DataMgr.getBeaconMap().clear();
-                        DataMgr.getSprinklerMap().clear();
-                        DataMgr.getArmorStandMap().clear();
+                        for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                            if(DataMgr.getBeaconFromplayer(p) == as)
+                                as.remove();
+                        }
+                        for(ArmorStand as : DataMgr.getSprinklerMap().values()){
+                            if(DataMgr.getSprinklerFromplayer(p) == as)
+                                as.remove();
+                        }
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                             ArmorStandMgr.BeaconArmorStandSetup(p);
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
@@ -147,7 +148,7 @@ public class ClickListener implements Listener{
                         SPWeaponMgr.SPWeaponRunnable(player);
                     }
                 };
-                delay.runTaskLater(Main.getPlugin(), 10);
+                delay.runTaskLater(Main.getPlugin(), 15);
             }else{
                 DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             }

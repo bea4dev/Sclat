@@ -286,9 +286,11 @@ public class GameMgr implements Listener{
         if(!server.equals(""))
             event.setQuitMessage("§6" + player.getName() + " switched to " + server);
         
-        if(data.getWeaponClass().getSubWeaponName().equals("ビーコン"))
+        if(data.getWeaponClass().getSubWeaponName().equals("ビーコン")){
             DataMgr.getBeaconFromplayer(player).remove();
-        if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+        }
+        if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー")){
             DataMgr.getSprinklerFromplayer(player).remove();
+        }
     }
 }
