@@ -92,14 +92,16 @@ public class OpenGUI {
         for(ArmorStand as : DataMgr.getBeaconMap().values()){
             if(as.getCustomName().equals("21")){
                 Player p = DataMgr.getArmorStandPlayer(as);
-                ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
-                ItemMeta im = item.getItemMeta();
-                im.setDisplayName(p.getName());
-                item.setItemMeta(im);
-                if (slotnum <= 17){
-                    inv.setItem(slotnum, item);
+                if(DataMgr.getPlayerData(player).getTeam() == DataMgr.getPlayerData(p).getTeam()){
+                    ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
+                    ItemMeta im = item.getItemMeta();
+                    im.setDisplayName(p.getName());
+                    item.setItemMeta(im);
+                    if (slotnum <= 17){
+                        inv.setItem(slotnum, item);
+                    }
+                    slotnum++;
                 }
-                slotnum++;
             }
         }
         player.openInventory(inv);

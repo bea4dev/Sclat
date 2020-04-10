@@ -158,10 +158,10 @@ public class ClickListener implements Listener{
         if(event.getClickedInventory().getTitle().equals("Chose a Player or Beacon")){
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if (p.getName().equals(name)){
-                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD) && p != player)
+                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))
                         SuperJumpMgr.SuperJumpCollTime(player, p.getLocation());
                     if(event.getCurrentItem().getType().equals(Material.IRON_TRAPDOOR))
-                        SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(player).getLocation());
+                        SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(p).getLocation());
                 }
             }
         }
