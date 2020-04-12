@@ -74,15 +74,29 @@ public class OpenGUI {
     }
     
     public static void SuperJumpGUI(Player player){
-        int slotnum = 0;
-        Inventory inv = Bukkit.createInventory(null, 18, "Chose a Player or Beacon");
+        Inventory inv = Bukkit.createInventory(null, 18, "Chose Target");
+        
+        ItemStack is = new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass());
+        ItemMeta ism = is.getItemMeta();
+        ism.setDisplayName("リスポーン地点");
+        is.setItemMeta(ism);
+        inv.setItem(0, is);
+        
+        int slotnum = 1;
+        
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
+                /*
                 ItemStack item = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta skull = (SkullMeta) item.getItemMeta();
                 skull.setDisplayName(p.getName());
                 skull.setOwningPlayer(p);
                 item.setItemMeta(skull);
+*/
+                ItemStack item = new ItemStack(Material.INK_SAC);
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName(p.getName());
+                item.setItemMeta(meta);
                 if (slotnum <= 17){
                     inv.setItem(slotnum, item);
                 }

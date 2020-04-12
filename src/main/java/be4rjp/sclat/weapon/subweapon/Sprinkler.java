@@ -16,6 +16,7 @@ import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -55,7 +56,7 @@ public class Sprinkler {
                     drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
                     drop.setVelocity(p_vec);
                     //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
-                    ball = player.launchProjectile(Snowball.class);
+                    ball = (Snowball)player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.SNOWBALL);
                     ball.setVelocity(new Vector(0, 0, 0));
                     DataMgr.setSnowballIsHit(ball, false);
                     
