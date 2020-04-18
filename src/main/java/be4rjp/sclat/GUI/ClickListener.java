@@ -97,6 +97,10 @@ public class ClickListener implements Listener{
                 BungeeCordMgr.PlayerSendServer(player, "trial");
                 DataMgr.getPlayerData(player).setServerName("Trial");
                 break;
+            case"チームデスマッチサーバーへ接続 / CONNECT TO TDM SERVER":
+                BungeeCordMgr.PlayerSendServer(player, "tdm");
+                DataMgr.getPlayerData(player).setServerName("TDM");
+                break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
@@ -107,6 +111,15 @@ public class ClickListener implements Listener{
                 player.getInventory().clear();
                 DataMgr.getPlayerData(player).setIsInMatch(false);
                 DataMgr.getPlayerData(player).setIsJoined(false);
+                
+                for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                    if(DataMgr.getBeaconFromplayer(player) == as)
+                        as.remove();
+                }
+                for(ArmorStand as : DataMgr.getSprinklerMap().values()){
+                    if(DataMgr.getSprinklerFromplayer(player) == as)
+                        as.remove();
+                }
 
                 BukkitRunnable delay = new BukkitRunnable(){
                     Player p = player;
@@ -116,14 +129,6 @@ public class ClickListener implements Listener{
                         DataMgr.getPlayerData(player).setIsJoined(true);
                         WeaponClass wc = DataMgr.getWeaponClass(name);
                         DataMgr.getPlayerData(player).setWeaponClass(wc);
-                        for(ArmorStand as : DataMgr.getBeaconMap().values()){
-                            if(DataMgr.getBeaconFromplayer(p) == as)
-                                as.remove();
-                        }
-                        for(ArmorStand as : DataMgr.getSprinklerMap().values()){
-                            if(DataMgr.getSprinklerFromplayer(p) == as)
-                                as.remove();
-                        }
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                             ArmorStandMgr.BeaconArmorStandSetup(p);
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
@@ -160,7 +165,7 @@ public class ClickListener implements Listener{
                 SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getPlayerData(player).getMatchLocation());
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if (p.getName().equals(name)){
-                    if(event.getCurrentItem().getType().equals(Material.INK_SAC))
+                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))
                         SuperJumpMgr.SuperJumpCollTime(player, p.getLocation());
                     if(event.getCurrentItem().getType().equals(Material.IRON_TRAPDOOR))
                         SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(p).getLocation());

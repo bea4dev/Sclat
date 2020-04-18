@@ -10,6 +10,7 @@ import java.util.Random;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 
 /**
@@ -31,7 +32,7 @@ public class DataMgr {
     private static Map<ArmorStand, Player> armorstand = new HashMap<>();
     private static Map<Player, ArmorStand> beacon = new HashMap<>();
     private static Map<Player, ArmorStand> sprinkler = new HashMap<>();
-    private static Map<Snowball, Boolean> snowball = new HashMap<>();
+    private static Map<Projectile, Boolean> snowball = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
@@ -48,7 +49,7 @@ public class DataMgr {
     public static PaintData getPaintDataFromBlock(Block block){return blockdata.get(block);}
     public static boolean getPlayerIsQuit(String uuid){return playerquit.get(uuid);}
     public static Player getArmorStandPlayer(ArmorStand as){return armorstand.get(as);}
-    public static boolean getSnowballIsHit(Snowball ball){return snowball.get(ball);}
+    public static boolean getSnowballIsHit(Projectile ball){return snowball.get(ball);}
     public static ArmorStand getBeaconFromplayer(Player player){return beacon.get(player);}
     public static ArmorStand getSprinklerFromplayer(Player player){return sprinkler.get(player);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
@@ -66,7 +67,7 @@ public class DataMgr {
     public static void setPaintDataFromBlock(Block block, PaintData data){blockdata.put(block, data);}
     public static void setPlayerIsQuit(String uuid, boolean is){playerquit.put(uuid, is);}
     public static void setArmorStandPlayer(ArmorStand as, Player player){armorstand.put(as, player);}
-    public static void setSnowballIsHit(Snowball ball, boolean is){snowball.put(ball, is);}
+    public static void setSnowballIsHit(Projectile ball, boolean is){snowball.put(ball, is);}
     public static void setBeaconFromPlayer(Player player, ArmorStand as){beacon.put(player, as);}
     public static void setSprinklerFromPlayer(Player player, ArmorStand as){sprinkler.put(player, as);}
     
@@ -83,7 +84,7 @@ public class DataMgr {
     public static Map<String, PlayerData> getUUIDDataMap(){return uuiddata;}
     public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;}
     public static Map<ArmorStand, Player> getArmorStandMap(){return armorstand;}
-    public static Map<Snowball, Boolean> getSnowballIsHitMap(){return snowball;}
+    public static Map<Projectile, Boolean> getSnowballIsHitMap(){return snowball;}
     public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
     public static Map<Player, ArmorStand> getSprinklerMap(){return sprinkler;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}

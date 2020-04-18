@@ -73,7 +73,7 @@ public class QuickBomb {
                 if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
                     ball.setVelocity(drop.getVelocity());             
                 
-                if(DataMgr.getSnowballIsHit(ball)){
+                if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
                     
                     //半径
                     double maxDist = 3;

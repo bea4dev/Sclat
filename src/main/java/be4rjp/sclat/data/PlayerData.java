@@ -1,5 +1,6 @@
 package be4rjp.sclat.data;
 
+import net.minecraft.server.v1_13_R1.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -40,6 +41,7 @@ public class PlayerData {
     private boolean cancharge = true;
     private boolean isdead = false;
     private String server = "";
+    private ItemStack is;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -104,6 +106,8 @@ public class PlayerData {
     
     public String getServername(){return this.server;}
     
+    public ItemStack getPlayerHead(){return this.is;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -160,6 +164,8 @@ public class PlayerData {
     public void setIsDead(boolean is){this.isdead = is;}
     
     public void setServerName(String server){this.server = server;}
+    
+    public void setPlayerHead(ItemStack is){this.is = is;}
     
     
     public void addKillCount(){this.killcount++;}

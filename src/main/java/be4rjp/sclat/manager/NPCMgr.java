@@ -41,7 +41,6 @@ public class NPCMgr {
                     GameProfile gameProfile = new GameProfile(player.getUniqueId(), npcName);
 
                     npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile, new PlayerInteractManager(nmsWorld));
-                    Player npcPlayer = npc.getBukkitEntity().getPlayer();
         
                     //見えないところにスポーンさせて、クライアントにスキンを先に読み込ませる
                     npc.setLocation(location.getX(), location.getY() - 20, location.getZ(), location.getYaw(), 0);

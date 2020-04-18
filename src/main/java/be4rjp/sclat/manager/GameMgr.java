@@ -23,6 +23,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -45,6 +46,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
@@ -98,6 +100,13 @@ public class GameMgr implements Listener{
         data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
         DataMgr.setPlayerData(player, data);
+        
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta)item.getItemMeta();
+        meta.setOwningPlayer(player);
+        meta.setDisplayName(player.getName());
+        item.setItemMeta(meta);
+        data.setPlayerHead(CraftItemStack.asNMSCopy(item));
         
         //試し撃ちモード
         if(conf.getConfig().getString("WorkMode").equals("Trial")){

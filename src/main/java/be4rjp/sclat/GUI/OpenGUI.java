@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,53 +22,67 @@ import org.bukkit.inventory.meta.SkullMeta;
  */
 public class OpenGUI {
     public static void openMenu(Player player){
-        Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
+        Inventory inv = Bukkit.createInventory(null, 45, "メインメニュー");
         
         ItemStack join = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("試合に参加 / JOIN THE MATCH");
         join.setItemMeta(joinmeta);
         if(!conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(2, join);
+            inv.setItem(11, join);
         
         ItemStack setting = new ItemStack(Material.COMPARATOR);
         ItemMeta setting_m = setting.getItemMeta();
         setting_m.setDisplayName("設定 / SETTINGS");
         setting.setItemMeta(setting_m);
-        inv.setItem(4, setting);
+        inv.setItem(28, setting);
         
         ItemStack w = new ItemStack(Material.WOODEN_HOE);
         ItemMeta wmeta = w.getItemMeta();
         wmeta.setDisplayName("武器選択 / CHOSE WEAPONS");
         w.setItemMeta(wmeta);
-        inv.setItem(6, w);
+        inv.setItem(15, w);
         player.openInventory(inv);
         
         ItemStack t = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta tmeta = t.getItemMeta();
         tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK");
         t.setItemMeta(tmeta);
-        inv.setItem(8, t);
+        inv.setItem(30, t);
         
         ItemStack r = new ItemStack(Material.MILK_BUCKET);
         ItemMeta rmeta = r.getItemMeta();
         rmeta.setDisplayName("塗りをリセット / RESET INK");
         r.setItemMeta(rmeta);
         if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(2, r);
+            inv.setItem(11, r);
         
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ItemStack b = new ItemStack(Material.OAK_DOOR);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
             b.setItemMeta(bmeta);
-            inv.setItem(0, b);
+            inv.setItem(32, b);
         }else{
             ItemStack b = new ItemStack(Material.ARMOR_STAND);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
             b.setItemMeta(bmeta);
-            inv.setItem(0, b);
+            inv.setItem(32, b);
+        }
+        
+        if(conf.getConfig().getString("WorkMode").equals("TDM")){
+            ItemStack b = new ItemStack(Material.OAK_DOOR);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
+            b.setItemMeta(bmeta);
+            inv.setItem(34, b);
+        }else{
+            ItemStack b = new ItemStack(Material.DIAMOND_SWORD);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("チームデスマッチサーバーへ接続 / CONNECT TO TDM SERVER");
+            b.setItemMeta(bmeta);
+            inv.setItem(34, b);
         }
         
         player.openInventory(inv);
@@ -86,19 +101,8 @@ public class OpenGUI {
         
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
-                /*
-                ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-                SkullMeta skull = (SkullMeta) item.getItemMeta();
-                skull.setDisplayName(p.getName());
-                skull.setOwningPlayer(p);
-                item.setItemMeta(skull);
-*/
-                ItemStack item = new ItemStack(Material.INK_SAC);
-                ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(p.getName());
-                item.setItemMeta(meta);
                 if (slotnum <= 17){
-                    inv.setItem(slotnum, item);
+                    inv.setItem(slotnum, CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()));
                 }
                 slotnum++;
             }

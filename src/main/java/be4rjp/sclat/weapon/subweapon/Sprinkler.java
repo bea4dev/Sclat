@@ -13,8 +13,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -40,37 +43,56 @@ public class Sprinkler {
             double z = 0;
             boolean collision = false;
             boolean block_check = false;
+            boolean cb = false;
+            Location l = p.getLocation();
+            int cc = 0;
             int c = 0;
             Item drop;
-            Snowball ball;
             @Override
             public void run(){
                 if(c == 0){
-                    p_vec = p.getEyeLocation().getDirection();
                     if(!DataMgr.getPlayerData(player).getIsBombRush())
-                        p.setExp(p.getExp() - 0.39F);
-                    ItemStack bom = new ItemStack(Material.BIRCH_FENCE_GATE).clone();
+                        p.setExp(p.getExp() - 0.59F);
+                    ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getConcrete()).clone();
                     ItemMeta bom_m = bom.getItemMeta();
                     bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                     bom.setItemMeta(bom_m);
                     drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                    drop.setVelocity(p_vec);
-                    //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
-                    ball = (Snowball)player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.SNOWBALL);
-                    ball.setVelocity(new Vector(0, 0, 0));
-                    DataMgr.setSnowballIsHit(ball, false);
-                    
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
-                        connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
-                    }
+                    drop.setVelocity(p.getEyeLocation().getDirection());
                     p_vec = p.getEyeLocation().getDirection();
                 }
                 
-                if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
-                    ball.setVelocity(drop.getVelocity());
+                if(c != 0){
+                    if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
+                        if(p_vec.getX() == 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() == 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                        }
+                        if(p_vec.getX() != 0 && p_vec.getZ() != 0){
+                            if((drop.getLocation().getX() - x) == 0)
+                                collision = true;
+                            if((drop.getLocation().getZ() - z) == 0)
+                                collision = true;
+                        }
+                    }
+                }
                 
-                if(DataMgr.getSnowballIsHit(ball)){
+                Block block = drop.getLocation().getBlock();
+                Block block1 = block.getRelative(BlockFace.UP);
+                Block block2 = block.getRelative(BlockFace.DOWN);
+                Block block3 = block.getRelative(BlockFace.EAST);
+                Block block4 = block.getRelative(BlockFace.SOUTH);
+                Block block5 = block.getRelative(BlockFace.NORTH);
+                Block block6 = block.getRelative(BlockFace.WEST);
+                if(!block.getType().equals(Material.AIR) || !block1.getType().equals(Material.AIR) || !block2.getType().equals(Material.AIR) || !block3.getType().equals(Material.AIR) || !block4.getType().equals(Material.AIR) || !block5.getType().equals(Material.AIR) || !block6.getType().equals(Material.AIR))
+                    block_check = true;
+                
+                
+                if((drop.isOnGround() || collision) && block_check){
                     ArmorStand as = DataMgr.getSprinklerFromplayer(player);
                     as.setVisible(false);
                     as.setHelmet(new ItemStack(Material.AIR));

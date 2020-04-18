@@ -298,7 +298,7 @@ public class MatchMgr {
                         DataMgr.getPlayerData(p).setMatchLocation(sl);
                     }
 
-                    if(DataMgr.getPlayerData(p).getPlayerNumber() < 8){
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                         Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
                         squid = (LivingEntity)e;
                         squid.setAI(false);
@@ -362,35 +362,28 @@ public class MatchMgr {
                     intromove.add(map.getIntroMoveX(), map.getIntroMoveY(), map.getIntroMoveZ());
                     p.teleport(intromove);
                 }
+                
+                
+                
                 if(s >= 100 && s <= 160){
                     Location introl = match.getMapData().getTeam0Intro().clone();
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                         if(s >= 101 && s <= 120){
-                            //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
-                            //introl.getWorld().spawnParticle(org.bukkit.Particle.REDSTONE, DataMgr.getPlayerData(p).getMatchLocation(), 8, 0.4, 0.4, 0.4, 1, new org.bukkit.Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2.0F));
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
 
                         }
                         if(s == 120){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() < 8)
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
                                 squid.remove();
-                            /*
-                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-                                connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
-                            }*/
                         }
                         if(s == 100){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() < 8){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
-                            //p.getWorld().playEffect(introl, Effect.CLICK2, DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool());
                         }
-                        //npcle = (LivingEntity)npc.getEntity();
-                        //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                     }
                 }
                 if(s >= 160 && s <= 220){
@@ -398,30 +391,20 @@ public class MatchMgr {
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                         if(s >= 161 && s <= 180){
-                            //Packet55BlockBreakAnimation packet = new Packet55BlockBreakAnimation(0, block.getX(), block.getY(), block.getZ(), damage);
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                         }
                         if(s == 180){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() < 8)
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
                                 squid.remove();
-                            /*
-                            for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-                                connection.sendPacket(new PacketPlayOutEntityDestroy(squid.getBukkitEntity().getEntityId()));
-                            }*/
                         }
                         if(s == 160){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() < 8){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
                         }
                     }
-
-
-                    //npcle = (LivingEntity)npc.getEntity();
-                    //npcle.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_HOE));
                 }
 
                 if(s == 221){
@@ -610,44 +593,67 @@ public class MatchMgr {
                     }
                 }
                 if(i == 46 && DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                    Match match = DataMgr.getPlayerData(p).getMatch();
-                    int team0;
-                    int team1;
-                    double dper;
-                    int per;
-                    String team0code;
-                    String team1code;
-                    Team winteam = match.getTeam0();
-                    Boolean hikiwake = false;
-                    
-                    team0 = match.getTeam0().getPoint();
-                    team1 = match.getTeam1().getPoint();
-                    team0code = match.getTeam0().getTeamColor().getColorCode();
-                    team1code = match.getTeam1().getTeamColor().getColorCode();
-                    dper =  (double)team0/(double)(team0 + team1)*100;
-                    per = (int)dper;
-                        
-                    if(match.getTeam0().getPoint() > match.getTeam1().getPoint()){
-                        winteam = match.getTeam0();
-                        per++;
-                        //match.getTeam0().addPaintCount();
-                    }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
-                        hikiwake = true;
-                    }else{
-                        winteam = match.getTeam1();
-                        per--;
-                    }
-                    
-                    if(per > 100)
-                        per = 100;
-                    if(per < 0)
-                        per = 0;
-                    
-                    
-                    for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
-                    }
+                    if(conf.getConfig().getString("WorkMode").equals("TDM")){
+                        Match match = DataMgr.getPlayerData(p).getMatch();
+                        int team0c;
+                        int team1c;
+                        String team0code;
+                        String team1code;
+                        Team winteam = match.getTeam0();
+                        Boolean hikiwake = false;
 
+                        team0c = match.getTeam0().getKillCount();
+                        team1c = match.getTeam1().getKillCount();
+                        team0code = match.getTeam0().getTeamColor().getColorCode();
+                        team1code = match.getTeam1().getTeamColor().getColorCode();
+                        
+                        if(team0c < team1c)
+                            winteam = match.getTeam1();
+                        else if(team0c == team1c)
+                            hikiwake = true; 
+                        
+                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            Animation.TDMResultAnimation(player, team0c, team1c, team0code, team1code, winteam, hikiwake);
+                        }
+                    }else{
+                        Match match = DataMgr.getPlayerData(p).getMatch();
+                        int team0;
+                        int team1;
+                        double dper;
+                        int per;
+                        String team0code;
+                        String team1code;
+                        Team winteam = match.getTeam0();
+                        Boolean hikiwake = false;
+
+                        team0 = match.getTeam0().getPoint();
+                        team1 = match.getTeam1().getPoint();
+                        team0code = match.getTeam0().getTeamColor().getColorCode();
+                        team1code = match.getTeam1().getTeamColor().getColorCode();
+                        dper =  (double)team0/(double)(team0 + team1)*100;
+                        per = (int)dper;
+
+                        if(match.getTeam0().getPoint() > match.getTeam1().getPoint()){
+                            winteam = match.getTeam0();
+                            per++;
+                            //match.getTeam0().addPaintCount();
+                        }else if(match.getTeam0().getPoint() == match.getTeam1().getPoint()){
+                            hikiwake = true;
+                        }else{
+                            winteam = match.getTeam1();
+                            per--;
+                        }
+
+                        if(per > 100)
+                            per = 100;
+                        if(per < 0)
+                            per = 0;
+
+
+                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                        }
+                    }
                 }
                 
                 if(i == 46 && p.isOnline())

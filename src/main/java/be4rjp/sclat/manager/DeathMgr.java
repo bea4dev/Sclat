@@ -57,8 +57,10 @@ public class DeathMgr {
         if(target.hasPotionEffect(PotionEffectType.SLOW))
             target.removePotionEffect(PotionEffectType.SLOW);
         
-        if(type.equals("killed") || type.equals("subWeapon") || type.equals("spWeapon"))
+        if(type.equals("killed") || type.equals("subWeapon") || type.equals("spWeapon")){
             DataMgr.getPlayerData(shooter).addKillCount();
+            DataMgr.getPlayerData(shooter).getTeam().addKillCount();
+        }
         
         BukkitRunnable task = new BukkitRunnable(){
             Player t = target;
@@ -296,6 +298,10 @@ public class DeathMgr {
                         cancel();
                     }
                 }
+                
+                if(i == 100)
+                    target.getInventory().setHeldItemSlot(1);
+                
                 i++;
             }
         };

@@ -26,8 +26,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SnowballListener implements Listener {
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
-        if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getEntity())){
-            DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
+        if(DataMgr.getSnowballIsHitMap().containsKey((Projectile)event.getEntity())){
+            DataMgr.setSnowballIsHit((Projectile)event.getEntity(), true);
         }else{
             Player shooter = (Player)event.getEntity().getShooter();
             PaintMgr.Paint(event.getHitBlock().getLocation(), shooter, true);

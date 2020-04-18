@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 public class VectorMgr {
     public static Vector GravityVector(Vector from, Vector to, int heightGain)
     {
-        double gravity = 0.135;
+        double gravity = 0.139;
 
         int endGain = to.getBlockY() - from.getBlockY();
         double horizDist = Math.sqrt(distance(from, to));
