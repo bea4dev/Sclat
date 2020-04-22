@@ -6,6 +6,7 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.AirStrike;
+import be4rjp.sclat.weapon.spweapon.Amehurasi;
 import be4rjp.sclat.weapon.spweapon.Barrier;
 import be4rjp.sclat.weapon.spweapon.BombRush;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
@@ -109,6 +110,13 @@ public class SPWeaponMgr {
                 is3.setItemMeta(ism3);
                 p.getInventory().setItem(4, is3);
                 break;
+            case "アメフラシ":
+                ItemStack is4 = new ItemStack(Material.BEACON);
+                ItemMeta ism4 = is4.getItemMeta();
+                ism4.setDisplayName("アメフラシ");
+                is4.setItemMeta(ism4);
+                p.getInventory().setItem(4, is4);
+                break;
         }
     }
     
@@ -149,7 +157,14 @@ public class SPWeaponMgr {
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
-             case "カーソルを合わせて右クリックで発射":
+            case "アメフラシ":
+                Amehurasi.AmehurasiDropRunnable(player);
+                data.setSPGauge(0);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "カーソルを合わせて右クリックで発射":
                 AirStrike.AirStrikeRunnable(player);
                 break;
         }

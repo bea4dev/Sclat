@@ -41,6 +41,10 @@ public class WeaponClassMgr {
         meta.setDisplayName("スーパージャンプ");
         co.setItemMeta(meta);
         player.getInventory().setItem(6, co);
+        
+        if(data.getSPGauge() == 100)
+            SPWeaponMgr.setSPWeapon(player);
+        
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();

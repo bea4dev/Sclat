@@ -30,4 +30,18 @@ public class Sphere {
         }
         return tempList;
     }
+    
+    public static List<Location> getXZCircle(Location baseLoc, double r ,int accuracy){
+        List<Location> tempList = new ArrayList<Location>();
+        for(int tr = 1; tr <= r; tr++){
+            for(int t = 0; t < 360; t += accuracy/tr){
+                double x = tr * Math.sin(Math.toRadians(t));
+                double z = tr * Math.cos(Math.toRadians(t));
+                Location loc = new Location(baseLoc.getWorld(), baseLoc.getX() + x, baseLoc.getY(), baseLoc.getZ() + z);
+                tempList.add(loc);
+            }
+        }
+        return tempList;
+    }
+    
 }

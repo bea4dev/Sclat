@@ -54,8 +54,12 @@ public class SnowballListener implements Listener {
                         target.setGameMode(GameMode.SPECTATOR);
                         if(projectile.getCustomName() == null)
                             DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
-                        else
-                            DeathMgr.PlayerDeathRunnable(target, shooter, "subWeapon");
+                        else{
+                            if(projectile.getCustomName().equals("Sprinkler"))
+                                DeathMgr.PlayerDeathRunnable(target, shooter, "subWeapon");
+                            if(projectile.getCustomName().equals("Amehurasi"))
+                                DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
+                        }
                         PaintMgr.Paint(target.getLocation(), shooter, true);
                     }
                     //AntiDamageTime

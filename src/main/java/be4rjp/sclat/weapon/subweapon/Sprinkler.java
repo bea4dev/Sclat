@@ -53,7 +53,7 @@ public class Sprinkler {
                 if(c == 0){
                     if(!DataMgr.getPlayerData(player).getIsBombRush())
                         p.setExp(p.getExp() - 0.59F);
-                    ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getConcrete()).clone();
+                    ItemStack bom = new ItemStack(Material.BIRCH_FENCE_GATE).clone();
                     ItemMeta bom_m = bom.getItemMeta();
                     bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                     bom.setItemMeta(bom_m);

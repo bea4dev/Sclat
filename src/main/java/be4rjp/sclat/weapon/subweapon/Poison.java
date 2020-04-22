@@ -70,7 +70,7 @@ public class Poison {
                 }
                 
                 if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
-                    ball.setVelocity(drop.getVelocity());             
+                    ball.setVelocity(drop.getVelocity());
                 
                 if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
                     
