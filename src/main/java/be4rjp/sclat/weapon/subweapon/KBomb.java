@@ -116,10 +116,10 @@ public class KBomb {
                         }
                     }
                     
-                    double maxDist = 5;
+                    double maxDist = 4;
                     //塗る
                     for(int i = 0; i <= maxDist; i++){
-                        List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 14);
+                        List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 18);
                         for(Location loc : p_locs){
                             PaintMgr.Paint(loc, p, false);
                         }
@@ -133,7 +133,7 @@ public class KBomb {
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                if(target.getHealth() > damage){
+                                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
                                     PaintMgr.Paint(target.getLocation(), player, true);
                                 }else{

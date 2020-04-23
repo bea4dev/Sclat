@@ -110,7 +110,7 @@ public class QuickBomb {
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                if(target.getHealth() > damage){
+                                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
                                     PaintMgr.Paint(target.getLocation(), player, true);
                                 }else{

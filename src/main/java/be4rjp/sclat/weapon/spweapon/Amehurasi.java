@@ -47,6 +47,8 @@ public class Amehurasi {
             int cc = 0;
             int c = 0;
             Item drop;
+            Vector vec;
+            
             @Override
             public void run(){
                 if(c == 0){
@@ -57,11 +59,12 @@ public class Amehurasi {
                     drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
                     drop.setVelocity(p.getEyeLocation().getDirection());
                     p_vec = p.getEyeLocation().getDirection();
+                    vec = new Vector(p_vec.getX(), 0, p_vec.getZ()).normalize();
                 }
                 
                 
                 if(drop.isOnGround()){
-                    AmehurasiRunnable(p, drop.getLocation());
+                    AmehurasiRunnable(p, drop.getLocation(), vec);
                     drop.remove();
                     cancel();
                 }
@@ -87,15 +90,20 @@ public class Amehurasi {
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
-    public static void AmehurasiRunnable(Player player, Location loc){
+    public static void AmehurasiRunnable(Player player, Location loc, Vector vec){
         DataMgr.getPlayerData(player).setIsUsingSP(true);
         
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             int c = 0;
-            List<Location> locList = Sphere.getXZCircle(loc.add(0, 18, 0), 10, 100);
+            List<Location> locList = Sphere.getXZCircle(loc.clone().add(0, 18, 0), 8, 100);
             @Override
             public void run(){
+                
+                if(c % 4 == 0){
+                    locList.clear();
+                    locList = Sphere.getXZCircle(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12), 8, 100);
+                }
                 
                 //雲エフェクト
                 if(c % 2 == 0 || new Random().nextInt(45) == 1){
@@ -112,8 +120,9 @@ public class Amehurasi {
                     if(new Random().nextInt(400) == 1)
                         SnowballAmehurasiRunnable(p, loc);
                 }
-                if(c == 220 || !DataMgr.getPlayerData(p).isInMatch()){
+                if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){
                     DataMgr.getPlayerData(player).setIsUsingSP(false);
+                    p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     cancel();
                 }
                 c++;

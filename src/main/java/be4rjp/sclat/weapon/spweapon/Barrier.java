@@ -30,11 +30,11 @@ public class Barrier {
             public void run(){
                 if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE) || !p.isOnline())
                     cancel();
+                Location loc = p.getLocation().add(0, 0.5, 0);
+                List<Location> s_locs = Sphere.getSphere(loc, 2, 25);
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
-                        Location loc = p.getLocation().add(0, 0.5, 0);
-                        List<Location> s_locs = Sphere.getSphere(loc, 2, 25);
                         for(Location e_loc : s_locs)
                             o_player.spawnParticle(Particle.REDSTONE, e_loc, 1, 0, 0, 0, 50, dustOptions);
                     }

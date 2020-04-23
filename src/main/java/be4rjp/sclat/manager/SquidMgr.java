@@ -53,7 +53,7 @@ public class SquidMgr {
                 
                 Block down = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
                 if(DataMgr.getBlockDataMap().containsKey(down) && !down.getType().equals(data.getTeam().getTeamColor().getWool()) && p.getGameMode().equals(GameMode.ADVENTURE)){
-                    if(!down.getType().toString().contains("GLASS"))
+                    if(!down.getType().toString().contains("GLASS") && DataMgr.getPlayerData(p).getArmor() <= 0)
                         p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
                 }else{
                     if(p.hasPotionEffect(PotionEffectType.POISON))
