@@ -35,6 +35,11 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -55,7 +60,7 @@ public class MatchMgr {
     public static int mapcount = 0;
     public static Song nowornever = NBSDecoder.parse(new File("plugins/Sclat/BGM", "nowornever.nbs"));
     public static Song splattack = NBSDecoder.parse(new File("plugins/Sclat/BGM", "splattack.nbs"));
-    public static byte volume = 20;
+    public static byte volume = 22;
     
     public static boolean canRollback = true;
     
@@ -462,11 +467,25 @@ public class MatchMgr {
                     p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                        RadioSongPlayer radio = new RadioSongPlayer(splattack);
+                        List<String> list = new ArrayList<>();
+                        List<String> nlist = new ArrayList<>();
+                        int count = 0;
+                        for (String songname : conf.getConfig().getConfigurationSection("nBGM").getKeys(false)){
+                            list.add(conf.getConfig().getString("nBGM." + songname));
+                            nlist.add(songname);
+                            count++;
+                        }
+                        int random = new Random().nextInt(count);
+                        String fname = list.get(random);
+                        Song song = NBSDecoder.parse(new File("plugins/Sclat/BGM", fname));
+                        RadioSongPlayer radio = new RadioSongPlayer(song);
                         radio.setVolume(volume);
+                        String songname = nlist.get(random);
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
+                            if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined()){
                                 radio.addPlayer(oplayer);
+                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + songname + ""));
+                            }
                         }
                         radio.setPlaying(true);
                         StopMusic(radio, 2400);
@@ -534,11 +553,24 @@ public class MatchMgr {
                         p.sendMessage("§6§l残り1分！");
                         p.sendMessage("");
                         if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                            RadioSongPlayer radio = new RadioSongPlayer(nowornever);
+                            List<String> list = new ArrayList<>();
+                            List<String> nlist = new ArrayList<>();
+                            int count = 0;
+                            for (String songname : conf.getConfig().getConfigurationSection("fBGM").getKeys(false)){
+                                list.add(conf.getConfig().getString("fBGM." + songname));
+                                nlist.add(songname);
+                                count++;
+                            }
+                            int random = new Random().nextInt(count);
+                            String fname = list.get(random);
+                            Song song = NBSDecoder.parse(new File("plugins/Sclat/BGM", fname));
+                            RadioSongPlayer radio = new RadioSongPlayer(song);
                             radio.setVolume(volume);
+                            String songname = nlist.get(random);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
                                     radio.addPlayer(oplayer);
+                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + songname + ""));
                             }
                             radio.setPlaying(true);
                             //StopMusic(radio, 1200);

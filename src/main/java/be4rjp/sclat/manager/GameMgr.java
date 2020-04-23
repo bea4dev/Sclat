@@ -120,7 +120,7 @@ public class GameMgr implements Listener{
             WeaponClassMgr.setWeaponClass(player);
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();
-            joinmeta.setDisplayName("メインメニュー");
+            joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
             join.setItemMeta(joinmeta);
             player.getInventory().clear();
             Shooter.ShooterRunnable(player);
@@ -175,7 +175,7 @@ public class GameMgr implements Listener{
         player.teleport(Main.lobby);
         ItemStack join = new ItemStack(Material.CHEST);
         ItemMeta joinmeta = join.getItemMeta();
-        joinmeta.setDisplayName("メインメニュー");
+        joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
         join.setItemMeta(joinmeta);
         player.getInventory().clear();
         player.getInventory().setItem(0, join);
