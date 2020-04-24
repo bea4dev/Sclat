@@ -101,6 +101,17 @@ public class ClickListener implements Listener{
                 BungeeCordMgr.PlayerSendServer(player, "tdm");
                 DataMgr.getPlayerData(player).setServerName("TDM");
                 break;
+            case"ナワバリバトル":
+                Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
+                match.addNawabari_T_Count();
+                break;
+            case"チームデスマッチ":
+                Match m = DataMgr.getMatchFromId(MatchMgr.matchcount);
+                m.addTDM_T_Count();
+                break;
+            case"投票しない":
+                player.closeInventory();
+                break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));

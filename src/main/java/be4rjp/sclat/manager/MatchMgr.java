@@ -2,6 +2,7 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Animation;
+import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.Color;
@@ -77,7 +78,7 @@ public class MatchMgr {
         if(!data.getIsJoined()){
             
         Match match = DataMgr.getMatchFromId(matchcount);
-        if(match.canJoin()){ 
+        if(match.canJoin()){
             match.addPlayerCount();
             int playercount = match.getPlayerCount();
         if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
@@ -89,6 +90,7 @@ public class MatchMgr {
             data.setPlayerNumber(playercount);
             
             player.teleport(match.getMapData().getTaikibayso());
+            OpenGUI.MatchTohyoGUI(player);
             
             if(playercount%2==0){
                 data.setTeam(match.getTeam1());
@@ -122,6 +124,11 @@ public class MatchMgr {
                             Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後1秒");
                         if(s == 20){
                             match.setCanJoin(false);
+                            if(match.getNawabari_T_Count() >= match.getTDM_T_Count()){
+                                conf.getConfig().set("WorkMode", "Nomal");
+                            }else{
+                                conf.getConfig().set("WorkMode", "TDM");
+                            }
                             StartMatch(match);
                             for(Entity entity : p.getWorld().getEntities()){
                                 if(!(entity instanceof Player)){
@@ -332,8 +339,10 @@ public class MatchMgr {
                     p.teleport(introl);
                     Location location = DataMgr.getPlayerData(p).getMatchLocation();
 
-
-                    p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
+                    if(conf.getConfig().getString("WorkMode").equals("TDM"))
+                        p.sendTitle("§l" + match.getMapData().getMapName(), "§7チームデスマッチ", 10, 70, 20);
+                    else
+                        p.sendTitle("§l" + match.getMapData().getMapName(), "§7ナワバリバトル", 10, 70, 20);
 
                     StartCount(p);
 
@@ -683,7 +692,8 @@ public class MatchMgr {
 
 
                         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                            if(DataMgr.getPlayerData(player).getIsJoined())
+                                Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
                         }
                     }
                 }

@@ -22,68 +22,78 @@ import org.bukkit.inventory.meta.SkullMeta;
  */
 public class OpenGUI {
     public static void openMenu(Player player){
-        Inventory inv = Bukkit.createInventory(null, 45, "メインメニュー");
+        Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
         
         ItemStack join = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("試合に参加 / JOIN THE MATCH");
         join.setItemMeta(joinmeta);
         if(!conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(11, join);
+            inv.setItem(2, join);
         
         ItemStack setting = new ItemStack(Material.COMPARATOR);
         ItemMeta setting_m = setting.getItemMeta();
         setting_m.setDisplayName("設定 / SETTINGS");
         setting.setItemMeta(setting_m);
-        inv.setItem(28, setting);
+        inv.setItem(6, setting);
         
         ItemStack w = new ItemStack(Material.WOODEN_HOE);
         ItemMeta wmeta = w.getItemMeta();
         wmeta.setDisplayName("武器選択 / CHOSE WEAPONS");
         w.setItemMeta(wmeta);
-        inv.setItem(15, w);
+        inv.setItem(4, w);
         player.openInventory(inv);
         
         ItemStack t = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta tmeta = t.getItemMeta();
         tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK");
         t.setItemMeta(tmeta);
-        inv.setItem(30, t);
+        inv.setItem(0, t);
         
         ItemStack r = new ItemStack(Material.MILK_BUCKET);
         ItemMeta rmeta = r.getItemMeta();
         rmeta.setDisplayName("塗りをリセット / RESET INK");
         r.setItemMeta(rmeta);
         if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(11, r);
+            inv.setItem(2, r);
         
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ItemStack b = new ItemStack(Material.OAK_DOOR);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
             b.setItemMeta(bmeta);
-            inv.setItem(32, b);
+            inv.setItem(8, b);
         }else{
             ItemStack b = new ItemStack(Material.ARMOR_STAND);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
             b.setItemMeta(bmeta);
-            inv.setItem(32, b);
+            inv.setItem(8, b);
         }
         
-        if(conf.getConfig().getString("WorkMode").equals("TDM")){
-            ItemStack b = new ItemStack(Material.OAK_DOOR);
-            ItemMeta bmeta = b.getItemMeta();
-            bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
-            b.setItemMeta(bmeta);
-            inv.setItem(34, b);
-        }else{
-            ItemStack b = new ItemStack(Material.DIAMOND_SWORD);
-            ItemMeta bmeta = b.getItemMeta();
-            bmeta.setDisplayName("チームデスマッチサーバーへ接続 / CONNECT TO TDM SERVER");
-            b.setItemMeta(bmeta);
-            inv.setItem(34, b);
-        }
+        player.openInventory(inv);
+    }
+    
+    public static void MatchTohyoGUI(Player player){
+        Inventory inv = Bukkit.createInventory(null, 18, "Chose a Gamemode");
+        
+        ItemStack n = new ItemStack(Material.SNOWBALL);
+        ItemMeta nmeta = n.getItemMeta();
+        nmeta.setDisplayName("ナワバリバトル");
+        n.setItemMeta(nmeta);
+        inv.setItem(2, n);
+        
+        ItemStack t = new ItemStack(Material.DIAMOND_SWORD);
+        ItemMeta tmeta = t.getItemMeta();
+        tmeta.setDisplayName("チームデスマッチ");
+        t.setItemMeta(tmeta);
+        inv.setItem(4, t);
+        
+        ItemStack nu = new ItemStack(Material.BARRIER);
+        ItemMeta numeta = nu.getItemMeta();
+        numeta.setDisplayName("投票しない");
+        nu.setItemMeta(numeta);
+        inv.setItem(6, nu);
         
         player.openInventory(inv);
     }

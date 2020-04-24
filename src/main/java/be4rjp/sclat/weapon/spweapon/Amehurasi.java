@@ -106,7 +106,7 @@ public class Amehurasi {
                 }
                 
                 //雲エフェクト
-                if(c % 2 == 0 || new Random().nextInt(45) == 1){
+                if(c % 2 == 0 || new Random().nextInt(50) == 1){
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             for(Location loc : locList){

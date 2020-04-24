@@ -17,6 +17,8 @@ public class Match {
     private MapData map;
     private boolean canjoin = true;
     private Player leader;
+    private int c_nawabari = 0;
+    private int c_tdm = 0;
     
     
     public Match(int id){this.id = id;}
@@ -35,6 +37,10 @@ public class Match {
     
     public Player getLeaderPlayer(){return this.leader;}
     
+    public int getNawabari_T_Count(){return this.c_nawabari;}
+    
+    public int getTDM_T_Count(){return this.c_tdm;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -47,4 +53,9 @@ public class Match {
     public void setCanJoin(boolean is){this.canjoin = is;}
     
     public void setLeaderPlayer(Player player){this.leader = player;}
+    
+    
+    public void addNawabari_T_Count(){this.c_nawabari++;}
+    
+    public void addTDM_T_Count(){this.c_tdm++;}
 }
