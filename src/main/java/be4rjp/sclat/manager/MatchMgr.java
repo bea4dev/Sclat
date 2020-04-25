@@ -380,7 +380,7 @@ public class MatchMgr {
                 
                 
                 if(s >= 100 && s <= 160){
-                    Location introl = match.getMapData().getTeam0Intro().clone();
+                    Location introl = match.getMapData().getTeam0Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                         if(s >= 101 && s <= 120){
@@ -401,7 +401,7 @@ public class MatchMgr {
                     }
                 }
                 if(s >= 160 && s <= 220){
-                    Location introl = match.getMapData().getTeam1Intro().clone();
+                    Location introl = match.getMapData().getTeam1Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
                         if(s >= 161 && s <= 180){
