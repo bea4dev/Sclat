@@ -114,7 +114,7 @@ public class Sensor {
                     
                     for(Entity as : player.getWorld().getEntities()){
                         if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                            if(as instanceof ArmorStand){
+                            if(as instanceof ArmorStand && !as.getCustomName().equals("Path")){
                                 ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
                             }  
                         }

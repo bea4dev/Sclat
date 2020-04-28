@@ -3,6 +3,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Path;
 import java.util.Map;
 import java.util.Map.Entry;
 import static org.bukkit.Bukkit.getServer;
@@ -200,6 +201,14 @@ public class ArmorStandMgr {
     
     
     public static void giveDamageArmorStand(ArmorStand as, double damage, Player shooter){
+        if(as.getCustomName().equals("Path")){
+            for (Path path : DataMgr.getPlayerData(shooter).getMatch().getMapData().getPathList()){
+                if(path.getArmorStand().equals(as))
+                    path.setTeam(DataMgr.getPlayerData(shooter).getTeam());
+            }
+            return;
+        }
+        
         double health = Double.parseDouble(as.getCustomName());
         if(health <= 20){
             if(as.isVisible()){

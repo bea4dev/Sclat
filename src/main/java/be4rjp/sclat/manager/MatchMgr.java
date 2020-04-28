@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Match;
+import be4rjp.sclat.data.NoteBlockSong;
 import be4rjp.sclat.data.PaintData;
+import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.PlayerData;
 
 import be4rjp.sclat.data.WeaponClass;
@@ -31,16 +33,20 @@ import org.bukkit.inventory.ItemStack;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Material;
 import be4rjp.sclat.data.Team;
+import be4rjp.sclat.raytrace.RayTrace;
 import be4rjp.sclat.weapon.Spinner;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,6 +56,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -59,8 +66,6 @@ public class MatchMgr {
     
     public static int matchcount = 0;
     public static int mapcount = 0;
-    public static Song nowornever = NBSDecoder.parse(new File("plugins/Sclat/BGM", "nowornever.nbs"));
-    public static Song splattack = NBSDecoder.parse(new File("plugins/Sclat/BGM", "splattack.nbs"));
     public static byte volume = 22;
     
     public static boolean canRollback = true;
@@ -176,6 +181,7 @@ public class MatchMgr {
         
         MapData map = DataMgr.getMapRandom(mapcount);
         match.setMapData(map);
+        
         
         mapcount++;
         
@@ -435,6 +441,7 @@ public class MatchMgr {
                     Location introl = DataMgr.getPlayerData(p).getMatchLocation();
                     p.teleport(introl);
                 }
+                
 
                 if(s == 281){
                     //playerclass
@@ -476,28 +483,23 @@ public class MatchMgr {
                     p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                        List<String> list = new ArrayList<>();
-                        List<String> nlist = new ArrayList<>();
-                        int count = 0;
-                        for (String songname : conf.getConfig().getConfigurationSection("nBGM").getKeys(false)){
-                            list.add(conf.getConfig().getString("nBGM." + songname));
-                            nlist.add(songname);
-                            count++;
-                        }
-                        int random = new Random().nextInt(count);
-                        String fname = list.get(random);
-                        Song song = NBSDecoder.parse(new File("plugins/Sclat/BGM", fname));
+                        NoteBlockSong nbs = NoteBlockAPIMgr.getRandomNomalSong();
+                        Song song = nbs.getSong();
                         RadioSongPlayer radio = new RadioSongPlayer(song);
                         radio.setVolume(volume);
-                        String songname = nlist.get(random);
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined()){
                                 radio.addPlayer(oplayer);
-                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + songname + ""));
+                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
                             }
                         }
                         radio.setPlaying(true);
                         StopMusic(radio, 2400);
+                    }
+                    
+                    
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+                        PathMgr.setupPath(match);
                     }
 
                     cancel();
@@ -562,24 +564,14 @@ public class MatchMgr {
                         p.sendMessage("§6§l残り1分！");
                         p.sendMessage("");
                         if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                            List<String> list = new ArrayList<>();
-                            List<String> nlist = new ArrayList<>();
-                            int count = 0;
-                            for (String songname : conf.getConfig().getConfigurationSection("fBGM").getKeys(false)){
-                                list.add(conf.getConfig().getString("fBGM." + songname));
-                                nlist.add(songname);
-                                count++;
-                            }
-                            int random = new Random().nextInt(count);
-                            String fname = list.get(random);
-                            Song song = NBSDecoder.parse(new File("plugins/Sclat/BGM", fname));
+                            NoteBlockSong nbs = NoteBlockAPIMgr.getRandomFinalSong();
+                            Song song = nbs.getSong();
                             RadioSongPlayer radio = new RadioSongPlayer(song);
                             radio.setVolume(volume);
-                            String songname = nlist.get(random);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
                                     radio.addPlayer(oplayer);
-                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + songname + ""));
+                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
                             }
                             radio.setPlaying(true);
                             //StopMusic(radio, 1200);
@@ -607,6 +599,11 @@ public class MatchMgr {
             @Override
             public void run(){
                 if(i == 0){ 
+                    DataMgr.getPlayerData(p).getMatch().setIsFinished(true);
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+                        for(Path path : DataMgr.getPlayerData(p).getMatch().getMapData().getPathList())
+                            path.stop();
+                    }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();
                     for(ArmorStand as : DataMgr.getSprinklerMap().values())

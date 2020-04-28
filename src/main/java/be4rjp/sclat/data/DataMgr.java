@@ -35,6 +35,7 @@ public class DataMgr {
     private static Map<Projectile, Boolean> snowball = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
+    public static List<ArmorStand> al = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}
@@ -73,6 +74,7 @@ public class DataMgr {
     
     
     public static void addColorList(Color color){list.add(color);}
+    public static void addPathArmorStandList(ArmorStand as){al.add(as);}
     public static void addMapList(MapData map){maplist.add(map);}
     //public static void setPaintDataFromMatch(Match match, PaintData data){paintdata.put(match, data);}
     

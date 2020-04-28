@@ -12,6 +12,7 @@ import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.MapDataMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.NPCMgr;
+import be4rjp.sclat.manager.NoteBlockAPIMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.MainWeapon;
 import be4rjp.sclat.weapon.SnowballListener;
@@ -101,6 +102,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+        
+        NoteBlockAPIMgr.LoadSongFiles();
     }
     
     @Override
@@ -130,6 +133,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             as.remove();
         conf.SaveConfig();
         
+        for(ArmorStand as : DataMgr.al)
+            as.remove();
     }
     
     public static Main getPlugin(){

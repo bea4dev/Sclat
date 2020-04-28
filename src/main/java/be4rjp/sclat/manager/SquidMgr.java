@@ -67,7 +67,7 @@ public class SquidMgr {
                     data.setIsSquid(false);
                 }
             
-                if(data.getIsOnInk() && data.getIsSquid()){
+                if((data.getIsOnInk() && data.getIsSquid()) || DataMgr.getPlayerData(p).getIsOnPath()){
                     is2 = false;
                     if(!is){
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 9F);  
@@ -101,6 +101,7 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.REGENERATION);
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
+
                     p.setFoodLevel(4);
                     
                     final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");

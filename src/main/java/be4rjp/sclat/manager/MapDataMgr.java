@@ -5,6 +5,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.Color;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
+import be4rjp.sclat.data.Path;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -85,6 +86,22 @@ public class MapDataMgr {
             int nlocy = conf.getMapConfig().getInt("Maps." + mapname + ".NoBlockLoc.Y");
             int nlocz = conf.getMapConfig().getInt("Maps." + mapname + ".NoBlockLoc.Z");
             Location nloc = new Location(w, nlocx, nlocy, nlocz);
+            
+            if(conf.getMapConfig().contains("Maps." + mapname + ".Path")){
+                for (String pathname : conf.getMapConfig().getConfigurationSection("Maps." + mapname + ".Path").getKeys(false)){
+                    double flocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".From.X") + 0.5;
+                    double flocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".From.Y") + 0.5;
+                    double flocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".From.Z") + 0.5;
+                    Location from = new Location(w, flocx, flocy, flocz);
+
+                    double tolocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".To.X") + 0.5;
+                    double tolocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".To.Y") + 0.5;
+                    double tolocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Path." + pathname + ".To.Z") + 0.5;
+                    Location to = new Location(w, tolocx, tolocy, tolocz);
+                    Path path = new Path(from, to);
+                    map.addPath(path);
+                }
+            }
             
             
             boolean canpaintbblock = false;

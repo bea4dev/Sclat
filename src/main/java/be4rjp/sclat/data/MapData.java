@@ -1,5 +1,7 @@
 package be4rjp.sclat.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Location;
 
 /**
@@ -37,6 +39,8 @@ public class MapData {
     
     private Location noBlockLoc;
     
+    private List<Path> path = new ArrayList<>();
+    
     
     
     public MapData(String mapname){this.mapname = mapname;}
@@ -71,6 +75,9 @@ public class MapData {
     
     public Location getNoBlockLocation(){return this.noBlockLoc;}
     
+    public List<Path> getPathList(){return this.path;}
+    
+    
     
     public void setIntro(Location l){this.Intro = l;}
     
@@ -99,4 +106,7 @@ public class MapData {
     public void setTaikibasyo(Location basyo){this.taikibasyo = basyo;}
     
     public void setNoBlockLocation(Location loc){this.noBlockLoc = loc;}
+    
+    
+    public void addPath(Path path){this.path.add(path);}
 }

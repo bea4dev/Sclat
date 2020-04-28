@@ -1,6 +1,8 @@
 
 package be4rjp.sclat.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -19,6 +21,8 @@ public class Match {
     private Player leader;
     private int c_nawabari = 0;
     private int c_tdm = 0;
+    private boolean finished = false;
+    
     
     
     public Match(int id){this.id = id;}
@@ -41,6 +45,8 @@ public class Match {
     
     public int getTDM_T_Count(){return this.c_tdm;}
     
+    public boolean isFinished(){return this.finished;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -53,6 +59,8 @@ public class Match {
     public void setCanJoin(boolean is){this.canjoin = is;}
     
     public void setLeaderPlayer(Player player){this.leader = player;}
+    
+    public void setIsFinished(boolean is){this.finished = is;}
     
     
     public void addNawabari_T_Count(){this.c_nawabari++;}

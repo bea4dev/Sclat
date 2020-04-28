@@ -42,6 +42,7 @@ public class PlayerData {
     private boolean isdead = false;
     private String server = "";
     private ItemStack is;
+    private boolean isonpath = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -108,6 +109,8 @@ public class PlayerData {
     
     public ItemStack getPlayerHead(){return this.is;}
     
+    public boolean getIsOnPath(){return this.isonpath;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -167,6 +170,8 @@ public class PlayerData {
     
     public void setPlayerHead(ItemStack is){this.is = is;}
     
+    public void setIsOnPath(boolean is){this.isonpath = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     
@@ -197,6 +202,7 @@ public class PlayerData {
         this.canrollershoot = true;
         this.cancharge = true;
         this.isdead = false;
+        this.isonpath = false;
     }
     
 }
