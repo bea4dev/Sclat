@@ -7,6 +7,7 @@ import be4rjp.sclat.data.MainWeapon;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.data.Sponge;
 import be4rjp.sclat.data.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,7 @@ import org.bukkit.entity.Player;
  * @author Be4rJP
  */
 public class PaintMgr {
-    public static void Paint(Location location, Player player, boolean sphere){
-        
+    public static void Paint(Location location, Player player, boolean sphere){  
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
         List<Block> blocks = new ArrayList<Block>();
         blocks.add(location.getBlock());
@@ -32,7 +32,25 @@ public class PaintMgr {
             blocks = generateSphere(location, mw.getMaxPaintDis(), 1, false, true, 0, mw.getPaintRandom());
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         for(Block block : blocks) {
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER")){
+                if(DataMgr.getSpongeMap().containsKey(block)){
+                    Sponge sponge = DataMgr.getSpongeFromBlock(block);
+                    PlayerData pdata = DataMgr.getPlayerData(player);
+                    if(pdata.getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
+                        sponge.giveDamage(10, pdata.getTeam());
+                    else
+                        sponge.giveDamage(pdata.getWeaponClass().getMainWeapon().getDamage(), pdata.getTeam());
+                }else if(block.getType().equals(Material.WET_SPONGE)){
+                    Sponge sponge = new Sponge(block);
+                    PlayerData pdata = DataMgr.getPlayerData(player);
+                    sponge.setMatch(pdata.getMatch());
+                    sponge.setTeam(pdata.getTeam());
+                    DataMgr.setSpongeWithBlock(block, sponge);
+                }
+                return;
+            }
+            
+            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
                 if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
                     if(DataMgr.getBlockDataMap().containsKey(block)){
                         PaintData data = DataMgr.getPaintDataFromBlock(block);
@@ -69,6 +87,19 @@ public class PaintMgr {
                 
             }
         }
+    }
+    
+    public static ArrayList<Block> getCubeBlocks(Block start, int radius){
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        for(double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++){
+            for(double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++){
+                for(double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++){
+                    Location loc = new Location(start.getWorld(), x, y, z);
+                    blocks.add(loc.getBlock());
+                }
+            }
+        }
+        return blocks;
     }
     
     

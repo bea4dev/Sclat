@@ -29,7 +29,8 @@ public class SquidListenerMgr {
         Block b5 = player.getLocation().getBlock().getRelative(BlockFace.WEST);
         
         Material wool = data.getTeam().getTeamColor().getWool();
-        if(b2.getType().equals(wool) || b3.getType().equals(wool) || b4.getType().equals(wool) || b5.getType().equals(wool)){
+        Material p = Material.getMaterial(data.getTeam().getTeamColor().getConcrete().toString() + "_POWDER");
+        if(b2.getType().equals(wool) || b3.getType().equals(wool) || b4.getType().equals(wool) || b5.getType().equals(wool) || b2.getType().equals(p) || b3.getType().equals(p) || b4.getType().equals(p) || b5.getType().equals(p)){
             if(!data.getIsSquid())
                 return;
             data.setIsOnInk(true);
@@ -38,7 +39,7 @@ public class SquidListenerMgr {
             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
             player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
             return;
-        }if(b1.getType().equals(wool) || b1.getType().equals(data.getTeam().getTeamColor().getGlass())){
+        }if(b1.getType().equals(wool) || b1.getType().equals(p) || b1.getType().equals(data.getTeam().getTeamColor().getGlass())){
             if(!data.getIsSquid())
                 return;
             data.setIsOnInk(true);

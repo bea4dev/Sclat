@@ -33,6 +33,7 @@ public class DataMgr {
     private static Map<Player, ArmorStand> beacon = new HashMap<>();
     private static Map<Player, ArmorStand> sprinkler = new HashMap<>();
     private static Map<Projectile, Boolean> snowball = new HashMap<>();
+    private static Map<Block, Sponge> spongemap = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     public static List<ArmorStand> al = new ArrayList<>();
@@ -53,6 +54,7 @@ public class DataMgr {
     public static boolean getSnowballIsHit(Projectile ball){return snowball.get(ball);}
     public static ArmorStand getBeaconFromplayer(Player player){return beacon.get(player);}
     public static ArmorStand getSprinklerFromplayer(Player player){return sprinkler.get(player);}
+    public static Sponge getSpongeFromBlock(Block block){return spongemap.get(block);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -71,6 +73,7 @@ public class DataMgr {
     public static void setSnowballIsHit(Projectile ball, boolean is){snowball.put(ball, is);}
     public static void setBeaconFromPlayer(Player player, ArmorStand as){beacon.put(player, as);}
     public static void setSprinklerFromPlayer(Player player, ArmorStand as){sprinkler.put(player, as);}
+    public static void setSpongeWithBlock(Block block, Sponge sponge){spongemap.put(block, sponge);}
     
     
     public static void addColorList(Color color){list.add(color);}
@@ -89,6 +92,7 @@ public class DataMgr {
     public static Map<Projectile, Boolean> getSnowballIsHitMap(){return snowball;}
     public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
     public static Map<Player, ArmorStand> getSprinklerMap(){return sprinkler;}
+    public static Map<Block, Sponge> getSpongeMap(){return spongemap;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

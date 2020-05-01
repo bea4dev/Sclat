@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -207,8 +208,14 @@ public class GameMgr implements Listener{
     public void onPlaceBlockByEntity(EntityChangeBlockEvent event){
         if (!(event.getEntity() instanceof Player)){
             event.setCancelled(true);
+            event.getBlock().getState().update(false, false);
         }
     
+    }
+    
+    @EventHandler
+    public void onBlockFall(BlockPhysicsEvent event){
+        event.setCancelled(true);
     }
     
     @EventHandler
