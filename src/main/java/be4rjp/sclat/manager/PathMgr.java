@@ -60,6 +60,7 @@ public class PathMgr {
         for(Path path : m.getMapData().getPathList()){
             Location from = path.getFromLocation().clone();
             
+            
             BukkitRunnable ast = new BukkitRunnable(){
                 @Override
                 public void run(){
@@ -102,8 +103,9 @@ public class PathMgr {
                             }
                         }
                     }
-                    if(match.isFinished())
+                    if(match.isFinished()){
                         cancel();
+                    }
                 }
             };
             effect.runTaskTimer(Main.getPlugin(), 0, 5);

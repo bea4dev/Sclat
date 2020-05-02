@@ -30,6 +30,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -97,6 +98,26 @@ public class MainWeapon implements Listener{
                 Roller.ShootPaintRunnable(player);
             }  
         }
+        event.setCancelled(true);
+    }
+    
+    @EventHandler
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
+        Player player = event.getPlayer();
+        if(equalWeapon(player)){
+            PlayerData data = DataMgr.getPlayerData(player);
+            if(data.getCanCharge())
+                data.setTick(0);
+            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                data.setIsHolding(true);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+                data.setCanShoot(false);
+                Roller.ShootPaintRunnable(player);
+            }
+        }
+        event.setCancelled(true);
     }
     
     @EventHandler
@@ -115,6 +136,7 @@ public class MainWeapon implements Listener{
                 Roller.ShootPaintRunnable(player);
             }  
         }
+        event.getPlayerItem().setType(Material.AIR);
         event.setCancelled(true);
     }
     

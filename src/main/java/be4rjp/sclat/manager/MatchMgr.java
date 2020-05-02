@@ -5,6 +5,7 @@ import be4rjp.sclat.Animation;
 import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.Color;
 import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
@@ -224,11 +225,12 @@ public class MatchMgr {
     public static void RollBack(){
         if(!canRollback) return;
         for(PaintData data : DataMgr.getBlockDataMap().values()){
-            
-                data.getBlock().setType(data.getOriginalType());
-                data = null;
+            Sclat.setBlockByNMS(data.getBlock(), data.getOriginalType(), false);
+            //data.getBlock().setType(data.getOriginalType());
+            data = null;
         }
         DataMgr.getBlockDataMap().clear();
+        DataMgr.getSpongeMap().clear();
         canRollback = false;
         BukkitRunnable task = new BukkitRunnable(){
             @Override
@@ -291,12 +293,14 @@ public class MatchMgr {
                         Location sl = null;
                         if(i == 1)
                             sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
-                        if(i == 2)
+                        else if(i == 2)
                             sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
-                        if(i == 3)
+                        else if(i == 3)
                             sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
-                        if(i == 4)
+                        else if(i == 4)
                             sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
+                        else
+                            sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
                         sl.setYaw(l.getYaw());
                         DataMgr.getPlayerData(p).setMatchLocation(sl);
                     }
@@ -306,12 +310,14 @@ public class MatchMgr {
                         Location sl = null;
                         if(i == 1)
                             sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
-                        if(i == 2)
+                        else if(i == 2)
                             sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() + 1.5D);
-                        if(i == 3)
+                        else if(i == 3)
                             sl = new Location(l.getWorld(), l.getBlockX() + 1.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
-                        if(i == 4)
+                        else if(i == 4)
                             sl = new Location(l.getWorld(), l.getBlockX() - 0.5D, l.getBlockY(), l.getBlockZ() - 0.5D);
+                        else
+                            sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
                         sl.setYaw(l.getYaw());
                         DataMgr.getPlayerData(p).setMatchLocation(sl);
                     }
@@ -323,20 +329,6 @@ public class MatchMgr {
                         squid.setSwimming(true);
                         squid.setCustomName(p.getDisplayName());
                         squid.setCustomNameVisible(true);
-                    }else{
-                        Location sl = null;
-                        if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
-                            Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
-                            sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
-                            sl.setYaw(l.getYaw());
-                        }
-                        if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
-                            Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam1Loc();
-                            sl = new Location(l.getWorld(), l.getBlockX() + 0.5D, l.getBlockY(), l.getBlockZ() + 0.5D);
-                            sl.setYaw(l.getYaw());
-                        }
-                        DataMgr.getPlayerData(p).setMatchLocation(sl);
-
                     }
 
                     p.setGameMode(GameMode.SPECTATOR);
@@ -601,8 +593,10 @@ public class MatchMgr {
                 if(i == 0){ 
                     DataMgr.getPlayerData(p).getMatch().setIsFinished(true);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
-                        for(Path path : DataMgr.getPlayerData(p).getMatch().getMapData().getPathList())
+                        for(Path path : DataMgr.getPlayerData(p).getMatch().getMapData().getPathList()){
                             path.stop();
+                            path.reset();
+                        }
                     }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();
@@ -624,6 +618,8 @@ public class MatchMgr {
                 }
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
+                    if(p.hasPotionEffect(PotionEffectType.POISON))
+                        p.removePotionEffect(PotionEffectType.POISON);
                 }
                 if(i == 46){
                     for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){

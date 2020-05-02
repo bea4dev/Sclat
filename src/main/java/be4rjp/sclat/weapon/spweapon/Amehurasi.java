@@ -106,12 +106,14 @@ public class Amehurasi {
                 }
                 
                 //雲エフェクト
-                if(c % 2 == 0 || new Random().nextInt(50) == 1){
+                if(c % 2 == 0){
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             for(Location loc : locList){
-                                Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                                o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 50, dustOptions);
+                                if(new Random().nextInt(3) == 1){
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                    o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
+                                }
                             }
                         }
                     }

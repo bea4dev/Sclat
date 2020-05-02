@@ -81,7 +81,6 @@ public class DeathMgr {
                     if(s.getGameMode().equals(GameMode.ADVENTURE)){
                         t.setSpectatorTarget(s);
                     }else{
-                        t.setGameMode(GameMode.ADVENTURE);
                         loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
                         t.teleport(loc);
                     }
@@ -130,7 +129,6 @@ public class DeathMgr {
                     if(s.getGameMode().equals(GameMode.ADVENTURE)){
                         t.setSpectatorTarget(s);
                     }else{
-                        t.setGameMode(GameMode.ADVENTURE);
                         loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
                         t.teleport(loc);
                     }
@@ -179,7 +177,6 @@ public class DeathMgr {
                     if(s.getGameMode().equals(GameMode.ADVENTURE)){
                         t.setSpectatorTarget(s);
                     }else{
-                        t.setGameMode(GameMode.ADVENTURE);
                         loc = DataMgr.getPlayerData(t).getMatch().getMapData().getIntro();
                         t.teleport(loc);
                     }

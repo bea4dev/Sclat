@@ -78,14 +78,17 @@ public class Roller {
                     //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
                     Location front = eloc.add(vec.getX() * 3.3, -0.9, vec.getZ() * 3.3);
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                    p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
+                    }
                     Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
                     Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
                     
                     //筆系武器
                     if(data.getWeaponClass().getMainWeapon().getIsHude()){
                         Location position = p.getLocation();
-                        PaintMgr.PaintHightestBlock(position, p, false, true);
+                        PaintMgr.PaintHightestBlock(front, p, false, true);
                         p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {

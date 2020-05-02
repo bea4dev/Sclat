@@ -52,8 +52,8 @@ public class SquidMgr {
                 }
                 
                 Block down = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
-                if(DataMgr.getBlockDataMap().containsKey(down) && !down.getType().equals(data.getTeam().getTeamColor().getWool()) && p.getGameMode().equals(GameMode.ADVENTURE)){
-                    if(!down.getType().toString().contains("GLASS") && DataMgr.getPlayerData(p).getArmor() <= 0)
+                if(DataMgr.getBlockDataMap().containsKey(down) && !down.getType().equals(data.getTeam().getTeamColor().getWool()) && !down.getType().equals(Material.getMaterial(data.getTeam().getTeamColor().getConcrete().toString() + "_POWDER")) && p.getGameMode().equals(GameMode.ADVENTURE)){
+                    if(!(down.getType().toString().contains("GLASS")) && DataMgr.getPlayerData(p).getArmor() <= 0)
                         p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
                 }else{
                     if(p.hasPotionEffect(PotionEffectType.POISON))
@@ -70,7 +70,7 @@ public class SquidMgr {
                 if((data.getIsOnInk() && data.getIsSquid()) || DataMgr.getPlayerData(p).getIsOnPath()){
                     is2 = false;
                     if(!is){
-                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 9F);  
+                        p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);  
                         is = true;
                         p.getEquipment().setHelmet(new ItemStack(Material.AIR));
                     }                                                                      
@@ -92,7 +92,7 @@ public class SquidMgr {
                     
                 }else{
                     if(!is2){
-                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.1F, 10F);  
+                        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.3F, 5F);  
                         is2 = true;
                         p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
                     }

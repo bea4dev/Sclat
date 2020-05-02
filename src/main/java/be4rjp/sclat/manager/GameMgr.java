@@ -39,6 +39,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -225,6 +226,7 @@ public class GameMgr implements Listener{
                 event.setCancelled(true);
         }
     }
+    
     
     @EventHandler
     public void onbWeatherChange(WeatherChangeEvent event){

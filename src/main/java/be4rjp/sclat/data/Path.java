@@ -23,7 +23,7 @@ import org.bukkit.util.Vector;
 public class Path {
     private Location from , to;
     private Team team = null;
-    private ArmorStand as;
+    private ArmorStand as = null;
     
     public Path(Location from, Location to){this.from = from; this.to = to;}
     
@@ -50,5 +50,10 @@ public class Path {
     
     public void stop(){
         as.remove();
+    }
+    
+    public void reset(){
+        this.team = null;
+        this.as = null;
     }
 }
