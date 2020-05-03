@@ -132,7 +132,7 @@ public class AirStrike {
                     player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                     
                     //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 20);
+                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 25);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                             for(Location loc : s_locs){

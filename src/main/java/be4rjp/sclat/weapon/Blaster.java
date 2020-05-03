@@ -94,7 +94,7 @@ public class Blaster {
                     player.getWorld().playSound(inkball.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                     
                     //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(inkball.getLocation(), maxDist, 20);
+                    List<Location> s_locs = Sphere.getSphere(inkball.getLocation(), maxDist, 25);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                             for(Location loc : s_locs){

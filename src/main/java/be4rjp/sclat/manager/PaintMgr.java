@@ -92,8 +92,8 @@ public class PaintMgr {
                             ATeam.addPaintCount();
                             Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
                             //block.setType(ATeam.getTeamColor().getWool());
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                            block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
+                            //org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                            //block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                             DataMgr.getPlayerData(player).addPaintCount();
                             if(new Random().nextInt(10) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                                 SPWeaponMgr.addSPCharge(player);
@@ -109,8 +109,8 @@ public class PaintMgr {
                         DataMgr.setPaintDataFromBlock(block, data);
                         Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
                         //block.setType(team.getTeamColor().getWool());
-                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                        block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
+                        //org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                        //block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                         DataMgr.getPlayerData(player).addPaintCount();
                         if(new Random().nextInt(12) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);
@@ -298,7 +298,7 @@ public class PaintMgr {
                 data.setTeam(match.getTeam1());
                 data.setOrigianlType(block.getType());
                 DataMgr.setPaintDataFromBlock(block, data);
-                Sclat.setBlockByNMS(block, match.getTeam0().getTeamColor().getGlass(), false);
+                Sclat.setBlockByNMS(block, match.getTeam1().getTeamColor().getGlass(), false);
                 //block.setType(match.getTeam1().getTeamColor().getGlass());
                 match.getTeam1().addPaintCount();
             }

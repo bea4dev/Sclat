@@ -51,99 +51,104 @@ public class Sensor {
             Snowball ball;
             @Override
             public void run(){
-                if(c == 0){
-                    p_vec = p.getEyeLocation().getDirection();
-                    if(!DataMgr.getPlayerData(player).getIsBombRush())
-                        p.setExp(p.getExp() - 0.39F);
-                    ItemStack bom = new ItemStack(Material.DISPENSER).clone();
-                    ItemMeta bom_m = bom.getItemMeta();
-                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
-                    bom.setItemMeta(bom_m);
-                    drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                    drop.setVelocity(p_vec);
-                    //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
-                    ball = player.launchProjectile(Snowball.class);
-                    ball.setVelocity(new Vector(0, 0, 0));
-                    DataMgr.setSnowballIsHit(ball, false);
-                    
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
-                        connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
-                    }
-                    p_vec = p.getEyeLocation().getDirection();
-                }
-                
-                if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
-                    ball.setVelocity(drop.getVelocity());             
-                
-                if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
-                    
-                    //半径
-                    double maxDist = 5;
-                    
-                    //爆発音
-                    player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 2);
-                    
-                    //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 15);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                            for(Location loc : s_locs){
-                                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
-                                o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                    
-                    
-                    //あたり判定の処理
-               
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(target).isInMatch())
-                            continue;
-                        if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
-                                target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
-                            }
-                            
-                        }
-                    }
-                    
-                    for(Entity as : player.getWorld().getEntities()){
-                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                            if(as instanceof ArmorStand && !as.getCustomName().equals("Path")){
-                                ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
-                            }  
-                        }
-                    }
-                    
-                    drop.remove();
-                    cancel();
-                    return;
-                }
-                
-                //ボムの視認用エフェクト
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                        o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
-                    }
-                }
-                
-                c++;
-                x = drop.getLocation().getX();
-                z = drop.getLocation().getZ();
+                try{
+                    if(c == 0){
+                        p_vec = p.getEyeLocation().getDirection();
+                        if(!DataMgr.getPlayerData(player).getIsBombRush())
+                            p.setExp(p.getExp() - 0.39F);
+                        ItemStack bom = new ItemStack(Material.DISPENSER).clone();
+                        ItemMeta bom_m = bom.getItemMeta();
+                        bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                        bom.setItemMeta(bom_m);
+                        drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
+                        drop.setVelocity(p_vec);
+                        //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
+                        ball = player.launchProjectile(Snowball.class);
+                        ball.setVelocity(new Vector(0, 0, 0));
+                        DataMgr.setSnowballIsHit(ball, false);
 
-                
-                if(c > 1000){
-                    drop.remove();
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
+                            connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
+                        }
+                        p_vec = p.getEyeLocation().getDirection();
+                    }
+
+                    if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
+                        ball.setVelocity(drop.getVelocity());             
+
+                    if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
+
+                        //半径
+                        double maxDist = 5;
+
+                        //爆発音
+                        player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 2);
+
+                        //爆発エフェクト
+                        List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 15);
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
+                                for(Location loc : s_locs){
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
+                                    o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
+                                }
+                            }
+                        }
+
+
+
+
+
+                        //あたり判定の処理
+
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
+                            if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
+                                if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
+                                    target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
+                                }
+
+                            }
+                        }
+
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path")){
+                                    ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
+                                }  
+                            }
+                        }
+
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+
+                    //ボムの視認用エフェクト
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                        }
+                    }
+
+                    c++;
+                    x = drop.getLocation().getX();
+                    z = drop.getLocation().getZ();
+
+
+                    if(c > 1000){
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+                }catch(Exception e){
                     cancel();
-                    return;
+                    drop.remove();
+                    Main.getPlugin().getLogger().warning(e.getMessage());
                 }
-                
             }
         };
         

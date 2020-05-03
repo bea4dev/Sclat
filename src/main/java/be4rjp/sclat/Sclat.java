@@ -1,6 +1,5 @@
 package be4rjp.sclat;
 
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;

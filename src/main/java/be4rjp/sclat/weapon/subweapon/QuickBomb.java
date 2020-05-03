@@ -48,124 +48,129 @@ public class QuickBomb {
             Snowball ball;
             @Override
             public void run(){
-                if(c == 0){
-                    p_vec = p.getEyeLocation().getDirection();
-                    if(!DataMgr.getPlayerData(player).getIsBombRush())
-                        p.setExp(p.getExp() - 0.39F);
-                    ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();
-                    ItemMeta bom_m = bom.getItemMeta();
-                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
-                    bom.setItemMeta(bom_m);
-                    drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                    drop.setVelocity(p_vec);
-                    //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
-                    ball = player.launchProjectile(Snowball.class);
-                    ball.setVelocity(new Vector(0, 0, 0));
-                    DataMgr.setSnowballIsHit(ball, false);
-                    
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
-                        connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
-                    }
-                    p_vec = p.getEyeLocation().getDirection();
-                }
-                
-                if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
-                    ball.setVelocity(drop.getVelocity());             
-                
-                if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
-                    
-                    //半径
-                    double maxDist = 3;
-                    
-                    //爆発音
-                    player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
-                    
-                    //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 20);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                            for(Location loc : s_locs){
-                                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                            }
+                try{
+                    if(c == 0){
+                        p_vec = p.getEyeLocation().getDirection();
+                        if(!DataMgr.getPlayerData(player).getIsBombRush())
+                            p.setExp(p.getExp() - 0.39F);
+                        ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();
+                        ItemMeta bom_m = bom.getItemMeta();
+                        bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                        bom.setItemMeta(bom_m);
+                        drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
+                        drop.setVelocity(p_vec);
+                        //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
+                        ball = player.launchProjectile(Snowball.class);
+                        ball.setVelocity(new Vector(0, 0, 0));
+                        DataMgr.setSnowballIsHit(ball, false);
+
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
+                            connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
                         }
+                        p_vec = p.getEyeLocation().getDirection();
                     }
-                    
-                    //塗る
-                    for(int i = 0; i <= maxDist; i++){
-                        List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 20);
-                        for(Location loc : p_locs){
-                            PaintMgr.Paint(loc, p, false);
-                        }
-                    }
-                    
-                    
-                    
-                    //攻撃判定の処理
-               
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(target).isInMatch())
-                            continue;
-                        if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
-                            if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                    DamageMgr.SclatGiveDamage(target, damage);
-                                    PaintMgr.Paint(target.getLocation(), player, true);
-                                }else{
-                                    target.setGameMode(GameMode.SPECTATOR);
-                                    DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
-                                    PaintMgr.Paint(target.getLocation(), player, true);
+
+                    if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
+                        ball.setVelocity(drop.getVelocity());             
+
+                    if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
+
+                        //半径
+                        double maxDist = 3;
+
+                        //爆発音
+                        player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
+
+                        //爆発エフェクト
+                        List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 25);
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
+                                for(Location loc : s_locs){
+                                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
                                 }
+                            }
+                        }
 
-                                //AntiNoDamageTime
-                                BukkitRunnable task = new BukkitRunnable(){
-                                    Player p = target;
-                                    @Override
-                                    public void run(){
-                                        target.setNoDamageTicks(0);
+                        //塗る
+                        for(int i = 0; i <= maxDist; i++){
+                            List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 20);
+                            for(Location loc : p_locs){
+                                PaintMgr.Paint(loc, p, false);
+                            }
+                        }
+
+
+
+                        //攻撃判定の処理
+
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
+                            if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
+                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
+                                if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                        DamageMgr.SclatGiveDamage(target, damage);
+                                        PaintMgr.Paint(target.getLocation(), player, true);
+                                    }else{
+                                        target.setGameMode(GameMode.SPECTATOR);
+                                        DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
+                                        PaintMgr.Paint(target.getLocation(), player, true);
                                     }
-                                };
-                                task.runTaskLater(Main.getPlugin(), 1);
-                                
-                                
-                            }
-                        }
-                    }
-                    
-                    for(Entity as : player.getWorld().getEntities()){
-                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                            if(as instanceof ArmorStand){
-                                double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
-                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
-                            }
-                        }
-                    }
-                    drop.remove();
-                    cancel();
-                    return;
-                }
-                
-                //ボムの視認用エフェクト
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                        o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
-                    }
-                }
-                
-                c++;
-                x = drop.getLocation().getX();
-                z = drop.getLocation().getZ();
 
-                
-                if(c > 1000){
+                                    //AntiNoDamageTime
+                                    BukkitRunnable task = new BukkitRunnable(){
+                                        Player p = target;
+                                        @Override
+                                        public void run(){
+                                            target.setNoDamageTicks(0);
+                                        }
+                                    };
+                                    task.runTaskLater(Main.getPlugin(), 1);
+
+
+                                }
+                            }
+                        }
+
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                                if(as instanceof ArmorStand){
+                                    double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                                }
+                            }
+                        }
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+
+                    //ボムの視認用エフェクト
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                        }
+                    }
+
+                    c++;
+                    x = drop.getLocation().getX();
+                    z = drop.getLocation().getZ();
+
+
+                    if(c > 1000){
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+                }catch(Exception e){
                     drop.remove();
                     cancel();
-                    return;
+                    Main.getPlugin().getLogger().warning(e.getMessage());
                 }
-                
             }
         };
         

@@ -103,7 +103,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
         
-        NoteBlockAPIMgr.LoadSongFiles();
+        if(NoteBlockAPI)
+            NoteBlockAPIMgr.LoadSongFiles();
     }
     
     @Override

@@ -50,80 +50,85 @@ public class Sprinkler {
             Item drop;
             @Override
             public void run(){
-                if(c == 0){
-                    if(!DataMgr.getPlayerData(player).getIsBombRush())
-                        p.setExp(p.getExp() - 0.59F);
-                    ItemStack bom = new ItemStack(Material.BIRCH_FENCE_GATE).clone();
-                    ItemMeta bom_m = bom.getItemMeta();
-                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
-                    bom.setItemMeta(bom_m);
-                    drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                    drop.setVelocity(p.getEyeLocation().getDirection());
-                    p_vec = p.getEyeLocation().getDirection();
-                }
-                
-                if(c != 0){
-                    if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
-                        if(p_vec.getX() == 0 && p_vec.getZ() != 0){
-                            if((drop.getLocation().getZ() - z) == 0)
-                                collision = true;
-                        }
-                        if(p_vec.getX() != 0 && p_vec.getZ() == 0){
-                            if((drop.getLocation().getX() - x) == 0)
-                                collision = true;
-                        }
-                        if(p_vec.getX() != 0 && p_vec.getZ() != 0){
-                            if((drop.getLocation().getX() - x) == 0)
-                                collision = true;
-                            if((drop.getLocation().getZ() - z) == 0)
-                                collision = true;
-                        }
+                try{
+                    if(c == 0){
+                        if(!DataMgr.getPlayerData(player).getIsBombRush())
+                            p.setExp(p.getExp() - 0.59F);
+                        ItemStack bom = new ItemStack(Material.BIRCH_FENCE_GATE).clone();
+                        ItemMeta bom_m = bom.getItemMeta();
+                        bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                        bom.setItemMeta(bom_m);
+                        drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
+                        drop.setVelocity(p.getEyeLocation().getDirection());
+                        p_vec = p.getEyeLocation().getDirection();
                     }
-                }
-                
-                Block block = drop.getLocation().getBlock();
-                Block block1 = block.getRelative(BlockFace.UP);
-                Block block2 = block.getRelative(BlockFace.DOWN);
-                Block block3 = block.getRelative(BlockFace.EAST);
-                Block block4 = block.getRelative(BlockFace.SOUTH);
-                Block block5 = block.getRelative(BlockFace.NORTH);
-                Block block6 = block.getRelative(BlockFace.WEST);
-                if(!block.getType().equals(Material.AIR) || !block1.getType().equals(Material.AIR) || !block2.getType().equals(Material.AIR) || !block3.getType().equals(Material.AIR) || !block4.getType().equals(Material.AIR) || !block5.getType().equals(Material.AIR) || !block6.getType().equals(Material.AIR))
-                    block_check = true;
-                
-                
-                if((drop.isOnGround() || collision) && block_check){
-                    ArmorStand as = DataMgr.getSprinklerFromplayer(player);
-                    as.setVisible(false);
-                    as.setHelmet(new ItemStack(Material.AIR));
-                    as.teleport(drop.getLocation().add(0, -0.4, 0));
-                    as.setCustomName("21");
-                    SprinklerRunnable2(as);
-                    
-                    drop.remove();
-                    cancel();
-                    return;
-                }
-                
-                //視認用エフェクト
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                        o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
-                    }
-                }
-                
-                c++;
-                x = drop.getLocation().getX();
-                z = drop.getLocation().getZ();
 
-                
-                if(c > 1000){
-                    drop.remove();
+                    if(c != 0){
+                        if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
+                            if(p_vec.getX() == 0 && p_vec.getZ() != 0){
+                                if((drop.getLocation().getZ() - z) == 0)
+                                    collision = true;
+                            }
+                            if(p_vec.getX() != 0 && p_vec.getZ() == 0){
+                                if((drop.getLocation().getX() - x) == 0)
+                                    collision = true;
+                            }
+                            if(p_vec.getX() != 0 && p_vec.getZ() != 0){
+                                if((drop.getLocation().getX() - x) == 0)
+                                    collision = true;
+                                if((drop.getLocation().getZ() - z) == 0)
+                                    collision = true;
+                            }
+                        }
+                    }
+
+                    Block block = drop.getLocation().getBlock();
+                    Block block1 = block.getRelative(BlockFace.UP);
+                    Block block2 = block.getRelative(BlockFace.DOWN);
+                    Block block3 = block.getRelative(BlockFace.EAST);
+                    Block block4 = block.getRelative(BlockFace.SOUTH);
+                    Block block5 = block.getRelative(BlockFace.NORTH);
+                    Block block6 = block.getRelative(BlockFace.WEST);
+                    if(!block.getType().equals(Material.AIR) || !block1.getType().equals(Material.AIR) || !block2.getType().equals(Material.AIR) || !block3.getType().equals(Material.AIR) || !block4.getType().equals(Material.AIR) || !block5.getType().equals(Material.AIR) || !block6.getType().equals(Material.AIR))
+                        block_check = true;
+
+
+                    if((drop.isOnGround() || collision) && block_check){
+                        ArmorStand as = DataMgr.getSprinklerFromplayer(player);
+                        as.setVisible(false);
+                        as.setHelmet(new ItemStack(Material.AIR));
+                        as.teleport(drop.getLocation().add(0, -0.4, 0));
+                        as.setCustomName("21");
+                        SprinklerRunnable2(as);
+
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+
+                    //視認用エフェクト
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                        }
+                    }
+
+                    c++;
+                    x = drop.getLocation().getX();
+                    z = drop.getLocation().getZ();
+
+
+                    if(c > 1000){
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+                }catch(Exception e){
                     cancel();
-                    return;
+                    drop.remove();
+                    Main.getPlugin().getLogger().warning(e.getMessage());
                 }
-                
             }
         };
         

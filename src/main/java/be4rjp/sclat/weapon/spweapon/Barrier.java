@@ -36,7 +36,7 @@ public class Barrier {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                         for(Location e_loc : s_locs)
-                            o_player.spawnParticle(Particle.REDSTONE, e_loc, 1, 0, 0, 0, 50, dustOptions);
+                            o_player.spawnParticle(Particle.REDSTONE, e_loc, 1, 0, 0, 0, 70, dustOptions);
                     }
                 }
                 if(c == 30){

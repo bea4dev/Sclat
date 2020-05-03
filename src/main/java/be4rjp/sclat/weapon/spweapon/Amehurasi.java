@@ -51,40 +51,45 @@ public class Amehurasi {
             
             @Override
             public void run(){
-                if(c == 0){
-                    ItemStack bom = new ItemStack(Material.BEACON).clone();
-                    ItemMeta bom_m = bom.getItemMeta();
-                    bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
-                    bom.setItemMeta(bom_m);
-                    drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                    drop.setVelocity(p.getEyeLocation().getDirection());
-                    p_vec = p.getEyeLocation().getDirection();
-                    vec = new Vector(p_vec.getX(), 0, p_vec.getZ()).normalize();
-                }
-                
-                
-                if(drop.isOnGround()){
-                    AmehurasiRunnable(p, drop.getLocation(), vec);
-                    drop.remove();
-                    cancel();
-                }
-                
-                //視認用エフェクト
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                        o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                try{
+                    if(c == 0){
+                        ItemStack bom = new ItemStack(Material.BEACON).clone();
+                        ItemMeta bom_m = bom.getItemMeta();
+                        bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                        bom.setItemMeta(bom_m);
+                        drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
+                        drop.setVelocity(p.getEyeLocation().getDirection());
+                        p_vec = p.getEyeLocation().getDirection();
+                        vec = new Vector(p_vec.getX(), 0, p_vec.getZ()).normalize();
                     }
-                }
-                
-                c++;
-                
-                if(c > 1000){
+
+
+                    if(drop.isOnGround()){
+                        AmehurasiRunnable(p, drop.getLocation(), vec);
+                        drop.remove();
+                        cancel();
+                    }
+
+                    //視認用エフェクト
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                        }
+                    }
+
+                    c++;
+
+                    if(c > 1000){
+                        drop.remove();
+                        cancel();
+                        return;
+                    }
+                }catch(Exception e){
                     drop.remove();
                     cancel();
-                    return;
+                    Main.getPlugin().getLogger().warning(e.getMessage());
                 }
-                
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
@@ -99,35 +104,39 @@ public class Amehurasi {
             List<Location> locList = Sphere.getXZCircle(loc.clone().add(0, 18, 0), 8, 100);
             @Override
             public void run(){
-                
-                if(c % 4 == 0){
-                    locList.clear();
-                    locList = Sphere.getXZCircle(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12), 8, 100);
-                }
-                
-                //雲エフェクト
-                if(c % 2 == 0){
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                            for(Location loc : locList){
-                                if(new Random().nextInt(3) == 1){
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                                    o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
+                try{
+                    if(c % 4 == 0){
+                        locList.clear();
+                        locList = Sphere.getXZCircle(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12), 8, 100);
+                    }
+
+                    //雲エフェクト
+                    if(c % 2 == 0){
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                                for(Location loc : locList){
+                                    if(new Random().nextInt(3) == 1){
+                                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                        o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                for(Location loc : locList){
-                    if(new Random().nextInt(400) == 1)
-                        SnowballAmehurasiRunnable(p, loc);
-                }
-                if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){
-                    DataMgr.getPlayerData(player).setIsUsingSP(false);
-                    p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                    for(Location loc : locList){
+                        if(new Random().nextInt(400) == 1)
+                            SnowballAmehurasiRunnable(p, loc);
+                    }
+                    if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){
+                        DataMgr.getPlayerData(player).setIsUsingSP(false);
+                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                        cancel();
+                    }
+                    c++;
+                }catch(Exception e){
                     cancel();
+                    Main.getPlugin().getLogger().warning(e.getMessage());
                 }
-                c++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);

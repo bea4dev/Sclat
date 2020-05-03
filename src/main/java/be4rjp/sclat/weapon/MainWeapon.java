@@ -1,4 +1,3 @@
-
 package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
