@@ -35,29 +35,6 @@ public class PaintMgr {
         //List<Block> blocks = getTargetBlocks(location, mw.getPaintRandom(), true, 0, mw.getMaxPaintDis());
         
         for(Block block : blocks) {
-            BukkitRunnable task = new BukkitRunnable(){
-                @Override
-                public void run(){
-                    if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER")){
-                        if(DataMgr.getSpongeMap().containsKey(block)){
-                            Sponge sponge = DataMgr.getSpongeFromBlock(block);
-                            PlayerData pdata = DataMgr.getPlayerData(player);
-                            if(pdata.getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
-                                sponge.giveDamage(15, pdata.getTeam());
-                            else
-                                sponge.giveDamage(pdata.getWeaponClass().getMainWeapon().getDamage(), pdata.getTeam());
-                        }else if(block.getType().equals(Material.WET_SPONGE)){
-                            Sponge sponge = new Sponge(block);
-                            PlayerData pdata = DataMgr.getPlayerData(player);
-                            sponge.setMatch(pdata.getMatch());
-                            sponge.setTeam(pdata.getTeam());
-                            DataMgr.setSpongeWithBlock(block, sponge);
-                            sponge.giveDamage(pdata.getWeaponClass().getMainWeapon().getDamage(), pdata.getTeam());
-                        }
-                    }
-                }
-            };
-            //task.runTaskLater(Main.getPlugin(), 1);
             
             if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER")){
                 if(DataMgr.getSpongeMap().containsKey(block)){
@@ -91,9 +68,6 @@ public class PaintMgr {
                             BTeam.subtractPaintCount();
                             ATeam.addPaintCount();
                             Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
-                            //block.setType(ATeam.getTeamColor().getWool());
-                            //org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                            //block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                             DataMgr.getPlayerData(player).addPaintCount();
                             if(new Random().nextInt(10) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                                 SPWeaponMgr.addSPCharge(player);
@@ -108,9 +82,6 @@ public class PaintMgr {
                         //data.setOriginalState(block.getState());
                         DataMgr.setPaintDataFromBlock(block, data);
                         Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
-                        //block.setType(team.getTeamColor().getWool());
-                        //org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                        //block.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, block.getLocation(), 5, 0.5, 0.5, 0.5, 1, bd);
                         DataMgr.getPlayerData(player).addPaintCount();
                         if(new Random().nextInt(12) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);

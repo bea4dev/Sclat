@@ -32,6 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -213,6 +214,12 @@ public class GameMgr implements Listener{
         }
     
     }
+    
+    @EventHandler
+    public void onLeavesDecay(LeavesDecayEvent event){
+        event.setCancelled(true);
+    }
+    
     
     @EventHandler
     public void onBlockFall(BlockPhysicsEvent event){
