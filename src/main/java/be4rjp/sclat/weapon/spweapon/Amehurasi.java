@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Color;
@@ -97,6 +98,7 @@ public class Amehurasi {
     
     public static void AmehurasiRunnable(Player player, Location loc, Vector vec){
         DataMgr.getPlayerData(player).setIsUsingSP(true);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 260);
         
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;

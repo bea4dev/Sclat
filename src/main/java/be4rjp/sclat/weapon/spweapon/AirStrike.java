@@ -9,6 +9,7 @@ import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MapKitMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class AirStrike {
     public static void AirStrikeRunnable(Player player){
         Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
         player.getInventory().clear();
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 160);
         
         BukkitRunnable clear = new BukkitRunnable(){
             @Override

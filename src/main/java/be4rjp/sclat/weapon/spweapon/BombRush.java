@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.spweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +18,7 @@ public class BombRush {
         PlayerData data = DataMgr.getPlayerData(player);
         data.setIsBombRush(true);
         data.setIsUsingSP(true);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 120);
         BukkitRunnable task = new BukkitRunnable(){
             @Override
             public void run(){

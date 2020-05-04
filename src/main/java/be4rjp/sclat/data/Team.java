@@ -10,6 +10,7 @@ public class Team {
     private String mapname;
     private int paintcount = 0;
     private int killcount = 0;
+    private org.bukkit.scoreboard.Team bt;
     
     public Team(int id){this.teamid = id;}
     
@@ -21,6 +22,8 @@ public class Team {
     
     public int getKillCount(){return this.killcount;}
     
+    public org.bukkit.scoreboard.Team getTeam(){return this.bt;}
+    
     public void addPaintCount(){paintcount++;}
     
     public void subtractPaintCount(){paintcount--;}
@@ -29,5 +32,5 @@ public class Team {
     
     public void setTeamColor(Color color){teamcolor = color;}
     
-
+    public void setTeam(org.bukkit.scoreboard.Team team){this.bt = team;}
 }

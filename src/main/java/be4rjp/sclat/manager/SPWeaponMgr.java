@@ -16,6 +16,10 @@ import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -69,7 +73,46 @@ public class SPWeaponMgr {
                     cancel();
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 20);
+        task.runTaskTimer(Main.getPlugin(), 0, 5);
+        
+        BossBar bar = Main.getPlugin().getServer().createBossBar("§6§lSPGauge", BarColor.GREEN, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        bar.addPlayer(player);
+        
+        BukkitRunnable anime = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                bar.setProgress((double)(DataMgr.getPlayerData(p).getSPGauge()) / 100D);
+                if(DataMgr.getPlayerData(p).getSPGauge() == 100)
+                    bar.setTitle("§b§lREADY");
+                else if(DataMgr.getPlayerData(p).getIsUsingSP())
+                    bar.setTitle("§6§lIn Use...");
+                else
+                    bar.setTitle("§6§lSPGauge : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
+                if(!DataMgr.getPlayerData(p).isInMatch()){
+                    bar.removeAll();
+                    cancel();
+                }
+            }
+        };
+        anime.runTaskTimer(Main.getPlugin(), 0, 1);
+    }
+    
+    public static void setSPCoolTimeAnimation(Player player, int tick){
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            double t = tick;
+            double i = tick;
+            @Override
+            public void run(){
+                t--;
+                int sp = (int)(t / i * 100);
+                DataMgr.getPlayerData(p).setSPGauge(sp);
+                if(t <= 0)
+                    cancel();
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
     public static void setSPWeapon(Player p){
@@ -125,41 +168,36 @@ public class SPWeaponMgr {
         switch (name) {
             case "スーパーアーマー":
                 SuperArmor.setArmor(player, 20, 160, true);
+                SPWeaponMgr.setSPCoolTimeAnimation(player, 160);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
-                data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "バリア":
                 Barrier.BarrierRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
-                data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "ボムラッシュ":
                 BombRush.BombRushRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
-                data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "スーパーセンサー":
                 SuperSensor.SuperSensorRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
-                data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "インクストライク":
                 MapKitMgr.setMapKit(player);
-                data.setSPGauge(0);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "アメフラシ":
                 Amehurasi.AmehurasiDropRunnable(player);
-                data.setSPGauge(0);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);

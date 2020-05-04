@@ -20,6 +20,7 @@ public class Color {
     private Material glass;
     private Material concrete;
     private ItemStack bougu;
+    private ChatColor cc;
     
     public Color(String colorname){this.colorname = colorname;}
     
@@ -39,6 +40,8 @@ public class Color {
     
     public org.bukkit.Color getBukkitColor(){return bukkitcolor;}
     
+    public ChatColor getChatColor(){return this.cc;}
+    
     
     public void setWool(Material Wool){wool = Wool;}
     
@@ -54,5 +57,5 @@ public class Color {
     
     public void setBukkitColor(org.bukkit.Color color){this.bukkitcolor = color;}
     
-    
+    public void setChatColor(ChatColor cc){this.cc = cc;}
 }

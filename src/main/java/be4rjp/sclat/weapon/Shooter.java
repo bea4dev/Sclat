@@ -5,6 +5,8 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.raytrace.RayTrace;
+import java.util.ArrayList;
 import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,10 +52,27 @@ public class Shooter {
             return;
         }
         player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
+        RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
+        ArrayList<Vector> positions = rayTrace.traverse(data.getWeaponClass().getMainWeapon().getShootSpeed() * data.getWeaponClass().getMainWeapon().getDistanceTick(),0.7);
+        boolean isLockOnPlayer = false;
+        check : for(int i = 0; i < positions.size();i++){
+            Location position = positions.get(i).toLocation(player.getLocation().getWorld());
+            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                if(player != target){
+                    if(target.getLocation().distance(position) < 2){
+                        isLockOnPlayer = true;
+                        break check;
+                    }
+                }
+            }
+        }
+                    
         Snowball ball = player.launchProjectile(Snowball.class);
         player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
+                if(isLockOnPlayer)
+                    random /= 2;
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
                 vec.add(new Vector(Math.random() * random - random/2, 0, Math.random() * random - random/2));
                 ball.setVelocity(vec);

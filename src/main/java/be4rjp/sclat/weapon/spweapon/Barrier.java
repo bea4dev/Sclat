@@ -5,6 +5,7 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -19,8 +20,10 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class Barrier {
     public static void BarrierRunnable(Player player){
+        DataMgr.getPlayerData(player).setIsUsingSP(true);
         PlayerData data = DataMgr.getPlayerData(player);
         data.setArmor(Double.MAX_VALUE);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 120);
         
         //エフェクトとアーマー解除
         BukkitRunnable task = new BukkitRunnable(){
@@ -42,6 +45,7 @@ public class Barrier {
                 if(c == 30){
                     data.setArmor(0);
                     p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                    DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
                 }
                 c++;

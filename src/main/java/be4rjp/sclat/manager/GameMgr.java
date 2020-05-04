@@ -38,6 +38,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -213,6 +214,16 @@ public class GameMgr implements Listener{
             event.getBlock().getState().update(false, false);
         }
     
+    }
+    
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        event.setCancelled(true);
+        Player player = event.getPlayer();
+        if(DataMgr.getPlayerData(player).isInMatch())
+            Main.getPlugin().getServer().broadcastMessage("<" + DataMgr.getPlayerData(player).getTeam().getTeamColor().getColorCode() + player.getDisplayName() + "§r> " + event.getMessage());
+        else
+            Main.getPlugin().getServer().broadcastMessage("<" + player.getDisplayName() + "§r> " + event.getMessage());
     }
     
     @EventHandler

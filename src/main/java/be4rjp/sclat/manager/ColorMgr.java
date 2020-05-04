@@ -2,6 +2,7 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.data.Color;
 import be4rjp.sclat.data.DataMgr;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -23,6 +24,7 @@ public class ColorMgr {
                 bhm.setColor(org.bukkit.Color.BLUE);
                 bh.setItemMeta(bhm);
             blue.setBougu(bh);
+            blue.setChatColor(ChatColor.BLUE);
         DataMgr.setColor("Blue", blue);
         DataMgr.addColorList(blue);
             
@@ -37,6 +39,7 @@ public class ColorMgr {
                 ahm.setColor(org.bukkit.Color.AQUA);
                 ah.setItemMeta(ahm);
             aqua.setBougu(ah);
+            aqua.setChatColor(ChatColor.AQUA);
         DataMgr.setColor("Aqua", aqua);
         DataMgr.addColorList(aqua);
         
@@ -51,6 +54,7 @@ public class ColorMgr {
                 ohm.setColor(org.bukkit.Color.ORANGE);
                 oh.setItemMeta(ohm);
             orange.setBougu(oh);
+            orange.setChatColor(ChatColor.GOLD);
         DataMgr.setColor("Orange", orange);
         DataMgr.addColorList(orange);
         
@@ -65,6 +69,7 @@ public class ColorMgr {
                 lhm.setColor(org.bukkit.Color.LIME);
                 lh.setItemMeta(lhm);
             lime.setBougu(lh);
+            lime.setChatColor(ChatColor.GREEN);
         DataMgr.setColor("Lime", lime);
         DataMgr.addColorList(lime);
         
@@ -79,6 +84,7 @@ public class ColorMgr {
                 yhm.setColor(org.bukkit.Color.YELLOW);
                 yh.setItemMeta(yhm);
             y.setBougu(yh);
+            y.setChatColor(ChatColor.YELLOW);
         DataMgr.setColor("Yellow", y);
         DataMgr.addColorList(y);
     }

@@ -53,6 +53,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -352,13 +353,11 @@ public class MatchMgr {
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
 
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); //create a line for the board
-                    Score s2 = objective.getScore(""); //blank space
-                    Score s3 = objective.getScore(ChatColor.YELLOW + "SPWeapon: " + SPWeaponMgr.getSPGauge(p));
+                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); 
+                    Score s2 = objective.getScore(""); 
 
-                    score.setScore(3);
                     s2.setScore(2);
-                    s3.setScore(1);
+                    score.setScore(1);
 
                     p.setScoreboard(scoreboard);
 
@@ -467,12 +466,13 @@ public class MatchMgr {
                     //SquidMgr.SquidRunnable(p);
                     DataMgr.getPlayerData(p).setIsInMatch(true);
                     p.setExp(0.99F);
-                    InMatchCounter(p);
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1)
+                        InMatchCounter(p);
                     p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
                     
                     
 
-                    p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
+                    //p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         NoteBlockSong nbs = NoteBlockAPIMgr.getRandomNomalSong();
@@ -525,54 +525,81 @@ public class MatchMgr {
     }
         
     public static void InMatchCounter(Player player){
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard scoreboard = manager.getNewScoreboard();
+            
+        Match match = DataMgr.getPlayerData(player).getMatch();
+        
+        org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
+        bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
+        bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+
+        org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
+        bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
+        bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+
+        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+            if(DataMgr.getPlayerData(oplayer).getIsJoined()){
+                if(match.getTeam0() == DataMgr.getPlayerData(oplayer).getTeam())
+                    bteam0.addPlayer(oplayer);
+                if(match.getTeam1() == DataMgr.getPlayerData(oplayer).getTeam())
+                    bteam1.addPlayer(oplayer);
+            }
+        }
         
             BukkitRunnable task = new BukkitRunnable(){
+                Scoreboard sb = scoreboard;
                 int s = 180;
                 Player p = player;
                 @Override
                 public void run(){
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard scoreboard = manager.getNewScoreboard();
-
-                    Objective objective = scoreboard.registerNewObjective("Title", "dummy");
+                    Objective objective = sb.registerNewObjective(p.getName() + String.valueOf(s), p.getName() + String.valueOf(s));
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-                    
+
                     String min = String.format("%02d", s%60);
-
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:      " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min); //create a line for the board
-                    Score s2 = objective.getScore(""); //blank space
-                    Score s3 = objective.getScore(ChatColor.YELLOW + "SPWeapon: " + SPWeaponMgr.getSPGauge(p));
-
-                    score.setScore(3);
-                    s2.setScore(2);
-                    s3.setScore(1);
-
-                    p.setScoreboard(scoreboard);
                     
+                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
+                    Score score2 = objective.getScore("");
+                    score2.setScore(2);
+                    score.setScore(1);
+                    
+                    for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                        if(DataMgr.getPlayerData(oplayer).getIsJoined())
+                            oplayer.setScoreboard(sb);
+                    }
 
                     if(s == 60){
-                        p.sendMessage("");
-                        p.sendMessage("§6§l残り1分！");
-                        p.sendMessage("");
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(oplayer).getIsJoined()){
+                                oplayer.sendMessage("");
+                                oplayer.sendMessage("§6§l残り1分！");
+                                oplayer.sendMessage("");
+                            }
+                        }
                         if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                             NoteBlockSong nbs = NoteBlockAPIMgr.getRandomFinalSong();
                             Song song = nbs.getSong();
                             RadioSongPlayer radio = new RadioSongPlayer(song);
                             radio.setVolume(volume);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined())
+                                if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined()){
                                     radio.addPlayer(oplayer);
-                                oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
+                                    oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
+                                }
                             }
                             radio.setPlaying(true);
                             //StopMusic(radio, 1200);
                         }
                     }
                     if(s == 0){
-                        p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-                        p.getInventory().clear();
-                        FinishMatch(p);
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(oplayer).getIsJoined()){
+                                oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                oplayer.getInventory().clear();
+                                FinishMatch(oplayer);
+                            }
+                        }
                         cancel();
                     }
                     s--;
@@ -613,8 +640,19 @@ public class MatchMgr {
                     loc = p.getLocation();
                     DataMgr.setPlayerIsQuit(p.getUniqueId().toString(), false);
                     p.getInventory().clear();
-                    p.setPlayerListName(p.getDisplayName());
-                        
+                    //p.setPlayerListName(p.getDisplayName());
+                    
+                    ScoreboardManager manager = Bukkit.getScoreboardManager();
+                    Scoreboard scoreboard = manager.getNewScoreboard();
+
+                    /*
+                    org.bukkit.scoreboard.Team team = scoreboard.registerNewTeam("");
+                    team.addPlayer(p);
+                    team.setColor(ChatColor.WHITE);*/
+
+                    p.setScoreboard(scoreboard);
+                    
+                    
                 }
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
