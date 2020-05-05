@@ -1,6 +1,7 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.GUI.ClickListener;
+import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
@@ -99,6 +100,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         MatchMgr.MatchSetup();
         getLogger().info("MatchSetup() ok");
         //ArmorStandMgr.ArmorStandSetup();
+        
+        OpenGUI.WeaponSelectSetup();
         
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);

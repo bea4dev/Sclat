@@ -76,6 +76,7 @@ public class SPWeaponMgr {
         task.runTaskTimer(Main.getPlugin(), 0, 5);
         
         BossBar bar = Main.getPlugin().getServer().createBossBar("§6§lSPGauge", BarColor.GREEN, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        bar.setProgress(0);
         bar.addPlayer(player);
         
         BukkitRunnable anime = new BukkitRunnable(){
@@ -118,10 +119,10 @@ public class SPWeaponMgr {
     public static void setSPWeapon(Player p){
         PlayerData data = DataMgr.getPlayerData(p);
         switch (data.getWeaponClass().getSPWeaponName()){
-            case "スーパーアーマー":
+            case "インクアーマー":
                 ItemStack is = new ItemStack(Material.TOTEM_OF_UNDYING);
                 ItemMeta ism = is.getItemMeta();
-                ism.setDisplayName("スーパーアーマー");
+                ism.setDisplayName("インクアーマー");
                 is.setItemMeta(ism);
                 p.getInventory().setItem(4, is); 
                 break;
@@ -166,9 +167,13 @@ public class SPWeaponMgr {
     public static void UseSPWeapon(Player player, String name){
         PlayerData data = DataMgr.getPlayerData(player);
         switch (name) {
-            case "スーパーアーマー":
+            case "インクアーマー":
                 SuperArmor.setArmor(player, 20, 160, true);
-                SPWeaponMgr.setSPCoolTimeAnimation(player, 160);
+                for (Player op : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(player != op && DataMgr.getPlayerData(player).getTeam() == DataMgr.getPlayerData(op).getTeam()){
+                        SuperArmor.setArmor(op, 10, 80, true);
+                    }
+                }
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);

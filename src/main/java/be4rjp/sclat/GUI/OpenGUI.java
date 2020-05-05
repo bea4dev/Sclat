@@ -21,6 +21,10 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @author Be4rJP
  */
 public class OpenGUI {
+    
+    public static Inventory buki;
+    public static Inventory buki2;
+    
     public static void openMenu(Player player){
         Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
         
@@ -135,9 +139,9 @@ public class OpenGUI {
         player.openInventory(inv);
     }
     
-    public static void openWeaponSelect(Player player){
+    public static void WeaponSelectSetup(){
         int slotnum = 0;
-        Inventory inv = Bukkit.createInventory(null, 54, "武器選択");
+        buki = Bukkit.createInventory(null, 54, "武器選択");
         for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
             String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
             ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
@@ -148,12 +152,36 @@ public class OpenGUI {
             lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
-            if (slotnum <= 53){
-                inv.setItem(slotnum, item);
+            if (slotnum <= 44){
+                buki.setItem(slotnum, item);
             }
+            if(slotnum == 45){
+                ItemStack i = new ItemStack(Material.BOOK);
+                ItemMeta im = i.getItemMeta();
+                im.setDisplayName("次のページ");
+                i.setItemMeta(im);
+                buki.setItem(53, i);
+                buki2 = Bukkit.createInventory(null, 54, "武器選択");
+                buki2.setItem(slotnum - 45, item);
+                ItemStack i2 = new ItemStack(Material.BOOK);
+                ItemMeta im2 = i2.getItemMeta();
+                im2.setDisplayName("前のページ");
+                i2.setItemMeta(im2);
+                buki2.setItem(45, i2);
+            }
+            if(slotnum >= 46){
+                buki2.setItem(slotnum - 45, item);
+            }
+                
             slotnum++;
         }
-        player.openInventory(inv);
+    }
+    
+    public static void openWeaponSelect(Player player, int page){
+        if(page == 1)
+            player.openInventory(buki);
+        if(page == 2)
+            player.openInventory(buki2);
     }
     
     public static void openSettingsUI(Player player){

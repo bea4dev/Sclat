@@ -66,14 +66,6 @@ public class GameMgr implements Listener{
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         
-        for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-            player.showPlayer(Main.getPlugin(), p);
-        }
-        
-        for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-            p.showPlayer(Main.getPlugin(), player);
-        }
-        
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
         
@@ -276,7 +268,7 @@ public class GameMgr implements Listener{
                         MatchMgr.PlayerJoinMatch(player);
                         break;
                     case "[ Weapon Select ]":
-                        OpenGUI.openWeaponSelect(player);
+                        OpenGUI.openWeaponSelect(player, 1);
                         break;
                     case "[ OpenMenu ]":
                         OpenGUI.openMenu(player);
@@ -322,10 +314,10 @@ public class GameMgr implements Listener{
         if(!server.equals(""))
             event.setQuitMessage("§6" + player.getName() + " switched to " + server);
         
-        if(data.getWeaponClass().getSubWeaponName().equals("ビーコン")){
+        if(data.getWeaponClass().getSubWeaponName().equals("ビーコン") && data.isInMatch()){
             DataMgr.getBeaconFromplayer(player).remove();
         }
-        if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー")){
+        if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー") && data.isInMatch()){
             DataMgr.getSprinklerFromplayer(player).remove();
         }
     }

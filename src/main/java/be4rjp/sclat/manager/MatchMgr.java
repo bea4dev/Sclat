@@ -553,7 +553,7 @@ public class MatchMgr {
                 Player p = player;
                 @Override
                 public void run(){
-                    Objective objective = sb.registerNewObjective(p.getName() + String.valueOf(s), p.getName() + String.valueOf(s));
+                    Objective objective = sb.registerNewObjective(String.valueOf(s), String.valueOf(s));
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
 
@@ -594,12 +594,13 @@ public class MatchMgr {
                     }
                     if(s == 0){
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).getIsJoined()){
+                            if(DataMgr.getPlayerData(oplayer).getIsJoined() && p != oplayer){
                                 oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                 oplayer.getInventory().clear();
                                 FinishMatch(oplayer);
                             }
                         }
+                        FinishMatch(p);
                         cancel();
                     }
                     s--;
@@ -636,7 +637,6 @@ public class MatchMgr {
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
                     p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 3, 1.3F);
-                    p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
                     loc = p.getLocation();
                     DataMgr.setPlayerIsQuit(p.getUniqueId().toString(), false);
                     p.getInventory().clear();
@@ -654,8 +654,14 @@ public class MatchMgr {
                     
                     
                 }
+                if(i == 2){
+                    p.resetTitle();
+                    p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
+                }
+                    
                 if(i >= 1 && i <= 45){
                     p.teleport(loc);
+                    p.getInventory().clear();
                     if(p.hasPotionEffect(PotionEffectType.POISON))
                         p.removePotionEffect(PotionEffectType.POISON);
                 }

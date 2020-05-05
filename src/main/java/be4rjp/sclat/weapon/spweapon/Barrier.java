@@ -31,8 +31,11 @@ public class Barrier {
             int c = 0;
             @Override
             public void run(){
-                if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE) || !p.isOnline())
+                if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE) || !p.isOnline()){
+                    data.setArmor(0);
+                    DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
+                }
                 Location loc = p.getLocation().add(0, 0.5, 0);
                 List<Location> s_locs = Sphere.getSphere(loc, 2, 25);
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

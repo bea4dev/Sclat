@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.spweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -17,6 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SuperArmor {
     public static void setArmor(Player player, double armor, long delay, boolean effect){
         
+        if(effect){
+            DataMgr.getPlayerData(player).setIsUsingSP(true);
+            SPWeaponMgr.setSPCoolTimeAnimation(player, (int)delay);
+        }
+        
         PlayerData data = DataMgr.getPlayerData(player);
         data.setArmor(armor);
         
@@ -24,8 +30,10 @@ public class SuperArmor {
         BukkitRunnable effect_r = new BukkitRunnable(){
             @Override
             public void run(){
-                if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE))
+                if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE)){
+                    DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
+                }
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
@@ -46,8 +54,11 @@ public class SuperArmor {
             @Override
             public void run(){
                 data.setArmor(0);
-                effect_r.cancel();
-                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                if(effect){
+                    effect_r.cancel();
+                    DataMgr.getPlayerData(player).setIsUsingSP(false);
+                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                }
             }
         };
         task.runTaskLater(Main.getPlugin(), delay);

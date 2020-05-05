@@ -58,7 +58,7 @@ public class Shooter {
         check : for(int i = 0; i < positions.size();i++){
             Location position = positions.get(i).toLocation(player.getLocation().getWorld());
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                if(player != target){
+                if(player != target && player.getWorld() == target.getWorld()){
                     if(target.getLocation().distance(position) < 2){
                         isLockOnPlayer = true;
                         break check;
