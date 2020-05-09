@@ -6,6 +6,7 @@ import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.Color;
 import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
@@ -171,6 +172,10 @@ public class MatchMgr {
         Team team1 = new Team(id * 2 + 1);
         DataMgr.setTeam(id * 2, team0);
         DataMgr.setTeam(id * 2 + 1, team1);
+        
+        BlockUpdater bur = new BlockUpdater();
+        bur.start();
+        match.setBlockUpdater(bur);
         
         DataMgr.ColorShuffle();
         Color color0 = DataMgr.getColorRandom(0);
@@ -354,7 +359,11 @@ public class MatchMgr {
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
 
                     Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); 
-                    Score s2 = objective.getScore(""); 
+                    Score s2 = objective.getScore("");
+                    if(conf.getConfig().getString("WorkMode").equals("TDM"))
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7チームデスマッチ"); 
+                    else
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ナワバリバトル"); 
 
                     s2.setScore(2);
                     score.setScore(1);
@@ -560,8 +569,12 @@ public class MatchMgr {
                     String min = String.format("%02d", s%60);
                     
                     Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
-                    Score score2 = objective.getScore("");
-                    score2.setScore(2);
+                    Score s2 = objective.getScore("");
+                    if(conf.getConfig().getString("WorkMode").equals("TDM"))
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7チームデスマッチ"); 
+                    else
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ナワバリバトル"); 
+                    s2.setScore(2);
                     score.setScore(1);
                     
                     for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
@@ -618,13 +631,17 @@ public class MatchMgr {
             int i = 0;
             @Override
             public void run(){
-                if(i == 0){ 
+                if(i == 0){
                     DataMgr.getPlayerData(p).getMatch().setIsFinished(true);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         for(Path path : DataMgr.getPlayerData(p).getMatch().getMapData().getPathList()){
                             path.stop();
                             path.reset();
                         }
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            DataMgr.setPlayerIsQuit(oplayer.getUniqueId().toString(), false);
+                        }
+                        DataMgr.getPlayerData(p).getMatch().getBlockUpdater().stop();
                     }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();
@@ -638,7 +655,7 @@ public class MatchMgr {
                         p.removePotionEffect(PotionEffectType.SLOW);
                     p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 3, 1.3F);
                     loc = p.getLocation();
-                    DataMgr.setPlayerIsQuit(p.getUniqueId().toString(), false);
+                    
                     p.getInventory().clear();
                     //p.setPlayerListName(p.getDisplayName());
                     
@@ -728,9 +745,10 @@ public class MatchMgr {
                             per = 0;
 
 
-                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(player).getIsJoined())
-                                Animation.ResultAnimation(player, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(oplayer).getTeam() != null)
+                                if(DataMgr.getPlayerData(oplayer).getTeam() == DataMgr.getPlayerData(p).getTeam())
+                                    Animation.ResultAnimation(oplayer, per, 100 - per, team0code, team1code, winteam, hikiwake);
                         }
                     }
                 }

@@ -36,6 +36,9 @@ public class PaintMgr {
         
         for(Block block : blocks) {
             
+            if(block.getType() == DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())
+                continue;
+            
             if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER")){
                 if(DataMgr.getSpongeMap().containsKey(block)){
                     Sponge sponge = DataMgr.getSpongeFromBlock(block);
@@ -67,7 +70,8 @@ public class PaintMgr {
                             data.setTeam(ATeam);
                             BTeam.subtractPaintCount();
                             ATeam.addPaintCount();
-                            Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
+                            //Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
+                            DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
                             DataMgr.getPlayerData(player).addPaintCount();
                             if(new Random().nextInt(10) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                                 SPWeaponMgr.addSPCharge(player);
@@ -81,7 +85,8 @@ public class PaintMgr {
                         data.setOrigianlType(block.getType());
                         //data.setOriginalState(block.getState());
                         DataMgr.setPaintDataFromBlock(block, data);
-                        Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
+                        //Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
+                        DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
                         DataMgr.getPlayerData(player).addPaintCount();
                         if(new Random().nextInt(12) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);

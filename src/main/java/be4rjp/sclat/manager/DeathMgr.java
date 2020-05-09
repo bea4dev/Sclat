@@ -60,6 +60,9 @@ public class DeathMgr {
         if(type.equals("killed") || type.equals("subWeapon") || type.equals("spWeapon")){
             DataMgr.getPlayerData(shooter).addKillCount();
             DataMgr.getPlayerData(shooter).getTeam().addKillCount();
+            if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
+                for(int i = 0; i < 15; i++)
+                    SPWeaponMgr.addSPCharge(shooter);
         }
         
         BukkitRunnable task = new BukkitRunnable(){

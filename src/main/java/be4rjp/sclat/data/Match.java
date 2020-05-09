@@ -22,6 +22,7 @@ public class Match {
     private int c_nawabari = 0;
     private int c_tdm = 0;
     private boolean finished = false;
+    private BlockUpdater bur;
     
     
     
@@ -47,6 +48,8 @@ public class Match {
     
     public boolean isFinished(){return this.finished;}
     
+    public BlockUpdater getBlockUpdater(){return this.bur;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -61,6 +64,8 @@ public class Match {
     public void setLeaderPlayer(Player player){this.leader = player;}
     
     public void setIsFinished(boolean is){this.finished = is;}
+    
+    public void setBlockUpdater(BlockUpdater bur){this.bur = bur;}
     
     
     public void addNawabari_T_Count(){this.c_nawabari++;}

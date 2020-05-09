@@ -61,7 +61,7 @@ public class Animation {
             public void run(){
                 
                 if(i <= 15){
-                    player.sendTitle("Winner  is...", team0color + DataMgr.getPlayerData(player).getMatch().getTeam0().getTeamColor().getColorName() + "Team" + ChatColor.RESET + " : " + String.valueOf(new Random().nextInt(10)) + " Kill       " + team1color + DataMgr.getPlayerData(player).getMatch().getTeam1().getTeamColor().getColorName() + "Team" + ChatColor.RESET + " : " + String.valueOf(new Random().nextInt(10)) + " Kill", 0, 40, 0);
+                    player.sendTitle("", team0color + DataMgr.getPlayerData(player).getMatch().getTeam0().getTeamColor().getColorName() + "Team" + ChatColor.RESET + " : " + String.valueOf(new Random().nextInt(10)) + " Kill       " + team1color + DataMgr.getPlayerData(player).getMatch().getTeam1().getTeamColor().getColorName() + "Team" + ChatColor.RESET + " : " + String.valueOf(new Random().nextInt(10)) + " Kill", 0, 40, 0);
                 }
                 /*
                 if(i >= 6 && i <= 10){

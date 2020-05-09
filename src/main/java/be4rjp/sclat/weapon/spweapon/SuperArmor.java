@@ -19,8 +19,10 @@ public class SuperArmor {
     public static void setArmor(Player player, double armor, long delay, boolean effect){
         
         if(effect){
-            DataMgr.getPlayerData(player).setIsUsingSP(true);
-            SPWeaponMgr.setSPCoolTimeAnimation(player, (int)delay);
+            if(armor != 10){
+                DataMgr.getPlayerData(player).setIsUsingSP(true);
+                SPWeaponMgr.setSPCoolTimeAnimation(player, (int)delay);
+            }
         }
         
         PlayerData data = DataMgr.getPlayerData(player);
@@ -31,7 +33,8 @@ public class SuperArmor {
             @Override
             public void run(){
                 if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE)){
-                    DataMgr.getPlayerData(player).setIsUsingSP(false);
+                    if(armor != 10)
+                        DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
                 }
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

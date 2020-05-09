@@ -7,6 +7,8 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
+import java.util.Random;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
@@ -26,6 +28,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SnowballListener implements Listener {
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
+        
+        
         if(DataMgr.getSnowballIsHitMap().containsKey((Projectile)event.getEntity())){
             DataMgr.setSnowballIsHit((Projectile)event.getEntity(), true);
         }else{
@@ -38,6 +42,9 @@ public class SnowballListener implements Listener {
     @EventHandler
     public void onEntityHit(EntityDamageByEntityEvent event) {
         event.setCancelled(true);
+        
+        if(!(event.getDamager() instanceof Projectile))
+            return;
 
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getDamager())){
             DataMgr.setSnowballIsHit((Snowball)event.getDamager(), true);
@@ -47,6 +54,8 @@ public class SnowballListener implements Listener {
             if(event.getEntity() instanceof Player){
                 Player target = (Player)event.getEntity();
                 if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                    if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
+                        SPWeaponMgr.addSPCharge(shooter);
                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                         DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                         PaintMgr.Paint(target.getLocation(), shooter, true);
