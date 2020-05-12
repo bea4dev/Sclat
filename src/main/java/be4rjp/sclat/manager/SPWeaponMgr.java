@@ -9,6 +9,7 @@ import be4rjp.sclat.weapon.spweapon.AirStrike;
 import be4rjp.sclat.weapon.spweapon.Amehurasi;
 import be4rjp.sclat.weapon.spweapon.Barrier;
 import be4rjp.sclat.weapon.spweapon.BombRush;
+import be4rjp.sclat.weapon.spweapon.MultiMissile;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
@@ -91,6 +92,7 @@ public class SPWeaponMgr {
                 else
                     bar.setTitle("§6§lSPGauge : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
                 if(!DataMgr.getPlayerData(p).isInMatch()){
+                    DataMgr.getPlayerData(p).setIsUsingSP(false);
                     bar.removeAll();
                     cancel();
                 }
@@ -106,11 +108,15 @@ public class SPWeaponMgr {
             double i = tick;
             @Override
             public void run(){
+                if(t == tick)
+                    DataMgr.getPlayerData(p).setIsUsingSP(true);
                 t--;
                 int sp = (int)(t / i * 100);
                 DataMgr.getPlayerData(p).setSPGauge(sp);
-                if(t <= 0)
+                if(t <= 0){
+                    DataMgr.getPlayerData(p).setIsUsingSP(false);
                     cancel();
+                }
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
@@ -161,6 +167,13 @@ public class SPWeaponMgr {
                 is4.setItemMeta(ism4);
                 p.getInventory().setItem(4, is4);
                 break;
+            case "マルチミサイル":
+                ItemStack is5 = new ItemStack(Material.PRISMARINE_SHARD);
+                ItemMeta ism5 = is5.getItemMeta();
+                ism5.setDisplayName("マルチミサイル");
+                is5.setItemMeta(ism5);
+                p.getInventory().setItem(4, is5);
+                break;
         }
     }
     
@@ -207,8 +220,17 @@ public class SPWeaponMgr {
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
+            case "マルチミサイル":
+                MultiMissile.MMLockRunnable(player);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
             case "カーソルを合わせて右クリックで発射":
                 AirStrike.AirStrikeRunnable(player);
+                break;
+            case "プレイヤーを狙って右クリックで発射":
+                DataMgr.getPlayerData(player).setIsUsingMM(false);
                 break;
         }
     }

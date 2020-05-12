@@ -43,6 +43,7 @@ public class PlayerData {
     private String server = "";
     private ItemStack is;
     private boolean isonpath = false;
+    private boolean isUsingMM = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -111,6 +112,8 @@ public class PlayerData {
     
     public boolean getIsOnPath(){return this.isonpath;}
     
+    public boolean getIsUsingMM(){return this.isUsingMM;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -171,6 +174,8 @@ public class PlayerData {
     public void setPlayerHead(ItemStack is){this.is = is;}
     
     public void setIsOnPath(boolean is){this.isonpath = is;}
+    
+    public void setIsUsingMM(boolean is){this.isUsingMM = is;}
     
     
     public void addKillCount(){this.killcount++;}
