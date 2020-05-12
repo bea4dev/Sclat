@@ -101,6 +101,8 @@ public class SuperJumpMgr {
                     p.teleport(loc);
                     p.setVelocity(new Vector(0, -1, 0));
                     WeaponClassMgr.setWeaponClass(p);
+                    p.closeInventory();
+                    p.getInventory().setHeldItemSlot(0);
                     cancel();
                 }
                 

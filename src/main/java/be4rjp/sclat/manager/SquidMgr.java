@@ -106,6 +106,10 @@ public class SquidMgr {
                     
                     final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");
                     
+                    if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NomalRecovery"))){
+                        p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NomalRecovery"));
+                    }
+                    
                     if(data.getIsHolding() && data.getCanPaint() && p.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk()){
                         p.setSprinting(true);
                     }else{
