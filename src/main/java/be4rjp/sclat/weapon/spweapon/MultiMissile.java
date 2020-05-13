@@ -67,7 +67,7 @@ public class MultiMissile {
                     DataMgr.getPlayerData(p).setIsUsingMM(true);
                     WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName())){
+                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
                             Location loc = op.getLocation();
                             EntitySquid es = new EntitySquid(nmsWorld);
                             es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -82,7 +82,7 @@ public class MultiMissile {
                 }
                 if(c != 0){
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName())){
+                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
                             EntitySquid es = ps.get(op);
                             Location loc = op.getLocation();
                             es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -98,11 +98,11 @@ public class MultiMissile {
                 }
                 if(!DataMgr.getPlayerData(p).getIsUsingMM() || c == 200){
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName())){
+                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
                             EntitySquid es = ps.get(op);
                             ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
                             if(MMCheckCanLock(p, op)){
-                                op.sendTitle("", ChatColor.RED + "敵に狙われている！", 0, 10, 4);
+                                op.sendTitle("", ChatColor.RED + "敵に狙われている！", 0, 20, 4);
                                 MMShootRunnable(p, op);
                             }
                         }

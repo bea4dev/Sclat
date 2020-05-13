@@ -31,6 +31,8 @@ public class DeathMgr {
         //DataMgr.getPlayerData(target).setIsDead(true);
         target.setGameMode(GameMode.SPECTATOR);
         
+        DataMgr.getPlayerData(target).setPoison(false);
+        
         Item drop1 = target.getWorld().dropItem(target.getEyeLocation(), DataMgr.getPlayerData(target).getWeaponClass().getMainWeapon().getWeaponIteamStack());
         Item drop2 = target.getWorld().dropItem(target.getEyeLocation(), SubWeaponMgr.getSubWeapon(target));
         final double random = 0.4;

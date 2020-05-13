@@ -616,6 +616,14 @@ public class MatchMgr {
                         FinishMatch(p);
                         cancel();
                     }
+                    
+                    if(s <= 5 && s > 0){
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            oplayer.sendTitle(ChatColor.GRAY + String.valueOf(s), "", 0, 30, 4);
+                        }
+                    }
+                        //Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + "試合終了まで: " + String.valueOf(s));
+                    
                     s--;
                 }
             };
