@@ -26,7 +26,8 @@ public class SuperArmor {
         }
         
         PlayerData data = DataMgr.getPlayerData(player);
-        data.setArmor(armor);
+        if(armor > data.getArmor())
+            data.setArmor(armor);
         
         //エフェクト
         BukkitRunnable effect_r = new BukkitRunnable(){

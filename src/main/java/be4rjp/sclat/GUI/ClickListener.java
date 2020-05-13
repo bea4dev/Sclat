@@ -57,13 +57,19 @@ public class ClickListener implements Listener{
                 MatchMgr.PlayerJoinMatch(player);
                 break;
             case"武器選択 / CHOSE WEAPONS":
-                OpenGUI.openWeaponSelect(player, 1);
+                OpenGUI.openWeaponSelect(player, "Main");
                 break;
-            case"次のページ":
-                OpenGUI.openWeaponSelect(player, 2);
+            case"シューター":
+                OpenGUI.openWeaponSelect(player, "Shooter");
                 break;
-            case"前のページ":
-                OpenGUI.openWeaponSelect(player, 1);
+            case"ローラー":
+                OpenGUI.openWeaponSelect(player, "Roller");
+                break;
+            case"チャージャー":
+                OpenGUI.openWeaponSelect(player, "Charger");
+                break;
+            case"戻る":
+                OpenGUI.openWeaponSelect(player, "Main");
                 break;
             case"設定 / SETTINGS":
                 OpenGUI.openSettingsUI(player);
@@ -122,7 +128,7 @@ public class ClickListener implements Listener{
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            if(name.equals("次のページ") || name.equals("前のページ"))
+            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー"))
                 return;
             //試しうちモード
             if(conf.getConfig().getString("WorkMode").equals("Trial")){

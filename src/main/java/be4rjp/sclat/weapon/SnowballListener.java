@@ -9,6 +9,10 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
@@ -28,14 +32,41 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class SnowballListener implements Listener {
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
-        
-        
-        if(DataMgr.getSnowballIsHitMap().containsKey((Projectile)event.getEntity())){
-            DataMgr.setSnowballIsHit((Projectile)event.getEntity(), true);
+        if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getEntity())){
+            DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
         }else{
-            Player shooter = (Player)event.getEntity().getShooter();
-            PaintMgr.Paint(event.getHitBlock().getLocation(), shooter, true);
-            shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
+            if(event.getHitBlock() != null){
+                Player shooter = (Player)event.getEntity().getShooter();
+                PaintMgr.Paint(event.getHitBlock().getLocation(), shooter, true);
+                shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
+            }
+            if(event.getHitEntity() != null){
+                //AntiDamageTime
+                Player target = (Player)event.getHitEntity();
+                BukkitRunnable task = new BukkitRunnable(){
+                    Player p = target;
+                    @Override
+                    public void run(){
+                        target.setNoDamageTicks(0);
+                    }
+                };
+                task.runTaskLater(Main.getPlugin(), 1);
+
+                Timer timer = new Timer(false);
+                TimerTask t = new TimerTask(){
+                    Player p = target;
+                    @Override
+                    public void run(){
+                        try{
+                            target.setNoDamageTicks(0);
+                            timer.cancel();
+                        }catch(Exception e){
+                            timer.cancel();
+                        }
+                    }
+                };
+                timer.schedule(t, 25);
+            }
         }
     }
     
@@ -80,6 +111,22 @@ public class SnowballListener implements Listener {
                         }
                     };
                     task.runTaskLater(Main.getPlugin(), 1);
+                    
+                    Timer timer = new Timer(false);
+                    TimerTask t = new TimerTask(){
+                        Player p = target;
+                        @Override
+                        public void run(){
+                            try{
+                                target.setNoDamageTicks(0);
+                                timer.cancel();
+                            }catch(Exception e){
+                                timer.cancel();
+                            }
+                        }
+                    };
+                    timer.schedule(t, 25);
+                    
                 }
             }else if(event.getEntity() instanceof ArmorStand){
                 ArmorStand as = (ArmorStand) event.getEntity();

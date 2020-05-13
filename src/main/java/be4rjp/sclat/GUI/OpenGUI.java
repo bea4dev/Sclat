@@ -6,6 +6,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import java.util.ArrayList;
 import java.util.List;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
@@ -22,8 +23,10 @@ import org.bukkit.inventory.meta.SkullMeta;
  */
 public class OpenGUI {
     
-    public static Inventory buki;
-    public static Inventory buki2;
+    public static Inventory shooter;
+    public static Inventory roller;
+    public static Inventory charger;
+    public static Inventory wm;
     
     public static void openMenu(Player player){
         Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
@@ -141,7 +144,9 @@ public class OpenGUI {
     
     public static void WeaponSelectSetup(){
         int slotnum = 0;
-        buki = Bukkit.createInventory(null, 54, "武器選択");
+        shooter = Bukkit.createInventory(null, 54, "武器選択");
+        roller = Bukkit.createInventory(null, 54, "武器選択");
+        charger = Bukkit.createInventory(null, 54, "武器選択");
         for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
             String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
             ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
@@ -152,36 +157,91 @@ public class OpenGUI {
             lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
-            if (slotnum <= 44){
-                buki.setItem(slotnum, item);
-            }
-            if(slotnum == 45){
-                ItemStack i = new ItemStack(Material.BOOK);
-                ItemMeta im = i.getItemMeta();
-                im.setDisplayName("次のページ");
-                i.setItemMeta(im);
-                buki.setItem(53, i);
-                buki2 = Bukkit.createInventory(null, 54, "武器選択");
-                buki2.setItem(slotnum - 45, item);
-                ItemStack i2 = new ItemStack(Material.BOOK);
-                ItemMeta im2 = i2.getItemMeta();
-                im2.setDisplayName("前のページ");
-                i2.setItemMeta(im2);
-                buki2.setItem(45, i2);
-            }
-            if(slotnum >= 46){
-                buki2.setItem(slotnum - 45, item);
-            }
-                
-            slotnum++;
+            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
+                shooter.setItem(slotnum, item);
+                slotnum++;
+            }   
         }
+        
+        slotnum = 0;
+        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
+            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
+            ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
+            ItemMeta itemm = item.getItemMeta();
+            itemm.setDisplayName(ClassName);
+            List lores = new ArrayList();
+            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
+            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
+            itemm.setLore(lores);
+            item.setItemMeta(itemm);
+            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket"))){
+                roller.setItem(slotnum, item);
+                slotnum++;
+            }   
+        }
+        
+        slotnum = 0;
+        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
+            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
+            ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
+            ItemMeta itemm = item.getItemMeta();
+            itemm.setDisplayName(ClassName);
+            List lores = new ArrayList();
+            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
+            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
+            itemm.setLore(lores);
+            item.setItemMeta(itemm);
+            if (slotnum <= 44 && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger")){
+                charger.setItem(slotnum, item);
+                slotnum++;
+            }
+        }
+        
+        ItemStack is = new ItemStack(Material.OAK_DOOR);
+        ItemMeta ism = is.getItemMeta();
+        ism.setDisplayName("戻る");
+        is.setItemMeta(ism);
+        shooter.setItem(53, is);
+        roller.setItem(53, is);
+        charger.setItem(53, is);
+        
+        
+        ItemStack s = new ItemStack(Material.WOODEN_HOE);
+        ItemMeta sm = s.getItemMeta();
+        sm.setDisplayName("シューター");
+        s.setItemMeta(sm);
+        
+        ItemStack r = new ItemStack(Material.STONE_PICKAXE);
+        ItemMeta rm = r.getItemMeta();
+        rm.setDisplayName("ローラー");
+        r.setItemMeta(rm);
+        
+        ItemStack c = new ItemStack(Material.WOODEN_SWORD);
+        ItemMeta cm = c.getItemMeta();
+        cm.setDisplayName("チャージャー");
+        c.setItemMeta(cm);
+        
+        wm = Bukkit.createInventory(null, 9, "武器選択");
+        wm.setItem(2, s);
+        wm.setItem(4, r);
+        wm.setItem(6, c);
     }
     
-    public static void openWeaponSelect(Player player, int page){
-        if(page == 1)
-            player.openInventory(buki);
-        if(page == 2)
-            player.openInventory(buki2);
+    public static void openWeaponSelect(Player player, String name){
+        switch(name){
+            case"Shooter":
+                player.openInventory(shooter);
+                break;
+            case"Roller":
+                player.openInventory(roller);
+                break;
+            case"Charger":
+                player.openInventory(charger);
+                break;
+            case"Main":
+                player.openInventory(wm);
+                break;
+        }
     }
     
     public static void openSettingsUI(Player player){

@@ -268,7 +268,7 @@ public class GameMgr implements Listener{
                         MatchMgr.PlayerJoinMatch(player);
                         break;
                     case "[ Weapon Select ]":
-                        OpenGUI.openWeaponSelect(player, 1);
+                        OpenGUI.openWeaponSelect(player, "Main");
                         break;
                     case "[ OpenMenu ]":
                         OpenGUI.openMenu(player);
