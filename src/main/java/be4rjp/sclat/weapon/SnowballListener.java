@@ -24,6 +24,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -87,6 +88,11 @@ public class SnowballListener implements Listener {
                 if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                     if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
                         SPWeaponMgr.addSPCharge(shooter);
+                    if(DataMgr.getPlayerData(target).getArmor() > 40){
+                        Vector vec = projectile.getVelocity();
+                        Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
+                        target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                    }
                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
                         DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
                         PaintMgr.Paint(target.getLocation(), shooter, true);
