@@ -103,7 +103,7 @@ public class Sensor {
                         //あたり判定の処理
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
@@ -115,7 +115,7 @@ public class Sensor {
 
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path")){
+                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")){
                                     ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
                                 }  
                             }

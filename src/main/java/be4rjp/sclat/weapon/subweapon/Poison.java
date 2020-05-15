@@ -69,9 +69,12 @@ public class Poison {
                         }
                         p_vec = p.getEyeLocation().getDirection();
                     }
+                    
+                 
 
-                    if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
+                    if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0)){
                         ball.setVelocity(drop.getVelocity());
+                    }
 
                     if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
 
@@ -92,14 +95,10 @@ public class Poison {
                             }
                         }
 
-
-
-
-
                         //あたり判定の処理
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
@@ -113,7 +112,7 @@ public class Poison {
 
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path")){
+                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")){
                                     ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
                                 }
                             }

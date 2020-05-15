@@ -52,13 +52,23 @@ public class SquidMgr {
                 }
                 
                 Block down = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
-                if(DataMgr.getBlockDataMap().containsKey(down) && !down.getType().equals(data.getTeam().getTeamColor().getWool()) && !down.getType().equals(Material.getMaterial(data.getTeam().getTeamColor().getConcrete().toString() + "_POWDER")) && p.getGameMode().equals(GameMode.ADVENTURE)){
-                    if(!(down.getType().toString().contains("GLASS")) && DataMgr.getPlayerData(p).getArmor() <= 0)
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
+                if(DataMgr.getBlockDataMap().containsKey(down) && p.getGameMode().equals(GameMode.ADVENTURE)){
+                    if(DataMgr.getBlockDataMap().get(down).getTeam() != data.getTeam()){
+                        if(data.getArmor() <= 0 && !data.getIsPoisonCoolTime()){
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
+                        }
+                    }else{
+                        if(p.hasPotionEffect(PotionEffectType.POISON))
+                            p.removePotionEffect(PotionEffectType.POISON);
+                    }
                 }else{
                     if(p.hasPotionEffect(PotionEffectType.POISON))
                         p.removePotionEffect(PotionEffectType.POISON);
                 }
+                
+                if(data.getIsPoisonCoolTime())
+                    if(p.hasPotionEffect(PotionEffectType.POISON))
+                        p.removePotionEffect(PotionEffectType.POISON);
                 
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
                     data.setIsSquid(true);
@@ -128,5 +138,17 @@ public class SquidMgr {
             } 
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
+    }
+    
+    
+    public static void PoisonCoolTime(Player player){
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                DataMgr.getPlayerData(p).setIsPoisonCoolTime(false);
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), 10);
     }
 }

@@ -26,6 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import org.bukkit.WorldCreator;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -120,6 +122,32 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         if (subchannel.equals("SomeSubChannel")) {
           
         }
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        if(cmd.getName().equalsIgnoreCase("setUpdateBlockCount")){
+            if (args.length != 0) {
+                String num = args[0];
+                boolean result = true;
+                for(int i = 0; i < num.length(); i++) {
+                    if(Character.isDigit(num.charAt(i))) {
+                    }else{
+                        result = false;
+                        break;
+                    }
+                }
+                if(result){
+                    conf.getConfig().set("OneTickUpdateBlocks", Integer.valueOf(num));
+                    sender.sendMessage("setConfig [OneTickUpdateBlocks]  :  " + num);
+                    return true;
+                }else{
+                    sender.sendMessage("Please type with number");
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
 

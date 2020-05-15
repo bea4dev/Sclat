@@ -34,6 +34,7 @@ public class DataMgr {
     private static Map<Player, ArmorStand> sprinkler = new HashMap<>();
     private static Map<Projectile, Boolean> snowball = new HashMap<>();
     private static Map<Block, Sponge> spongemap = new HashMap<>();
+    private static Map<String, Snowball> sb = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     public static List<ArmorStand> al = new ArrayList<>();
@@ -93,6 +94,7 @@ public class DataMgr {
     public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
     public static Map<Player, ArmorStand> getSprinklerMap(){return sprinkler;}
     public static Map<Block, Sponge> getSpongeMap(){return spongemap;}
+    public static Map<String, Snowball> getSnowballNameMap(){return sb;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

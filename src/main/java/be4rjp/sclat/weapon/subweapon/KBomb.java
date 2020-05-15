@@ -9,6 +9,8 @@ import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.List;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,10 +19,12 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -44,6 +48,8 @@ public class KBomb {
             int cc = 0;
             int c = 0;
             Item drop;
+            Snowball ball;
+            int ndn;
             @Override
             public void run(){
                 try{
@@ -52,44 +58,31 @@ public class KBomb {
                             p.setExp(p.getExp() - 0.59F);
                         ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getConcrete()).clone();
                         ItemMeta bom_m = bom.getItemMeta();
-                        bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
+                        ndn = Main.getNotDuplicateNumber();
+                        bom_m.setLocalizedName(String.valueOf(ndn));
                         bom.setItemMeta(bom_m);
                         drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
                         drop.setVelocity(p.getEyeLocation().getDirection());
+                        //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
+                        ball = player.launchProjectile(Snowball.class);
+                        ball.setVelocity(new Vector(0, 0, 0)); 
+                        ball.setCustomName(String.valueOf(ndn));
+                        DataMgr.setSnowballIsHit(ball, false);
+                        DataMgr.getSnowballNameMap().put(String.valueOf(ndn), ball);
+
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
+                            connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
+                        }
                         p_vec = p.getEyeLocation().getDirection();
                     }
+                    
+                    ball = DataMgr.getSnowballNameMap().get(String.valueOf(ndn));
+                    
+                    if(!drop.isOnGround() && !(drop.getVelocity().getX() == 0 && drop.getVelocity().getZ() != 0) && !(drop.getVelocity().getX() != 0 && drop.getVelocity().getZ() == 0))
+                        ball.setVelocity(drop.getVelocity());
 
-                    if(c != 0){
-                        if(!(p_vec.getX() == 0 && p_vec.getZ() == 0)){
-                            if(p_vec.getX() == 0 && p_vec.getZ() != 0){
-                                if((drop.getLocation().getZ() - z) == 0)
-                                    collision = true;
-                            }
-                            if(p_vec.getX() != 0 && p_vec.getZ() == 0){
-                                if((drop.getLocation().getX() - x) == 0)
-                                    collision = true;
-                            }
-                            if(p_vec.getX() != 0 && p_vec.getZ() != 0){
-                                if((drop.getLocation().getX() - x) == 0)
-                                    collision = true;
-                                if((drop.getLocation().getZ() - z) == 0)
-                                    collision = true;
-                            }
-                        }
-                    }
-
-                    Block block = drop.getLocation().getBlock();
-                    Block block1 = block.getRelative(BlockFace.UP);
-                    Block block2 = block.getRelative(BlockFace.DOWN);
-                    Block block3 = block.getRelative(BlockFace.EAST);
-                    Block block4 = block.getRelative(BlockFace.SOUTH);
-                    Block block5 = block.getRelative(BlockFace.NORTH);
-                    Block block6 = block.getRelative(BlockFace.WEST);
-                    if(!block.getType().equals(Material.AIR) || !block1.getType().equals(Material.AIR) || !block2.getType().equals(Material.AIR) || !block3.getType().equals(Material.AIR) || !block4.getType().equals(Material.AIR) || !block5.getType().equals(Material.AIR) || !block6.getType().equals(Material.AIR))
-                        block_check = true;
-
-
-                    if((drop.isOnGround() || collision) && block_check)
+                    if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround())
                         cb = true;
 
                     if(!cb)
@@ -120,7 +113,7 @@ public class KBomb {
                         double maxDist = 4;
                         //塗る
                         for(int i = 0; i <= maxDist; i++){
-                            List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 18);
+                            List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 14);
                             for(Location loc : p_locs){
                                 PaintMgr.Paint(loc, p, false);
                             }
@@ -129,7 +122,7 @@ public class KBomb {
                         //攻撃判定の処理
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;

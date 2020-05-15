@@ -106,7 +106,7 @@ public class QuickBomb {
                         //攻撃判定の処理
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;

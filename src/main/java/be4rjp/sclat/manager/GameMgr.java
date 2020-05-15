@@ -13,6 +13,8 @@ import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.ChatColor;
@@ -37,6 +39,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -186,16 +189,44 @@ public class GameMgr implements Listener{
         if(!DataMgr.getPlayerIsQuitMap().containsKey(player.getUniqueId().toString()))
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);  
         
-        
-        
         //player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
     }
     
     @EventHandler
     public void onDamageByFall(EntityDamageEvent event){
         if (event.getEntity() instanceof Player){
-            if(event.getCause() == DamageCause.FALL)
+            if(event.getCause() == DamageCause.FALL || event.getCause() == DamageCause.SUFFOCATION)
                 event.setCancelled(true);
+            
+            Player target = (Player)event.getEntity();
+            if(event.getCause() == DamageCause.POISON){
+                DataMgr.getPlayerData(target).setIsPoisonCoolTime(true);
+                SquidMgr.PoisonCoolTime(target);
+            }
+            //AntiDamageTime
+            BukkitRunnable task = new BukkitRunnable(){
+                Player p = target;
+                @Override
+                public void run(){
+                    target.setNoDamageTicks(0);
+                }
+            };
+            task.runTaskLater(Main.getPlugin(), 1);
+
+            Timer timer = new Timer(false);
+            TimerTask t = new TimerTask(){
+                Player p = target;
+                @Override
+                public void run(){
+                    try{
+                        target.setNoDamageTicks(0);
+                        timer.cancel();
+                    }catch(Exception e){
+                        timer.cancel();
+                    }
+                }
+            };
+            timer.schedule(t, 25);
         }
     }
     
@@ -236,6 +267,8 @@ public class GameMgr implements Listener{
                 event.setCancelled(true);
         }
     }
+    
+
     
     
     @EventHandler

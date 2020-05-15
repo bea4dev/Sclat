@@ -174,6 +174,8 @@ public class MatchMgr {
         DataMgr.setTeam(id * 2 + 1, team1);
         
         BlockUpdater bur = new BlockUpdater();
+        if(conf.getConfig().contains("OneTickUpdateBlocks"))
+            bur.setMaxBlockInOneTick(conf.getConfig().getInt("OneTickUpdateBlocks"));
         bur.start();
         match.setBlockUpdater(bur);
         

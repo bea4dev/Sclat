@@ -42,8 +42,15 @@ public class BlockUpdater {
     }
     
     public void setBlock(Block block, Material material){
-        this.blocklist.put(block, material);
-        this.blocks.add(block);
+        if(!this.blocks.contains(block)){
+            this.blocklist.put(block, material);
+            this.blocks.add(block);
+        }else{
+            if(!this.blocklist.get(block).equals(material)){
+                this.blocklist.put(block, material);
+                this.blocks.add(block);
+            }
+        }
     }
     
     public void start(){task.runTaskTimer(Main.getPlugin(), 0, 1);}

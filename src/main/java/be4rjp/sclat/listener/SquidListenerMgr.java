@@ -3,7 +3,10 @@ package be4rjp.sclat.listener;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.data.Team;
 import be4rjp.sclat.manager.DeathMgr;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,34 +31,54 @@ public class SquidListenerMgr {
         Block b4 = player.getLocation().getBlock().getRelative(BlockFace.SOUTH);
         Block b5 = player.getLocation().getBlock().getRelative(BlockFace.WEST);
         
-        Material wool = data.getTeam().getTeamColor().getWool();
+        List<Block> list = new ArrayList<>();
+        list.add(b1);
+        list.add(b2);
+        list.add(b3);
+        list.add(b4);
+        list.add(b5);
+        
+        if(playerblock.getType() == Material.WATER && player.getGameMode().equals(GameMode.ADVENTURE))
+            DeathMgr.PlayerDeathRunnable(player, player, "water");
+        
+        //if(!DataMgr.getBlockDataMap().containsKey(b2) || !DataMgr.getBlockDataMap().containsKey(b3) || !DataMgr.getBlockDataMap().containsKey(b4) || !DataMgr.getBlockDataMap().containsKey(b5) || !DataMgr.getBlockDataMap().containsKey(b1))
+            //return;
+        
+        Team team = DataMgr.getPlayerData(player).getTeam();
         Material p = Material.getMaterial(data.getTeam().getTeamColor().getConcrete().toString() + "_POWDER");
-        if(b2.getType().equals(wool) || b3.getType().equals(wool) || b4.getType().equals(wool) || b5.getType().equals(wool) || b2.getType().equals(p) || b3.getType().equals(p) || b4.getType().equals(p) || b5.getType().equals(p)){
-            if(!data.getIsSquid())
-                return;
-            data.setIsOnInk(true);
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-            player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
-            return;
-        }if(b1.getType().equals(wool) || b1.getType().equals(p) || b1.getType().equals(data.getTeam().getTeamColor().getGlass())){
-            if(!data.getIsSquid())
-                return;
-            data.setIsOnInk(true);
-            player.setFlying(false);
-            player.setAllowFlight(false);
-            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-            player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
-            return;
+        
+        for(Block block : list){
+            if(!block.equals(b1)){
+                if(DataMgr.getBlockDataMap().containsKey(block)){
+                    if(DataMgr.getBlockDataMap().get(block).getTeam() == data.getTeam()){
+                        if(!data.getIsSquid() || block.getType().equals(Material.AIR))
+                            continue;
+                        data.setIsOnInk(true);
+                        player.setAllowFlight(true);
+                        player.setFlying(true);
+                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                        player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                        return;
+                    }
+                }
+            }else{
+                if(DataMgr.getBlockDataMap().containsKey(block)){
+                    if(DataMgr.getBlockDataMap().get(block).getTeam() == data.getTeam()){
+                        if(!data.getIsSquid() || block.getType().equals(Material.AIR))
+                            continue;
+                        data.setIsOnInk(true);
+                        player.setAllowFlight(false);
+                        player.setFlying(false);
+                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                        player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                        return;
+                    }
+                }
+            }
         }
             
-            data.setIsOnInk(false);
-            player.setAllowFlight(false);
-            player.setFlying(false);
-            if(playerblock.getType() == Material.WATER && player.getGameMode().equals(GameMode.ADVENTURE))
-                DeathMgr.PlayerDeathRunnable(player, player, "water");
-            return;
-        
+        data.setIsOnInk(false);
+        player.setAllowFlight(false);
+        player.setFlying(false);
     }
 }

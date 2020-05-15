@@ -68,7 +68,7 @@ public class SplashBomb {
                         double maxDist = 4;
                         //塗る
                         for(int i = 0; i <= maxDist; i++){
-                            List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 18);
+                            List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 14);
                             for(Location loc : p_locs){
                                 PaintMgr.Paint(loc, p, false);
                             }
@@ -79,7 +79,7 @@ public class SplashBomb {
                         //攻撃判定の処理
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;

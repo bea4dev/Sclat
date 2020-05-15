@@ -44,6 +44,7 @@ public class PlayerData {
     private ItemStack is;
     private boolean isonpath = false;
     private boolean isUsingMM = false;
+    private boolean isPoisonCoolTime = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -114,6 +115,8 @@ public class PlayerData {
     
     public boolean getIsUsingMM(){return this.isUsingMM;}
     
+    public boolean getIsPoisonCoolTime(){return this.isPoisonCoolTime;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -176,6 +179,8 @@ public class PlayerData {
     public void setIsOnPath(boolean is){this.isonpath = is;}
     
     public void setIsUsingMM(boolean is){this.isUsingMM = is;}
+    
+    public void setIsPoisonCoolTime(boolean is){this.isPoisonCoolTime = is;}
     
     
     public void addKillCount(){this.killcount++;}
