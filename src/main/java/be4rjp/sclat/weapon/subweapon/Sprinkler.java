@@ -89,7 +89,7 @@ public class Sprinkler {
                         as.setHelmet(new ItemStack(Material.AIR));
                         as.teleport(drop.getLocation().add(0, -0.4, 0));
                         as.setCustomName("21");
-                        SprinklerRunnable2(as);
+                        SprinklerRunnable2(as, p);
                         drop.remove();
                         cancel();
                         return;
@@ -135,11 +135,11 @@ public class Sprinkler {
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
     }
     
-    public static void SprinklerRunnable2(ArmorStand as){
+    public static void SprinklerRunnable2(ArmorStand as, Player player){
         BukkitRunnable delay = new BukkitRunnable(){
             @Override
             public void run(){
-                as.setHelmet(new ItemStack(Material.BIRCH_FENCE_GATE));
+                as.setHelmet(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass()));
             }
         };
         delay.runTaskLater(Main.getPlugin(), 10);

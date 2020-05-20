@@ -621,7 +621,8 @@ public class MatchMgr {
                     
                     if(s <= 5 && s > 0){
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            oplayer.sendTitle(ChatColor.GRAY + String.valueOf(s), "", 0, 30, 4);
+                            if(DataMgr.getPlayerData(oplayer).isInMatch())
+                                oplayer.sendTitle(ChatColor.GRAY + String.valueOf(s), "", 0, 30, 4);
                         }
                     }
                         //Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + "試合終了まで: " + String.valueOf(s));
@@ -717,8 +718,9 @@ public class MatchMgr {
                         else if(team0c == team1c)
                             hikiwake = true; 
                         
-                        for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            Animation.TDMResultAnimation(player, team0c, team1c, team0code, team1code, winteam, hikiwake);
+                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(oplayer).getIsJoined())
+                                Animation.TDMResultAnimation(oplayer, team0c, team1c, team0code, team1code, winteam, hikiwake);
                         }
                     }else{
                         Match match = DataMgr.getPlayerData(p).getMatch();
@@ -756,9 +758,8 @@ public class MatchMgr {
 
 
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).getTeam() != null)
-                                if(DataMgr.getPlayerData(oplayer).getTeam() == DataMgr.getPlayerData(p).getTeam())
-                                    Animation.ResultAnimation(oplayer, per, 100 - per, team0code, team1code, winteam, hikiwake);
+                            if(DataMgr.getPlayerData(oplayer).getIsJoined())
+                                Animation.ResultAnimation(oplayer, per, 100 - per, team0code, team1code, winteam, hikiwake);
                         }
                     }
                 }
