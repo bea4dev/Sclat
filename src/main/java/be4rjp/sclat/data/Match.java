@@ -21,8 +21,10 @@ public class Match {
     private Player leader;
     private int c_nawabari = 0;
     private int c_tdm = 0;
+    private int c_ga = 0;
     private boolean finished = false;
     private BlockUpdater bur;
+    private Team winteam;
     
     
     
@@ -46,9 +48,13 @@ public class Match {
     
     public int getTDM_T_Count(){return this.c_tdm;}
     
+    public int getGatiArea_T_Count(){return this.c_ga;}
+    
     public boolean isFinished(){return this.finished;}
     
     public BlockUpdater getBlockUpdater(){return this.bur;}
+    
+    public Team getWinTeam(){return this.winteam;}
     
     
     public void setTeam0(Team team){team0 = team;}
@@ -67,8 +73,12 @@ public class Match {
     
     public void setBlockUpdater(BlockUpdater bur){this.bur = bur;}
     
+    public void setWinTeam(Team team){this.winteam = team;}
+    
     
     public void addNawabari_T_Count(){this.c_nawabari++;}
     
     public void addTDM_T_Count(){this.c_tdm++;}
+    
+    public void addGatiArea_T_Count(){this.c_ga++;}
 }

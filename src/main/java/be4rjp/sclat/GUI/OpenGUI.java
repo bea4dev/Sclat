@@ -4,6 +4,8 @@ package be4rjp.sclat.GUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Match;
+import be4rjp.sclat.manager.MatchMgr;
 import java.util.ArrayList;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
@@ -96,11 +98,13 @@ public class OpenGUI {
         t.setItemMeta(tmeta);
         inv.setItem(4, t);
         
-        ItemStack nu = new ItemStack(Material.BARRIER);
+        ItemStack nu = new ItemStack(Material.GLASS);
         ItemMeta numeta = nu.getItemMeta();
-        numeta.setDisplayName("投票しない");
+        numeta.setDisplayName("ガチエリア");
         nu.setItemMeta(numeta);
-        inv.setItem(6, nu);
+        Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
+        if(match.getMapData().getCanAreaBattle())
+            inv.setItem(6, nu);
         
         player.openInventory(inv);
     }
@@ -160,7 +164,7 @@ public class OpenGUI {
             if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
                 shooter.setItem(slotnum, item);
                 slotnum++;
-            }   
+            }
         }
         
         slotnum = 0;

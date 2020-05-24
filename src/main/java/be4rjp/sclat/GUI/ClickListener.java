@@ -121,8 +121,9 @@ public class ClickListener implements Listener{
                 Match m = DataMgr.getMatchFromId(MatchMgr.matchcount);
                 m.addTDM_T_Count();
                 break;
-            case"投票しない":
-                player.closeInventory();
+            case"ガチエリア":
+                Match m2 = DataMgr.getMatchFromId(MatchMgr.matchcount);
+                m2.addGatiArea_T_Count();
                 break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))

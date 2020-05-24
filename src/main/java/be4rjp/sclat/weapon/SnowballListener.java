@@ -69,31 +69,33 @@ public class SnowballListener implements Listener {
                 shooter.getWorld().playSound(event.getHitBlock().getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.3F, 2.0F);
             }
             if(event.getHitEntity() != null){
-                //AntiDamageTime
-                Player target = (Player)event.getHitEntity();
-                BukkitRunnable task = new BukkitRunnable(){
-                    Player p = target;
-                    @Override
-                    public void run(){
-                        target.setNoDamageTicks(0);
-                    }
-                };
-                task.runTaskLater(Main.getPlugin(), 1);
-
-                Timer timer = new Timer(false);
-                TimerTask t = new TimerTask(){
-                    Player p = target;
-                    @Override
-                    public void run(){
-                        try{
+                if(event.getHitEntity() instanceof Player){
+                    //AntiNoDamageTime
+                    Player target = (Player)event.getHitEntity();
+                    BukkitRunnable task = new BukkitRunnable(){
+                        Player p = target;
+                        @Override
+                        public void run(){
                             target.setNoDamageTicks(0);
-                            timer.cancel();
-                        }catch(Exception e){
-                            timer.cancel();
                         }
-                    }
-                };
-                timer.schedule(t, 25);
+                    };
+                    task.runTaskLater(Main.getPlugin(), 1);
+
+                    Timer timer = new Timer(false);
+                    TimerTask t = new TimerTask(){
+                        Player p = target;
+                        @Override
+                        public void run(){
+                            try{
+                                target.setNoDamageTicks(0);
+                                timer.cancel();
+                            }catch(Exception e){
+                                timer.cancel();
+                            }
+                        }
+                    };
+                    timer.schedule(t, 25);
+                }
             }
         }
         

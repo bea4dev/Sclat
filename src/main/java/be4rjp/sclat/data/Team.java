@@ -11,6 +11,7 @@ public class Team {
     private int paintcount = 0;
     private int killcount = 0;
     private org.bukkit.scoreboard.Team bt;
+    private int gaticount = 0;
     
     public Team(int id){this.teamid = id;}
     
@@ -24,6 +25,9 @@ public class Team {
     
     public org.bukkit.scoreboard.Team getTeam(){return this.bt;}
     
+    public int getGatiCount(){return this.gaticount;}
+    
+    
     public void addPaintCount(){paintcount++;}
     
     public void subtractPaintCount(){paintcount--;}
@@ -33,4 +37,6 @@ public class Team {
     public void setTeamColor(Color color){teamcolor = color;}
     
     public void setTeam(org.bukkit.scoreboard.Team team){this.bt = team;}
+    
+    public void addGatiCount(){this.gaticount++;}
 }

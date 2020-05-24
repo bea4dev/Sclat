@@ -23,9 +23,11 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
@@ -41,7 +43,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
  */
 public class Main extends JavaPlugin implements PluginMessageListener{
     
-    public static Config conf = new Config();
+    public static Config conf;
     
     private static Main plugin;
     
@@ -54,7 +56,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     @Override
     public void onEnable() {
-        plugin = this;	
+        plugin = this;
         
         //APICheck
         boolean NoteBlockAPI = true;
@@ -65,6 +67,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         }
         
         getLogger().info("Loading config files...");
+        conf = new Config();
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
@@ -160,6 +163,12 @@ public class Main extends JavaPlugin implements PluginMessageListener{
                 data = null;
         }
         DataMgr.getBlockDataMap().clear();
+        
+        /*
+        for(Block block : DataMgr.rblist){
+            block.setType(Material.AIR);
+            DataMgr.rblist.remove(block);
+        }*/
         
         for(ArmorStand as : DataMgr.getArmorStandMap().keySet())
             as.remove();

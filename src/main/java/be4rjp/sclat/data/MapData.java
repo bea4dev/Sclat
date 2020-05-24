@@ -39,7 +39,11 @@ public class MapData {
     
     private Location noBlockLoc;
     
+    private boolean canAreaBattle = false;
+    
     private List<Path> path = new ArrayList<>();
+    
+    private List<Area> areas = new ArrayList<>();
     
     
     
@@ -75,7 +79,11 @@ public class MapData {
     
     public Location getNoBlockLocation(){return this.noBlockLoc;}
     
+    public boolean getCanAreaBattle(){return this.canAreaBattle;}
+    
     public List<Path> getPathList(){return this.path;}
+    
+    public List<Area> getAreaList(){return this.areas;}
     
     
     
@@ -107,6 +115,10 @@ public class MapData {
     
     public void setNoBlockLocation(Location loc){this.noBlockLoc = loc;}
     
+    public void setCanAreaBattle(boolean is ){this.canAreaBattle = is;}
+    
     
     public void addPath(Path path){this.path.add(path);}
+    
+    public void addArea(Area area){this.areas.add(area);}
 }

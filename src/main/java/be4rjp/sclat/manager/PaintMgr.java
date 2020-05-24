@@ -60,7 +60,7 @@ public class PaintMgr {
             if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER"))
                 return;
             
-            if(!(block.getType() == Material.AIR || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
                 if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
                     if(DataMgr.getBlockDataMap().containsKey(block)){
                         PaintData data = DataMgr.getPaintDataFromBlock(block);
@@ -93,6 +93,34 @@ public class PaintMgr {
                     }
                 }
                 
+            }
+        }
+    }
+    
+    
+    public static void PaintByTeam(Block block, Team team, Match match){  
+        if(block.getType() == team.getTeamColor().getWool())
+            return;
+
+        if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+            if(DataMgr.getBlockDataMap().containsKey(block)){
+                PaintData data = DataMgr.getPaintDataFromBlock(block);
+                Team BTeam = data.getTeam();
+                Team ATeam = team;
+                if(BTeam != ATeam){
+                    data.setTeam(ATeam);
+                    BTeam.subtractPaintCount();
+                    ATeam.addPaintCount();
+                    match.getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
+                }
+            }else{
+                team.addPaintCount(); 
+                PaintData data = new PaintData(block);
+                data.setMatch(match);
+                data.setTeam(team);
+                data.setOrigianlType(block.getType());
+                DataMgr.setPaintDataFromBlock(block, data);
+                match.getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
             }
         }
     }

@@ -2,6 +2,7 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.data.Area;
 import be4rjp.sclat.data.Color;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
@@ -100,6 +101,23 @@ public class MapDataMgr {
                     Location to = new Location(w, tolocx, tolocy, tolocz);
                     Path path = new Path(from, to);
                     map.addPath(path);
+                }
+            }
+            
+            if(conf.getMapConfig().contains("Maps." + mapname + ".Area")){
+                for (String Areaname : conf.getMapConfig().getConfigurationSection("Maps." + mapname + ".Area").getKeys(false)){
+                    map.setCanAreaBattle(true);
+                    double flocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".From.X") + 0.5;
+                    double flocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".From.Y") + 0.5;
+                    double flocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".From.Z") + 0.5;
+                    Location from = new Location(w, flocx, flocy, flocz);
+
+                    double tolocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".To.X") + 0.5;
+                    double tolocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".To.Y") + 0.5;
+                    double tolocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Area." + Areaname + ".To.Z") + 0.5;
+                    Location to = new Location(w, tolocx, tolocy, tolocz);
+                    Area area = new Area(from, to);
+                    map.addArea(area);
                 }
             }
             

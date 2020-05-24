@@ -97,7 +97,7 @@ public class GameMgr implements Listener{
         }
             
         data.setSettings(settings);
-        data.setWeaponClass(DataMgr.getWeaponClass("わかばシューター"));
+        data.setWeaponClass(DataMgr.getWeaponClass(conf.getConfig().getString("DefaultClass")));
         DataMgr.setPlayerData(player, data);
         
         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
@@ -106,6 +106,18 @@ public class GameMgr implements Listener{
         meta.setDisplayName(player.getName());
         item.setItemMeta(meta);
         data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+        
+        //遅れても問題ない処理をここですることによって処理の分散を図る
+        BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                PlayerStatusMgr.setupPlayerStatus(p);
+                PlayerStatusMgr.sendHologram(p);
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), 1);
+        
         
         //試し撃ちモード
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
@@ -194,9 +206,9 @@ public class GameMgr implements Listener{
     
     @EventHandler
     public void onDamageByFall(EntityDamageEvent event){
+        if(event.getCause() == DamageCause.FALL || event.getCause() == DamageCause.SUFFOCATION)
+            event.setCancelled(true);
         if (event.getEntity() instanceof Player){
-            if(event.getCause() == DamageCause.FALL || event.getCause() == DamageCause.SUFFOCATION)
-                event.setCancelled(true);
             
             Player target = (Player)event.getEntity();
             if(event.getCause() == DamageCause.POISON){

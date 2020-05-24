@@ -37,6 +37,7 @@ public class DataMgr {
     private static Map<String, Snowball> sb = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
+    public static List<Block> rblist = new ArrayList<>();
     public static List<ArmorStand> al = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
     

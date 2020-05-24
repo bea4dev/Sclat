@@ -53,6 +53,37 @@ public class Animation {
         task.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
+    public static void AreaResultAnimation(Player p, int team0point, int team1point, String team0color, String team1color, Team winteam){
+        BukkitRunnable task = new BukkitRunnable(){
+            Player player = p;
+            int i = 0;
+            int g = 0;
+            @Override
+            public void run(){
+                
+                if(i <= 15){
+                    player.sendTitle("", String.valueOf(g) + "% [" + GaugeAPI.toGauge(g,50,team0color,"§7") + GaugeAPI.toGauge(50 - g,50,"§7",team1color) + "] " + String.valueOf(g) + "%", 0, 40, 0);
+                    g = g + 2;
+                }
+                if(i == 35){
+                    if(winteam == DataMgr.getPlayerData(player).getTeam())
+                        player.sendTitle(ChatColor.GREEN + "Knock Out !!", String.valueOf(team0point) + "% [" + GaugeAPI.toGauge(team0point,100, team0color, team1color) + "] " + String.valueOf(100 - team0point) + "%", 0, 40, 10);
+                    else
+                        player.sendTitle(ChatColor.RED + "You Lose...", String.valueOf(team0point) + "% [" + GaugeAPI.toGauge(team0point,100, team0color, team1color) + "] " + String.valueOf(100 - team0point) + "%", 0, 40, 10);
+                    player.playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 13.0F, 1.5F);
+                }
+                if(i == 40){
+                    if(winteam == DataMgr.getPlayerData(player).getTeam())
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                    cancel();
+                }
+                i++;
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 2);
+    }
+    
+    
     public static void TDMResultAnimation(Player p, int team0point, int team1point, String team0color, String team1color, Team winteam, Boolean hikiwake){
         BukkitRunnable task = new BukkitRunnable(){
             Player player = p;
