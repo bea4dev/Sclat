@@ -72,6 +72,11 @@ public class MainWeaponMgr {
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));
+            
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Money"))
+                mw.setMoney(conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Money"));
+            else
+                mw.setMoney(0);
                 
             
             DataMgr.setMainWeapon(weaponname, mw);

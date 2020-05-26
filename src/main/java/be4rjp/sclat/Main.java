@@ -106,7 +106,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         getLogger().info("MatchSetup() ok");
         //ArmorStandMgr.ArmorStandSetup();
         
-        OpenGUI.WeaponSelectSetup();
+        //OpenGUI.WeaponSelectSetup();
         
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);

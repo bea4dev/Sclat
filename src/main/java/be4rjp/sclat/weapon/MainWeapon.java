@@ -59,7 +59,7 @@ public class MainWeapon implements Listener{
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                     data.setCanShoot(false);
                     Roller.ShootPaintRunnable(player);
-                }  
+                }
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
                     Bucket.ShootBucket(player);
             }

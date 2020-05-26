@@ -32,6 +32,7 @@ public class MainWeapon {
     private double exd;
     private boolean hude;
     private double huder;
+    private int money;
     
     
     
@@ -85,6 +86,8 @@ public class MainWeapon {
     
     public double getHudeRandom(){return this.huder;}
     
+    public int getMoney(){return this.money;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -133,5 +136,7 @@ public class MainWeapon {
     public void setIsHude(boolean is){this.hude = is;}
     
     public void setHudeRandom(double d){this.huder = d;}
+    
+    public void setMoney(int i){this.money = i;}
     
 }

@@ -11,6 +11,7 @@ import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
+import be4rjp.sclat.manager.PlayerStatusMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.SuperJumpMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
@@ -23,6 +24,7 @@ import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
@@ -57,19 +59,7 @@ public class ClickListener implements Listener{
                 MatchMgr.PlayerJoinMatch(player);
                 break;
             case"武器選択 / CHOSE WEAPONS":
-                OpenGUI.openWeaponSelect(player, "Main");
-                break;
-            case"シューター":
-                OpenGUI.openWeaponSelect(player, "Shooter");
-                break;
-            case"ローラー":
-                OpenGUI.openWeaponSelect(player, "Roller");
-                break;
-            case"チャージャー":
-                OpenGUI.openWeaponSelect(player, "Charger");
-                break;
-            case"戻る":
-                OpenGUI.openWeaponSelect(player, "Main");
+                OpenGUI.openWeaponSelect(player, "Main", false);
                 break;
             case"設定 / SETTINGS":
                 OpenGUI.openSettingsUI(player);
@@ -129,8 +119,23 @@ public class ClickListener implements Listener{
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー"))
+            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー")){
+                switch(name){
+                    case"シューター":
+                        OpenGUI.openWeaponSelect(player, "Shooter", false);
+                        break;
+                    case"ローラー":
+                        OpenGUI.openWeaponSelect(player, "Roller", false);
+                        break;
+                    case"チャージャー":
+                        OpenGUI.openWeaponSelect(player, "Charger", false);
+                        break;
+                    case"戻る":
+                        OpenGUI.openWeaponSelect(player, "Main", false);
+                        break;
+                }
                 return;
+            }
             //試しうちモード
             if(conf.getConfig().getString("WorkMode").equals("Trial")){
                 
@@ -184,6 +189,37 @@ public class ClickListener implements Listener{
                 DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             }
             player.sendMessage(name + "を選択しました");
+        }
+        
+        if(event.getClickedInventory().getTitle().equals("Shop")){
+            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー")){
+                switch(name){
+                    case"シューター":
+                        OpenGUI.openWeaponSelect(player, "Shooter", true);
+                        break;
+                    case"ローラー":
+                        OpenGUI.openWeaponSelect(player, "Roller", true);
+                        break;
+                    case"チャージャー":
+                        OpenGUI.openWeaponSelect(player, "Charger", true);
+                        break;
+                    case"戻る":
+                        OpenGUI.openWeaponSelect(player, "Main", true);
+                        break;
+                }
+                return;
+            }
+            player.closeInventory();
+            if(PlayerStatusMgr.getMoney(player) >= DataMgr.getWeaponClass(name).getMainWeapon().getMoney()){
+                PlayerStatusMgr.addWeapon(player, name);
+                PlayerStatusMgr.subMoney(player, DataMgr.getWeaponClass(name).getMainWeapon().getMoney());
+                player.sendMessage(ChatColor.GREEN + "購入に成功しました");
+                player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
+                PlayerStatusMgr.sendHologramUpdate(player);
+            }else{
+                player.sendMessage(ChatColor.RED + "お金が足りません");
+                player.playNote(player.getLocation(), Instrument.BASS_GUITAR, Note.flat(0, Note.Tone.G));
+            }
         }
         
         if(event.getClickedInventory().getTitle().equals("Chose Target")){

@@ -2,9 +2,12 @@
 package be4rjp.sclat.manager;
 
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.data.Color;
 import com.mojang.authlib.GameProfile;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.minecraft.server.v1_13_R1.EntityArmorStand;
 import net.minecraft.server.v1_13_R1.EntityPlayer;
 import net.minecraft.server.v1_13_R1.MinecraftServer;
@@ -14,6 +17,7 @@ import net.minecraft.server.v1_13_R1.PlayerConnection;
 import net.minecraft.server.v1_13_R1.PlayerInteractManager;
 import net.minecraft.server.v1_13_R1.WorldServer;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -21,6 +25,7 @@ import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.util.CraftChatMessage;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
 /**
@@ -28,6 +33,9 @@ import org.bukkit.entity.Player;
  * @author Be4rJP
  */
 public class PlayerStatusMgr {
+    
+    public static Map<Player, EntityArmorStand> list = new HashMap<>();
+    
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 10000);
@@ -67,6 +75,8 @@ public class PlayerStatusMgr {
         as.setNoGravity(true);
         as.setCustomName(CraftChatMessage.fromStringOrNull("§aMoney : §r" + String.valueOf(getMoney(player)) + "  §aLv : §r" + String.valueOf(getLv(player))));
         
+        list.put(player, as);
+        
         EntityArmorStand as1 = new EntityArmorStand(nmsWorld);
         as1.setLocation(location.getX(), location.getY() + 0.8D, location.getZ(), location.getYaw(), 0);
         as1.setInvisible(true);
@@ -78,9 +88,33 @@ public class PlayerStatusMgr {
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as1));
     }
     
+    public static void sendHologramUpdate(Player player){
+        EntityArmorStand as = list.get(player);
+        PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+        connection.sendPacket(new PacketPlayOutEntityDestroy(as.getBukkitEntity().getEntityId()));
+        as.setCustomName(CraftChatMessage.fromStringOrNull("§aMoney : §r" + String.valueOf(getMoney(player)) + "  §aLv : §r" + String.valueOf(getLv(player))));
+        connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
+    }
+    
+    public static boolean haveWeapon(Player player, String wname){
+        List<String> wlist = conf.getPlayerStatus().getStringList("Status." + player.getUniqueId().toString() + ".WeaponClass");
+        return wlist.contains(wname);
+    }
+    
+    public static void addWeapon(Player player, String wname){
+        List<String> wlist = conf.getPlayerStatus().getStringList("Status." + player.getUniqueId().toString() + ".WeaponClass");
+        wlist.add(wname);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
+    }
+    
     public static void addMoney(Player player, int m){
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".Money", conf.getPlayerStatus().getInt("Status." + uuid + ".Money") + m);
+    }
+    
+    public static void subMoney(Player player, int m){
+        String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".Money", conf.getPlayerStatus().getInt("Status." + uuid + ".Money") - m);
     }
     
     public static void addLv(Player player, int m){

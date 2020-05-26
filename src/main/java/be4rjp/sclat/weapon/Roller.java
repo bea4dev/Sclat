@@ -76,7 +76,9 @@ public class Roller {
                     Vector vec = new Vector(locvec.getX(), 0, locvec.getZ()).normalize();
                     //RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
                     //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
-                    Location front = eloc.add(vec.getX() * 3.3, -0.9, vec.getZ() * 3.3);
+                    Location front = eloc.add(vec.getX() * 2, -0.9, vec.getZ() * 2);
+                    if(data.getWeaponClass().getMainWeapon().getIsHude())
+                        front = eloc.add(vec.getX() * 3.3, -0.9, vec.getZ() * 3.3);
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
@@ -269,9 +271,11 @@ public class Roller {
             PlayerData data = pdata;
             @Override
             public void run(){
+                if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
+                    return;
                 if(player.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk())
                     p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 1F, 1F);
-                if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
+                else
                     return;
                 if(data.getCanRollerShoot()){
                     data.setCanRollerShoot(false);
@@ -293,6 +297,7 @@ public class Roller {
         };
         task.runTaskLater(Main.getPlugin(), pdata.getWeaponClass().getMainWeapon().getShootTick());
     }
+    
     
     public static void ShootRunnable(Player player){
         PlayerData data = DataMgr.getPlayerData(player);

@@ -522,7 +522,10 @@ public class MatchMgr {
                             }
                         }
                         radio.setPlaying(true);
-                        StopMusic(radio, 2400, match);
+                        if(conf.getConfig().getString("WorkMode").equals("Area"))
+                            StopMusic(radio, 6000, match);
+                        else
+                            StopMusic(radio, 2400, match);
                     }
                     
                     
@@ -617,7 +620,11 @@ public class MatchMgr {
 
                     String min = String.format("%02d", s%60);
                     
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
+                    Score score;
+                    if(s > 0)
+                        score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
+                    else
+                        score = objective.getScore(ChatColor.YELLOW + "TimeLeft:  ...延長中...");
                     Score s2 = objective.getScore("");
                     if(conf.getConfig().getString("WorkMode").equals("TDM"))
                         s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7チームデスマッチ");
@@ -627,6 +634,10 @@ public class MatchMgr {
                         s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ナワバリバトル"); 
                     s2.setScore(2);
                     score.setScore(1);
+                    
+                    Team gcteam = null;
+                    boolean isgc = false;
+                    boolean entyo = false;
                     
                     //ガチエリアカウント
                     if(conf.getConfig().getString("WorkMode").equals("Area")){
@@ -667,11 +678,30 @@ public class MatchMgr {
                             }
                         }
                         
-                        if(is)
+                        if(is){
                             list.get(0).addGatiCount();
+                            isgc = is;
+                            gcteam = list.get(0);
+                        }
                         
                         Score s3 = objective.getScore(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam0().getGatiCount()) + "  " + match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam1().getGatiCount()));
                         s3.setScore(0);
+                        
+                        if(isgc){
+                            Team ngcteam = match.getTeam0();
+                            if(match.getTeam0() == gcteam)
+                                ngcteam = match.getTeam1();
+                            if(gcteam.getGatiCount() <= ngcteam.getGatiCount())
+                                entyo = true;
+                        }
+                        
+                        if(s == 0 && entyo){
+                            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                if(DataMgr.getPlayerData(oplayer).isInMatch()){
+                                    oplayer.sendTitle("", "§7延長戦！", 10, 20, 10);
+                                }
+                            }
+                        }
                         
                         if(match.getTeam0().getGatiCount() == 100 || match.getTeam1().getGatiCount() == 100){
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
@@ -695,12 +725,7 @@ public class MatchMgr {
                     }
                     
                     
-                    for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        //if(DataMgr.getPlayerData(oplayer).getIsJoined())
-                            //oplayer.setScoreboard(sb);
-                    }
-
-                    if(s == 60){
+                    if(s == 60 && !conf.getConfig().getString("WorkMode").equals("Area")){
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getIsJoined()){
                                 oplayer.sendMessage("");
@@ -723,7 +748,7 @@ public class MatchMgr {
                             StopMusic(radio, 1200, match);
                         }
                     }
-                    if(s == 0){
+                    if(s <= 0 && !entyo){
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getIsJoined() && p != oplayer){
                                 oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
@@ -997,7 +1022,7 @@ public class MatchMgr {
                     
                     int pMoney = (int)((double)data.getKillCount() * 100D + (double)data.getPaintCount() / 2D);
                     int pLv = 1;
-                    if(data.getTeam() == winteam)
+                    if(data.getTeam() == data.getMatch().getWinTeam())
                         pLv = 2;
                     int pRank = -100 + (int)((double)data.getKillCount() * 2.5D + (double)data.getPaintCount() / 700D);
                     if(data.getTeam() == data.getMatch().getWinTeam())
