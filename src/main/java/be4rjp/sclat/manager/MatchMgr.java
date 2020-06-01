@@ -1013,14 +1013,17 @@ public class MatchMgr {
                             }
                         }
                     }
-                    
+                }
+                
+                if(i == 157){
+                    PlayerData data = DataMgr.getPlayerData(p);
                     
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage("§a§l§n_______________________________");
                     p.sendMessage(ChatColor.GREEN + "");
                     
-                    int pMoney = (int)((double)data.getKillCount() * 100D + (double)data.getPaintCount() / 2D);
+                    int pMoney = (int)((double)data.getKillCount() * 100D + (double)data.getPaintCount() / 5D);
                     int pLv = 1;
                     if(data.getTeam() == data.getMatch().getWinTeam())
                         pLv = 2;
@@ -1031,6 +1034,8 @@ public class MatchMgr {
                         pRank = 0;
                     if(PlayerStatusMgr.getRank(p) + pRank > 0)
                         PlayerStatusMgr.addRank(p, pRank);
+                    else
+                        PlayerStatusMgr.setRank(p, 0);
                     PlayerStatusMgr.addLv(p, pLv);
                     PlayerStatusMgr.addMoney(p, pMoney);
                 
@@ -1046,11 +1051,6 @@ public class MatchMgr {
                         p.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]");
                     p.sendMessage(ChatColor.GREEN + "");
                     p.sendMessage("§a§l§n_______________________________");
-                }
-                
-                if(i == 157){
-                    
-                    
                     
                     /*
                     p.sendMessage(ChatColor.GREEN + "##########################");

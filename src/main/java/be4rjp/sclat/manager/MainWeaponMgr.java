@@ -32,7 +32,9 @@ public class MainWeaponMgr {
             boolean tatehuri = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".RollerTatehuri");
             double rollerdamage = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerDamage");
             float rollerneedink = (float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".RollerNeedInk");
-            double exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
+            double exh = 0;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".BlasterExHankei"))
+                exh = (double)conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".BlasterExHankei");
             int delay = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Delay");
             int cooltime = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Cooltime");
             double exd = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BlasterExDamage");

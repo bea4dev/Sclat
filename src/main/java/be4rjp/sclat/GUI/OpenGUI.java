@@ -176,7 +176,7 @@ public class OpenGUI {
             lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
-            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket"))){
+            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher"))){
                 roller.setItem(slotnum, item);
                 slotnum++;
             }   
@@ -319,7 +319,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket"))){
+                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 roller.setItem(slotnum, item);

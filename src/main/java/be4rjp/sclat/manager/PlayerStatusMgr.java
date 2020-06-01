@@ -101,6 +101,11 @@ public class PlayerStatusMgr {
         return wlist.contains(wname);
     }
     
+    public static void setRank(Player player, int rank){
+        String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".Rank", rank);
+    }
+    
     public static void addWeapon(Player player, String wname){
         List<String> wlist = conf.getPlayerStatus().getStringList("Status." + player.getUniqueId().toString() + ".WeaponClass");
         wlist.add(wname);

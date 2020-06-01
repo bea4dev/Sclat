@@ -62,6 +62,8 @@ public class MainWeapon implements Listener{
                 }
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
                     Bucket.ShootBucket(player);
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
+                    Slosher.ShootSlosher(player);
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR))

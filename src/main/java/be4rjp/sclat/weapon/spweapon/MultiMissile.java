@@ -144,6 +144,7 @@ public class MultiMissile {
         BukkitRunnable task = new BukkitRunnable(){
             Player s = shooter;
             Player t = target;
+            Location tl = target.getLocation();
             Item drop;
             int c = 0;
             boolean finded = false;
@@ -154,14 +155,16 @@ public class MultiMissile {
                     drop.setGravity(false);
                 }
                 Location dl = drop.getLocation();
-                Location tl = t.getLocation();
-                if(dl.distance(tl) < 7)
+                if(dl.distance(tl) < 10){
                     finded = true;
-                if(finded || t.getGameMode().equals(GameMode.SPECTATOR)){
-                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));
                 }else{
-                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
+                    tl = t.getLocation();
                 }
+                
+                if(!finded)
+                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
+                if(t.getGameMode().equals(GameMode.SPECTATOR))
+                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));
                 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

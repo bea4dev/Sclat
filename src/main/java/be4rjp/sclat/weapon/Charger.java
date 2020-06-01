@@ -71,8 +71,11 @@ public class Charger {
                     ArrayList<Vector> positions = rayTrace.traverse(charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(),0.7);
                     check : for(int i = 0; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(p.getLocation().getWorld());
-                        if(!position.getBlock().getType().equals(Material.AIR))
-                            break check;
+                        Block block = player.getWorld().getBlockAt(position);
+                        if(!position.getBlock().getType().equals(Material.AIR)){
+                            //if(rayTrace.intersects(new BoundingBox(block), (int)(charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick()), 0.1))
+                                break check;
+                        }
                         if(i % 2 == 0){
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(target.equals(p) || !DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine())
@@ -125,8 +128,10 @@ public class Charger {
             Block block = player.getLocation().getWorld().getBlockAt(position);
             
             if(!block.getType().equals(Material.AIR)){
-                PaintMgr.Paint(position, player, true);
-                break loop;
+                //if(rayTrace.intersects(new BoundingBox(block), reach, 0.01)){
+                    PaintMgr.Paint(position, player, true);
+                    break loop;
+                //}
             }
             PaintMgr.PaintHightestBlock(position, player, false, true);
             
@@ -145,25 +150,27 @@ public class Charger {
                     continue;
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                            PaintMgr.Paint(target.getLocation(), player, true);
-                        }else{
-                            target.setGameMode(GameMode.SPECTATOR);
-                            DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                            PaintMgr.Paint(target.getLocation(), player, true);
-                        }
-                        
-                        //AntiNoDamageTime
-                        BukkitRunnable task = new BukkitRunnable(){
-                            Player p = target;
-                            @Override
-                            public void run(){
-                                target.setNoDamageTicks(0);
+                        if(rayTrace.intersects(new BoundingBox((Entity)target), reach, 0.05)){
+                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                DamageMgr.SclatGiveStrongDamage(target, damage, player);
+                                PaintMgr.Paint(target.getLocation(), player, true);
+                            }else{
+                                target.setGameMode(GameMode.SPECTATOR);
+                                DeathMgr.PlayerDeathRunnable(target, player, "killed");
+                                PaintMgr.Paint(target.getLocation(), player, true);
                             }
-                        };
-                        task.runTaskLater(Main.getPlugin(), 1);
-                        break loop;
+
+                            //AntiNoDamageTime
+                            BukkitRunnable task = new BukkitRunnable(){
+                                Player p = target;
+                                @Override
+                                public void run(){
+                                    target.setNoDamageTicks(0);
+                                }
+                            };
+                            task.runTaskLater(Main.getPlugin(), 1);
+                            break loop;
+                        }
                     }
                 }
             }
