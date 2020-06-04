@@ -40,6 +40,9 @@ public class MainWeaponMgr {
             double exd = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BlasterExDamage");
             boolean hude = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".IsBrush");
             double huder = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".BrushRandom");
+            boolean man = false;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".IsManeuver"))
+                man = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".IsManeuver");
             
             
             
@@ -71,6 +74,7 @@ public class MainWeaponMgr {
             mw.setBlasterExDamage(exd);
             mw.setIsHude(hude);
             mw.setHudeRandom(huder);
+            mw.setIsManeuver(man);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

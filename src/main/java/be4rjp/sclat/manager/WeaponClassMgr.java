@@ -33,7 +33,9 @@ public class WeaponClassMgr {
     public static void setWeaponClass(Player player){
         player.getInventory().clear();
         PlayerData data = DataMgr.getPlayerData(player);
-        player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
+        player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
+        if(data.getWeaponClass().getMainWeapon().getIsManeuver())
+            player.getInventory().setItem(40, data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
         ItemStack is = SubWeaponMgr.getSubWeapon(player);
         player.getInventory().setItem(2, is);
         ItemStack co = new ItemStack(Material.BOOK);

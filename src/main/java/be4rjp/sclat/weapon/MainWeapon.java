@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -81,6 +82,19 @@ public class MainWeapon implements Listener{
         }
     }
     
+    @EventHandler
+    public void onSneek(PlayerToggleSneakEvent event){
+        Player player = event.getPlayer();
+        PlayerData data = DataMgr.getPlayerData(player);
+        data.setIsSneaking(true);
+        BukkitRunnable task = new BukkitRunnable(){
+            @Override
+            public void run(){
+                data.setIsSneaking(false);
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), 5);
+    }
     
     
     @EventHandler

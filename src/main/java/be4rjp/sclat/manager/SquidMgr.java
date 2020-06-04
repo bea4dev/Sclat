@@ -83,6 +83,7 @@ public class SquidMgr {
                         p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);  
                         is = true;
                         p.getEquipment().setHelmet(new ItemStack(Material.AIR));
+                        p.getInventory().setItem(40, new ItemStack(Material.AIR));
                     }                                                                      
                     
                         if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
@@ -105,6 +106,7 @@ public class SquidMgr {
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.3F, 5F);  
                         is2 = true;
                         p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
+                        p.getInventory().setItem(40, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
                     }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))

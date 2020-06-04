@@ -45,6 +45,8 @@ public class PlayerData {
     private boolean isonpath = false;
     private boolean isUsingMM = false;
     private boolean isPoisonCoolTime = false;
+    private boolean isSneak = false;
+    private boolean isUsingManeuver = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -117,6 +119,8 @@ public class PlayerData {
     
     public boolean getIsPoisonCoolTime(){return this.isPoisonCoolTime;}
     
+    public boolean getIsSneaking(){return this.isSneak;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -182,6 +186,8 @@ public class PlayerData {
     
     public void setIsPoisonCoolTime(boolean is){this.isPoisonCoolTime = is;}
     
+    public void setIsSneaking(boolean is){this.isSneak = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     
@@ -213,6 +219,7 @@ public class PlayerData {
         this.cancharge = true;
         this.isdead = false;
         this.isonpath = false;
+        this.isSneak = false;
     }
     
 }

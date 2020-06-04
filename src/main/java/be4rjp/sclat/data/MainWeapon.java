@@ -33,6 +33,7 @@ public class MainWeapon {
     private boolean hude;
     private double huder;
     private int money;
+    private boolean isManeuver = false;
     
     
     
@@ -88,6 +89,8 @@ public class MainWeapon {
     
     public int getMoney(){return this.money;}
     
+    public boolean getIsManeuver(){return this.isManeuver;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -138,5 +141,7 @@ public class MainWeapon {
     public void setHudeRandom(double d){this.huder = d;}
     
     public void setMoney(int i){this.money = i;}
+    
+    public void setIsManeuver(boolean is){this.isManeuver = is;}
     
 }

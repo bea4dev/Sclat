@@ -27,25 +27,70 @@ public class Shooter {
     public static void ShooterRunnable(Player player){
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
+            Location loc = player.getLocation();
+            int sl = 0;
+            boolean check = true;
                             
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
+                Location ploc = p.getLocation();
+                boolean is = false;
                 
                 if(!data.isInMatch() || !p.isOnline()){
                     cancel();
                     return;
                 }
+                
+                //マニューバー系
+                if(data.getWeaponClass().getMainWeapon().getIsManeuver()){
+                    if(data.getIsSneaking() && sl < 2){
+                        Vector vec = p.getEyeLocation().getDirection();
+                        Vector jvec = (new Vector(vec.getX(), 0, vec.getZ())).normalize().multiply(3);
+                        p.setVelocity(jvec);
+                        data.setIsSneaking(false);
+                        sl++;
+                        BukkitRunnable task = new BukkitRunnable(){
+                            int i = 1;
+                            @Override
+                            public void run(){
+                                if(i == 2)
+                                    p.setVelocity(new Vector(0, 0, 0));
+                                if(i == 4)
+                                    loc = ploc;
+                                if(i == 5)
+                                    cancel();
+                                i++;
+                            }
+                        };
+                        task.runTaskTimer(Main.getPlugin(), 0, 1);
+                        BukkitRunnable task1 = new BukkitRunnable(){
+                            @Override
+                            public void run(){
+                                sl = 0;
+                                check = true;
+                            }
+                        };
+                        if(check)
+                            task1.runTaskLater(Main.getPlugin(), 60);
+                        check = false;
+                    }
+                }
+                if(loc.getX() == ploc.getX() && loc.getZ() == ploc.getZ())
+                    is = true;
+                
                 if(data.getTick() < 5 && data.isInMatch()){
-                    Shooter.Shoot(p);
+                    Shooter.Shoot(p, is);
                     data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                 }
+                
+                //loc = ploc;
             }
         };
         delay.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());
     }
     
-    public static void Shoot(Player player){
+    public static void Shoot(Player player, boolean slided){
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
@@ -71,7 +116,7 @@ public class Shooter {
         player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
-                if(isLockOnPlayer)
+                if(isLockOnPlayer || slided)
                     random /= 2;
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
                 vec.add(new Vector(Math.random() * random - random/2, 0, Math.random() * random - random/2));
@@ -97,8 +142,8 @@ public class Shooter {
                             inkball.setVelocity(fallvec);
                         if(i >= tick)
                             inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
-                        if(i != tick)
-                            PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);
+                        //if(i != tick)
+                        PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);
                         if(inkball.isDead())
                             cancel();
                         
