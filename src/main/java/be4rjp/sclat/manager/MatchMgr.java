@@ -480,8 +480,13 @@ public class MatchMgr {
 
 
 
-                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter"))
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter")){
                         Shooter.ShooterRunnable(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                            Shooter.ManeuverRunnable(p);
+                            Shooter.ManeuverShootRunnable(p);
+                        }
+                    }
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
                         Charger.ChargerRunnable(p);
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))

@@ -51,6 +51,15 @@ public class SquidMgr {
                     return;
                 }
                 
+                if(data.getWeaponClass().getMainWeapon().getIsManeuver()){
+                    if(p.getInventory().getItemInMainHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType())){
+                        if(!p.getInventory().getItemInOffHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType()))
+                            p.getInventory().setItem(40, data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
+                    }else{
+                        p.getInventory().setItem(40, new ItemStack(Material.AIR));
+                    }
+                }
+                
                 Block down = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
                 if(DataMgr.getBlockDataMap().containsKey(down) && p.getGameMode().equals(GameMode.ADVENTURE)){
                     if(DataMgr.getBlockDataMap().get(down).getTeam() != data.getTeam()){
@@ -83,7 +92,8 @@ public class SquidMgr {
                         p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);  
                         is = true;
                         p.getEquipment().setHelmet(new ItemStack(Material.AIR));
-                        p.getInventory().setItem(40, new ItemStack(Material.AIR));
+                        if(data.getWeaponClass().getMainWeapon().getIsManeuver())
+                            p.getInventory().setItem(40, new ItemStack(Material.AIR));
                     }                                                                      
                     
                         if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
@@ -106,7 +116,8 @@ public class SquidMgr {
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.3F, 5F);  
                         is2 = true;
                         p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
-                        p.getInventory().setItem(40, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
+                        if(data.getWeaponClass().getMainWeapon().getIsManeuver())
+                            p.getInventory().setItem(40, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
                     }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))

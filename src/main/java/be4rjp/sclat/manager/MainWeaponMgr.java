@@ -43,6 +43,10 @@ public class MainWeaponMgr {
             boolean man = false;
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".IsManeuver"))
                 man = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".IsManeuver");
+            int slST = 1;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".SlidingShootTick"))
+                slST = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".SlidingShootTick");
+            
             
             
             
@@ -75,6 +79,7 @@ public class MainWeaponMgr {
             mw.setIsHude(hude);
             mw.setHudeRandom(huder);
             mw.setIsManeuver(man);
+            mw.setSlidingShootTick(slST);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

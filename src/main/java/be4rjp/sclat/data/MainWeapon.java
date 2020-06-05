@@ -34,6 +34,7 @@ public class MainWeapon {
     private double huder;
     private int money;
     private boolean isManeuver = false;
+    private int slidingshoottick = 0;
     
     
     
@@ -91,6 +92,8 @@ public class MainWeapon {
     
     public boolean getIsManeuver(){return this.isManeuver;}
     
+    public int getSlidingShootTick(){return this.slidingshoottick;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -143,5 +146,7 @@ public class MainWeapon {
     public void setMoney(int i){this.money = i;}
     
     public void setIsManeuver(boolean is){this.isManeuver = is;}
+    
+    public void setSlidingShootTick(int i){this.slidingshoottick = i;}
     
 }

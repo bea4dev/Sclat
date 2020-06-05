@@ -47,6 +47,7 @@ public class PlayerData {
     private boolean isPoisonCoolTime = false;
     private boolean isSneak = false;
     private boolean isUsingManeuver = false;
+    private boolean issliding = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -121,6 +122,10 @@ public class PlayerData {
     
     public boolean getIsSneaking(){return this.isSneak;}
     
+    public boolean getIsUsingManeuver(){return this.isUsingManeuver;}
+    
+    public boolean getIsSliding(){return this.issliding;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -188,6 +193,10 @@ public class PlayerData {
     
     public void setIsSneaking(boolean is){this.isSneak = is;}
     
+    public void setIsUsingManeuver(boolean is){this.isUsingManeuver = is;}
+    
+    public void setIsSliding(boolean is){this.issliding = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     
@@ -220,6 +229,8 @@ public class PlayerData {
         this.isdead = false;
         this.isonpath = false;
         this.isSneak = false;
+        this.isUsingManeuver = false;
+        this.issliding = false;
     }
     
 }
