@@ -192,10 +192,9 @@ public class ArmorStandMgr {
                 }
             }
         };
-        if(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
-            shoot.runTaskTimer(Main.getPlugin(), 0, 8);
-        else
-            shoot.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick() * 2);
+        
+        shoot.runTaskTimer(Main.getPlugin(), 0, 4);
+        
         
     }
     
