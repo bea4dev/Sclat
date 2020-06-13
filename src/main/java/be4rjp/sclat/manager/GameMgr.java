@@ -114,6 +114,7 @@ public class GameMgr implements Listener{
             public void run(){
                 PlayerStatusMgr.setupPlayerStatus(p);
                 PlayerStatusMgr.sendHologram(p);
+                DataMgr.getPlayerData(p).setGearNumber(PlayerStatusMgr.getGear(p));
             }
         };
         task.runTaskLater(Main.getPlugin(), 1);
@@ -312,8 +313,8 @@ public class GameMgr implements Listener{
                     case "[ Join ]":
                         MatchMgr.PlayerJoinMatch(player);
                         break;
-                    case "[ Weapon Select ]":
-                        OpenGUI.openWeaponSelect(player, "Main", false);
+                    case "[ Equipment ]":
+                        OpenGUI.equipmentGUI(player);
                         break;
                     case "[ Weapon Shop ]":
                         OpenGUI.openWeaponSelect(player, "Main", true);

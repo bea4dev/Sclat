@@ -871,6 +871,7 @@ public class MatchMgr {
                             hikiwake = true;
                         
                         match.setWinTeam(winteam);
+                        match.setIsHikiwake(hikiwake);
                         
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getIsJoined())
@@ -906,6 +907,7 @@ public class MatchMgr {
                         }
                         
                         match.setWinTeam(winteam);
+                        match.setIsHikiwake(hikiwake);
 
                         if(per > 100)
                             per = 100;
@@ -955,6 +957,7 @@ public class MatchMgr {
                         }
                         
                         match.setWinTeam(winteam);
+                        match.setIsHikiwake(hikiwake);
 
                         if(per > 100)
                             per = 100;
@@ -1030,10 +1033,10 @@ public class MatchMgr {
                     
                     int pMoney = (int)((double)data.getKillCount() * 100D + (double)data.getPaintCount() / 5D);
                     int pLv = 1;
-                    if(data.getTeam() == data.getMatch().getWinTeam())
+                    if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
                         pLv = 2;
                     int pRank = -100 + (int)((double)data.getKillCount() * 2.5D + (double)data.getPaintCount() / 700D);
-                    if(data.getTeam() == data.getMatch().getWinTeam())
+                    if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
                         pRank = 80 + (int)((double)data.getKillCount() * 2D + (double)data.getPaintCount() / 500D);
                     if(data.getMatch().getPlayerCount() == 1)
                         pRank = 0;

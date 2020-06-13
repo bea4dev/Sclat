@@ -4,6 +4,7 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.Gear;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -89,21 +90,21 @@ public class SquidMgr {
                 if((data.getIsOnInk() && data.getIsSquid()) || DataMgr.getPlayerData(p).getIsOnPath()){
                     is2 = false;
                     if(!is){
-                        p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);  
+                        p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);
                         is = true;
                         p.getEquipment().setHelmet(new ItemStack(Material.AIR));
                         if(data.getWeaponClass().getMainWeapon().getIsManeuver())
                             p.getInventory().setItem(40, new ItemStack(Material.AIR));
                     }                                                                      
                     
-                        if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("SquidRecovery"))){
-                            p.setExp(p.getExp() + (float)conf.getConfig().getDouble("SquidRecovery"));
+                        if(p.getExp() <= (0.99F - (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)))){
+                            p.setExp(p.getExp() + (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)));
                         }
                         p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                         p.setFoodLevel(20);                                                   
                         p.setSprinting(true);
-                        final double speed = conf.getConfig().getDouble("SquidSpeed");
+                        final double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
                         if(!DataMgr.getPlayerData(p).getPoison())
                             p.setWalkSpeed((float)speed);
                         else
@@ -127,7 +128,7 @@ public class SquidMgr {
 
                     p.setFoodLevel(4);
                     
-                    final double speed = conf.getConfig().getDouble("PlayerWalkSpeed");
+                    final double speed = conf.getConfig().getDouble("PlayerWalkSpeed") * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
                     
                     if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NomalRecovery"))){
                         p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NomalRecovery"));

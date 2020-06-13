@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.Gear;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -23,7 +24,7 @@ public class Beacon {
             as.setHelmet(new ItemStack(Material.AIR));
             as.teleport(player.getLocation().add(0, -0.45, 0));
             as.setCustomName("21");
-            player.setExp(player.getExp() - 0.39F);
+            player.setExp(player.getExp() - (float)(0.39 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)));
             BukkitRunnable delay = new BukkitRunnable(){
                 @Override
                 public void run(){
@@ -32,7 +33,7 @@ public class Beacon {
                 }
             };
             delay.runTaskLater(Main.getPlugin(), 10);
-        }else if(player.getExp() < 0.4)
+        }else if(player.getExp() < (float)(0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
         
         BukkitRunnable delay = new BukkitRunnable(){

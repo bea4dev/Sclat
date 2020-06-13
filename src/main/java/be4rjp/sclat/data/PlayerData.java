@@ -48,6 +48,7 @@ public class PlayerData {
     private boolean isSneak = false;
     private boolean isUsingManeuver = false;
     private boolean issliding = false;
+    private int gearNumber = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -126,6 +127,8 @@ public class PlayerData {
     
     public boolean getIsSliding(){return this.issliding;}
     
+    public int getGearNumber(){return this.gearNumber;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -196,6 +199,8 @@ public class PlayerData {
     public void setIsUsingManeuver(boolean is){this.isUsingManeuver = is;}
     
     public void setIsSliding(boolean is){this.issliding = is;}
+    
+    public void setGearNumber(int i){this.gearNumber = i;}
     
     
     public void addKillCount(){this.killcount++;}

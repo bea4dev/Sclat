@@ -124,8 +124,8 @@ public class SnowballListener implements Listener {
                         Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
                         target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
                     }
-                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage()){
-                        DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
+                        DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
                         PaintMgr.Paint(target.getLocation(), shooter, true);
                     }else{
                         target.setGameMode(GameMode.SPECTATOR);

@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.weapon.Gear;
 import java.util.List;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PlayerConnection;
@@ -109,7 +110,7 @@ public class QuickBomb {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
+                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                         DamageMgr.SclatGiveDamage(target, damage);

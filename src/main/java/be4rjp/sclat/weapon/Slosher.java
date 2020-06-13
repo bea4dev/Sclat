@@ -56,11 +56,11 @@ public class Slosher {
     
     public static void Shoot(Player player, Vector v){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+        if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
             return;
         }
-        player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
+        player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         if(v != null)

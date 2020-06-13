@@ -90,11 +90,11 @@ public class Spinner {
     
     public static void Shoot(Player player, int charge){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+        if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
             return;
         }
-        player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
+        player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
         player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed() * charge);

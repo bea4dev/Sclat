@@ -66,11 +66,11 @@ public class Roller {
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 if(data.getIsHolding() && data.getCanPaint()){
-                    if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+                    if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
                         player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
                         return;
                     }
-                    p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getRollerNeedInk());
+                    p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
                     Vector locvec = p.getEyeLocation().getDirection();
                     Location eloc = p.getEyeLocation();
                     Vector vec = new Vector(locvec.getX(), 0, locvec.getZ()).normalize();
@@ -271,6 +271,10 @@ public class Roller {
             PlayerData data = pdata;
             @Override
             public void run(){
+                if(!DataMgr.getPlayerData(p).isInMatch()){
+                    cancel();
+                    return;
+                }
                 if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
                     return;
                 if(player.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk())
@@ -312,11 +316,11 @@ public class Roller {
     
     public static void Shoot(Player player, Vector v){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+        if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
             return;
         }
-        player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
+        player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         if(v != null)

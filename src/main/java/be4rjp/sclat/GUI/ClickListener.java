@@ -16,6 +16,7 @@ import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.SuperJumpMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
+import be4rjp.sclat.weapon.Gear;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import be4rjp.sclat.weapon.Spinner;
@@ -58,11 +59,20 @@ public class ClickListener implements Listener{
             case"試合に参加 / JOIN THE MATCH":
                 MatchMgr.PlayerJoinMatch(player);
                 break;
-            case"武器選択 / CHOSE WEAPONS":
+            case"装備変更 / EQUIPMENT":
+                OpenGUI.equipmentGUI(player);
+                break;
+            case"ギア変更 / GEAR":
+                OpenGUI.gearGUI(player);
+                break;
+            case"武器変更 / WEAPON":
                 OpenGUI.openWeaponSelect(player, "Main", false);
                 break;
             case"設定 / SETTINGS":
                 OpenGUI.openSettingsUI(player);
+                break;
+            case"ショップを開く / OPEN SHOP":
+                OpenGUI.openWeaponSelect(player, "Main", true);
                 break;
             case"塗りをリセット / RESET INK":
                 MatchMgr.RollBack();
@@ -118,6 +128,16 @@ public class ClickListener implements Listener{
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
+        if(event.getClickedInventory().getTitle().equals("Gear")){
+            for(int i = 0; i <= 6;){
+                if(Gear.getGearName(i).equals(name)){
+                    DataMgr.getPlayerData(player).setGearNumber(i);
+                    PlayerStatusMgr.setGear(player, i);
+                    break;
+                }
+                i++;
+            }
+        }
         if(event.getClickedInventory().getTitle().equals("武器選択")){
             if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー")){
                 switch(name){

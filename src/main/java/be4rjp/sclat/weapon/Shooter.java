@@ -151,11 +151,11 @@ public class Shooter {
     
     public static void Shoot(Player player, boolean slided){
         PlayerData data = DataMgr.getPlayerData(player);
-        if(player.getExp() <= data.getWeaponClass().getMainWeapon().getNeedInk()){
+        if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
             return;
         }
-        player.setExp(player.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk());
+        player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
         ArrayList<Vector> positions = rayTrace.traverse(data.getWeaponClass().getMainWeapon().getShootSpeed() * data.getWeaponClass().getMainWeapon().getDistanceTick(),0.7);
         boolean isLockOnPlayer = false;

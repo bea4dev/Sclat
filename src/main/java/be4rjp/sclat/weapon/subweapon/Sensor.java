@@ -8,6 +8,7 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.weapon.Gear;
 import java.util.List;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PlayerConnection;
@@ -80,7 +81,7 @@ public class Sensor {
                     if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
 
                         //半径
-                        double maxDist = 5;
+                        double maxDist = (int)5 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
 
                         //爆発音
                         player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_ARROW_SHOOT, 1, 2);

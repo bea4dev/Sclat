@@ -4,6 +4,7 @@ package be4rjp.sclat.weapon.subweapon;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.weapon.Gear;
 import java.util.List;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PlayerConnection;
@@ -55,7 +56,7 @@ public class Sprinkler {
                 try{
                     if(c == 0){
                         if(!DataMgr.getPlayerData(player).getIsBombRush())
-                            p.setExp(p.getExp() - 0.59F);
+                            p.setExp(p.getExp() - (float)(0.59 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)));
                         ItemStack bom = new ItemStack(Material.BIRCH_FENCE_GATE).clone();
                         ItemMeta bom_m = bom.getItemMeta();
                         ndn = Main.getNotDuplicateNumber();
@@ -129,7 +130,7 @@ public class Sprinkler {
         };
         cooltime.runTaskLater(Main.getPlugin(), 8);
                 
-        if(player.getExp() > 0.4 || DataMgr.getPlayerData(player).getIsBombRush())
+        if(player.getExp() > (float)(0.6 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);

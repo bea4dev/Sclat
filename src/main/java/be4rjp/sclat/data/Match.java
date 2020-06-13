@@ -25,6 +25,7 @@ public class Match {
     private boolean finished = false;
     private BlockUpdater bur;
     private Team winteam;
+    private boolean hikiwake = false;
     
     
     
@@ -56,6 +57,8 @@ public class Match {
     
     public Team getWinTeam(){return this.winteam;}
     
+    public boolean getIsHikiwake(){return this.hikiwake;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -74,6 +77,8 @@ public class Match {
     public void setBlockUpdater(BlockUpdater bur){this.bur = bur;}
     
     public void setWinTeam(Team team){this.winteam = team;}
+    
+    public void setIsHikiwake(boolean is){this.hikiwake = is;}
     
     
     public void addNawabari_T_Count(){this.c_nawabari++;}

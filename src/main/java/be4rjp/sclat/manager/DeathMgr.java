@@ -2,9 +2,11 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
+import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -40,9 +42,20 @@ public class DeathMgr {
         drop2.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
         
         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(shooter).getTeam().getTeamColor().getWool().createBlockData();
-        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1, 1, 1, 1, bd);
+        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1.5, 1.5, 1.5, 1, bd);
         
         DataMgr.getPlayerData(target).setSPGauge((int)(DataMgr.getPlayerData(target).getSPGauge() * 0.8));
+        
+        //半径
+        double maxDist = 3;
+
+        //塗る
+        for(int i = 0; i <= maxDist; i++){
+            List<Location> p_locs = Sphere.getSphere(target.getLocation(), i, 20);
+            for(Location loc : p_locs){
+                PaintMgr.Paint(loc, shooter, false);
+            }
+        }
         
         BukkitRunnable clear = new BukkitRunnable(){
             @Override

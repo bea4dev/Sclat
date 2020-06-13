@@ -90,13 +90,13 @@ public class Charger {
                     if(player.hasPotionEffect(PotionEffectType.SLOW))
                         player.removePotionEffect(PotionEffectType.SLOW);
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
-                        p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * charge);
+                        p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP) * charge));
                         Charger.Shoot(p, charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
                         int reach = (int)(p.getExp() / data.getWeaponClass().getMainWeapon().getNeedInk());
                         if(reach >= 2){
                             Charger.Shoot(p, reach / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * reach);
-                            p.setExp(p.getExp() - data.getWeaponClass().getMainWeapon().getNeedInk() * reach);
+                            p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() * reach / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
                         }else
                             p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
@@ -119,7 +119,7 @@ public class Charger {
         
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 5);
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());
-        ArrayList<Vector> positions = rayTrace.traverse(reach,0.2);
+        ArrayList<Vector> positions = rayTrace.traverse((int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.2);
 
         
         loop : for(int i = 0; i < positions.size();i++){
@@ -150,7 +150,7 @@ public class Charger {
                     continue;
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                        if(rayTrace.intersects(new BoundingBox((Entity)target), reach, 0.05)){
+                        if(rayTrace.intersects(new BoundingBox((Entity)target), (int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.05)){
                             if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                 DamageMgr.SclatGiveStrongDamage(target, damage, player);
                                 PaintMgr.Paint(target.getLocation(), player, true);

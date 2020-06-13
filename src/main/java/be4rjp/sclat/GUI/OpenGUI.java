@@ -7,6 +7,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PlayerStatusMgr;
+import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
@@ -43,9 +44,9 @@ public class OpenGUI {
         setting.setItemMeta(setting_m);
         inv.setItem(6, setting);
         
-        ItemStack w = new ItemStack(Material.WOODEN_HOE);
+        ItemStack w = new ItemStack(Material.LEATHER_CHESTPLATE);
         ItemMeta wmeta = w.getItemMeta();
-        wmeta.setDisplayName("武器選択 / CHOSE WEAPONS");
+        wmeta.setDisplayName("装備変更 / EQUIPMENT");
         w.setItemMeta(wmeta);
         inv.setItem(4, w);
         player.openInventory(inv);
@@ -76,6 +77,46 @@ public class OpenGUI {
             b.setItemMeta(bmeta);
             inv.setItem(8, b);
         }
+        
+        ItemStack b = new ItemStack(Material.PAPER);
+        ItemMeta bmeta = b.getItemMeta();
+        bmeta.setDisplayName("ショップを開く / OPEN SHOP");
+        b.setItemMeta(bmeta);
+        inv.setItem(8, b);
+        
+        player.openInventory(inv);
+    }
+    
+    public static void gearGUI(Player player){
+        Inventory inv = Bukkit.createInventory(null, 9, "Gear");
+        
+        for(int i = 0; i <= 6;){
+            ItemStack n = new ItemStack(Gear.getGearMaterial(i));
+            ItemMeta nmeta = n.getItemMeta();
+            nmeta.setDisplayName(Gear.getGearName(i));
+            n.setItemMeta(nmeta);
+            inv.setItem(i, n);
+            i++;
+        }
+        
+        player.openInventory(inv);
+    }
+    
+    public static void equipmentGUI(Player player){
+        Inventory inv = Bukkit.createInventory(null, 27, " ");
+        
+        ItemStack n = new ItemStack(Gear.getGearMaterial(DataMgr.getPlayerData(player).getGearNumber()));
+        ItemMeta nmeta = n.getItemMeta();
+        nmeta.setDisplayName("ギア変更 / GEAR");
+        n.setItemMeta(nmeta);
+        inv.setItem(11, n);
+        
+        ItemStack t = new ItemStack(Material.WOODEN_HOE);
+        ItemMeta tmeta = t.getItemMeta();
+        tmeta.setDisplayName("武器変更 / WEAPON");
+        t.setItemMeta(tmeta);
+        inv.setItem(15, t);
+        
         
         player.openInventory(inv);
     }
