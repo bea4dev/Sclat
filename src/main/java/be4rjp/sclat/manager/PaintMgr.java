@@ -10,6 +10,7 @@ import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Sponge;
 import be4rjp.sclat.data.Team;
+import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -73,7 +74,7 @@ public class PaintMgr {
                             //Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
                             DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
                             DataMgr.getPlayerData(player).addPaintCount();
-                            if(new Random().nextInt(10) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                            if(new Random().nextInt((int)(10 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                                 SPWeaponMgr.addSPCharge(player);
                         }
                     }else{
@@ -88,7 +89,7 @@ public class PaintMgr {
                         //Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
                         DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
                         DataMgr.getPlayerData(player).addPaintCount();
-                        if(new Random().nextInt(12) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                        if(new Random().nextInt((int)(12 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);
                     }
                 }

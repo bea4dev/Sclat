@@ -129,7 +129,7 @@ public class Roller {
                                 }
                             }
                         }
-                        p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
+                        p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
                         return;
                     }
                     
@@ -253,7 +253,7 @@ public class Roller {
                         }
                     }
                     PaintMgr.PaintHightestBlock(eloc, p, false, true);
-                    p.setWalkSpeed(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed());
+                    p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
                 }
                 
                 if(!data.isInMatch())

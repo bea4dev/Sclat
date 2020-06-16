@@ -120,7 +120,11 @@ public class Blaster {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
                         if (target.getLocation().distance(inkball.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
+                            double damage = 10;
+                            if(data.getWeaponClass().getMainWeapon().getIsManeuver())
+                                damage = data.getWeaponClass().getMainWeapon().getBlasterExDamage();
+                            else
+                                damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);

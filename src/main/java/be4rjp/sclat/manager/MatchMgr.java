@@ -487,6 +487,11 @@ public class MatchMgr {
                             Shooter.ManeuverShootRunnable(p);
                         }
                     }
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster")){
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                            Shooter.ManeuverRunnable(p);
+                        }
+                    }
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
                         Charger.ChargerRunnable(p);
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))

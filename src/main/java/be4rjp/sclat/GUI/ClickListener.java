@@ -129,7 +129,7 @@ public class ClickListener implements Listener{
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
         if(event.getClickedInventory().getTitle().equals("Gear")){
-            for(int i = 0; i <= 6;){
+            for(int i = 0; i <= 7;){
                 if(Gear.getGearName(i).equals(name)){
                     DataMgr.getPlayerData(player).setGearNumber(i);
                     PlayerStatusMgr.setGear(player, i);
