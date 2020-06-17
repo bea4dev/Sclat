@@ -200,6 +200,9 @@ public class ArmorStandMgr {
     
     
     public static void giveDamageArmorStand(ArmorStand as, double damage, Player shooter){
+        if(as.getCustomName() == null)
+            return;
+        
         if(as.getCustomName().equals("Path")){
             for (Path path : DataMgr.getPlayerData(shooter).getMatch().getMapData().getPathList()){
                 if(path.getArmorStand().equals(as))

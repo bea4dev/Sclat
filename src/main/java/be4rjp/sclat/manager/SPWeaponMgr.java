@@ -9,13 +9,17 @@ import be4rjp.sclat.weapon.spweapon.AirStrike;
 import be4rjp.sclat.weapon.spweapon.Amehurasi;
 import be4rjp.sclat.weapon.spweapon.Barrier;
 import be4rjp.sclat.weapon.spweapon.BombRush;
+import be4rjp.sclat.weapon.spweapon.MegaLaser;
 import be4rjp.sclat.weapon.spweapon.MultiMissile;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -174,6 +178,13 @@ public class SPWeaponMgr {
                 is5.setItemMeta(ism5);
                 p.getInventory().setItem(4, is5);
                 break;
+            case "メガホンレーザー":
+                ItemStack is6 = new ItemStack(Material.SHULKER_SHELL);
+                ItemMeta ism6 = is6.getItemMeta();
+                ism6.setDisplayName("メガホンレーザー");
+                is6.setItemMeta(ism6);
+                p.getInventory().setItem(4, is6);
+                break;
         }
     }
     
@@ -225,6 +236,17 @@ public class SPWeaponMgr {
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "メガホンレーザー":
+                if(player.isOnGround()){
+                    MegaLaser.MegaLaserRunnable(player);
+                    player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                    player.setExp(0.99F);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                }else{
+                    player.sendMessage(ChatColor.RED + "空中では展開できない！");
+                    player.playNote(player.getLocation(), Instrument.STICKS, Note.natural(1, Note.Tone.E));
+                }
                 break;
             case "カーソルを合わせて右クリックで発射":
                 AirStrike.AirStrikeRunnable(player);
