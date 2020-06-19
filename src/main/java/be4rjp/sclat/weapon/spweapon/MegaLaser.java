@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
@@ -143,7 +144,7 @@ public class MegaLaser {
                 }
 
                 if(c == 15 || c == 25 || c == 35){
-                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 1F, 0.5F);
+                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 0.6F, 0.5F);
                     RayTrace rayTrace1 = new RayTrace(ol.toVector(), v);
                     ArrayList<Vector> positions = rayTrace1.traverse(300, 2);
                     ray : for(int i = 1; i < positions.size();i++){
@@ -181,7 +182,7 @@ public class MegaLaser {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(p.getWorld() != target.getWorld())
                                     continue;
-                                if(eloc.distance(target.getLocation()) < 32){
+                                if(eloc.distance(target.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
                                     if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                         target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
@@ -196,14 +197,14 @@ public class MegaLaser {
                     ArrayList<Vector> positions5 = rayTrace5.traverse(300, 20);
                     for(int i = 1; i < positions5.size();i++){
                         Location position = positions5.get(i).toLocation(p.getLocation().getWorld());
-                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 1F, 0.5F);
+                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.6F, 0.5F);
                     }
                 }
                 
                 
                 
-                if(c == 40 || c == 44 || c == 48 || c == 52 || c == 56 || c == 60 || c == 64 || c == 68 || c == 72 || c == 76 || c == 80){
-                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 1F, 0.6F);
+                if(c == 40 || c == 45 || c == 50 || c == 55 || c == 60 || c == 65 || c == 70 || c == 75 || c == 80){
+                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 0.6F, 0.6F);
                     RayTrace rayTrace1 = new RayTrace(ol.toVector(), v);
                     ArrayList<Vector> positions = rayTrace1.traverse(300, 1);
                     ray : for(int i = 3; i < positions.size();i++){
@@ -242,7 +243,7 @@ public class MegaLaser {
                                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                     if(p.getWorld() != target.getWorld())
                                         continue;
-                                    if(eloc.distance(target.getLocation()) < 32){
+                                    if(eloc.distance(target.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
                                         if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
                                             Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                             target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
@@ -260,19 +261,19 @@ public class MegaLaser {
                         Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
                         if(i > 3){//攻撃判定
                             double maxDist = 6;
-                            double damage = 1;
+                            double damage = 5;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist) {
-                                    if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
                                         if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                             DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                            PaintMgr.Paint(target.getLocation(), player, true);
+                                            //PaintMgr.Paint(target.getLocation(), p, true);
                                         }else{
                                             target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, player, "spWeapon");
-                                            PaintMgr.Paint(target.getLocation(), player, true);
+                                            DeathMgr.PlayerDeathRunnable(target, p, "spWeapon");
+                                            PaintMgr.Paint(target.getLocation(), p, true);
                                         }
 
                                         //AntiNoDamageTime
@@ -303,7 +304,7 @@ public class MegaLaser {
                     ArrayList<Vector> positions5 = rayTrace5.traverse(300, 20);
                     for(int i = 1; i < positions5.size();i++){
                         Location position = positions5.get(i).toLocation(p.getLocation().getWorld());
-                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 1F, 0.6F);
+                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.6F, 0.6F);
                     }
                 }
                 
@@ -320,8 +321,10 @@ public class MegaLaser {
                 }
 
                 if(c == 10){
-                    if(as9.getPassengers().contains(p))
+                    if(as9.getPassengers().contains(p)){
                         as9.removePassenger(p);
+                        ((CraftPlayer)p).getHandle().stopRiding();
+                    }
                     WeaponClassMgr.setWeaponClass(p);
                 }
                 c++;

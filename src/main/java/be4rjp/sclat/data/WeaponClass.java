@@ -13,6 +13,8 @@ public class WeaponClass {
     
     public WeaponClass(String weaponclassname){this.WeaponClassName = weaponclassname;}
     
+    public String getClassName(){return this.WeaponClassName;}
+    
     public MainWeapon getMainWeapon(){return this.mainweapon;}
     
     public String getSubWeaponName(){return this.subweaponname;}

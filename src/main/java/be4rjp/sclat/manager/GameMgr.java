@@ -115,6 +115,7 @@ public class GameMgr implements Listener{
                 PlayerStatusMgr.setupPlayerStatus(p);
                 PlayerStatusMgr.sendHologram(p);
                 DataMgr.getPlayerData(p).setGearNumber(PlayerStatusMgr.getGear(p));
+                DataMgr.getPlayerData(p).setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(p)));
             }
         };
         task.runTaskLater(Main.getPlugin(), 1);
@@ -369,5 +370,8 @@ public class GameMgr implements Listener{
         if(data.getWeaponClass().getSubWeaponName().equals("スプリンクラー") && data.isInMatch()){
             DataMgr.getSprinklerFromplayer(player).remove();
         }
+        
+        if(data.getWeaponClass() != null)
+            PlayerStatusMgr.setEquiptClass(player, data.getWeaponClass().getClassName());
     }
 }

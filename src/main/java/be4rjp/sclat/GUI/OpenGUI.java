@@ -111,7 +111,7 @@ public class OpenGUI {
         n.setItemMeta(nmeta);
         inv.setItem(11, n);
         
-        ItemStack t = new ItemStack(Material.WOODEN_HOE);
+        ItemStack t = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
         ItemMeta tmeta = t.getItemMeta();
         tmeta.setDisplayName("武器変更 / WEAPON");
         t.setItemMeta(tmeta);

@@ -45,6 +45,7 @@ public class PlayerStatusMgr {
             wlist.add(conf.getConfig().getString("DefaultClass"));
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Gear", 0);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".EquiptClass", conf.getConfig().getString("DefaultClass"));
         }
     }
     
@@ -112,6 +113,11 @@ public class PlayerStatusMgr {
         conf.getPlayerStatus().set("Status." + uuid + ".Gear", g);
     }
     
+    public static void setEquiptClass(Player player, String name){
+        String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".EquiptClass", name);
+    }
+    
     public static void addWeapon(Player player, String wname){
         List<String> wlist = conf.getPlayerStatus().getStringList("Status." + player.getUniqueId().toString() + ".WeaponClass");
         wlist.add(wname);
@@ -156,5 +162,10 @@ public class PlayerStatusMgr {
     public static int getGear(Player player){
         String uuid = player.getUniqueId().toString();
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Gear");
+    }
+    
+    public static String getEquiptClass(Player player){
+        String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getString("Status." + uuid + ".EquiptClass");
     }
 }

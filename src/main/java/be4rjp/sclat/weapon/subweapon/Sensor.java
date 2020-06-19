@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon.subweapon;
 
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -91,8 +92,12 @@ public class Sensor {
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                                 for(Location loc : s_locs){
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
-                                    o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
+                                    if(o_player.getWorld() == loc.getWorld()){
+                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
+                                            o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
+                                        }
+                                    }
                                 }
                             }
                         }

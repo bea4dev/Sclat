@@ -133,6 +133,7 @@ public class ClickListener implements Listener{
                 if(Gear.getGearName(i).equals(name)){
                     DataMgr.getPlayerData(player).setGearNumber(i);
                     PlayerStatusMgr.setGear(player, i);
+                    player.sendMessage("ギア[" + ChatColor.AQUA + name + ChatColor.RESET + "]を選択しました");
                     break;
                 }
                 i++;
@@ -208,7 +209,7 @@ public class ClickListener implements Listener{
             }else{
                 DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             }
-            player.sendMessage(name + "を選択しました");
+            player.sendMessage("ブキ[" + ChatColor.GOLD + name + ChatColor.RESET + "]を選択しました");
         }
         
         if(event.getClickedInventory().getTitle().equals("Shop")){

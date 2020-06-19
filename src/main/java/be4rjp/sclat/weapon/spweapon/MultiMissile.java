@@ -103,7 +103,7 @@ public class MultiMissile {
                             ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
                             if(MMCheckCanLock(p, op)){
                                 op.sendTitle("", ChatColor.RED + "敵に狙われている！", 0, 20, 4);
-                                op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 150, 1));
+                                op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
                                 MMShootRunnable(p, op);
                             }
                         }

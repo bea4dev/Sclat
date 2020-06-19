@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -82,7 +83,9 @@ public class Roller {
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
+                            if(target.getWorld() == p.getWorld())
+                                if(target.getLocation().distance(front) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                    target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
                     }
                     Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
                     Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
@@ -95,7 +98,9 @@ public class Roller {
                         
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                                if(target.getWorld() == p.getWorld())
+                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         }
                         
                         double maxDist = 2;
@@ -148,7 +153,9 @@ public class Roller {
                         
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                                if(target.getWorld() == p.getWorld())
+                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         }
                         
                         double maxDist = 2;
@@ -206,7 +213,9 @@ public class Roller {
                         PaintMgr.PaintHightestBlock(position, p, false, true);
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                                if(target.getWorld() == p.getWorld())
+                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                         }
                         
                         double maxDist = 2;
