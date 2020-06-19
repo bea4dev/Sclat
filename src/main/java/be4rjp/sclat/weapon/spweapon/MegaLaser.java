@@ -59,7 +59,7 @@ public class MegaLaser {
                     ol = p.getLocation();
                     v = p.getEyeLocation().getDirection();
                 }
-                if(!as9.getPassengers().contains(p) && c < 14)
+                if(!as9.getPassengers().contains(p) && c < 9)
                     as9.addPassenger(p);
 
                 Vector vec = new Vector(v.getX(), 0 ,v.getZ()).normalize().multiply(1.5);
@@ -75,6 +75,23 @@ public class MegaLaser {
                 loc3.add(0, -0.5, 0);
                 Location loc4 = p.getLocation().add(vec.clone().normalize().multiply(0.9));
                 loc4.add(0, -1.35, 0);
+                
+                
+                //ガジェットのエフェクト
+                Location el = ol.clone().add(vec);
+                if(c < 83){
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(p.getWorld() != target.getWorld())
+                            continue;
+                        if(el.distance(target.getLocation()) < 32){
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, el, 5, 0.5, 0.5, 0.5, 1, bd);
+                            }
+                        }
+                    }
+                }
+                
                 if(c == 0){
                     ArmorStand as1 = (ArmorStand)p.getWorld().spawnEntity(loc.clone().add(0, 0.57, 0), EntityType.ARMOR_STAND);
                     ArmorStand as2 = (ArmorStand)p.getWorld().spawnEntity(loc.clone().add(0, -0.57, 0), EntityType.ARMOR_STAND);
@@ -102,22 +119,13 @@ public class MegaLaser {
                     }
 
                     as1.setHeadPose(new EulerAngle(-0.9, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as1.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                     as2.setHeadPose(new EulerAngle(0.9, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as2.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                     as3.setHeadPose(new EulerAngle(-1.6, -0.6, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as3.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                     as4.setHeadPose(new EulerAngle(-1.6, 0.6, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as4.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                     as5.setHeadPose(new EulerAngle(0, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as5.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BLOCK))));
                     as6.setHeadPose(new EulerAngle(0.43, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as6.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.END_ROD))));
                     as7.setHeadPose(new EulerAngle(-1.6, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as7.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                     as8.setHeadPose(new EulerAngle(0, 0, 0));
-                    //((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as8.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.NETHER_BRICK_FENCE))));
-                    //as1.setHeadPose(new Vector3f((float)vec.getX(), 0.865F, (float)vec.getZ()));
 
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(p.getWorld() != target.getWorld())
@@ -135,18 +143,20 @@ public class MegaLaser {
                 }
 
                 if(c == 15 || c == 25 || c == 35){
-                    ol.getWorld().playSound(ol, Sound.ENTITY_PHANTOM_AMBIENT, 1.2F, 0.8F);
+                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 1F, 0.5F);
                     RayTrace rayTrace1 = new RayTrace(ol.toVector(), v);
-                    ArrayList<Vector> positions = rayTrace1.traverse(300, 4);
+                    ArrayList<Vector> positions = rayTrace1.traverse(300, 2);
                     ray : for(int i = 1; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(p.getLocation().getWorld());
 
                         int r = 1;
 
                         if(i == 1)
-                            r = 5;
-                        if(i >= 2)
-                            r = 8;
+                            r = 2;
+                        if(i == 2)
+                            r = 4;
+                        if(i >= 3)
+                            r = 6;
 
                         RayTrace rayTrace2 = new RayTrace(position.toVector(), new Vector(v.getZ() * -1, 0, v.getX()));
                         ArrayList<Vector> positions2 = rayTrace2.traverse(10, 0.5);
@@ -154,7 +164,7 @@ public class MegaLaser {
                         RayTrace rayTrace3 = new RayTrace(position.toVector(), new Vector(v.getZ(), 0, v.getX() * -1));
                         ArrayList<Vector> positions3 = rayTrace3.traverse(10, 0.5);
 
-                        for(int s = 0; s <= 360; s+=20){
+                        for(int s = 0; s <= 360; s+=15){
                             double y = r * Math.cos(Math.toRadians(s));
                             double x = r * Math.sin(Math.toRadians(s));
                             double lx = 0;
@@ -171,55 +181,73 @@ public class MegaLaser {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(p.getWorld() != target.getWorld())
                                     continue;
-                                if(eloc.distance(target.getLocation()) < 64){
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                                    target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
+                                if(eloc.distance(target.getLocation()) < 32){
+                                    if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                                        Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                        target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                    //音
+                    RayTrace rayTrace5 = new RayTrace(ol.toVector(), v);
+                    ArrayList<Vector> positions5 = rayTrace5.traverse(300, 20);
+                    for(int i = 1; i < positions5.size();i++){
+                        Location position = positions5.get(i).toLocation(p.getLocation().getWorld());
+                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 1F, 0.5F);
+                    }
                 }
                 
-                if(c == 40 || c == 45 || c == 50 || c == 55 || c == 60 || c == 65 || c == 70 || c == 75 || c == 80){
-                    ol.getWorld().playSound(ol, Sound.ENTITY_PHANTOM_AMBIENT, 1.2F, 0.8F);
+                
+                
+                if(c == 40 || c == 44 || c == 48 || c == 52 || c == 56 || c == 60 || c == 64 || c == 68 || c == 72 || c == 76 || c == 80){
+                    ol.getWorld().playSound(ol, Sound.ENTITY_WITHER_SHOOT, 1F, 0.6F);
                     RayTrace rayTrace1 = new RayTrace(ol.toVector(), v);
-                    ArrayList<Vector> positions = rayTrace1.traverse(300, 3);
-                    ray : for(int i = 1; i < positions.size();i++){
-                        Location position = positions.get(i).toLocation(p.getLocation().getWorld());
+                    ArrayList<Vector> positions = rayTrace1.traverse(300, 1);
+                    ray : for(int i = 3; i < positions.size();i++){
+                        if(((c /4) % 2 == 0) == (i % 2 == 0)){
+                            Location position = positions.get(i).toLocation(p.getLocation().getWorld());
 
-                        int r = 1;
+                            int r = 1;
 
-                        if(i == 1)
-                            r = 5;
-                        if(i >= 2)
-                            r = 8;
+                            if(i == 2)
+                                r = 2;
+                            if(i == 3)
+                                r = 4;
+                            if(i >= 4)
+                                r = 6;
 
-                        RayTrace rayTrace2 = new RayTrace(position.toVector(), new Vector(v.getZ() * -1, 0, v.getX()));
-                        ArrayList<Vector> positions2 = rayTrace2.traverse(10, 0.5);
+                            RayTrace rayTrace2 = new RayTrace(position.toVector(), new Vector(v.getZ() * -1, 0, v.getX()));
+                            ArrayList<Vector> positions2 = rayTrace2.traverse(10, 0.5);
 
-                        RayTrace rayTrace3 = new RayTrace(position.toVector(), new Vector(v.getZ(), 0, v.getX() * -1));
-                        ArrayList<Vector> positions3 = rayTrace3.traverse(10, 0.5);
+                            RayTrace rayTrace3 = new RayTrace(position.toVector(), new Vector(v.getZ(), 0, v.getX() * -1));
+                            ArrayList<Vector> positions3 = rayTrace3.traverse(10, 0.5);
 
-                        for(int s = 0; s <= 360; s+=20){
-                            double y = r * Math.cos(Math.toRadians(s));
-                            double x = r * Math.sin(Math.toRadians(s));
-                            double lx = 0;
-                            double lz = 0;
-                            if(x >= 0){
-                                lx = positions2.get((int)(x * 2)).getX();
-                                lz = positions2.get((int)(x * 2)).getZ();
-                            }
-                            else{
-                                lx = positions3.get((int)(x * -2)).getX();
-                                lz = positions3.get((int)(x * -2)).getZ();
-                            }
-                            Location eloc = new Location(ol.getWorld(), lx, ol.getY() + y, lz);
-                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(p.getWorld() != target.getWorld())
-                                    continue;
-                                if(eloc.distance(target.getLocation()) < 64){
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                                    target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
+                            for(int s = 0; s <= 360; s+=15){
+                                double y = r * Math.cos(Math.toRadians(s));
+                                double x = r * Math.sin(Math.toRadians(s));
+                                double lx = 0;
+                                double lz = 0;
+                                if(x >= 0){
+                                    lx = positions2.get((int)(x * 2)).getX();
+                                    lz = positions2.get((int)(x * 2)).getZ();
+                                }
+                                else{
+                                    lx = positions3.get((int)(x * -2)).getX();
+                                    lz = positions3.get((int)(x * -2)).getZ();
+                                }
+                                Location eloc = new Location(ol.getWorld(), lx, ol.getY() + y, lz);
+                                for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                    if(p.getWorld() != target.getWorld())
+                                        continue;
+                                    if(eloc.distance(target.getLocation()) < 32){
+                                        if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                            target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -231,8 +259,8 @@ public class MegaLaser {
                     for(int i = 1; i < positions4.size();i++){
                         Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
                         if(i > 3){//攻撃判定
-                            double maxDist = 9;
-                            double damage = 8;
+                            double maxDist = 6;
+                            double damage = 1;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
@@ -243,7 +271,7 @@ public class MegaLaser {
                                             PaintMgr.Paint(target.getLocation(), player, true);
                                         }else{
                                             target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, player, "killed");
+                                            DeathMgr.PlayerDeathRunnable(target, player, "spWeapon");
                                             PaintMgr.Paint(target.getLocation(), player, true);
                                         }
 
@@ -269,6 +297,19 @@ public class MegaLaser {
                             }
                         }
                     }
+                    
+                    //音
+                    RayTrace rayTrace5 = new RayTrace(ol.toVector(), v);
+                    ArrayList<Vector> positions5 = rayTrace5.traverse(300, 20);
+                    for(int i = 1; i < positions5.size();i++){
+                        Location position = positions5.get(i).toLocation(p.getLocation().getWorld());
+                        position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 1F, 0.6F);
+                    }
+                }
+                
+                if(c == 88){
+                    for(ArmorStand as : list)
+                        as.setGravity(true);
                 }
                 
                 if(c == 90 || !DataMgr.getPlayerData(p).isInMatch()){
@@ -278,7 +319,7 @@ public class MegaLaser {
                     cancel();
                 }
 
-                if(c == 15){
+                if(c == 10){
                     if(as9.getPassengers().contains(p))
                         as9.removePassenger(p);
                     WeaponClassMgr.setWeaponClass(p);
