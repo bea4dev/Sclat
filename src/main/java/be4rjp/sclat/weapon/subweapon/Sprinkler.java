@@ -7,7 +7,9 @@ import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.weapon.Gear;
 import java.util.List;
+import net.minecraft.server.v1_13_R1.EnumItemSlot;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_13_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -18,6 +20,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
@@ -145,7 +148,13 @@ public class Sprinkler {
         BukkitRunnable delay = new BukkitRunnable(){
             @Override
             public void run(){
-                as.setHelmet(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass()));
+                for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(as.getWorld() != target.getWorld())
+                        continue;
+                    ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass()))));
+                }
+                as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+                //as.setHelmet(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass()));
             }
         };
         delay.runTaskLater(Main.getPlugin(), 10);

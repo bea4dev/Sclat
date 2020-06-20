@@ -4,6 +4,8 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.raytrace.RayTrace;
+import java.util.ArrayList;
 import net.minecraft.server.v1_13_R1.EntityEnderPearl;
 import net.minecraft.server.v1_13_R1.EntityPlayer;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
@@ -11,6 +13,7 @@ import net.minecraft.server.v1_13_R1.PacketPlayOutEntityVelocity;
 import net.minecraft.server.v1_13_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntity;
 import net.minecraft.server.v1_13_R1.World;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -48,75 +51,70 @@ public class SuperJumpMgr {
     }
     
     public static void SuperJumpRunnable(Player player, Location toloc){
+        
+        Location from = player.getLocation().clone();
+        Location to = toloc;
+        Vector vec = new Vector(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ()).normalize();
         player.setGameMode(GameMode.SPECTATOR);
-        EntityPlayer packetPlayer = ((CraftPlayer) player).getHandle();
-        World world = packetPlayer.getWorld();
+        RayTrace rayTrace1 = new RayTrace(from.toVector(), vec);
+        ArrayList<Vector> positions = rayTrace1.traverse(from.distance(to), 1);
 
-        EntityEnderPearl ball = new EntityEnderPearl(world);
-        Location location = player.getEyeLocation();
-        ball.setPosition(location.getX(), location.getY(), location.getZ());
-        final int fakeSnowballID = ball.getBukkitEntity().getEntityId();
-        PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(ball, 65);
-        Vector vec = toloc.toVector();
-        Vector velocity = VectorMgr.GravityVector(location.toVector(), vec, 30);
-        PacketPlayOutEntityVelocity packet2 = new PacketPlayOutEntityVelocity(fakeSnowballID, velocity.getX(), velocity.getY(), velocity.getZ());
-        //snowball.passengers.add(packetPlayer);
-        packetPlayer.startRiding(ball);
-        PacketPlayOutMount packet3 = new PacketPlayOutMount(ball);
-        packetPlayer.playerConnection.sendPacket(packet);
-        packetPlayer.playerConnection.sendPacket(packet2);
-        packetPlayer.playerConnection.sendPacket(packet3);
-
-        Location bl;
-                
-        if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            bl = Main.lobby;
-        else
-            bl = DataMgr.getPlayerData(player).getMatch().getMapData().getNoBlockLocation();
-        EnderPearl ball2;
-        if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            ball2 = (EnderPearl)player.getWorld().spawnEntity(new Location(bl.getWorld(), bl.getX(), vec.getY() + 2, bl.getZ()), EntityType.ENDER_PEARL);
-        else
-            ball2 = (EnderPearl)player.getWorld().spawnEntity(new Location(bl.getWorld(), bl.getX(), vec.getY(), bl.getZ()), EntityType.ENDER_PEARL);
-        ball2.setVelocity(new Vector(0, velocity.getY(), 0));
-        packetPlayer.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(ball2.getEntityId()));
+        double coef = 0.08;
+        /*
+        ray : for(int i = 1; i < positions.size();i++){
+            Location position = positions.get(i).toLocation(player.getLocation().getWorld());
+            //double y = (Math.pow(Math.abs((positions.size() / 2) - i), 2) * -1 * coef) + (Math.abs(to.getY() - from.getY()) / 2) + (Math.pow(Math.sqrt(Math.pow(from.distance(to), 2) + (Math.pow(Math.abs(to.getY() - from.getY()) / 2, 2) * -4)) / 2, 2) * coef);
+            double y = (Math.pow(Math.abs((positions.size() / 2) - i), 2) * -1 * coef) + (Math.pow(positions.size() / 2, 2) * coef);
+            Location tloc = new Location(player.getWorld(), position.getX(), y + position.getY(), position.getZ());
+            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLUE, 1);
+            player.spawnParticle(Particle.REDSTONE, tloc, 1, 0, 0, 0, 1, dustOptions);
+        }*/
 
         BukkitRunnable task = new BukkitRunnable(){
+            Player p = player;
+            int i = 1;
+            @Override
+            public void run(){
+                Location position = positions.get(i).toLocation(p.getLocation().getWorld());
+                double py = (Math.pow(Math.abs((positions.size() / 2) - i), 2) * -1 * coef) + (Math.pow(positions.size() / 2, 2) * coef);
+                double y = py > 50 ? 50 + py / 2.8 : py;
+                Location tloc = new Location(p.getWorld(), position.getX(), y + position.getY(), position.getZ());
+                Vector pvec = new Vector(tloc.getX() - p.getLocation().getX(), tloc.getY() - p.getLocation().getY(), tloc.getZ() - p.getLocation().getZ()).multiply(0.17);
+                p.setVelocity(pvec);
+                if(tloc.distance(p.getLocation()) < 15)
+                    i++;
+                if(i == positions.size() - 2){
+                    p.setGameMode(GameMode.ADVENTURE);
+                    WeaponClassMgr.setWeaponClass(p);
+                    p.closeInventory();
+                    p.getInventory().setHeldItemSlot(0);
+                }
+                if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
+                    cancel();
+                }
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 1);
+
+        BukkitRunnable effect = new BukkitRunnable(){
             Player p = player;
             int c = 0;
             @Override
             public void run(){
-
-                if(ball2.getLocation().getY() <= vec.getY() + 13 || ball2.isDead() || !DataMgr.getPlayerData(p).isInMatch()){
-                    packetPlayer.stopRiding();
-                    PacketPlayOutMount packet4 = new PacketPlayOutMount(ball);
-                    PacketPlayOutEntityDestroy packet5 = new PacketPlayOutEntityDestroy(ball.getBukkitEntity().getEntityId());
-                    for(Player pp : player.getWorld().getPlayers()){
-                        EntityPlayer op = ((CraftPlayer) pp).getHandle();
-                        op.playerConnection.sendPacket(packet4);
-                        op.playerConnection.sendPacket(packet5);
-                    }
-                    p.setGameMode(GameMode.ADVENTURE);
-                    Location loc = new Location(p.getWorld(), vec.getX(), vec.getY() + 12, vec.getZ());
-                    p.teleport(loc);
-                    p.setVelocity(new Vector(0, -1, 0));
-                    WeaponClassMgr.setWeaponClass(p);
-                    p.closeInventory();
-                    p.getInventory().setHeldItemSlot(0);
-                    cancel();
-                }
                 
                 //エフェクト
                 double r = 0.5;
-                double x = vec.getX() + r * Math.cos(c);
-                double y = vec.getY() + 0.4;
-                double z = vec.getZ() + r * Math.sin(c);
+                double x = to.getX() + r * Math.cos(c);
+                double y = to.getY() + 0.4;
+                double z = to.getZ() + r * Math.sin(c);
                 Location tl = new Location(p.getWorld(), x, y, z);
                 Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                p.getWorld().spawnParticle(Particle.REDSTONE, tl, 1, 0, 0, 0, 50, dustOptions);
+                p.getWorld().spawnParticle(Particle.REDSTONE, tl, 1, 0, 0.1, 0, 50, dustOptions);
+                if(p.getGameMode().equals(GameMode.ADVENTURE) || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                    cancel();
                 c++;
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 60, 1);
+        effect.runTaskTimer(Main.getPlugin(), 0, 1);
     }
 }

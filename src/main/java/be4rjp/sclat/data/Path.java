@@ -4,10 +4,15 @@ package be4rjp.sclat.data;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
+import net.minecraft.server.v1_13_R1.EnumItemSlot;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -42,8 +47,13 @@ public class Path {
     
     public void setTeam(Team team){
         this.team = team;
-        
-        as.setHelmet(new ItemStack(team.getTeamColor().getGlass()));
+        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+            if(as.getWorld() != target.getWorld())
+                continue;
+            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(team.getTeamColor().getGlass()))));
+        }
+        as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+        //as.setHelmet(new ItemStack(team.getTeamColor().getGlass()));
     }
     
     

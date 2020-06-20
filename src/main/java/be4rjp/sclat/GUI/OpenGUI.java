@@ -160,10 +160,12 @@ public class OpenGUI {
         
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
-                if (slotnum <= 17){
-                    inv.setItem(slotnum, CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()));
+                if(p.getLocation().distance(player.getLocation()) > 10){
+                    if (slotnum <= 17){
+                        inv.setItem(slotnum, CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()));
+                    }
+                    slotnum++;
                 }
-                slotnum++;
             }
         }
         for(ArmorStand as : DataMgr.getBeaconMap().values()){

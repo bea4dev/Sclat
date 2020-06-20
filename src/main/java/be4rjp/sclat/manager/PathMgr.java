@@ -8,9 +8,13 @@ import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
+import net.minecraft.server.v1_13_R1.EnumItemSlot;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -71,7 +75,11 @@ public class PathMgr {
                     as.setSmall(true);
                     as.setCustomName("Path");
                     as.setCustomNameVisible(false);
-                    as.setHelmet(new ItemStack(Material.WHITE_STAINED_GLASS));
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(as.getWorld() != target.getWorld())
+                            continue;
+                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS))));
+                    }
                     DataMgr.addPathArmorStandList(as);
                     path.setArmorStand(as);
                 }
