@@ -16,6 +16,7 @@ import net.minecraft.server.v1_13_R1.World;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
@@ -59,7 +60,7 @@ public class SuperJumpMgr {
         RayTrace rayTrace1 = new RayTrace(from.toVector(), vec);
         ArrayList<Vector> positions = rayTrace1.traverse(from.distance(to), 1);
 
-        double coef = 0.08;
+        double coef = 0.1 / Math.pow(from.distance(to) / 40, 2);
         /*
         ray : for(int i = 1; i < positions.size();i++){
             Location position = positions.get(i).toLocation(player.getLocation().getWorld());
@@ -77,7 +78,7 @@ public class SuperJumpMgr {
             public void run(){
                 Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                 double py = (Math.pow(Math.abs((positions.size() / 2) - i), 2) * -1 * coef) + (Math.pow(positions.size() / 2, 2) * coef);
-                double y = py > 50 ? 50 + py / 2.8 : py;
+                double y = py > 100 ? 100 + py / 2.8 : py;
                 Location tloc = new Location(p.getWorld(), position.getX(), y + position.getY(), position.getZ());
                 Vector pvec = new Vector(tloc.getX() - p.getLocation().getX(), tloc.getY() - p.getLocation().getY(), tloc.getZ() - p.getLocation().getZ()).multiply(0.17);
                 p.setVelocity(pvec);

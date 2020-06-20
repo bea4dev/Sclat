@@ -154,7 +154,9 @@ public class OpenGUI {
         ItemMeta ism = is.getItemMeta();
         ism.setDisplayName("リスポーン地点");
         is.setItemMeta(ism);
-        inv.setItem(0, is);
+        if(DataMgr.getPlayerData(player).getMatchLocation().getWorld() == player.getWorld())
+            if(player.getLocation().distance(DataMgr.getPlayerData(player).getMatchLocation()) > 10)
+                inv.setItem(0, is);
         
         int slotnum = 1;
         
@@ -172,14 +174,18 @@ public class OpenGUI {
             if(as.getCustomName().equals("21")){
                 Player p = DataMgr.getArmorStandPlayer(as);
                 if(DataMgr.getPlayerData(player).getTeam() == DataMgr.getPlayerData(p).getTeam()){
-                    ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
-                    ItemMeta im = item.getItemMeta();
-                    im.setDisplayName(p.getName());
-                    item.setItemMeta(im);
-                    if (slotnum <= 17){
-                        inv.setItem(slotnum, item);
+                    if(as.getWorld() == player.getWorld()){
+                        if(as.getLocation().distance(player.getLocation()) > 10){
+                            ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
+                            ItemMeta im = item.getItemMeta();
+                            im.setDisplayName(p.getName());
+                            item.setItemMeta(im);
+                            if (slotnum <= 17){
+                                inv.setItem(slotnum, item);
+                            }
+                            slotnum++;
+                        }
                     }
-                    slotnum++;
                 }
             }
         }
