@@ -49,6 +49,7 @@ public class PlayerData {
     private boolean isUsingManeuver = false;
     private boolean issliding = false;
     private int gearNumber = 0;
+    private boolean isUsingJetPack = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -129,6 +130,8 @@ public class PlayerData {
     
     public int getGearNumber(){return this.gearNumber;}
     
+    public boolean getIsUsingJetPack(){return this.isUsingJetPack;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -202,6 +205,8 @@ public class PlayerData {
     
     public void setGearNumber(int i){this.gearNumber = i;}
     
+    public void setIsUsingJetPack(boolean is){this.isUsingJetPack = is;}
+    
     
     public void addKillCount(){this.killcount++;}
     
@@ -236,6 +241,7 @@ public class PlayerData {
         this.isSneak = false;
         this.isUsingManeuver = false;
         this.issliding = false;
+        this.isUsingJetPack = false;
     }
     
 }

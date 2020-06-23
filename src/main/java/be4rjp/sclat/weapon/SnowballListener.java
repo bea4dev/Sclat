@@ -111,6 +111,60 @@ public class SnowballListener implements Listener {
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getDamager())){
             if(event.getEntity().getCustomName() == null)
                 DataMgr.setSnowballIsHit((Snowball)event.getDamager(), true);
+            else if(event.getEntity().getCustomName().equals("JetPack")){
+                Projectile projectile = (Projectile)event.getDamager();
+                Player shooter = (Player)projectile.getShooter();
+                if(event.getEntity() instanceof Player){
+                    Player target = (Player)event.getEntity();
+                    if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                        if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
+                            SPWeaponMgr.addSPCharge(shooter);
+                        if(DataMgr.getPlayerData(target).getArmor() > 40){
+                            Vector vec = projectile.getVelocity();
+                            Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
+                            target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                        }
+                        
+                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 20){
+                            DamageMgr.SclatGiveDamage(target, 20);
+                            PaintMgr.Paint(target.getLocation(), shooter, true);
+                        }else{
+                            target.setGameMode(GameMode.SPECTATOR);
+                            DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
+                            PaintMgr.Paint(target.getLocation(), shooter, true);
+                        }
+                        
+                        //AntiNoDamageTime
+                        BukkitRunnable task = new BukkitRunnable(){
+                            Player p = target;
+                            @Override
+                            public void run(){
+                                target.setNoDamageTicks(0);
+                            }
+                        };
+                        task.runTaskLater(Main.getPlugin(), 1);
+
+                        Timer timer = new Timer(false);
+                        TimerTask t = new TimerTask(){
+                            Player p = target;
+                            @Override
+                            public void run(){
+                                try{
+                                    target.setNoDamageTicks(0);
+                                    timer.cancel();
+                                }catch(Exception e){
+                                    timer.cancel();
+                                }
+                            }
+                        };
+                        timer.schedule(t, 25);
+
+                    }
+                }else if(event.getEntity() instanceof ArmorStand){
+                    ArmorStand as = (ArmorStand) event.getEntity();
+                    ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
+                }
+            }
         }else{
             Projectile projectile = (Projectile)event.getDamager();
             Player shooter = (Player)projectile.getShooter();
@@ -146,7 +200,7 @@ public class SnowballListener implements Listener {
                             PaintMgr.Paint(target.getLocation(), shooter, true);
                         }
                     }
-                    //AntiDamageTime
+                    //AntiNoDamageTime
                     BukkitRunnable task = new BukkitRunnable(){
                         Player p = target;
                         @Override

@@ -3,6 +3,7 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.spweapon.JetPack;
 import be4rjp.sclat.weapon.subweapon.Beacon;
 import be4rjp.sclat.weapon.subweapon.KBomb;
 import be4rjp.sclat.weapon.subweapon.Poison;
@@ -73,6 +74,16 @@ public class SubWeaponMgr {
         PlayerData data = DataMgr.getPlayerData(player);
         if(!data.getCanUseSubWeapon()) return;
         if(player.getGameMode().equals(GameMode.SPECTATOR)) return;
+        
+        switch (name) {
+            case "右クリックで弾を発射":
+                JetPack.ShootJetPack(player);
+                data.setCanUseSubWeapon(false);
+                break;
+        }
+        
+        if(data.getIsUsingJetPack()) return;
+        
         switch (name) {
             case "スプラッシュボム":
                 SplashBomb.SplashBomRunnable(player);

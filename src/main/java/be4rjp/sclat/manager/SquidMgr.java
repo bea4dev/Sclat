@@ -96,19 +96,21 @@ public class SquidMgr {
                         if(data.getWeaponClass().getMainWeapon().getIsManeuver())
                             p.getInventory().setItem(40, new ItemStack(Material.AIR));
                     }                                                                      
+                    if(data.getIsUsingJetPack())
+                        p.setFlySpeed(0.1F);
                     
-                        if(p.getExp() <= (0.99F - (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)))){
-                            p.setExp(p.getExp() + (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)));
-                        }
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-                        p.setFoodLevel(20);                                                   
-                        p.setSprinting(true);
-                        final double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
-                        if(!DataMgr.getPlayerData(p).getPoison())
-                            p.setWalkSpeed((float)speed);
-                        else
-                            p.setWalkSpeed((float)(speed - speed / 3));
+                    if(p.getExp() <= (0.99F - (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)))){
+                        p.setExp(p.getExp() + (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)));
+                    }
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
+                    p.setFoodLevel(20);                                                   
+                    p.setSprinting(true);
+                    final double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
+                    if(!DataMgr.getPlayerData(p).getPoison())
+                        p.setWalkSpeed((float)speed);
+                    else
+                        p.setWalkSpeed((float)(speed - speed / 3));
                         
                         
                     
@@ -143,7 +145,7 @@ public class SquidMgr {
                             p.setWalkSpeed((float)(speed - speed / 3));
                     }
 
-                    if(!p.getGameMode().equals(GameMode.CREATIVE)){
+                    if(!p.getGameMode().equals(GameMode.CREATIVE) && !data.getIsUsingJetPack()){
                         p.setAllowFlight(false);
                         p.setFlying(false);
                     }

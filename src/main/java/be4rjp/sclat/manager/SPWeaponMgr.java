@@ -9,6 +9,7 @@ import be4rjp.sclat.weapon.spweapon.AirStrike;
 import be4rjp.sclat.weapon.spweapon.Amehurasi;
 import be4rjp.sclat.weapon.spweapon.Barrier;
 import be4rjp.sclat.weapon.spweapon.BombRush;
+import be4rjp.sclat.weapon.spweapon.JetPack;
 import be4rjp.sclat.weapon.spweapon.MegaLaser;
 import be4rjp.sclat.weapon.spweapon.MultiMissile;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
@@ -70,7 +71,7 @@ public class SPWeaponMgr {
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
-                    if(!data.getWeaponClass().getSPWeaponName().equals("インクストライク"))
+                    if(!(data.getWeaponClass().getSPWeaponName().equals("インクストライク") || data.getWeaponClass().getSPWeaponName().equals("ジェットパック")))
                         p.getInventory().setItem(4, new ItemStack(Material.AIR));
                     DataMgr.getPlayerData(p).setIsSP(false);
                 }
@@ -185,6 +186,13 @@ public class SPWeaponMgr {
                 is6.setItemMeta(ism6);
                 p.getInventory().setItem(4, is6);
                 break;
+            case "ジェットパック":
+                ItemStack is7 = new ItemStack(Material.QUARTZ);
+                ItemMeta ism7 = is7.getItemMeta();
+                ism7.setDisplayName("ジェットパック");
+                is7.setItemMeta(ism7);
+                p.getInventory().setItem(4, is7);
+                break;
         }
     }
     
@@ -233,6 +241,12 @@ public class SPWeaponMgr {
                 break;
             case "マルチミサイル":
                 MultiMissile.MMLockRunnable(player);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "ジェットパック":
+                JetPack.JetPackRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);

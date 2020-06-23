@@ -67,8 +67,10 @@ public class SquidListenerMgr {
                         if(!data.getIsSquid() || block.getType().equals(Material.AIR))
                             continue;
                         data.setIsOnInk(true);
-                        player.setAllowFlight(false);
-                        player.setFlying(false);
+                        if(!data.getIsUsingJetPack()){
+                            player.setAllowFlight(false);
+                            player.setFlying(false);
+                        }
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         player.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, player.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
                         return;
@@ -78,7 +80,9 @@ public class SquidListenerMgr {
         }
             
         data.setIsOnInk(false);
-        player.setAllowFlight(false);
-        player.setFlying(false);
+        if(!data.getIsUsingJetPack()){
+            player.setAllowFlight(false);
+            player.setFlying(false);
+        }
     }
 }
