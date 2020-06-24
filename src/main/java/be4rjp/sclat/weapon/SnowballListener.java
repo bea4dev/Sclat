@@ -45,17 +45,25 @@ public class SnowballListener implements Listener {
                 if(event.getHitBlock() != null)
                     DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
                 if(event.getHitEntity() != null){
-                    Snowball ball = (Snowball)event.getEntity();
-                    Vector vec = ball.getVelocity();
-                    Location loc = ball.getLocation();
-                    Snowball ball2 = (Snowball)ball.getWorld().spawnEntity(new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ()), EntityType.SNOWBALL);
-                    ball2.setVelocity(vec);
-                    ball2.setCustomName(ball.getCustomName());
-                    DataMgr.getSnowballNameMap().put(ball.getCustomName(), ball2);
-                    DataMgr.setSnowballIsHit(ball2, false);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
-                        connection.sendPacket(new PacketPlayOutEntityDestroy(ball2.getEntityId()));
+                    if(event.getEntity().getCustomName() == null){
+                        DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
+                    }else{
+                        if(event.getEntity().getCustomName().equals("JetPack")){
+                            DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
+                            return;
+                        }
+                        Snowball ball = (Snowball)event.getEntity();
+                        Vector vec = ball.getVelocity();
+                        Location loc = ball.getLocation();
+                        Snowball ball2 = (Snowball)ball.getWorld().spawnEntity(new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ()), EntityType.SNOWBALL);
+                        ball2.setVelocity(vec);
+                        ball2.setCustomName(ball.getCustomName());
+                        DataMgr.getSnowballNameMap().put(ball.getCustomName(), ball2);
+                        DataMgr.setSnowballIsHit(ball2, false);
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
+                            connection.sendPacket(new PacketPlayOutEntityDestroy(ball2.getEntityId()));
+                        }
                     }
                 } 
             }

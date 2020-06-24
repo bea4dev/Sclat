@@ -105,6 +105,9 @@ public class JetPack {
                 Location rdl = loc2.clone().add(0, -0.5, 0);
                 Location lul = loc3.clone().add(0, -0.1, 0);
                 Location ldl = loc3.clone().add(0, -0.5, 0);
+                
+                PaintMgr.PaintHightestBlock(loc2, player, false, true);
+                PaintMgr.PaintHightestBlock(loc3, player, false, true);
 
                 //effect
                 RayTrace rayTrace1 = new RayTrace(loc2.clone().add(0, -0.5, 0).toVector(), new Vector(0, -1, 0));
@@ -215,7 +218,7 @@ public class JetPack {
                         as.remove();
                     p.setFlySpeed(0.1F);
                     p.getInventory().clear();
-                    WeaponClassMgr.setWeaponClass(p);
+                    //WeaponClassMgr.setWeaponClass(p);
                     cancel();
                     return;
                 }
@@ -390,6 +393,6 @@ public class JetPack {
                 DataMgr.getPlayerData(player).setCanUseSubWeapon(true);
             }
         };
-        cooltime.runTaskLater(Main.getPlugin(), 10);
+        cooltime.runTaskLater(Main.getPlugin(), 20);
     }
 }

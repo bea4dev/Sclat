@@ -47,6 +47,10 @@ public class MainWeaponMgr {
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".SlidingShootTick"))
                 slST = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".SlidingShootTick");
             
+            double cr = 1.0;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".ChargeRatio"))
+                cr = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".ChargeRatio");
+            
             
             
             
@@ -80,6 +84,7 @@ public class MainWeaponMgr {
             mw.setHudeRandom(huder);
             mw.setIsManeuver(man);
             mw.setSlidingShootTick(slST);
+            mw.setChargeRatio(cr);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

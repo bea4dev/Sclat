@@ -52,7 +52,7 @@ public class SplashBomb {
 
 
 
-                    if(gc == 40){
+                    if(gc == 30){
                         //爆発音
                         player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
 

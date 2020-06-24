@@ -68,7 +68,7 @@ public class Charger {
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
                     RayTrace rayTrace = new RayTrace(p.getEyeLocation().toVector(),p.getEyeLocation().getDirection());
-                    ArrayList<Vector> positions = rayTrace.traverse(charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(),0.7);
+                    ArrayList<Vector> positions = rayTrace.traverse((int)((double)charge * (double)data.getWeaponClass().getMainWeapon().getChargeRatio() * (double)data.getWeaponClass().getMainWeapon().getDistanceTick()),0.7);
                     check : for(int i = 0; i < positions.size();i++){
                         Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                         Block block = player.getWorld().getBlockAt(position);
@@ -95,11 +95,12 @@ public class Charger {
                         player.removePotionEffect(PotionEffectType.SLOW);
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP) * charge));
-                        Charger.Shoot(p, charge / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * charge);
+                        Charger.Shoot(p, (int)((double)charge * (double)data.getWeaponClass().getMainWeapon().getChargeRatio() * (double)data.getWeaponClass().getMainWeapon().getDistanceTick()), data.getWeaponClass().getMainWeapon().getDamage() * charge);
                     }else{
                         int reach = (int)(p.getExp() / data.getWeaponClass().getMainWeapon().getNeedInk());
                         if(reach >= 2){
-                            Charger.Shoot(p, reach / 2 * data.getWeaponClass().getMainWeapon().getDistanceTick(), data.getWeaponClass().getMainWeapon().getDamage() * reach);
+                            //p.sendMessage(String.valueOf(data.getWeaponClass().getMainWeapon().getChargeRatio()));
+                            Charger.Shoot(p, (int)((double)reach  * (double)data.getWeaponClass().getMainWeapon().getChargeRatio() * (double)data.getWeaponClass().getMainWeapon().getDistanceTick()), data.getWeaponClass().getMainWeapon().getDamage() * reach);
                             p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() * reach / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
                         }else
                             p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
@@ -119,7 +120,7 @@ public class Charger {
     }
     
     public static void Shoot(Player player, int reach, double damage){
-        
+        //player.sendMessage(String.valueOf(reach));
         
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 5);
         RayTrace rayTrace = new RayTrace(player.getEyeLocation().toVector(),player.getEyeLocation().getDirection());

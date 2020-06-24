@@ -109,13 +109,13 @@ public class OpenGUI {
         ItemMeta nmeta = n.getItemMeta();
         nmeta.setDisplayName("ギア変更 / GEAR");
         n.setItemMeta(nmeta);
-        inv.setItem(11, n);
+        inv.setItem(15, n);
         
         ItemStack t = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
         ItemMeta tmeta = t.getItemMeta();
         tmeta.setDisplayName("武器変更 / WEAPON");
         t.setItemMeta(tmeta);
-        inv.setItem(15, t);
+        inv.setItem(11, t);
         
         
         player.openInventory(inv);
@@ -208,7 +208,7 @@ public class OpenGUI {
             lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
-            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
+            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
                 shooter.setItem(slotnum, item);
                 slotnum++;
             }
@@ -242,7 +242,7 @@ public class OpenGUI {
             lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
-            if (slotnum <= 44 && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger")){
+            if (slotnum <= 44 && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner")){
                 charger.setItem(slotnum, item);
                 slotnum++;
             }
@@ -324,7 +324,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
+                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 shooter.setItem(slotnum, item);
@@ -412,7 +412,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger")){
+                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 charger.setItem(slotnum, item);

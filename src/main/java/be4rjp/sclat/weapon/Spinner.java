@@ -53,9 +53,13 @@ public class Spinner {
                 }
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
-                        SpinnerShootRunnable(charge, p);
+                        SpinnerShootRunnable((int)(charge * data.getWeaponClass().getMainWeapon().getChargeRatio()), p);
                     }else{
-                        p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
+                        int reach = (int)(p.getExp() / data.getWeaponClass().getMainWeapon().getNeedInk());
+                        if(reach >= 2){
+                            SpinnerShootRunnable((int)(reach * data.getWeaponClass().getMainWeapon().getChargeRatio()), p);
+                        }else
+                            p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
@@ -79,10 +83,10 @@ public class Spinner {
             @Override
             public void run(){
                 if(c == charge || !p.isOnline() || DataMgr.getPlayerData(p).getIsSquid()){
-                    DataMgr.getPlayerData(player).setCanCharge(true);
+                    DataMgr.getPlayerData(p).setCanCharge(true);
                     cancel();
                 }
-                Spinner.Shoot(p, charge);
+                Spinner.Shoot(p, (int)(charge / DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getChargeRatio()));
                 c++;
             }
         };

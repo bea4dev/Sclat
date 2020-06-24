@@ -344,6 +344,7 @@ public class Roller {
                     vec.add(new Vector(Math.random() * random / 4 - random/8, Math.random() * random, Math.random() * random / 4 - random/8));
                 if(!data.getWeaponClass().getMainWeapon().getCanTatehuri())
                     vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
+                //player.sendMessage(String.valueOf(player.isOnGround()));
             }
         }else{
             vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));

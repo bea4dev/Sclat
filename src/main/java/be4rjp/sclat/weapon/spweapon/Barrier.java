@@ -24,7 +24,7 @@ public class Barrier {
         DataMgr.getPlayerData(player).setIsUsingSP(true);
         PlayerData data = DataMgr.getPlayerData(player);
         data.setArmor(Double.MAX_VALUE);
-        SPWeaponMgr.setSPCoolTimeAnimation(player, 120);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 80);
         
         //エフェクトとアーマー解除
         BukkitRunnable task = new BukkitRunnable(){
@@ -48,7 +48,7 @@ public class Barrier {
                                     o_player.spawnParticle(Particle.REDSTONE, e_loc, 1, 0, 0, 0, 70, dustOptions);
                     }
                 }
-                if(c == 30){
+                if(c == 20){
                     data.setArmor(0);
                     p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     DataMgr.getPlayerData(player).setIsUsingSP(false);

@@ -153,11 +153,11 @@ public class MegaLaser {
                         int r = 1;
 
                         if(i == 1)
-                            r = 2;
+                            r = 1;
                         if(i == 2)
-                            r = 4;
+                            r = 3;
                         if(i >= 3)
-                            r = 6;
+                            r = 5;
 
                         RayTrace rayTrace2 = new RayTrace(position.toVector(), new Vector(v.getZ() * -1, 0, v.getX()));
                         ArrayList<Vector> positions2 = rayTrace2.traverse(10, 0.5);
@@ -214,11 +214,11 @@ public class MegaLaser {
                             int r = 1;
 
                             if(i == 2)
-                                r = 2;
+                                r = 1;
                             if(i == 3)
-                                r = 4;
+                                r = 3;
                             if(i >= 4)
-                                r = 6;
+                                r = 5;
 
                             RayTrace rayTrace2 = new RayTrace(position.toVector(), new Vector(v.getZ() * -1, 0, v.getX()));
                             ArrayList<Vector> positions2 = rayTrace2.traverse(10, 0.5);
@@ -260,7 +260,7 @@ public class MegaLaser {
                     for(int i = 1; i < positions4.size();i++){
                         Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
                         if(i > 3){//攻撃判定
-                            double maxDist = 6;
+                            double maxDist = 5;
                             double damage = 7.5;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())

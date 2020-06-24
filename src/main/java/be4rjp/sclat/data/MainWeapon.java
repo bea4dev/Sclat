@@ -35,6 +35,7 @@ public class MainWeapon {
     private int money;
     private boolean isManeuver = false;
     private int slidingshoottick = 0;
+    private double chargeratio = 1.0;
     
     
     
@@ -94,6 +95,8 @@ public class MainWeapon {
     
     public int getSlidingShootTick(){return this.slidingshoottick;}
     
+    public double getChargeRatio(){return this.chargeratio;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -148,5 +151,7 @@ public class MainWeapon {
     public void setIsManeuver(boolean is){this.isManeuver = is;}
     
     public void setSlidingShootTick(int i){this.slidingshoottick = i;}
+    
+    public void setChargeRatio(double r){this.chargeratio = r;}
     
 }
