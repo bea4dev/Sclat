@@ -71,6 +71,9 @@ public class Slosher {
         vec.add(new Vector(Math.random() * random - random/2, Math.random() * random/1.5 - random/3, Math.random() * random - random/2));
         ball.setVelocity(vec);
         ball.setShooter(player);
+        String name = String.valueOf(Main.getNotDuplicateNumber());
+        ball.setCustomName(name);
+        DataMgr.getMainSnowballNameMap().put(name, ball);
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
             int tick = distick;
@@ -80,6 +83,10 @@ public class Slosher {
             @Override
             public void run(){
                 try{
+                    inkball = DataMgr.getMainSnowballNameMap().get(name);
+                        
+                        if(!inkball.equals(ball))
+                            i++;
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
                             continue;

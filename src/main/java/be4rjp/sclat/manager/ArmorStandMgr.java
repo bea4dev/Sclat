@@ -4,6 +4,7 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Path;
+import be4rjp.sclat.data.SplashShieldData;
 import java.util.Map;
 import java.util.Map.Entry;
 import static org.bukkit.Bukkit.getServer;
@@ -202,6 +203,12 @@ public class ArmorStandMgr {
     public static void giveDamageArmorStand(ArmorStand as, double damage, Player shooter){
         if(as.getCustomName() == null)
             return;
+        if(as.getCustomName().equals("SplashShield")){
+            SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand(as);
+            if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+                ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+            return;
+        }
         
         if(as.getCustomName().equals("Path")){
             for (Path path : DataMgr.getPlayerData(shooter).getMatch().getMapData().getPathList()){

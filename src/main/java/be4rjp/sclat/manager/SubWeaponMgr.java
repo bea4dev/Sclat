@@ -10,6 +10,7 @@ import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.Sensor;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
+import be4rjp.sclat.weapon.subweapon.SplashShield;
 import be4rjp.sclat.weapon.subweapon.Sprinkler;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -64,6 +65,11 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("スプリンクラー");
                 break;
+            case "スプラッシュシールド":
+                is = new ItemStack(Material.ACACIA_FENCE);
+                ism = is.getItemMeta();
+                ism.setDisplayName("スプラッシュシールド");
+                break;
         }
         is.setItemMeta(ism);
         //player.getInventory().setItem(2, is);  
@@ -111,6 +117,10 @@ public class SubWeaponMgr {
                 break;
             case "スプリンクラー":
                 Sprinkler.SprinklerRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "スプラッシュシールド":
+                SplashShield.SplashShieldThrowRunnable(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

@@ -60,7 +60,7 @@ public class QuickBomb {
                         bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
                         bom.setItemMeta(bom_m);
                         drop = p.getWorld().dropItem(p.getEyeLocation(), bom);
-                        drop.setVelocity(p_vec);
+                        drop.setVelocity(p_vec.clone().multiply(0.9));
                         //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
                         ball = player.launchProjectile(Snowball.class);
                         ball.setVelocity(new Vector(0, 0, 0));

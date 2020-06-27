@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
@@ -68,6 +69,58 @@ public class SnowballListener implements Listener {
                 } 
             }
             return;
+        }
+        
+        if(event.getEntity().getCustomName() != null){
+            if(DataMgr.getMainSnowballNameMap().containsKey(event.getEntity().getCustomName())){
+                if(event.getEntity() instanceof Snowball){
+                    if(event.getHitEntity() != null){
+                        if(event.getHitEntity() instanceof ArmorStand){
+                            if(event.getHitEntity().getCustomName() != null){
+                                if(event.getHitEntity().getCustomName().equals("SplashShield")){
+                                    SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)event.getHitEntity());
+                                    Snowball ball = (Snowball)event.getEntity();
+                                    Player shooter = (Player)ball.getShooter();
+                                    //if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+                                        //ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                                    if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+                                        return;
+                                    Vector vec = ball.getVelocity();
+                                    Location loc = ball.getLocation();
+                                    Snowball ball2 = (Snowball)ball.getWorld().spawnEntity(new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ()), EntityType.SNOWBALL);
+                                    ball2.setShooter(shooter);
+                                    ball2.setVelocity(vec);
+                                    ball2.setCustomName(ball.getCustomName());
+                                    DataMgr.getMainSnowballNameMap().put(ball.getCustomName(), ball2);
+                                }
+                            }
+                        }/*else{
+                            Snowball ball = (Snowball)event.getEntity();
+                            Player shooter = (Player)ball.getShooter();
+                            if(event.getHitEntity() instanceof Player){  
+                                Player target = (Player)event.getHitEntity();
+                                if(DataMgr.getPlayerData(target).getTeam() != DataMgr.getPlayerData(shooter).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                    if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
+                                        SPWeaponMgr.addSPCharge(shooter);
+                                    if(DataMgr.getPlayerData(target).getArmor() > 40){
+                                        Vector vec = ball.getVelocity();
+                                        Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
+                                        target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                                    }
+                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
+                                        DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
+                                        PaintMgr.Paint(target.getLocation(), shooter, true);
+                                    }else{
+                                        target.setGameMode(GameMode.SPECTATOR);
+                                        DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
+                                        PaintMgr.Paint(target.getLocation(), shooter, true);
+                                    }
+                                }
+                            }
+                        }*/
+                    }
+                }
+            }
         }
 
         if(event.getEntity() instanceof Snowball){
@@ -203,8 +256,19 @@ public class SnowballListener implements Listener {
                             target.setGameMode(GameMode.SPECTATOR);
                             if(projectile.getCustomName().equals("Sprinkler"))
                                 DeathMgr.PlayerDeathRunnable(target, shooter, "subWeapon");
-                            if(projectile.getCustomName().equals("Amehurasi"))
+                            else if(projectile.getCustomName().equals("Amehurasi"))
                                 DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
+                            else{
+                                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
+                                    DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
+                                    PaintMgr.Paint(target.getLocation(), shooter, true);
+                                }else{
+                                    target.setGameMode(GameMode.SPECTATOR);
+                                    DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
+                                    PaintMgr.Paint(target.getLocation(), shooter, true);
+                                }
+                            }
+                                
                             PaintMgr.Paint(target.getLocation(), shooter, true);
                         }
                     }

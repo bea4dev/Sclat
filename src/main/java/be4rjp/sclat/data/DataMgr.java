@@ -33,12 +33,17 @@ public class DataMgr {
     private static Map<Player, ArmorStand> beacon = new HashMap<>();
     private static Map<Player, ArmorStand> sprinkler = new HashMap<>();
     private static Map<Projectile, Boolean> snowball = new HashMap<>();
+    private static Map<Projectile, Boolean> msnowball = new HashMap<>();
     private static Map<Block, Sponge> spongemap = new HashMap<>();
     private static Map<String, Snowball> sb = new HashMap<>();
+    private static Map<String, Snowball> msb = new HashMap<>();
+    private static Map<Player, SplashShieldData> sspm = new HashMap<>();
+    private static Map<ArmorStand, SplashShieldData> ssam = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     public static List<Block> rblist = new ArrayList<>();
     public static List<ArmorStand> al = new ArrayList<>();
+    public static List<ArmorStand> ssa = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}
@@ -54,9 +59,12 @@ public class DataMgr {
     public static boolean getPlayerIsQuit(String uuid){return playerquit.get(uuid);}
     public static Player getArmorStandPlayer(ArmorStand as){return armorstand.get(as);}
     public static boolean getSnowballIsHit(Projectile ball){return snowball.get(ball);}
+    public static boolean getMainSnowballIsHit(Projectile ball){return msnowball.get(ball);}
     public static ArmorStand getBeaconFromplayer(Player player){return beacon.get(player);}
     public static ArmorStand getSprinklerFromplayer(Player player){return sprinkler.get(player);}
     public static Sponge getSpongeFromBlock(Block block){return spongemap.get(block);}
+    public static SplashShieldData getSplashShieldDataFromPlayer(Player player){return sspm.get(player);}
+    public static SplashShieldData getSplashShieldDataFromArmorStand(ArmorStand as){return ssam.get(as);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -73,9 +81,12 @@ public class DataMgr {
     public static void setPlayerIsQuit(String uuid, boolean is){playerquit.put(uuid, is);}
     public static void setArmorStandPlayer(ArmorStand as, Player player){armorstand.put(as, player);}
     public static void setSnowballIsHit(Projectile ball, boolean is){snowball.put(ball, is);}
+    public static void setMainSnowballIsHit(Projectile ball, boolean is){msnowball.put(ball, is);}
     public static void setBeaconFromPlayer(Player player, ArmorStand as){beacon.put(player, as);}
     public static void setSprinklerFromPlayer(Player player, ArmorStand as){sprinkler.put(player, as);}
     public static void setSpongeWithBlock(Block block, Sponge sponge){spongemap.put(block, sponge);}
+    public static void setSplashShieldDataWithPlayer(Player player, SplashShieldData data){sspm.put(player, data);}
+    public static void setSplashShieldDataWithARmorStand(ArmorStand as, SplashShieldData data){ssam.put(as, data);}
     
     
     public static void addColorList(Color color){list.add(color);}
@@ -92,10 +103,13 @@ public class DataMgr {
     public static Map<String, Boolean> getPlayerIsQuitMap(){return playerquit;}
     public static Map<ArmorStand, Player> getArmorStandMap(){return armorstand;}
     public static Map<Projectile, Boolean> getSnowballIsHitMap(){return snowball;}
+    public static Map<Projectile, Boolean> getMainSnowballIsHitMap(){return msnowball;}
     public static Map<Player, ArmorStand> getBeaconMap(){return beacon;}
     public static Map<Player, ArmorStand> getSprinklerMap(){return sprinkler;}
     public static Map<Block, Sponge> getSpongeMap(){return spongemap;}
     public static Map<String, Snowball> getSnowballNameMap(){return sb;}
+    public static Map<String, Snowball> getMainSnowballNameMap(){return msb;}
+    public static Map<Player, SplashShieldData> getSplashShieldDataMapWithPlayer(){return sspm;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

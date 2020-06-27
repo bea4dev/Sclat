@@ -71,6 +71,9 @@ public class Blaster {
         ball.setVelocity(vec);
         ball.setShooter(player);
         ball.setGravity(false);
+        String name = String.valueOf(Main.getNotDuplicateNumber());
+        ball.setCustomName(name);
+        DataMgr.getMainSnowballNameMap().put(name, ball);
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
             int tick = distick;
@@ -81,6 +84,11 @@ public class Blaster {
             Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
             @Override
             public void run(){
+                inkball = DataMgr.getMainSnowballNameMap().get(name);
+                        
+                    if(!inkball.equals(ball))
+                        i++;
+                
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())

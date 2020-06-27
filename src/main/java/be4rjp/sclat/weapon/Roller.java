@@ -351,6 +351,9 @@ public class Roller {
         }
         ball.setVelocity(vec);
         ball.setShooter(player);
+        String name = String.valueOf(Main.getNotDuplicateNumber());
+        ball.setCustomName(name);
+        DataMgr.getMainSnowballNameMap().put(name, ball);
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
             int tick = distick;
@@ -359,6 +362,10 @@ public class Roller {
             Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
             @Override
             public void run(){
+                inkball = DataMgr.getMainSnowballNameMap().get(name);
+                        
+                    if(!inkball.equals(ball))
+                        i++;
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
                         continue;
