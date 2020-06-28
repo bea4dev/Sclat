@@ -60,7 +60,7 @@ public class SuperJumpMgr {
         RayTrace rayTrace1 = new RayTrace(from.toVector(), vec);
         ArrayList<Vector> positions = rayTrace1.traverse(from.distance(to), 1);
 
-        double coef = 0.1 / Math.pow(from.distance(to) / 40, 2);
+        double coef = 0.16 / Math.pow(from.distance(to) / 40, 2);
         /*
         ray : for(int i = 1; i < positions.size();i++){
             Location position = positions.get(i).toLocation(player.getLocation().getWorld());
