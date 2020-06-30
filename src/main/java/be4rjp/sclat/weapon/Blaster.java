@@ -74,6 +74,7 @@ public class Blaster {
         String name = String.valueOf(Main.getNotDuplicateNumber());
         ball.setCustomName(name);
         DataMgr.getMainSnowballNameMap().put(name, ball);
+        DataMgr.setSnowballHitCount(name, 0);
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
             int tick = distick;
@@ -86,8 +87,10 @@ public class Blaster {
             public void run(){
                 inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
-                    if(!inkball.equals(ball))
-                        i++;
+                    if(!inkball.equals(ball)){
+                        i+=DataMgr.getSnowballHitCount(name);
+                        DataMgr.setSnowballHitCount(name, 0);
+                    }
                 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

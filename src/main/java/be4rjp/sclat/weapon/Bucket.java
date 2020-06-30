@@ -64,18 +64,22 @@ public class Bucket {
         String name = String.valueOf(Main.getNotDuplicateNumber());
         ball.setCustomName(name);
         DataMgr.getMainSnowballNameMap().put(name, ball);
+        DataMgr.setSnowballHitCount(name, 0);
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
             int tick = distick;
             Snowball inkball = ball;
             Player p = player;
+            boolean addedFallVec = false;
             Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
             @Override
             public void run(){
                 inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
-                    if(!inkball.equals(ball))
-                        i++;
+                    if(!inkball.equals(ball)){
+                        i+=DataMgr.getSnowballHitCount(name);
+                        DataMgr.setSnowballHitCount(name, 0);
+                    }
                     
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
@@ -88,8 +92,10 @@ public class Bucket {
                     }
                 }
 
-                if(i == tick)
+                if(i >= tick && !addedFallVec){
                     inkball.setVelocity(fallvec);
+                    addedFallVec = true;
+                }
                 if(i >= tick)
                     inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                 if(i != tick)

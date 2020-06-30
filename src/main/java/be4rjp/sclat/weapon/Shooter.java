@@ -185,20 +185,24 @@ public class Shooter {
                 String name = String.valueOf(Main.getNotDuplicateNumber());
                 ball.setCustomName(name);
                 DataMgr.getMainSnowballNameMap().put(name, ball);
+                DataMgr.setSnowballHitCount(name, 0);
                 BukkitRunnable task = new BukkitRunnable(){
                     int i = 0;
                     int tick = distick;
                     //Vector fallvec;
                     Vector origvec = vec;
                     Snowball inkball = ball;
+                    boolean addedFallVec = false;
                     Player p = player;
                     Vector fallvec = new Vector(inkball.getVelocity().getX(), inkball.getVelocity().getY()  , inkball.getVelocity().getZ()).multiply(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootSpeed()/17);
                     @Override
                     public void run(){
                         inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
-                        if(!inkball.equals(ball))
-                            i++;
+                        if(!inkball.equals(ball)){
+                            i+=DataMgr.getSnowballHitCount(name);
+                            DataMgr.setSnowballHitCount(name, 0);
+                        }
                         
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -208,8 +212,10 @@ public class Shooter {
                                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
                         
-                        if(i == tick)
+                        if(i >= tick && !addedFallVec){
                             inkball.setVelocity(fallvec);
+                            addedFallVec = true;
+                        }
                         if(i >= tick)
                             inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                         //if(i != tick)

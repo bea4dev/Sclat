@@ -6,6 +6,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
@@ -187,6 +188,16 @@ public class Charger {
             for(Entity as : player.getWorld().getEntities()){
                 if (as.getLocation().distance(position) <= maxDist){
                     if(as instanceof ArmorStand){
+                        if(as.getCustomName() != null){
+                            if(as.getCustomName().equals("SplashShield")){
+                                SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)as);
+                                if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                                    ssdata.setDamage(ssdata.getDamage() + damage);
+                                    as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
+                                    break loop;
+                                }
+                            }
+                        }
                         ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                     }          
                 }

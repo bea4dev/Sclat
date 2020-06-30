@@ -91,6 +91,7 @@ public class SnowballListener implements Listener {
                                     ball2.setShooter(shooter);
                                     ball2.setVelocity(vec);
                                     ball2.setCustomName(ball.getCustomName());
+                                    DataMgr.addSnowballHitCount(ball.getCustomName());
                                     DataMgr.getMainSnowballNameMap().put(ball.getCustomName(), ball2);
                                 }
                             }

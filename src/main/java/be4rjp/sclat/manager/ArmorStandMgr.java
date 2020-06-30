@@ -205,8 +205,10 @@ public class ArmorStandMgr {
             return;
         if(as.getCustomName().equals("SplashShield")){
             SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand(as);
-            if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+            if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam()){
                 ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
+            }
             return;
         }
         

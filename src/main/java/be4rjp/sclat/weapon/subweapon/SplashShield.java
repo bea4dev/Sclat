@@ -50,7 +50,7 @@ public class SplashShield {
             public void run(){
                 try{
                     if(i == 0){
-                        p.setExp(p.getExp() - 0.49F);
+                        p.setExp(p.getExp() - 0.649F);
                         drop = p.getWorld().dropItem(p.getEyeLocation(), new ItemStack(Material.ACACIA_FENCE));
                         drop.setVelocity(p.getEyeLocation().getDirection().multiply(0.7));
                         yaw = p.getEyeLocation().getYaw();
@@ -104,7 +104,7 @@ public class SplashShield {
                 }
             }
         };
-        if(player.getExp() > 0.5F)
+        if(player.getExp() > 0.65F)
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
@@ -194,6 +194,7 @@ public class SplashShield {
                         int i = 1;
                         for(ArmorStand a : list){
                             DataMgr.setSplashShieldDataWithARmorStand(a, ssdata);
+                            DataMgr.ssa.add(a);
                             a.setVisible(false);
                             a.setBasePlate(false);
                             a.setGravity(false);
@@ -333,7 +334,7 @@ public class SplashShield {
                     }
 
 
-                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 80){
+                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 40){
                         for(ArmorStand a : list)
                             a.remove();
                         list.get(0).getWorld().playSound(list.get(0).getLocation(), Sound.ENTITY_ITEM_BREAK, 0.8F, 0.8F);
