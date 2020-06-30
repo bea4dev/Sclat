@@ -4,7 +4,9 @@ package be4rjp.sclat.manager;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
+import be4rjp.sclat.data.PlayerData;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -93,9 +95,25 @@ public class MainWeaponMgr {
                 mw.setMoney(conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Money"));
             else
                 mw.setMoney(0);
-                
+            
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".InHoldWalkSpeed"))
+                mw.setInHoldSpeed((float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".InHoldWalkSpeed"));
+            else
+                mw.setInHoldSpeed((float)conf.getConfig().getDouble("PlayerWalkSpeed"));
             
             DataMgr.setMainWeapon(weaponname, mw);
         }
+    }
+    
+    public static boolean equalWeapon(Player player){
+        PlayerData data = DataMgr.getPlayerData(player);
+        String wname = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName();
+        if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return false;
+        String itemname = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+        if(itemname.length() >= wname.length())
+            if(wname.equals(itemname.substring(0, wname.length())))
+                return true;
+        return false;
     }
 }

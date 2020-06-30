@@ -352,6 +352,7 @@ public class Roller {
         ball.setVelocity(vec);
         ball.setShooter(player);
         String name = String.valueOf(Main.getNotDuplicateNumber());
+        DataMgr.mws.add(name);
         ball.setCustomName(name);
         DataMgr.getMainSnowballNameMap().put(name, ball);
         DataMgr.setSnowballHitCount(name, 0);

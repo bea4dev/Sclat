@@ -139,7 +139,7 @@ public class Shooter {
                         check = false;
                     }
                 }
-                if(loc.getBlockX() == ploc.getBlockX() && loc.getBlockZ() == ploc.getBlockZ())
+                if(loc.getX() == ploc.getX() && loc.getZ() == ploc.getZ())
                     data.setIsUsingManeuver(true);
                 else
                     data.setIsUsingManeuver(false);
@@ -183,6 +183,7 @@ public class Shooter {
                 ball.setVelocity(vec);
                 ball.setShooter(player);
                 String name = String.valueOf(Main.getNotDuplicateNumber());
+                DataMgr.mws.add(name);
                 ball.setCustomName(name);
                 DataMgr.getMainSnowballNameMap().put(name, ball);
                 DataMgr.setSnowballHitCount(name, 0);

@@ -7,6 +7,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
+import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SubWeaponMgr;
@@ -47,7 +48,7 @@ public class MainWeapon implements Listener{
         Player player = e.getPlayer();
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
-            if(equalWeapon(player)){
+            if(MainWeaponMgr.equalWeapon(player)){
                 PlayerData data = DataMgr.getPlayerData(player);
                 if(data.getCanCharge())
                     data.setTick(0);
@@ -100,7 +101,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void PlayerRightClick(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        if(equalWeapon(player)){
+        if(MainWeaponMgr.equalWeapon(player)){
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getCanCharge())
                 data.setTick(0);
@@ -108,10 +109,16 @@ public class MainWeapon implements Listener{
                 data.setIsHolding(true);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                 Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
+                Burst.BurstCooltime(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                 data.setCanShoot(false);
                 Roller.ShootPaintRunnable(player);
             }  
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
+                Bucket.ShootBucket(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
+                Slosher.ShootSlosher(player);
         }
         event.setCancelled(true);
     }
@@ -119,7 +126,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
         Player player = event.getPlayer();
-        if(equalWeapon(player)){
+        if(MainWeaponMgr.equalWeapon(player)){
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getCanCharge())
                 data.setTick(0);
@@ -127,10 +134,16 @@ public class MainWeapon implements Listener{
                 data.setIsHolding(true);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                 Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
+                Burst.BurstCooltime(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                 data.setCanShoot(false);
                 Roller.ShootPaintRunnable(player);
             }
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
+                Bucket.ShootBucket(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
+                Slosher.ShootSlosher(player);
         }
         event.setCancelled(true);
     }
@@ -138,7 +151,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onArmorStand(PlayerArmorStandManipulateEvent event){
         Player player = event.getPlayer();
-        if(equalWeapon(player)){
+        if(MainWeaponMgr.equalWeapon(player)){
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getCanCharge())
                 data.setTick(0);
@@ -146,10 +159,16 @@ public class MainWeapon implements Listener{
                 data.setIsHolding(true);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                 Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
+                Burst.BurstCooltime(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
                 data.setCanShoot(false);
                 Roller.ShootPaintRunnable(player);
             }  
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
+                Bucket.ShootBucket(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
+                Slosher.ShootSlosher(player);
         }
         event.getPlayerItem().setType(Material.AIR);
         event.setCancelled(true);
@@ -173,14 +192,4 @@ public class MainWeapon implements Listener{
             }
         }
     }
-    
-    public boolean equalWeapon(Player player){
-        PlayerData data = DataMgr.getPlayerData(player);
-        String wname = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName();
-        String itemname = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-        if(wname.equals(itemname.substring(0, wname.length())))
-            return true;
-        return false;
-    }
-   
 }

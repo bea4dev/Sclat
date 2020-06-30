@@ -121,6 +121,7 @@ public class SquidMgr {
                         p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
                         if(data.getWeaponClass().getMainWeapon().getIsManeuver())
                             p.getInventory().setItem(40, DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
+                        p.setSprinting(false);
                     }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))
@@ -130,7 +131,12 @@ public class SquidMgr {
 
                     p.setFoodLevel(4);
                     
-                    final double speed = conf.getConfig().getDouble("PlayerWalkSpeed") * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
+                    double speed = 0.2;
+                    
+                    if(p.getInventory().getItemInMainHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType()))
+                        speed = (double)data.getWeaponClass().getMainWeapon().getInHoldSpeed() * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
+                    else
+                        speed = conf.getConfig().getDouble("PlayerWalkSpeed") * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
                     
                     if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NomalRecovery"))){
                         p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NomalRecovery"));
@@ -144,6 +150,7 @@ public class SquidMgr {
                         if(DataMgr.getPlayerData(p).getPoison())
                             p.setWalkSpeed((float)(speed - speed / 3));
                     }
+                    
 
                     if(!p.getGameMode().equals(GameMode.CREATIVE) && !data.getIsUsingJetPack()){
                         p.setAllowFlight(false);

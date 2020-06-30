@@ -72,6 +72,7 @@ public class Blaster {
         ball.setShooter(player);
         ball.setGravity(false);
         String name = String.valueOf(Main.getNotDuplicateNumber());
+        DataMgr.mws.add(name);
         ball.setCustomName(name);
         DataMgr.getMainSnowballNameMap().put(name, ball);
         DataMgr.setSnowballHitCount(name, 0);

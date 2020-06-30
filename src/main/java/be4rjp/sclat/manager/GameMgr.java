@@ -334,6 +334,10 @@ public class GameMgr implements Listener{
                         BungeeCordMgr.PlayerSendServer(player, "trial");
                         DataMgr.getPlayerData(player).setServerName("Trial");
                         break;
+                    case "Return to lobby":
+                        BungeeCordMgr.PlayerSendServer(player, "lobby");
+                        DataMgr.getPlayerData(player).setServerName("Lobby");
+                        break;
 
                 }
             }

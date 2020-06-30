@@ -4,22 +4,29 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import static be4rjp.sclat.manager.PlayerStatusMgr.getLv;
+import static be4rjp.sclat.manager.PlayerStatusMgr.getMoney;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
+import net.minecraft.server.v1_13_R1.EntityArmorStand;
 import net.minecraft.server.v1_13_R1.EntityEnderPearl;
 import net.minecraft.server.v1_13_R1.EntityPlayer;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityVelocity;
 import net.minecraft.server.v1_13_R1.PacketPlayOutMount;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_13_R1.World;
+import net.minecraft.server.v1_13_R1.WorldServer;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.util.CraftChatMessage;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -60,7 +67,7 @@ public class SuperJumpMgr {
         RayTrace rayTrace1 = new RayTrace(from.toVector(), vec);
         ArrayList<Vector> positions = rayTrace1.traverse(from.distance(to), 1);
 
-        double coef = 0.1 / Math.pow(from.distance(to) / 40, 2);
+        double coef = 0.16 / Math.pow(from.distance(to) / 40, 2);
         /*
         ray : for(int i = 1; i < positions.size();i++){
             Location position = positions.get(i).toLocation(player.getLocation().getWorld());
@@ -100,9 +107,26 @@ public class SuperJumpMgr {
         BukkitRunnable effect = new BukkitRunnable(){
             Player p = player;
             int c = 0;
+            int id;
             @Override
             public void run(){
-                
+                if(c == 0){
+                    WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
+                    EntityArmorStand as = new EntityArmorStand(nmsWorld);
+                    as.setPosition(toloc.getX(), toloc.getY(), toloc.getZ());
+                    as.setInvisible(true);
+                    as.setNoGravity(true);
+                    as.setBasePlate(false);
+                    as.setCustomName(CraftChatMessage.fromStringOrNull(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "↓↓↓  くコ:彡  ↓↓↓"));
+                    as.setCustomNameVisible(true);
+                    as.setSmall(true);
+                    id = as.getBukkitEntity().getEntityId();
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(p.getWorld() == target.getWorld()){
+                            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
+                        }
+                    }
+                }
                 //エフェクト
                 double r = 0.5;
                 double x = to.getX() + r * Math.cos(c);
@@ -111,8 +135,14 @@ public class SuperJumpMgr {
                 Location tl = new Location(p.getWorld(), x, y, z);
                 Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                 p.getWorld().spawnParticle(Particle.REDSTONE, tl, 1, 0, 0.1, 0, 50, dustOptions);
-                if(p.getGameMode().equals(GameMode.ADVENTURE) || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                if(p.getGameMode().equals(GameMode.ADVENTURE) || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(p.getWorld() == target.getWorld()){
+                            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(id));
+                        }
+                    }
                     cancel();
+                }
                 c++;
             }
         };

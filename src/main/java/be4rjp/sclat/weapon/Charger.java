@@ -192,10 +192,12 @@ public class Charger {
                             if(as.getCustomName().equals("SplashShield")){
                                 SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)as);
                                 if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
-                                    ssdata.setDamage(ssdata.getDamage() + damage);
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                     as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
                                     break loop;
                                 }
+                            }else{
+                                break loop;
                             }
                         }
                         ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
