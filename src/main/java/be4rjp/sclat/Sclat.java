@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
  */
 
 public class Sclat {
+    
     public static void setBlockByNMS(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
         Location loc = b.getLocation();
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
@@ -25,6 +26,25 @@ public class Sclat {
         IBlockData ibd = block.getBlockData();
         nmsWorld.setTypeAndData(bp, ibd, applyPhysics ? 3 : 2);
     }
+    
+    /*
+    public static void setBlockByNMS(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
+        Location loc = b.getLocation();
+        Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
+        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        ChunkSection cs = nmsChunk.getSections()[y >> 4];
+        IBlockData ibd = block.getBlockData();
+        if (cs == nmsChunk.a()) {
+            cs = new ChunkSection(y >> 4 << 4, false);
+            nmsChunk.getSections()[y >> 4] = cs;
+        }
+
+        cs.getBlocks().setBlock(x & 15, y & 15, z & 15, ibd);
+    }*/
     
     public static void setPlayerPrefix(Player player, String prefix) {
         String name = prefix + player.getDisplayName();

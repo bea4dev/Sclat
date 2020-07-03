@@ -30,6 +30,7 @@ public class BlockUpdater {
                 List<Block> tb = blocks.subList(c, blocks.size());
                 for(Block block : tb){
                     Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                    //block.setType(blocklist.get(block));
                     c++;
                     i++;
                     if(i == maxBlock){
@@ -53,7 +54,7 @@ public class BlockUpdater {
         }
     }
     
-    public void start(){task.runTaskTimer(Main.getPlugin(), 0, 1);}
+    public void start(){task.runTaskTimer(Main.getPlugin(), 0, 2);}
     
     public void stop(){task.cancel();}
     
