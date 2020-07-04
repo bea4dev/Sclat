@@ -123,6 +123,7 @@ public class PathMgr {
                 Location from = path.getFromLocation().clone();
                 Location to = path.getToLocation().clone();
                 Match match = m;
+                int c = 0;
                 @Override
                 public void run(){
                     Team team = path1.getTeam();
@@ -134,11 +135,30 @@ public class PathMgr {
                             }
                         }
                     }
+                    
+                    if(c%10 == 0){
+                        if(team == null){
+                            for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(from.getWorld() == player.getWorld()){
+                                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(path1.getArmorStand().getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS))));
+                                }
+                            }
+                        }else{
+                            for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(from.getWorld() == player.getWorld()){
+                                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(path1.getArmorStand().getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(team.getTeamColor().getGlass()))));
+                                }
+                            }
+                        }
+                    }
+                    
                     if(match.isFinished())
                         cancel();
+                    
+                    c++;
                 }
             };
-            task.runTaskTimer(Main.getPlugin(), 0, 1);
+            task.runTaskTimer(Main.getPlugin(), 2, 1);
         }
     }
 }

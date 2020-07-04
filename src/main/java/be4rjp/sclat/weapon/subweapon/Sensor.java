@@ -121,9 +121,11 @@ public class Sensor {
 
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")){
-                                    ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
-                                }  
+                                if(as.getCustomName() != null){
+                                    if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")&& !as.getCustomName().equals("SplashShield")){
+                                        ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
+                                    }
+                                }
                             }
                         }
 

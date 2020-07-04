@@ -43,6 +43,7 @@ public class SquidMgr {
                     p.setHealth(20);
                     p.setWalkSpeed(0.2F);
                     p.setExp(0);
+                    p.setMaxHealth(20);
                     if(!p.isOp()){
                         p.setAllowFlight(false);
                         p.setFlying(false);

@@ -16,17 +16,22 @@ import be4rjp.sclat.raytrace.RayTrace;
 import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.server.v1_13_R1.EntityArmorStand;
 import net.minecraft.server.v1_13_R1.EnumItemSlot;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_13_R1.PlayerConnection;
+import net.minecraft.server.v1_13_R1.WorldServer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_13_R1.util.CraftChatMessage;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -48,6 +53,7 @@ public class JetPack {
             Player p = player;
             Location ol = player.getLocation();
             int i = 0;
+            int id = 0;
             Vector sv = player.getVelocity();
             Location btl = player.getLocation();
             ArmorStand ru;
@@ -187,6 +193,22 @@ public class JetPack {
                         ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(mu.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BARS))));
                         ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(md.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BARS))));
                     }
+                    
+                    WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
+                    EntityArmorStand as = new EntityArmorStand(nmsWorld);
+                    as.setPosition(ol.getX(), ol.getY(), ol.getZ());
+                    as.setInvisible(true);
+                    as.setNoGravity(true);
+                    as.setBasePlate(false);
+                    as.setCustomName(CraftChatMessage.fromStringOrNull(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + "↓↓↓  くコ:彡  ↓↓↓"));
+                    as.setCustomNameVisible(true);
+                    as.setSmall(true);
+                    id = as.getBukkitEntity().getEntityId();
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(p.getWorld() == target.getWorld()){
+                            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
+                        }
+                    }
                 }
 
                 mu.teleport(mul);
@@ -206,10 +228,22 @@ public class JetPack {
                 btl = p.getLocation();
 
                 if(i == 170 || p.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(p).isInMatch()){
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(p.getWorld() == target.getWorld()){
+                            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(id));
+                        }
+                    }
+                    p.getInventory().clear();
                     if(p.getWorld() == ol.getWorld() && !p.getGameMode().equals(GameMode.SPECTATOR)){
                         if(p.getLocation().distance(ol) > 3){
                             SuperJumpMgr.SuperJumpRunnable(p, ol);
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
+                        }else{
+                            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
+                            Vector vec = new Vector(0, 1, 0);
+                            p.setVelocity(vec);
+                            p.getInventory().clear();
+                            WeaponClassMgr.setWeaponClass(p);
                         }
                     }
                     DataMgr.getPlayerData(p).setIsUsingJetPack(false);
@@ -217,7 +251,6 @@ public class JetPack {
                     for(ArmorStand as : list)
                         as.remove();
                     p.setFlySpeed(0.1F);
-                    p.getInventory().clear();
                     //WeaponClassMgr.setWeaponClass(p);
                     cancel();
                     return;

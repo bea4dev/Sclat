@@ -197,6 +197,7 @@ public class Charger {
                                     break loop;
                                 }
                             }else{
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                 break loop;
                             }
                         }

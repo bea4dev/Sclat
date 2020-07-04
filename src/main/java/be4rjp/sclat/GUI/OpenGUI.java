@@ -90,7 +90,7 @@ public class OpenGUI {
     public static void gearGUI(Player player){
         Inventory inv = Bukkit.createInventory(null, 9, "Gear");
         
-        for(int i = 0; i <= 7;){
+        for(int i = 0; i <= 8;){
             ItemStack n = new ItemStack(Gear.getGearMaterial(i));
             ItemMeta nmeta = n.getItemMeta();
             nmeta.setDisplayName(Gear.getGearName(i));

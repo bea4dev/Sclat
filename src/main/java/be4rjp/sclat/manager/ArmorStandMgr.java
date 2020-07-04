@@ -7,6 +7,8 @@ import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.SplashShieldData;
 import java.util.Map;
 import java.util.Map.Entry;
+import net.minecraft.server.v1_13_R1.EnumItemSlot;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +17,8 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -84,11 +88,20 @@ public class ArmorStandMgr {
         DataMgr.setBeaconFromPlayer(player, as);
         BukkitRunnable effect = new BukkitRunnable(){
             Player p = player;
+            int c = 0;
             @Override
             public void run(){
                 if(as.getCustomName().equals("21")){
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                     p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
+                    if(c % 10 == 0){
+                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(as.getWorld() == player.getWorld()){
+                                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
+                            }
+                        }
+                    }
+                    c++;
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();
@@ -131,11 +144,20 @@ public class ArmorStandMgr {
         DataMgr.setSprinklerFromPlayer(player, as);
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
+            int c = 0;
             @Override
             public void run(){
                 if(as.getCustomName().equals("21")){
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                     p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
+                    if(c % 10 == 0){
+                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(as.getWorld() == player.getWorld()){
+                                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getGlass()))));
+                            }
+                        }
+                    }
+                    c++;
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();

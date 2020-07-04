@@ -91,7 +91,7 @@ public class SplashShield {
                             
                         }
                         SplashShieldData ssdata = new SplashShieldData(p);
-                        SplashShieldRunnable(p, loc, vec, ssdata);
+                        SplashShieldRunnable(p, loc.clone().add(0.5, 0, 0.5), vec, ssdata);
                         drop.remove();
                         cancel();
                         return;

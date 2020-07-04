@@ -200,8 +200,10 @@ public class GameMgr implements Listener{
         data.setMatch(match);
         data.setTeam(match.getTeam0());
         
-        if(!DataMgr.getPlayerIsQuitMap().containsKey(player.getUniqueId().toString()))
-            DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);  
+        if(!DataMgr.getPlayerIsQuitMap().containsKey(player.getUniqueId().toString())){
+            DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), false);
+            DataMgr.pul.add(uuid);
+        }
         
         //player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
     }

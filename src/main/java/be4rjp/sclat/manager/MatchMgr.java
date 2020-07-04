@@ -38,6 +38,7 @@ import org.bukkit.Material;
 import be4rjp.sclat.data.Team;
 import static be4rjp.sclat.manager.PlayerStatusMgr.getRank;
 import be4rjp.sclat.raytrace.RayTrace;
+import be4rjp.sclat.weapon.Gear;
 import be4rjp.sclat.weapon.Spinner;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
@@ -516,7 +517,11 @@ public class MatchMgr {
                         InMatchCounter(p);
                     p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
                     
-                    
+                    if(Gear.getGearInfluence(p, Gear.Type.MAX_HEALTH_UP) == 1.2){
+                        p.setMaxHealth(22);
+                    }else{
+                        p.setMaxHealth(20);
+                    }
 
                     //p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
@@ -807,8 +812,13 @@ public class MatchMgr {
                             }
                         }
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            DataMgr.setPlayerIsQuit(oplayer.getUniqueId().toString(), false);
+                            oplayer.setMaxHealth(20);
                         }
+                        
+                        for(String uuid : DataMgr.pul){
+                            DataMgr.setPlayerIsQuit(uuid, false);
+                        }
+                        
                         DataMgr.getPlayerData(p).getMatch().getBlockUpdater().stop();
                     }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
