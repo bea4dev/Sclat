@@ -20,6 +20,7 @@ public class PlayerSettings {
     private boolean ShowEffect_BombEx = true;
     private boolean ShowEffect_Bomb = true;
     private boolean PlayBGM = true;
+    private boolean doChargeKeep = true;
     
     public PlayerSettings (Player player){this.player = player;}
     
@@ -34,6 +35,7 @@ public class PlayerSettings {
     public boolean ShowEffect_BombEx(){return this.ShowEffect_BombEx;}
     public boolean ShowEffect_Bomb(){return this.ShowEffect_Bomb;}
     public boolean PlayBGM(){return this.PlayBGM;}
+    public boolean doChargeKeep(){return this.doChargeKeep;}
     
     public void S_ShowEffect_Shooter(){this.ShowEffect_Shooter = !ShowEffect_Shooter;}
     public void S_ShowEffect_ChargerLine(){this.ShowEffect_ChargerLine = !ShowEffect_ChargerLine;}
@@ -44,4 +46,5 @@ public class PlayerSettings {
     public void S_ShowEffect_BombEx(){this.ShowEffect_BombEx = !ShowEffect_BombEx;}
     public void S_ShowEffect_Bomb(){this.ShowEffect_Bomb = !ShowEffect_Bomb;}
     public void S_PlayBGM(){this.PlayBGM = !PlayBGM;}
+    public void S_doChargeKeep(){this.doChargeKeep = !doChargeKeep;}
 }

@@ -81,6 +81,7 @@ public class SuperJumpMgr {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             int i = 1;
+            int t = 0;
             @Override
             public void run(){
                 Location position = positions.get(i).toLocation(p.getLocation().getWorld());
@@ -97,9 +98,20 @@ public class SuperJumpMgr {
                     p.closeInventory();
                     p.getInventory().setHeldItemSlot(0);
                 }
+                
+                if (t > 200) {//スタック回避
+                    p.setGameMode(GameMode.ADVENTURE);
+                    WeaponClassMgr.setWeaponClass(p);
+                    p.closeInventory();
+                    p.getInventory().setHeldItemSlot(0);
+                    p.teleport(toloc.clone().add(0, 5, 0));
+                }
+                
                 if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
                     cancel();
                 }
+                
+                t++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);

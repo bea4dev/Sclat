@@ -50,6 +50,7 @@ public class PlayerData {
     private boolean issliding = false;
     private int gearNumber = 0;
     private boolean isUsingJetPack = false;
+    private boolean doChargeKeep = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -132,6 +133,8 @@ public class PlayerData {
     
     public boolean getIsUsingJetPack(){return this.isUsingJetPack;}
     
+    public boolean getDoChargeKeep(){return this.doChargeKeep;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -206,6 +209,9 @@ public class PlayerData {
     public void setGearNumber(int i){this.gearNumber = i;}
     
     public void setIsUsingJetPack(boolean is){this.isUsingJetPack = is;}
+    
+    
+    public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
     
     public void addKillCount(){this.killcount++;}

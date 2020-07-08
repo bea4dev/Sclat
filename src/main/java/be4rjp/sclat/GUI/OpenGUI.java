@@ -708,6 +708,35 @@ public class OpenGUI {
         bombEx_p.setItemMeta(bombEx_p_m);
         inv.setItem(24, bombEx_p);
         
+        
+        ItemStack ck = new ItemStack(Material.GOLDEN_SWORD);
+        ItemMeta ck_m = ck.getItemMeta();
+        ck_m.setDisplayName("チャージキープ");
+        ArrayList<String> ck_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().doChargeKeep())
+            ck_r.add("§a§l[Enable]");
+        else
+            ck_r.add("§7§l[Disable]");
+        ck_m.setLore(ck_r);
+        ck.setItemMeta(ck_m);
+        inv.setItem(16, ck);
+        
+        ItemStack ck_p;
+        if(DataMgr.getPlayerData(player).getSettings().doChargeKeep())
+            ck_p = new ItemStack(Material.LIME_DYE);
+        else
+            ck_p = new ItemStack(Material.GUNPOWDER);
+        ItemMeta ck_p_m = ck_p.getItemMeta();
+        ck_p_m.setDisplayName("チャージキープ");
+        ArrayList<String> ck_p_r = new ArrayList<String>();
+        if(DataMgr.getPlayerData(player).getSettings().doChargeKeep())
+            ck_p_r.add("§a§l[Enable]");
+        else
+            ck_p_r.add("§7§l[Disable]");
+        ck_p_m.setLore(ck_p_r);
+        ck_p.setItemMeta(ck_p_m);
+        inv.setItem(25, ck_p);
+        
         player.openInventory(inv);
     }
 }

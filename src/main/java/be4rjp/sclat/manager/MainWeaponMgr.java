@@ -53,7 +53,9 @@ public class MainWeaponMgr {
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".ChargeRatio"))
                 cr = conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".ChargeRatio");
             
-            
+            boolean ck = false;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".CanChargeKeep"))
+                ck = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".CanChargeKeep");
             
             
             MainWeapon mw = new MainWeapon(weaponname);
@@ -87,6 +89,7 @@ public class MainWeaponMgr {
             mw.setIsManeuver(man);
             mw.setSlidingShootTick(slST);
             mw.setChargeRatio(cr);
+            mw.setCanChargeKeep(ck);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

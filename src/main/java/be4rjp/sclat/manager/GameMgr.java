@@ -75,7 +75,13 @@ public class GameMgr implements Listener{
         String uuid = player.getUniqueId().toString();
         PlayerSettings settings = new PlayerSettings(player);
         
+        String def = "111111111";
+        
         if(conf.getPlayerSettings().contains("Settings." + uuid)){
+            
+            if(conf.getPlayerSettings().getString("Settings." + uuid).length() != def.length())
+                conf.getPlayerSettings().set("Settings." + uuid, def);
+            
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
                 settings.S_ShowEffect_Shooter();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
@@ -92,8 +98,10 @@ public class GameMgr implements Listener{
                 settings.S_ShowEffect_Bomb();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
                 settings.S_ShowEffect_BombEx();
+            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(8,9).equals("0"))
+                settings.S_doChargeKeep();
         }else{
-            conf.getPlayerSettings().set("Settings." + uuid, "11111111");
+            conf.getPlayerSettings().set("Settings." + uuid, def);
         }
             
         data.setSettings(settings);

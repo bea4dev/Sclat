@@ -36,9 +36,9 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.14-R0.1-SNAPSHOT</version>
+            <version>1.13-R0.1-SNAPSHOT</version>
             <type>jar</type>
-        </dependency> 
+        </dependency>
         <dependency>
             <groupId>com.github.koca2000</groupId>
             <artifactId>NoteBlockAPI</artifactId>

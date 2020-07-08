@@ -47,6 +47,7 @@ public class DataMgr {
     public static List<ArmorStand> ssa = new ArrayList<>();
     public static List<String> mws = new ArrayList<>();
     public static List<String> pul = new ArrayList<>();
+    public static List<String> tsl = new ArrayList<>();
     private static List<MapData> maplist = new ArrayList<>();
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}

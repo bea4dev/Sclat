@@ -73,6 +73,7 @@ public class Blaster {
         ball.setGravity(false);
         String name = String.valueOf(Main.getNotDuplicateNumber());
         DataMgr.mws.add(name);
+        DataMgr.tsl.add(name);
         ball.setCustomName(name);
         DataMgr.getMainSnowballNameMap().put(name, ball);
         DataMgr.setSnowballHitCount(name, 0);
@@ -101,7 +102,7 @@ public class Blaster {
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
 
-                if(i == tick){
+                if(i >= tick){
                     //半径
                     double maxDist = data.getWeaponClass().getMainWeapon().getBlasterExHankei();
                     

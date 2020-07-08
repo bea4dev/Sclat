@@ -51,6 +51,16 @@ public class Spinner {
                     w.setItemMeta(wm);
                     p.getInventory().setItem(0, w);
                 }
+                
+                if(charge == max)
+                    if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
+                        if(data.getWeaponClass().getMainWeapon().getCanChargeKeep())
+                            if(data.getSettings().doChargeKeep())
+                                data.setTick(11);
+                
+                if(data.getTick() == 10)
+                    charge = 0;
+                
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         SpinnerShootRunnable((int)(charge * data.getWeaponClass().getMainWeapon().getChargeRatio()), p);

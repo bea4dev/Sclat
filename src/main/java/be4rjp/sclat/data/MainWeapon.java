@@ -37,6 +37,7 @@ public class MainWeapon {
     private int slidingshoottick = 0;
     private double chargeratio = 1.0;
     private float InHoldSpeed = 0.2F;
+    private boolean canChargeKeep = false;
     
     
     
@@ -100,6 +101,8 @@ public class MainWeapon {
     
     public float getInHoldSpeed(){return this.InHoldSpeed;}
     
+    public boolean getCanChargeKeep(){return this.canChargeKeep;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -158,5 +161,7 @@ public class MainWeapon {
     public void setChargeRatio(double r){this.chargeratio = r;}
     
     public void setInHoldSpeed(float s){this.InHoldSpeed = s;}
+    
+    public void setCanChargeKeep(boolean is){this.canChargeKeep = is;}
     
 }

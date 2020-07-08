@@ -6,7 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R1.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_13_R1.PacketPlayOutBlockChange;
+import net.minecraft.server.v1_13_R1.PacketPlayOutMultiBlockChange;
+import net.minecraft.server.v1_13_R1.PacketPlayOutMapChunk;
 import org.bukkit.entity.Player;
+
 
 /**
  *
@@ -25,6 +29,37 @@ public class Sclat {
         BlockPosition bp = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
         IBlockData ibd = block.getBlockData();
         nmsWorld.setTypeAndData(bp, ibd, applyPhysics ? 3 : 2);
+    }
+    
+    public static void setBlockByNMSChunk(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
+        Location loc = b.getLocation();
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
+        Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
+        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        BlockPosition bp = new BlockPosition(x, y, z);
+        IBlockData ibd = block.getBlockData();
+        nmsChunk.a(bp, ibd, true);
+    }
+    
+    public static void sendBlockChangeForAllPlayer(org.bukkit.block.Block b, org.bukkit.Material material){
+        Location loc = b.getLocation();
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
+        BlockPosition bp = new BlockPosition(x, y, z);
+        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
+        IBlockAccess iba = (IBlockAccess)nmsWorld;
+        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(iba, bp);
+        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+            if(target.getWorld() == b.getWorld()){
+                ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
+            }
+        }
     }
     
     /*

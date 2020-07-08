@@ -29,7 +29,19 @@ public class BlockUpdater {
             public void run(){
                 List<Block> tb = blocks.subList(c, blocks.size());
                 for(Block block : tb){
-                    Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                    //Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                    if(block.getLocation().getChunk().isLoaded()){
+                        try{
+                            //Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
+                            Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                        }catch(Exception e){
+                        }
+                    }else{
+                        try {
+                            //Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                        } catch (Exception e) {
+                        }
+                    }
                     //block.setType(blocklist.get(block));
                     c++;
                     i++;
@@ -43,13 +55,47 @@ public class BlockUpdater {
     }
     
     public void setBlock(Block block, Material material){
+        
+        if(this.blocks.contains(block))
+            if(this.blocklist.get(block).equals(material))
+                return;
+        
         if(!this.blocks.contains(block)){
             this.blocklist.put(block, material);
             this.blocks.add(block);
+            
+            if(block.getLocation().getChunk().isLoaded()){
+                try{
+                    Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
+                }catch(Exception e){
+                }
+            }else{
+                try {
+                    Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                    //Main.getPlugin().getServer().broadcastMessage("ChangeBlockByNMS!!");
+                } catch (Exception e) {
+                }
+            }
+            
         }else{
             if(!this.blocklist.get(block).equals(material)){
-                this.blocklist.put(block, material);
+                //this.blocklist.put(block, material);
+                this.blocklist.replace(block, material);
                 this.blocks.add(block);
+                
+                if(block.getLocation().getChunk().isLoaded()){
+                    try{
+                        Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
+                    }catch(Exception e){
+                    }
+                }else{
+                    try {
+                        Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                        //Main.getPlugin().getServer().broadcastMessage("ChangeBlockByNMS!!");
+                    } catch (Exception e) {
+                    }
+                }
+                
             }
         }
     }

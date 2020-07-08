@@ -208,6 +208,9 @@ public class SnowballListener implements Listener {
                             }
                         }
                         if(DataMgr.mws.contains(projectile.getCustomName())){
+                            if(DataMgr.tsl.contains(projectile.getCustomName()))
+                                shooter.playSound(shooter.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.3F, 9F);
+                            
                             if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
                                 DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
                                 PaintMgr.Paint(target.getLocation(), shooter, true);

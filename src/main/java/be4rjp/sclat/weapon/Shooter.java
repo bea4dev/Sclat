@@ -43,7 +43,7 @@ public class Shooter {
                 
                 if(!data.getIsUsingManeuver()){
                     if(data.getTick() < 5 && data.isInMatch()){
-                        Shooter.Shoot(p, false);
+                        Shooter.Shoot(p, false, false);
                         data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                     }
                 }
@@ -69,7 +69,7 @@ public class Shooter {
                 
                 if(data.getIsUsingManeuver()){
                     if(data.getTick() < 5 && data.isInMatch()){
-                        Shooter.Shoot(p, true);
+                        Shooter.Shoot(p, true, false);
                         data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                     }
                 }
@@ -150,7 +150,7 @@ public class Shooter {
         delay.runTaskTimer(Main.getPlugin(), 0, 4);
     }
     
-    public static void Shoot(Player player, boolean slided){
+    public static void Shoot(Player player, boolean slided, boolean sound){
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
@@ -184,6 +184,8 @@ public class Shooter {
                 ball.setShooter(player);
                 String name = String.valueOf(Main.getNotDuplicateNumber());
                 DataMgr.mws.add(name);
+                if(sound)
+                    DataMgr.tsl.add(name);
                 ball.setCustomName(name);
                 DataMgr.getMainSnowballNameMap().put(name, ball);
                 DataMgr.setSnowballHitCount(name, 0);

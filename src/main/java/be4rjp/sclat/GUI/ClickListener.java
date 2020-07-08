@@ -283,6 +283,9 @@ public class ClickListener implements Listener{
                 case "爆発エフェクト":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_BombEx();
                     break;
+                case "チャージキープ":
+                    DataMgr.getPlayerData(player).getSettings().S_doChargeKeep();
+                    break;
             }
             
             OpenGUI.openSettingsUI(player);
@@ -298,8 +301,9 @@ public class ClickListener implements Listener{
             //String E_BGM = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
             String E_B = DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb() ? "1" : "0";
             String E_BEx = DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx() ? "1" : "0";
+            String ck = DataMgr.getPlayerData(player).getSettings().doChargeKeep() ? "1" : "0";
             
-            String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_B + E_BEx;
+            String s_data = B + E_S + E_CL + E_CS + E_RR + E_RS + E_B + E_BEx + ck;
             
             String uuid = player.getUniqueId().toString();
             conf.getPlayerSettings().set("Settings." + uuid, s_data);

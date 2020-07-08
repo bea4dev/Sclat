@@ -91,6 +91,18 @@ public class Charger {
                         }
                     }
                 }
+                
+                if(charge == max)
+                    if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
+                        if(data.getWeaponClass().getMainWeapon().getCanChargeKeep())
+                            if(data.getSettings().doChargeKeep())
+                                data.setTick(11);
+                
+                
+                if(data.getTick() == 10)
+                    charge = 0;
+                
+                
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(player.hasPotionEffect(PotionEffectType.SLOW))
                         player.removePotionEffect(PotionEffectType.SLOW);
@@ -164,10 +176,12 @@ public class Charger {
                             if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                 DamageMgr.SclatGiveStrongDamage(target, damage, player);
                                 PaintMgr.Paint(target.getLocation(), player, true);
+                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1.2F, 1.3F);
                             }else{
                                 target.setGameMode(GameMode.SPECTATOR);
                                 DeathMgr.PlayerDeathRunnable(target, player, "killed");
                                 PaintMgr.Paint(target.getLocation(), player, true);
+                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.3F, 9F);
                             }
 
                             //AntiNoDamageTime
