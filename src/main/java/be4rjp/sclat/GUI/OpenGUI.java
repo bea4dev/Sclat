@@ -368,7 +368,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher"))){
+                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Kasa"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 roller.setItem(slotnum, item);

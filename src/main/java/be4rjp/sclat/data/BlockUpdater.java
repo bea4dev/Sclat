@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -28,19 +29,35 @@ public class BlockUpdater {
             @Override
             public void run(){
                 List<Block> tb = blocks.subList(c, blocks.size());
-                for(Block block : tb){
+                loop : for(Block block : tb){
                     //Sclat.setBlockByNMS(block, blocklist.get(block), true);
                     if(block.getLocation().getChunk().isLoaded()){
                         try{
                             //Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
-                            Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                            
+                            List<Block> list = new ArrayList<>();
+                            Block up = block.getRelative(BlockFace.UP);
+                            Block west = block.getRelative(BlockFace.WEST);
+                            Block east = block.getRelative(BlockFace.EAST);
+                            Block south = block.getRelative(BlockFace.SOUTH);
+                            Block north = block.getRelative(BlockFace.NORTH);
+                            Block down = block.getRelative(BlockFace.DOWN);
+                            list.add(up);
+                            list.add(west);
+                            list.add(east);
+                            list.add(south);
+                            list.add(north);
+                            list.add(down);
+                            
+                            check : for(Block cb : list){
+                                if(cb.getType().equals(Material.AIR)){
+                                    Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                                    continue check;
+                                }
+                            }
                         }catch(Exception e){
                         }
                     }else{
-                        try {
-                            //Sclat.setBlockByNMS(block, blocklist.get(block), true);
-                        } catch (Exception e) {
-                        }
                     }
                     //block.setType(blocklist.get(block));
                     c++;

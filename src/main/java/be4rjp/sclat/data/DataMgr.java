@@ -40,6 +40,8 @@ public class DataMgr {
     private static Map<String, Integer> msbn = new HashMap<>();
     private static Map<Player, SplashShieldData> sspm = new HashMap<>();
     private static Map<ArmorStand, SplashShieldData> ssam = new HashMap<>();
+    private static Map<Player, KasaData> kpm = new HashMap<>();
+    private static Map<ArmorStand, KasaData> kam = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     public static List<Block> rblist = new ArrayList<>();
@@ -69,6 +71,8 @@ public class DataMgr {
     public static Sponge getSpongeFromBlock(Block block){return spongemap.get(block);}
     public static SplashShieldData getSplashShieldDataFromPlayer(Player player){return sspm.get(player);}
     public static SplashShieldData getSplashShieldDataFromArmorStand(ArmorStand as){return ssam.get(as);}
+    public static KasaData getKasaDataFromPlayer(Player player){return kpm.get(player);}
+    public static KasaData getKasaDataFromArmorStand(ArmorStand as){return kam.get(as);}
     public static int getSnowballHitCount(String name){return msbn.get(name);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
@@ -92,6 +96,8 @@ public class DataMgr {
     public static void setSpongeWithBlock(Block block, Sponge sponge){spongemap.put(block, sponge);}
     public static void setSplashShieldDataWithPlayer(Player player, SplashShieldData data){sspm.put(player, data);}
     public static void setSplashShieldDataWithARmorStand(ArmorStand as, SplashShieldData data){ssam.put(as, data);}
+    public static void setKasaDataWithPlayer(Player player, KasaData data){kpm.put(player, data);}
+    public static void setKasaDataWithARmorStand(ArmorStand as, KasaData data){kam.put(as, data);}
     public static void setSnowballHitCount(String name, int coount){msbn.putIfAbsent(name, coount);}
     
     
@@ -118,6 +124,8 @@ public class DataMgr {
     public static Map<String, Snowball> getMainSnowballNameMap(){return msb;}
     public static Map<Player, SplashShieldData> getSplashShieldDataMapWithPlayer(){return sspm;}
     public static Map<ArmorStand, SplashShieldData> getSplashShieldDataMapWithArmorStand(){return ssam;}
+    public static Map<Player, KasaData> getKasaDataMapWithPlayer(){return kpm;}
+    public static Map<ArmorStand, KasaData> getKAsaDataMapWithArmorStand(){return kam;}
     //public static Map<Match, PaintData> getPaintDataMap(){return paintdata;}
     
     public static Color getColorRandom(int number){

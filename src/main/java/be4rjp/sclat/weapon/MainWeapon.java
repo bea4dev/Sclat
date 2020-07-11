@@ -66,6 +66,8 @@ public class MainWeapon implements Listener{
                     Bucket.ShootBucket(player);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
                     Slosher.ShootSlosher(player);
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
+                    Kasa.ShootKasa(player);
             }
         }
         if(action.equals(Action.LEFT_CLICK_AIR))
@@ -119,6 +121,8 @@ public class MainWeapon implements Listener{
                 Bucket.ShootBucket(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
                 Slosher.ShootSlosher(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
+                Kasa.ShootKasa(player);
         }
         event.setCancelled(true);
     }
@@ -144,6 +148,8 @@ public class MainWeapon implements Listener{
                 Bucket.ShootBucket(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
                 Slosher.ShootSlosher(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
+                Kasa.ShootKasa(player);
         }
         event.setCancelled(true);
     }
@@ -169,6 +175,8 @@ public class MainWeapon implements Listener{
                 Bucket.ShootBucket(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
                 Slosher.ShootSlosher(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
+                Kasa.ShootKasa(player);
         }
         event.getPlayerItem().setType(Material.AIR);
         event.setCancelled(true);

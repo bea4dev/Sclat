@@ -39,6 +39,7 @@ import be4rjp.sclat.data.Team;
 import static be4rjp.sclat.manager.PlayerStatusMgr.getRank;
 import be4rjp.sclat.raytrace.RayTrace;
 import be4rjp.sclat.weapon.Gear;
+import be4rjp.sclat.weapon.Kasa;
 import be4rjp.sclat.weapon.Spinner;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
@@ -500,6 +501,10 @@ public class MatchMgr {
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
                         Roller.HoldRunnable(p);
                         Roller.RollPaintRunnable(p);
+                    }
+                    
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
+                        Kasa.KasaRunnable(p);
                     }
 
                     p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());

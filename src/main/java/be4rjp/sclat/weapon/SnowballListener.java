@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
@@ -81,6 +82,23 @@ public class SnowballListener implements Listener {
                             if(event.getHitEntity().getCustomName() != null){
                                 if(event.getHitEntity().getCustomName().equals("SplashShield")){
                                     SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)event.getHitEntity());
+                                    Snowball ball = (Snowball)event.getEntity();
+                                    Player shooter = (Player)ball.getShooter();
+                                    //if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+                                        //ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                                    if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())
+                                        return;
+                                    Vector vec = ball.getVelocity();
+                                    Location loc = ball.getLocation();
+                                    Snowball ball2 = (Snowball)ball.getWorld().spawnEntity(new Location(loc.getWorld(), loc.getX() + vec.getX(), loc.getY() + vec.getY(), loc.getZ() + vec.getZ()), EntityType.SNOWBALL);
+                                    ball2.setShooter(shooter);
+                                    ball2.setVelocity(vec);
+                                    ball2.setCustomName(ball.getCustomName());
+                                    DataMgr.addSnowballHitCount(ball.getCustomName());
+                                    DataMgr.getMainSnowballNameMap().put(ball.getCustomName(), ball2);
+                                }
+                                if(event.getHitEntity().getCustomName().equals("Kasa")){
+                                    KasaData ssdata = DataMgr.getKasaDataFromArmorStand((ArmorStand)event.getHitEntity());
                                     Snowball ball = (Snowball)event.getEntity();
                                     Player shooter = (Player)ball.getShooter();
                                     //if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam())

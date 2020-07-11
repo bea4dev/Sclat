@@ -3,6 +3,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.SplashShieldData;
 import java.util.Map;
@@ -229,6 +230,17 @@ public class ArmorStandMgr {
             SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand(as);
             if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam()){
                 ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
+            }
+            return;
+        }
+        
+        if(as.getCustomName().equals("Kasa")){
+            KasaData ssdata = DataMgr.getKasaDataFromArmorStand(as);
+            if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam()){
+                ssdata.setDamage(ssdata.getDamage() + DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage());
+                if(ssdata.getDamage() > 200)
+                    as.getWorld().playSound(as.getLocation(), Sound.ENTITY_ITEM_BREAK, 0.8F, 0.8F);
                 as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
             }
             return;
