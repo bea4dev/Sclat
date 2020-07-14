@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
@@ -255,15 +256,17 @@ public class MegaLaser {
                     }
                     
                     //攻撃判定
-                    RayTrace rayTrace4 = new RayTrace(ol.toVector(), v);
+                    RayTrace rayTrace4 = new RayTrace(ol.clone().add(0, -1, 0).toVector(), v);
                     ArrayList<Vector> positions4 = rayTrace4.traverse(300, 1);
                     for(int i = 1; i < positions4.size();i++){
                         Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
-                        if(i > 3){//攻撃判定
+                        if(i > 6){//攻撃判定
                             double maxDist = 5;
                             double damage = 7.5;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
+                                    continue;
+                                if(target.getWorld() != p.getWorld())
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist) {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
@@ -308,6 +311,36 @@ public class MegaLaser {
                     }
                 }
                 
+                if(c >= 15 && c % 2 == 0){
+                    RayTrace rayTrace4 = new RayTrace(ol.clone().add(0, -1, 0).toVector(), v);
+                    ArrayList<Vector> positions4 = rayTrace4.traverse(300, 1);
+                    List<Player> list = new ArrayList<>();
+                    for(int i = 7; i < positions4.size();i++){
+                        Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
+                        double maxDist = 5;
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
+                            if(target.getWorld() != p.getWorld())
+                                continue;
+                            if(DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
+                                continue;
+                            if (target.getLocation().distance(position) <= maxDist) {
+                                //if(DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
+                                    //continue;
+                                list.add(target);
+                            }
+                        }
+                    }
+                    
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
+                        if(list.contains(target))
+                            Sclat.sendWorldBorderWarningPacket(target);
+                        else
+                            Sclat.sendWorldBorderWarningClearPacket(target);
+                    }
+                }
+                
                 if(c == 88){
                     for(ArmorStand as : list)
                         as.setGravity(true);
@@ -317,6 +350,9 @@ public class MegaLaser {
                     for(ArmorStand as : list)
                         as.remove();
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
+                        Sclat.sendWorldBorderWarningClearPacket(target);
+                    }
                     cancel();
                 }
 

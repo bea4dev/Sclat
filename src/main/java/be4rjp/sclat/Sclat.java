@@ -62,6 +62,27 @@ public class Sclat {
         }
     }
     
+    public static void sendWorldBorderWarningPacket(Player player){
+        EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
+        net.minecraft.server.v1_13_R1.WorldBorder wb = new WorldBorder();
+        wb.world = nmsPlayer.getWorldServer();
+        wb.setSize(1);
+        wb.setCenter(player.getLocation().getX() + 10_000, player.getLocation().getZ() + 10_000);
+        PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    
+    public static void sendWorldBorderWarningClearPacket(Player player){
+        EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
+        net.minecraft.server.v1_13_R1.WorldBorder wb = new WorldBorder();
+        wb.world = nmsPlayer.getWorldServer();
+        wb.setSize(30_000_000);
+        wb.setCenter(player.getLocation().getX(), player.getLocation().getZ());
+        PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        return;
+    }
+    
     /*
     public static void setBlockByNMS(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
         Location loc = b.getLocation();

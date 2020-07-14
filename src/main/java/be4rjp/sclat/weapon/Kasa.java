@@ -9,7 +9,6 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.PaintMgr;
-import static be4rjp.sclat.weapon.Bucket.Shoot;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.chart.PieChart;
@@ -37,6 +36,10 @@ import org.bukkit.util.Vector;
  */
 public class Kasa {
     public static void ShootKasa(Player player){
+        
+        if(player.isSneaking())
+            return;
+        
         PlayerData data = DataMgr.getPlayerData(player);
         BukkitRunnable delay1 = new BukkitRunnable(){
             Player p = player;

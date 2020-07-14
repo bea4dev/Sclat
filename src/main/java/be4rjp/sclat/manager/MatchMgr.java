@@ -825,6 +825,10 @@ public class MatchMgr {
                         }
                         
                         DataMgr.getPlayerData(p).getMatch().getBlockUpdater().stop();
+                        
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
+                            Sclat.sendWorldBorderWarningClearPacket(target);
+                        }
                     }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();

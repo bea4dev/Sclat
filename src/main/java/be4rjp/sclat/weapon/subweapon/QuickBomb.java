@@ -110,6 +110,21 @@ public class QuickBomb {
 
 
                         //攻撃判定の処理
+                        
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                                if(as instanceof ArmorStand){
+                                    if(as.getCustomName() != null){
+                                        if(as.getCustomName().equals("Kasa")){
+                                            drop.remove();
+                                            cancel();
+                                            return;
+                                        }
+                                    }
+                                            
+                                }
+                            }
+                        }
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
