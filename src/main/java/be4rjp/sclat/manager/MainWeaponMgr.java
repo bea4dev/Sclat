@@ -57,6 +57,14 @@ public class MainWeaponMgr {
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".CanChargeKeep"))
                 ck = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".CanChargeKeep");
             
+            int ckt = 0;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".ChargeKeepingTime"))
+                ckt = conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".ChargeKeepingTime");
+            
+            boolean hc = false;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".HanbunChargeKeep"))
+                hc = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".HanbunChargeKeep");
+            
             
             MainWeapon mw = new MainWeapon(weaponname);
             mw.setWeaponType(WeaponType);
@@ -90,6 +98,8 @@ public class MainWeaponMgr {
             mw.setSlidingShootTick(slST);
             mw.setChargeRatio(cr);
             mw.setCanChargeKeep(ck);
+            mw.setChargeKeepingTime(ckt);
+            mw.setHanbunCharge(hc);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

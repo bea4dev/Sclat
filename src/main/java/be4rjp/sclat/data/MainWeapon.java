@@ -38,6 +38,8 @@ public class MainWeapon {
     private double chargeratio = 1.0;
     private float InHoldSpeed = 0.2F;
     private boolean canChargeKeep = false;
+    private int chargeKeepingTime = 0;
+    private boolean hanbunCharge = false;
     
     
     
@@ -103,6 +105,10 @@ public class MainWeapon {
     
     public boolean getCanChargeKeep(){return this.canChargeKeep;}
     
+    public int getChargeKeepingTime(){return this.chargeKeepingTime;}
+    
+    public boolean getHanbunCharge(){return this.hanbunCharge;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -163,5 +169,9 @@ public class MainWeapon {
     public void setInHoldSpeed(float s){this.InHoldSpeed = s;}
     
     public void setCanChargeKeep(boolean is){this.canChargeKeep = is;}
+    
+    public void setChargeKeepingTime(int i){this.chargeKeepingTime = i;}
+    
+    public void setHanbunCharge(boolean is){this.hanbunCharge = is;}
     
 }

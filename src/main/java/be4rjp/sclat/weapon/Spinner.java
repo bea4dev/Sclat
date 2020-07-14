@@ -10,6 +10,7 @@ import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -32,12 +33,16 @@ public class Spinner {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             int charge = 0;
+            int keeping = 0;
             int max = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getMaxCharge();
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 
                 data.setTick(data.getTick() + 1);
+                
+                if(keeping == data.getWeaponClass().getMainWeapon().getChargeKeepingTime() && data.getWeaponClass().getMainWeapon().getCanChargeKeep() && data.getSettings().doChargeKeep())
+                    charge = 0;
                 
                 if(data.getTick() <= 5 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
@@ -52,14 +57,19 @@ public class Spinner {
                     p.getInventory().setItem(0, w);
                 }
                 
-                if(charge == max)
+                if(charge == max || data.getWeaponClass().getMainWeapon().getHanbunCharge())
                     if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
                         if(data.getWeaponClass().getMainWeapon().getCanChargeKeep())
                             if(data.getSettings().doChargeKeep())
                                 data.setTick(11);
                 
-                if(data.getTick() == 10)
+                if(p.getGameMode().equals(GameMode.SPECTATOR))
                     charge = 0;
+                
+                if(data.getTick() >= 11 && (charge == max || data.getWeaponClass().getMainWeapon().getHanbunCharge()))
+                    keeping++;
+                else
+                    keeping = 0;
                 
                 if(data.getTick() == 6 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){

@@ -307,6 +307,9 @@ public class GameMgr implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.isInMatch() && data.getSPGauge() == 100)
             SPWeaponMgr.UseSPWeapon(player, data.getWeaponClass().getSPWeaponName());
+        
+        //if(data.isInMatch())
+            //WeaponClassMgr.setWeaponClass(player);
     }
     
     

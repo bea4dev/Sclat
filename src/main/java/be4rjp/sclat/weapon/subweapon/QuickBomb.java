@@ -161,6 +161,10 @@ public class QuickBomb {
                                 if(as instanceof ArmorStand){
                                     double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                                    if(as.getCustomName() != null){
+                                        if(as.getCustomName().equals("SplashShield") || as.getCustomName().equals("Kasa"))
+                                            break;
+                                    }
                                 }
                             }
                         }

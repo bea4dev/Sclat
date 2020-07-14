@@ -41,13 +41,13 @@ import org.bukkit.util.Vector;
 public class SnowballListener implements Listener {
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
-        
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getEntity())){
             if(event.getEntity().getCustomName() == null){
                 DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
             }else{
-                if(event.getHitBlock() != null)
+                if(event.getHitBlock() != null){
                     DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
+                }
                 if(event.getHitEntity() != null){
                     if(event.getEntity().getCustomName() == null){
                         DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
@@ -56,6 +56,8 @@ public class SnowballListener implements Listener {
                             DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
                             return;
                         }
+                        if(event.getEntity().getCustomName().equals("SuperShot"))
+                            return;
                         Snowball ball = (Snowball)event.getEntity();
                         Vector vec = ball.getVelocity();
                         Location loc = ball.getLocation();
@@ -170,7 +172,7 @@ public class SnowballListener implements Listener {
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getDamager())){
             if(event.getEntity().getCustomName() == null)
                 DataMgr.setSnowballIsHit((Snowball)event.getDamager(), true);
-            else if(event.getEntity().getCustomName().equals("JetPack")){
+            else if(event.getEntity().getCustomName().equals("JetPack") || event.getEntity().getCustomName().equals("SuperShot")){
                 Projectile projectile = (Projectile)event.getDamager();
                 Player shooter = (Player)projectile.getShooter();
                 if(event.getEntity() instanceof Player){
@@ -225,6 +227,19 @@ public class SnowballListener implements Listener {
                                 PaintMgr.Paint(target.getLocation(), shooter, true);
                             }
                         }
+                        
+                        if(projectile.getCustomName().equals("SuperShot")){
+                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 20){
+                                DamageMgr.SclatGiveDamage(target, 20);
+                                PaintMgr.Paint(target.getLocation(), shooter, true);
+                            }else{
+                                target.setGameMode(GameMode.SPECTATOR);
+                                if(projectile.getCustomName().equals("SuperShot"))
+                                    DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
+                                PaintMgr.Paint(target.getLocation(), shooter, true);
+                            }
+                        }
+                        
                         if(DataMgr.mws.contains(projectile.getCustomName())){
                             if(DataMgr.tsl.contains(projectile.getCustomName()))
                                 shooter.playSound(shooter.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.3F, 9F);
@@ -267,7 +282,13 @@ public class SnowballListener implements Listener {
                 }
             }else if(event.getEntity() instanceof ArmorStand){
                 ArmorStand as = (ArmorStand) event.getEntity();
-                ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage(), shooter);
+                if(projectile.getCustomName() != null){
+                    if(projectile.getCustomName().equals("SuperShot")){
+                        ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
+                        return;
+                    }
+                }
+                ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP), shooter);
             }
         }
         

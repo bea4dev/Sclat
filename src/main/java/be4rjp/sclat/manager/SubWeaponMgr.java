@@ -4,6 +4,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.JetPack;
+import be4rjp.sclat.weapon.spweapon.SuperShot;
 import be4rjp.sclat.weapon.subweapon.Beacon;
 import be4rjp.sclat.weapon.subweapon.KBomb;
 import be4rjp.sclat.weapon.subweapon.Poison;
@@ -84,6 +85,10 @@ public class SubWeaponMgr {
         switch (name) {
             case "右クリックで弾を発射":
                 JetPack.ShootJetPack(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "右クリックで発射！":
+                SuperShot.Shot(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

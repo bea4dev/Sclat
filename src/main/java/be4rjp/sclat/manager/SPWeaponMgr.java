@@ -14,6 +14,7 @@ import be4rjp.sclat.weapon.spweapon.MegaLaser;
 import be4rjp.sclat.weapon.spweapon.MultiMissile;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
+import be4rjp.sclat.weapon.spweapon.SuperShot;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import net.md_5.bungee.api.ChatColor;
@@ -71,7 +72,7 @@ public class SPWeaponMgr {
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
-                    if(!(data.getWeaponClass().getSPWeaponName().equals("インクストライク") || data.getWeaponClass().getSPWeaponName().equals("ジェットパック")))
+                    if(!(data.getWeaponClass().getSPWeaponName().equals("インクストライク") || data.getWeaponClass().getSPWeaponName().equals("ジェットパック") || data.getWeaponClass().getSPWeaponName().equals("スーパーショット")))
                         p.getInventory().setItem(4, new ItemStack(Material.AIR));
                     DataMgr.getPlayerData(p).setIsSP(false);
                 }
@@ -193,6 +194,13 @@ public class SPWeaponMgr {
                 is7.setItemMeta(ism7);
                 p.getInventory().setItem(4, is7);
                 break;
+            case "スーパーショット":
+                ItemStack is8 = new ItemStack(Material.SUGAR_CANE);
+                ItemMeta ism8 = is8.getItemMeta();
+                ism8.setDisplayName("スーパーショット");
+                is8.setItemMeta(ism8);
+                p.getInventory().setItem(4, is8);
+                break;
         }
     }
     
@@ -248,6 +256,13 @@ public class SPWeaponMgr {
             case "ジェットパック":
                 JetPack.JetPackRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                break;
+            case "スーパーショット":
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                SuperShot.setSuperShot(player);
+                //player.getInventory().setItem(1, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;

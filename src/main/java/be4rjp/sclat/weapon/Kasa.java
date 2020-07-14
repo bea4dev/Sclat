@@ -253,8 +253,8 @@ public class Kasa {
                                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                     ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
                                 }
-                                as.teleport(p.getLocation().add(0, 25, 0));
                             }
+                            ArmorStandTeleportDelay(list, p, kdata);
                         }
                     }
                 }
@@ -338,5 +338,16 @@ public class Kasa {
             }
         };
         task.runTaskLater(Main.getPlugin(), 10);
+    }
+    
+    public static void ArmorStandTeleportDelay(List<ArmorStand> list, Player player, KasaData kdata){
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(ArmorStand as : list)
+                    as.teleport(player.getLocation().add(0, 50, 0));
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), 5);
     }
 }
