@@ -350,6 +350,7 @@ public class MegaLaser {
                     for(ArmorStand as : list)
                         as.remove();
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    //p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
                         Sclat.sendWorldBorderWarningClearPacket(target);
                     }

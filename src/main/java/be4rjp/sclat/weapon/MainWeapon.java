@@ -10,6 +10,7 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.SubWeaponMgr;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -46,6 +47,10 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onClickWeapon(PlayerInteractEvent e){
         Player player = e.getPlayer();
+        
+        if(e.getAction() == null || e.getItem() == null)
+            return;
+        
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             if(MainWeaponMgr.equalWeapon(player)){
@@ -124,6 +129,10 @@ public class MainWeapon implements Listener{
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
                 Kasa.ShootKasa(player);
         }
+        
+        if(DataMgr.getPlayerData(player).isInMatch())
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
+                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
         event.setCancelled(true);
     }
     
@@ -151,6 +160,11 @@ public class MainWeapon implements Listener{
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
                 Kasa.ShootKasa(player);
         }
+        
+        if(DataMgr.getPlayerData(player).isInMatch())
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
+                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+        
         event.setCancelled(true);
     }
     
@@ -178,6 +192,11 @@ public class MainWeapon implements Listener{
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
                 Kasa.ShootKasa(player);
         }
+        
+        if(DataMgr.getPlayerData(player).isInMatch())
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
+                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+        
         event.getPlayerItem().setType(Material.AIR);
         event.setCancelled(true);
     }

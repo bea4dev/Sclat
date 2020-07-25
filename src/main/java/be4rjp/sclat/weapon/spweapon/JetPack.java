@@ -276,6 +276,7 @@ public class JetPack {
             public void run(){
                 try{
                     if(c == 0){
+                        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1.5F, 1.2F);
                         p.getWorld().playSound(p.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.2F, 2F);
                         p_vec = p.getEyeLocation().getDirection();
                         ItemStack bom = new ItemStack(DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool()).clone();

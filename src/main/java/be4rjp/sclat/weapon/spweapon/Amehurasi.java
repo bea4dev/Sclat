@@ -140,7 +140,7 @@ public class Amehurasi {
                     }
                     if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){
                         DataMgr.getPlayerData(player).setIsUsingSP(false);
-                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                        //p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                         cancel();
                     }
                     c++;

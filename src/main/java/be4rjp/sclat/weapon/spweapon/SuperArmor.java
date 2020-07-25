@@ -66,7 +66,7 @@ public class SuperArmor {
                 if(effect){
                     effect_r.cancel();
                     DataMgr.getPlayerData(player).setIsUsingSP(false);
-                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                    //player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                 }
             }
         };

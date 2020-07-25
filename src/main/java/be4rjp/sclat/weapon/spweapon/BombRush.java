@@ -23,7 +23,7 @@ public class BombRush {
             @Override
             public void run(){
                 data.setIsBombRush(false);
-                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                //player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                 data.setIsUsingSP(false);
             }
         };

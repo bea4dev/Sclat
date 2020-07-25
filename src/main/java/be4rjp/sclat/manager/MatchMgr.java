@@ -506,6 +506,8 @@ public class MatchMgr {
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
                         Kasa.KasaRunnable(p);
                     }
+                    
+                    SquidMgr.SquidShowRunnable(p);
 
                     p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
 

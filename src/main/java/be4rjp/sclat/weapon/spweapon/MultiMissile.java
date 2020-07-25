@@ -162,10 +162,10 @@ public class MultiMissile {
                     tl = t.getLocation();
                 }
                 
-                if(!finded)
-                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
                 if(t.getGameMode().equals(GameMode.SPECTATOR))
                     drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));
+                else if(!finded)
+                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
                 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {

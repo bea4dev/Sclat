@@ -75,7 +75,7 @@ public class AirStrike {
                 Location loc = new Location(ploc.getWorld(), ploc.getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, ploc.getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
                 if(c == 10 || !DataMgr.getPlayerData(player).isInMatch()){
-                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                    //player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     cancel();
                 }
                 c++;

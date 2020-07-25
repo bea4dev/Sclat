@@ -10,6 +10,7 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.raytrace.BoundingBox;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
@@ -163,31 +164,33 @@ public class Roller {
                             if(!DataMgr.getPlayerData(target).isInMatch())
                                 continue;
                             if (target.getLocation().distance(position) <= maxDist) {
-                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                    
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    
-                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        DamageMgr.SclatGiveDamage(target, damage);
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                    }else{
-                                        target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        
-                                    }
-                        
-                                    //AntiNoDamageTime
-                                    BukkitRunnable task = new BukkitRunnable(){
-                                        Player p = target;
-                                        @Override
-                                        public void run(){
-                                            target.setNoDamageTicks(0);
+                                if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+
+                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                            DamageMgr.SclatGiveDamage(target, damage);
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                        }else{
+                                            target.setGameMode(GameMode.SPECTATOR);
+                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+
                                         }
-                                    };
-                                    task.runTaskLater(Main.getPlugin(), 1);
-                                    break loop;
+
+                                        //AntiNoDamageTime
+                                        BukkitRunnable task = new BukkitRunnable(){
+                                            Player p = target;
+                                            @Override
+                                            public void run(){
+                                                target.setNoDamageTicks(0);
+                                            }
+                                        };
+                                        task.runTaskLater(Main.getPlugin(), 1);
+                                        break loop;
+                                    }
                                 }
                             }
                         }
@@ -223,31 +226,33 @@ public class Roller {
                             if(!DataMgr.getPlayerData(target).isInMatch())
                                 continue;
                             if (target.getLocation().distance(position) <= maxDist) {
-                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                    
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    
-                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        DamageMgr.SclatGiveDamage(target, damage);
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                    }else{
-                                        target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        
-                                    }
-                        
-                                    //AntiNoDamageTime
-                                    BukkitRunnable task = new BukkitRunnable(){
-                                        Player p = target;
-                                        @Override
-                                        public void run(){
-                                            target.setNoDamageTicks(0);
+                                if(rayTrace2.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+
+                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                            DamageMgr.SclatGiveDamage(target, damage);
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                        }else{
+                                            target.setGameMode(GameMode.SPECTATOR);
+                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+
                                         }
-                                    };
-                                    task.runTaskLater(Main.getPlugin(), 1);
-                                    break loop;
+
+                                        //AntiNoDamageTime
+                                        BukkitRunnable task = new BukkitRunnable(){
+                                            Player p = target;
+                                            @Override
+                                            public void run(){
+                                                target.setNoDamageTicks(0);
+                                            }
+                                        };
+                                        task.runTaskLater(Main.getPlugin(), 1);
+                                        break loop;
+                                    }
                                 }
                             }
                         }

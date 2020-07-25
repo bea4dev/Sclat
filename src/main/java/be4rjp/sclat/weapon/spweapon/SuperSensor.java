@@ -35,7 +35,7 @@ public class SuperSensor {
         BukkitRunnable sound = new BukkitRunnable(){
             @Override
             public void run(){
-                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                //player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                 DataMgr.getPlayerData(player).setIsUsingSP(false);
             }
         };

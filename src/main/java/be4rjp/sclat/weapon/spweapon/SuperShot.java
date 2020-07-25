@@ -68,9 +68,11 @@ public class SuperShot {
             Player p = player;
             @Override
             public void run() {
-                DataMgr.getPlayerData(p).setIsUsingSP(false);
-                player.getInventory().clear();
-                WeaponClassMgr.setWeaponClass(p);
+                if(DataMgr.getPlayerData(p).isInMatch()){
+                    DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    player.getInventory().clear();
+                    WeaponClassMgr.setWeaponClass(p);
+                }
             }
         };
         task.runTaskLater(Main.getPlugin(), 120);
@@ -78,7 +80,7 @@ public class SuperShot {
     
     
     public static void Shot(Player player){
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1.2F, 1.2F);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1.5F, 1.2F);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.3F, 2F);
         
         Location ploc = player.getEyeLocation().add(0, -1, 0);
@@ -97,7 +99,7 @@ public class SuperShot {
         
         player.setVelocity(vec.clone().multiply(-0.5));
         
-        for(double y = 0; y <= 9; y+=0.5){
+        for(double y = 0; y <= 8; y+=0.5){
             ShootSnowball(player, loc1.clone().add(0, y, 0), vec);
             ShootSnowball(player, loc3.clone().add(0, y, 0), vec);
             ShootSnowball(player, loc4.clone().add(0, y, 0), vec);

@@ -80,7 +80,6 @@ public class Sclat {
         wb.setCenter(player.getLocation().getX(), player.getLocation().getZ());
         PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-        return;
     }
     
     /*

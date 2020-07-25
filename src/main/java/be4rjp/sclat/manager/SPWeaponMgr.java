@@ -121,6 +121,7 @@ public class SPWeaponMgr {
                 DataMgr.getPlayerData(p).setSPGauge(sp);
                 if(t <= 0){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     cancel();
                 }
             }

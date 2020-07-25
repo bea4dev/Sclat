@@ -193,7 +193,7 @@ public class Charger {
                                 target.setGameMode(GameMode.SPECTATOR);
                                 DeathMgr.PlayerDeathRunnable(target, player, "killed");
                                 PaintMgr.Paint(target.getLocation(), player, true);
-                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.3F, 9F);
+                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.8F, 9F);
                             }
 
                             //AntiNoDamageTime
