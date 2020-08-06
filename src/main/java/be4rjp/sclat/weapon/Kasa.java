@@ -132,7 +132,7 @@ public class Kasa {
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
-    public static void KasaRunnable(Player player){
+    public static void KasaRunnable(Player player, boolean big){
         KasaData kdata = new KasaData(player);
         DataMgr.setKasaDataWithPlayer(player, kdata);
         
@@ -280,7 +280,302 @@ public class Kasa {
                 i++;
             }
         };
+        
+        
+        BukkitRunnable bigktask = new BukkitRunnable() {
+            Player p = player;
+            int i = 0;
+            int c = 0;
+            boolean is = true;
 
+            @Override
+            public void run() {
+                if(p.isSneaking() && is){
+                    is = false;
+                    Camping(p);
+                }
+                if(!is){
+                    c++;
+                    if(c == 400){
+                        is = true;
+                        c = 0;
+                    }
+                }
+                i++;
+            }
+        };
+        
+        if(big)
+            bigktask.runTaskTimer(Main.getPlugin(), 0, 1);
+        else
+            task.runTaskTimer(Main.getPlugin(), 0, 1);
+    }
+    
+    public static void Camping(Player player){
+        KasaData kdata = new KasaData(player);
+        DataMgr.setKasaDataWithPlayer(player, kdata);
+        player.getWorld().playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+        
+        BukkitRunnable task = new BukkitRunnable() {
+            Player p = player;
+            int i = 0;
+            boolean bp = false;
+
+            Vector dir = new Vector(1, 0, 0);
+
+            List<ArmorStand> list = new ArrayList<ArmorStand>();
+            List<ArmorStand> ul = new ArrayList<ArmorStand>();
+            List<ArmorStand> dl = new ArrayList<ArmorStand>();
+
+            ArmorStand as1;
+            ArmorStand as2;
+            ArmorStand as3;
+            ArmorStand as4;
+            ArmorStand as5;
+            ArmorStand as6;
+            ArmorStand as7;
+            ArmorStand as8;
+            ArmorStand as9;
+            ArmorStand as10;
+            ArmorStand as11;
+            ArmorStand as12;
+            ArmorStand as13;
+            ArmorStand as14;
+            ArmorStand as15;
+            ArmorStand as16;
+            ArmorStand as17;
+            ArmorStand as18;
+            ArmorStand as19;
+            ArmorStand as20;
+            //ArmorStand as21;
+            //ArmorStand as22;
+            ArmorStand las;
+
+            @Override
+            public void run() {
+                Location loc = p.getLocation().add(0, -1.7, 0);
+
+                if(bp){
+                    if(las.isOnGround())
+                        las.setVelocity(dir.clone().multiply(0.18));
+                    loc = las.getLocation().add(0, -1.7, 0);
+                }
+                Vector pv = p.getEyeLocation().getDirection().normalize();
+                Vector vec = new Vector(pv.getX(), 0, pv.getZ()).normalize();
+                if(bp)
+                    vec = dir;
+                Vector mvec = vec.clone().multiply(-1);
+                Location floc = loc.add(vec.clone().multiply(1.5));
+                Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
+                Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
+
+                Location l1 = floc.clone().add(vec1.clone().multiply(0.6));
+                Location l2 = floc.clone().add(vec1.clone().multiply(1.2));
+
+                Location r1 = floc.clone().add(vec2.clone().multiply(0.6));
+                Location r2 = floc.clone().add(vec2.clone().multiply(1.2));
+
+                if(i == 0){
+                    as1 = (ArmorStand)p.getWorld().spawnEntity(floc.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)), EntityType.ARMOR_STAND);
+                    as2 = (ArmorStand)p.getWorld().spawnEntity(floc.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                    as3 = (ArmorStand)p.getWorld().spawnEntity(floc.clone().add(0, 1.2, 0), EntityType.ARMOR_STAND);
+                    as4 = (ArmorStand)p.getWorld().spawnEntity(floc.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)), EntityType.ARMOR_STAND);
+
+                    as5 = (ArmorStand)p.getWorld().spawnEntity(l1.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)), EntityType.ARMOR_STAND);
+                    as6 = (ArmorStand)p.getWorld().spawnEntity(l1.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                    as7 = (ArmorStand)p.getWorld().spawnEntity(l1.clone().add(0, 1.2, 0), EntityType.ARMOR_STAND);
+                    as8 = (ArmorStand)p.getWorld().spawnEntity(l1.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)), EntityType.ARMOR_STAND);
+
+                    as9 = (ArmorStand)p.getWorld().spawnEntity(l2.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)), EntityType.ARMOR_STAND);
+                    as10 = (ArmorStand)p.getWorld().spawnEntity(l2.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                    as11 = (ArmorStand)p.getWorld().spawnEntity(l2.clone().add(0, 1.2, 0), EntityType.ARMOR_STAND);
+                    as12 = (ArmorStand)p.getWorld().spawnEntity(l2.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)), EntityType.ARMOR_STAND);
+
+                    as13 = (ArmorStand)p.getWorld().spawnEntity(r1.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)), EntityType.ARMOR_STAND);
+                    as14 = (ArmorStand)p.getWorld().spawnEntity(r1.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                    as15 = (ArmorStand)p.getWorld().spawnEntity(r1.clone().add(0, 1.2, 0), EntityType.ARMOR_STAND);
+                    as16 = (ArmorStand)p.getWorld().spawnEntity(r1.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)), EntityType.ARMOR_STAND);
+
+                    as17 = (ArmorStand)p.getWorld().spawnEntity(r2.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)), EntityType.ARMOR_STAND);
+                    as18 = (ArmorStand)p.getWorld().spawnEntity(r2.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                    as19 = (ArmorStand)p.getWorld().spawnEntity(r2.clone().add(0, 1.2, 0), EntityType.ARMOR_STAND);
+                    as20 = (ArmorStand)p.getWorld().spawnEntity(r2.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)), EntityType.ARMOR_STAND);
+
+                    list.add(as16);
+                    list.add(as4);
+                    list.add(as2);
+                    list.add(as11);
+                    list.add(as20);
+                    list.add(as3);
+                    list.add(as6);
+                    list.add(as14);
+                    list.add(as7);
+                    list.add(as9);
+                    list.add(as10);
+                    list.add(as12);
+                    list.add(as8);
+                    list.add(as13);
+                    list.add(as15);
+                    list.add(as1);
+                    list.add(as17);
+                    list.add(as5);
+                    list.add(as19);
+                    list.add(as18);
+
+                    dl.add(as1);
+                    ul.add(as4);
+                    dl.add(as5);
+                    ul.add(as8);
+                    dl.add(as9);
+                    ul.add(as12);
+                    dl.add(as13);
+                    ul.add(as16);
+                    dl.add(as17);
+                    ul.add(as20);
+
+                    kdata.setArmorStandList(list);
+                    
+                    int c = 1;
+                    for(ArmorStand as : list){
+                        //as.setHeadPose(new EulerAngle(Math.toRadians(90), 0, 0));
+                        as.setBasePlate(false);
+                        as.setVisible(false);
+                        as.setGravity(false);
+                        as.setCustomName("Kasa");
+                        DataMgr.setKasaDataWithARmorStand(as, kdata);
+                        PlayerData data = DataMgr.getPlayerData(player);
+                        Team team = data.getMatch().getTeam0();
+                        if(team == data.getTeam())
+                            team = data.getMatch().getTeam1();
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(kdata.getDamage() == 0){
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 0 && kdata.getDamage() <= 100){
+                                if(c > 1 && c <= 4)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 100 && kdata.getDamage() <= 200){
+                                if(c > 4 && c <= 8)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 200 && kdata.getDamage() <= 300){
+                                if(c > 8 && c <= 12)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 300){
+                                if(c > 12)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                        }
+                        c++;
+                    }
+
+                    for(ArmorStand as : ul){
+                        as.setHeadPose(new EulerAngle(Math.toRadians(160), 0, 0));
+                    }
+
+                    for(ArmorStand as : dl){
+                        as.setHeadPose(new EulerAngle(Math.toRadians(20), 0, 0));
+                    }
+                }
+
+                if(i >= 0){
+                    as1.teleport(floc.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)));
+                    as2.teleport(floc.clone().add(0, 0.6, 0));
+                    as3.teleport(floc.clone().add(0, 1.2, 0));
+                    as4.teleport(floc.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
+
+                    as5.teleport(l1.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)));
+                    as6.teleport(l1.clone().add(0, 0.6, 0));
+                    as7.teleport(l1.clone().add(0, 1.2, 0));
+                    as8.teleport(l1.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
+
+                    as9.teleport(l2.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)));
+                    as10.teleport(l2.clone().add(0, 0.6, 0));
+                    as11.teleport(l2.clone().add(0, 1.2, 0));
+                    as12.teleport(l2.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
+
+                    as13.teleport(r1.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)));
+                    as14.teleport(r1.clone().add(0, 0.6, 0));
+                    as15.teleport(r1.clone().add(0, 1.2, 0));
+                    as16.teleport(r1.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
+
+                    as17.teleport(r2.clone().add(0, -0.05, 0).add(mvec.clone().multiply(0.38)));
+                    as18.teleport(r2.clone().add(0, 0.6, 0));
+                    as19.teleport(r2.clone().add(0, 1.2, 0));
+                    as20.teleport(r2.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
+                    
+                    int c = 1;
+                    for(ArmorStand as : list){
+                        PlayerData data = DataMgr.getPlayerData(player);
+                        Team team = data.getMatch().getTeam0();
+                        if(team == data.getTeam())
+                            team = data.getMatch().getTeam1();
+                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(kdata.getDamage() == 0){
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 0 && kdata.getDamage() <= 100){
+                                if(c > 1 && c <= 4)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 100 && kdata.getDamage() <= 200){
+                                if(c > 4 && c <= 8)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 200 && kdata.getDamage() <= 300){
+                                if(c > 8 && c <= 12)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                            if(kdata.getDamage() > 300){
+                                if(c > 12)
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.getMaterial(team.getTeamColor().getGlass().toString() + "_PANE")))));
+                                else
+                                    ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS_PANE))));
+                            }
+                        }
+                        c++;
+                    }
+                }
+
+                if(i == 40){
+                    bp = true;
+                    dir = vec.clone().multiply(1);
+                    las = (ArmorStand)p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
+                    las.setVisible(false);
+                    las.setGravity(true);
+                }
+
+                if(i >= 40 && i <= 100){
+
+                }
+
+                if(i == 200 || kdata.getDamage() > 400 || !p.isOnline() || !DataMgr.getPlayerData(p).isInMatch()){
+                    for(ArmorStand as : list){
+                        as.remove();
+                    }
+                    las.remove();
+                    cancel();
+                }
+
+                i++;
+            }
+        };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     

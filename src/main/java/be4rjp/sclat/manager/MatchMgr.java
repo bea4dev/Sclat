@@ -504,7 +504,11 @@ public class MatchMgr {
                     }
                     
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
-                        Kasa.KasaRunnable(p);
+                        Kasa.KasaRunnable(p, false);
+                    }
+                    
+                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Camping")){
+                        Kasa.KasaRunnable(p, true);
                     }
                     
                     SquidMgr.SquidShowRunnable(p);

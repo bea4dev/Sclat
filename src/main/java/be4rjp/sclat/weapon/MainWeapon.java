@@ -71,7 +71,7 @@ public class MainWeapon implements Listener{
                     Bucket.ShootBucket(player);
                 if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
                     Slosher.ShootSlosher(player);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
+                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa") || data.getWeaponClass().getMainWeapon().getWeaponType().equals("Camping"))
                     Kasa.ShootKasa(player);
             }
         }
