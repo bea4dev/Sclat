@@ -9,6 +9,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.PaintMgr;
+import be4rjp.sclat.manager.WeaponClassMgr;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.chart.PieChart;
@@ -293,15 +294,24 @@ public class Kasa {
                 if(p.isSneaking() && is){
                     is = false;
                     Camping(p);
+                    DataMgr.getPlayerData(p).setMainItemGlow(false);
+                    if(!DataMgr.getPlayerData(p).getIsUsingSP())
+                        WeaponClassMgr.setWeaponClass(p);
                 }
                 if(!is){
                     c++;
                     if(c == 400){
                         is = true;
                         c = 0;
+                        DataMgr.getPlayerData(p).setMainItemGlow(true);
+                        if(!DataMgr.getPlayerData(p).getIsUsingSP())
+                            WeaponClassMgr.setWeaponClass(p);
                     }
                 }
                 i++;
+                if(!p.isOnline() || !DataMgr.getPlayerData(p).isInMatch()){
+                    cancel();
+                }
             }
         };
         
@@ -514,6 +524,21 @@ public class Kasa {
                     as19.teleport(r2.clone().add(0, 1.2, 0));
                     as20.teleport(r2.clone().add(0, 3.15, 0).add(mvec.clone().multiply(0.9)));
                     
+                    if(i % 2 == 0){
+                        Location asl = as4.getLocation();
+                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                if(target.getWorld() == p.getWorld())
+                                    if(target.getLocation().distance(asl) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, asl, 1, 0, 0, 0, 1, bd);
+                        }
+                        
+                        for(ArmorStand as : ul){
+                            PaintMgr.PaintHightestBlock(as.getLocation(), p, false, false);
+                        }
+                    }
+                    
                     int c = 1;
                     for(ArmorStand as : list){
                         PlayerData data = DataMgr.getPlayerData(player);
@@ -559,10 +584,11 @@ public class Kasa {
                     las = (ArmorStand)p.getWorld().spawnEntity(p.getLocation(), EntityType.ARMOR_STAND);
                     las.setVisible(false);
                     las.setGravity(true);
-                }
-
-                if(i >= 40 && i <= 100){
-
+                    las.setCustomName("Kasa");
+                    List<ArmorStand> l = kdata.getArmorStandList();
+                    l.add(las);
+                    kdata.setArmorStandList(l);
+                    DataMgr.setKasaDataWithARmorStand(las, kdata);
                 }
 
                 if(i == 200 || kdata.getDamage() > 400 || !p.isOnline() || !DataMgr.getPlayerData(p).isInMatch()){
@@ -643,6 +669,6 @@ public class Kasa {
                     as.teleport(player.getLocation().add(0, 50, 0));
             }
         };
-        task.runTaskLater(Main.getPlugin(), 5);
+        task.runTaskLater(Main.getPlugin(), 3);
     }
 }

@@ -51,6 +51,7 @@ public class PlayerData {
     private int gearNumber = 0;
     private boolean isUsingJetPack = false;
     private boolean doChargeKeep = false;
+    private boolean MItemGlow = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -135,6 +136,8 @@ public class PlayerData {
     
     public boolean getDoChargeKeep(){return this.doChargeKeep;}
     
+    public boolean getMainItemGlow(){return this.MItemGlow;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -210,6 +213,8 @@ public class PlayerData {
     
     public void setIsUsingJetPack(boolean is){this.isUsingJetPack = is;}
     
+    public void setMainItemGlow(boolean is){this.MItemGlow = is;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -248,6 +253,7 @@ public class PlayerData {
         this.isUsingManeuver = false;
         this.issliding = false;
         this.isUsingJetPack = false;
+        this.MItemGlow = false;
     }
     
 }

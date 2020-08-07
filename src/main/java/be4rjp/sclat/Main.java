@@ -48,6 +48,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static Location lobby;
     
+    public static Glow glow;
+    
     //重複しない数字
     //ボム等で使用
     private static int NDNumber = 0;
@@ -56,6 +58,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     @Override
     public void onEnable() {
         plugin = this;
+        glow = new Glow();
         
         //APICheck
         boolean NoteBlockAPI = true;

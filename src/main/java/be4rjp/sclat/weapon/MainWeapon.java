@@ -53,27 +53,7 @@ public class MainWeapon implements Listener{
         
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
-            if(MainWeaponMgr.equalWeapon(player)){
-                PlayerData data = DataMgr.getPlayerData(player);
-                if(data.getCanCharge())
-                    data.setTick(0);
-                if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                    data.setIsHolding(true);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                    Blaster.ShootBlaster(player);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
-                    Burst.BurstCooltime(player);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
-                    data.setCanShoot(false);
-                    Roller.ShootPaintRunnable(player);
-                }
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
-                    Bucket.ShootBucket(player);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
-                    Slosher.ShootSlosher(player);
-                if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa") || data.getWeaponClass().getMainWeapon().getWeaponType().equals("Camping"))
-                    Kasa.ShootKasa(player);
-            }
+            MainWeaponMgr.UseMainWeapon(player);
         }
         if(action.equals(Action.LEFT_CLICK_AIR))
             if(DataMgr.getPlayerData(player).isInMatch())
@@ -108,27 +88,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void PlayerRightClick(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        if(MainWeaponMgr.equalWeapon(player)){
-            PlayerData data = DataMgr.getPlayerData(player);
-            if(data.getCanCharge())
-                data.setTick(0);
-            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                data.setIsHolding(true);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                Blaster.ShootBlaster(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
-                Burst.BurstCooltime(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
-                data.setCanShoot(false);
-                Roller.ShootPaintRunnable(player);
-            }  
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
-                Bucket.ShootBucket(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
-                Slosher.ShootSlosher(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
-                Kasa.ShootKasa(player);
-        }
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
@@ -139,27 +99,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
         Player player = event.getPlayer();
-        if(MainWeaponMgr.equalWeapon(player)){
-            PlayerData data = DataMgr.getPlayerData(player);
-            if(data.getCanCharge())
-                data.setTick(0);
-            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                data.setIsHolding(true);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                Blaster.ShootBlaster(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
-                Burst.BurstCooltime(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
-                data.setCanShoot(false);
-                Roller.ShootPaintRunnable(player);
-            }
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
-                Bucket.ShootBucket(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
-                Slosher.ShootSlosher(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
-                Kasa.ShootKasa(player);
-        }
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
@@ -171,27 +111,7 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onArmorStand(PlayerArmorStandManipulateEvent event){
         Player player = event.getPlayer();
-        if(MainWeaponMgr.equalWeapon(player)){
-            PlayerData data = DataMgr.getPlayerData(player);
-            if(data.getCanCharge())
-                data.setTick(0);
-            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                data.setIsHolding(true);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
-                Blaster.ShootBlaster(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
-                Burst.BurstCooltime(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
-                data.setCanShoot(false);
-                Roller.ShootPaintRunnable(player);
-            }  
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
-                Bucket.ShootBucket(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
-                Slosher.ShootSlosher(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa"))
-                Kasa.ShootKasa(player);
-        }
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)

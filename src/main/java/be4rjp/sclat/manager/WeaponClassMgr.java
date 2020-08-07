@@ -33,7 +33,12 @@ public class WeaponClassMgr {
     public static void setWeaponClass(Player player){
         player.getInventory().clear();
         PlayerData data = DataMgr.getPlayerData(player);
-        player.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
+        ItemStack main = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
+        if(data.getMainItemGlow()){
+            Main.glow.enchantGlow(main);
+            main.addEnchantment(Main.glow, 1);
+        }
+        player.getInventory().setItem(0, main);
         if(data.getWeaponClass().getMainWeapon().getIsManeuver())
             player.getInventory().setItem(40, data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone());
         ItemStack is = SubWeaponMgr.getSubWeapon(player);

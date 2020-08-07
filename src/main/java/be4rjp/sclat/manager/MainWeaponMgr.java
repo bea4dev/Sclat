@@ -5,6 +5,12 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.weapon.Blaster;
+import be4rjp.sclat.weapon.Bucket;
+import be4rjp.sclat.weapon.Burst;
+import be4rjp.sclat.weapon.Kasa;
+import be4rjp.sclat.weapon.Roller;
+import be4rjp.sclat.weapon.Slosher;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -128,5 +134,29 @@ public class MainWeaponMgr {
             if(wname.equals(itemname.substring(0, wname.length())))
                 return true;
         return false;
+    }
+    
+    public static void UseMainWeapon(Player player){
+        if(equalWeapon(player)){
+            PlayerData data = DataMgr.getPlayerData(player);
+            if(data.getCanCharge())
+                data.setTick(0);
+            if(!data.getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter") && !data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                data.setIsHolding(true);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                Blaster.ShootBlaster(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
+                Burst.BurstCooltime(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+                data.setCanShoot(false);
+                Roller.ShootPaintRunnable(player);
+            }
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Bucket"))
+                Bucket.ShootBucket(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Slosher"))
+                Slosher.ShootSlosher(player);
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa") || data.getWeaponClass().getMainWeapon().getWeaponType().equals("Camping"))
+                Kasa.ShootKasa(player);
+        }
     }
 }
