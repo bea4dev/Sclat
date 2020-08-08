@@ -214,27 +214,29 @@ public class Charger {
             for(Entity as : player.getWorld().getEntities()){
                 if (as.getLocation().distance(position) <= maxDist){
                     if(as instanceof ArmorStand){
-                        if(as.getCustomName() != null){
-                            if(as.getCustomName().equals("SplashShield")){
-                                SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)as);
-                                if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                        if(rayTrace.intersects(new BoundingBox((Entity)as), (int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.05)){
+                            if(as.getCustomName() != null){
+                                if(as.getCustomName().equals("SplashShield")){
+                                    SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand)as);
+                                    if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                        as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
+                                        break loop;
+                                    }
+                                }else if(as.getCustomName().equals("Kasa")){
+                                    KasaData ssdata = DataMgr.getKasaDataFromArmorStand((ArmorStand)as);
+                                    if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                        as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
+                                        break loop;
+                                    }
+                                }else{
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                    as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
                                     break loop;
                                 }
-                            }else if(as.getCustomName().equals("Kasa")){
-                                KasaData ssdata = DataMgr.getKasaDataFromArmorStand((ArmorStand)as);
-                                if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                    as.getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.8F, 1.2F);
-                                    break loop;
-                                }
-                            }else{
-                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                break loop;
                             }
+                            ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                         }
-                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                     }          
                 }
             }

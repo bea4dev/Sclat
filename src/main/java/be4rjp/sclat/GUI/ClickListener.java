@@ -3,6 +3,7 @@ package be4rjp.sclat.GUI;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
@@ -13,10 +14,12 @@ import be4rjp.sclat.manager.BungeeCordMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PlayerStatusMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
+import be4rjp.sclat.manager.SquidMgr;
 import be4rjp.sclat.manager.SuperJumpMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Gear;
+import be4rjp.sclat.weapon.Kasa;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import be4rjp.sclat.weapon.Spinner;
@@ -28,6 +31,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
@@ -62,10 +66,10 @@ public class ClickListener implements Listener{
             case"装備変更 / EQUIPMENT":
                 OpenGUI.equipmentGUI(player);
                 break;
-            case"ギア変更 / GEAR":
+            case"§bギア変更 / GEAR":
                 OpenGUI.gearGUI(player);
                 break;
-            case"武器変更 / WEAPON":
+            case"§6武器変更 / WEAPON":
                 OpenGUI.openWeaponSelect(player, "Main", false);
                 break;
             case"設定 / SETTINGS":
@@ -75,8 +79,15 @@ public class ClickListener implements Listener{
                 OpenGUI.openWeaponSelect(player, "Main", true);
                 break;
             case"塗りをリセット / RESET INK":
+                Match match = DataMgr.getPlayerData(player).getMatch();
+                match.getBlockUpdater().stop();
                 MatchMgr.RollBack();
                 player.setExp(0.99F);
+                BlockUpdater bur = new BlockUpdater();
+                if(conf.getConfig().contains("OneTickUpdateBlocks"))
+                    bur.setMaxBlockInOneTick(conf.getConfig().getInt("OneTickUpdateBlocks"));
+                bur.start();
+                match.setBlockUpdater(bur);
                 player.sendMessage("3分後に再リセットできるようになります");
                 List<Block> blocks = new ArrayList<Block>();
                 Block b0 = Main.lobby.getBlock().getRelative(BlockFace.DOWN);
@@ -92,7 +103,6 @@ public class ClickListener implements Listener{
                 for(Block block : blocks) {
                     if(block.getType().equals(Material.WHITE_STAINED_GLASS)){
                         PaintData pdata = new PaintData(block);
-                        Match match = DataMgr.getPlayerData(player).getMatch();
                         pdata.setMatch(match);
                         pdata.setTeam(match.getTeam0());
                         pdata.setOrigianlType(block.getType());
@@ -114,8 +124,8 @@ public class ClickListener implements Listener{
                 DataMgr.getPlayerData(player).setServerName("TDM");
                 break;
             case"ナワバリバトル":
-                Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
-                match.addNawabari_T_Count();
+                Match ma = DataMgr.getMatchFromId(MatchMgr.matchcount);
+                ma.addNawabari_T_Count();
                 break;
             case"チームデスマッチ":
                 Match m = DataMgr.getMatchFromId(MatchMgr.matchcount);
@@ -164,6 +174,7 @@ public class ClickListener implements Listener{
                 DataMgr.getPlayerData(player).setIsInMatch(false);
                 DataMgr.getPlayerData(player).setIsJoined(false);
                 
+                
                 for(ArmorStand as : DataMgr.getBeaconMap().values()){
                     if(DataMgr.getBeaconFromplayer(player) == as)
                         as.remove();
@@ -177,23 +188,45 @@ public class ClickListener implements Listener{
                     Player p = player;
                     @Override
                     public void run(){
-                        DataMgr.getPlayerData(player).setIsInMatch(true);
-                        DataMgr.getPlayerData(player).setIsJoined(true);
+                        DataMgr.getPlayerData(p).setIsInMatch(true);
+                        DataMgr.getPlayerData(p).setIsJoined(true);
+                        DataMgr.getPlayerData(p).setMainItemGlow(false);
+                        DataMgr.getPlayerData(p).setTick(10);
                         WeaponClass wc = DataMgr.getWeaponClass(name);
-                        DataMgr.getPlayerData(player).setWeaponClass(wc);
+                        DataMgr.getPlayerData(p).setWeaponClass(wc);
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                             ArmorStandMgr.BeaconArmorStandSetup(p);
                         if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
                             ArmorStandMgr.SprinklerArmorStandSetup(p);
-                        if(wc.getMainWeapon().getWeaponType().equals("Shooter"))
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter")){
                             Shooter.ShooterRunnable(p);
-                        if(wc.getMainWeapon().getWeaponType().equals("Charger"))
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                Shooter.ManeuverRunnable(p);
+                                Shooter.ManeuverShootRunnable(p);
+                            }
+                        }
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster")){
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                Shooter.ManeuverRunnable(p);
+                            }
+                        }
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
                             Charger.ChargerRunnable(p);
-                        if(wc.getMainWeapon().getWeaponType().equals("Spinner"))
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
                             Spinner.SpinnerRunnable(p);
-                        if(wc.getMainWeapon().getWeaponType().equals("Roller")){
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
                             Roller.HoldRunnable(p);
                             Roller.RollPaintRunnable(p);
+                        }
+
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
+                            Kasa.KasaRunnable(p, false);
+                        }
+
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Camping")){
+                            Kasa.KasaRunnable(p, true);
+                            DataMgr.getPlayerData(p).setMainItemGlow(true);
+                            WeaponClassMgr.setWeaponClass(p);
                         }
                         WeaponClassMgr.setWeaponClass(p);
                         ItemStack join = new ItemStack(Material.CHEST);
@@ -203,6 +236,7 @@ public class ClickListener implements Listener{
                         player.getInventory().setItem(7, join);
                         player.setExp(0.99F);
                         SPWeaponMgr.SPWeaponRunnable(player);
+                        SquidMgr.SquidShowRunnable(player);
                     }
                 };
                 delay.runTaskLater(Main.getPlugin(), 15);
@@ -244,8 +278,12 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("Chose Target")){
-            if(name.equals("リスポーン地点"))
-                SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getPlayerData(player).getMatchLocation());
+            if(name.equals("リスポーン地点")){
+                Location loc = Main.lobby.clone();
+                if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                    loc = DataMgr.getPlayerData(player).getMatchLocation();
+                SuperJumpMgr.SuperJumpCollTime(player, loc);
+            }
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if (p.getName().equals(name)){
                     if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))

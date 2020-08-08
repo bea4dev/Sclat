@@ -122,6 +122,7 @@ public class SPWeaponMgr {
                 if(t <= 0){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
                     p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                    WeaponClassMgr.setWeaponClass(p);
                     cancel();
                 }
             }
@@ -241,6 +242,7 @@ public class SPWeaponMgr {
                 MapKitMgr.setMapKit(player);
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                player.sendTitle("", "カーソルを合わせて右クリックで発射！", 3, 30, 3);
                 break;
             case "アメフラシ":
                 Amehurasi.AmehurasiDropRunnable(player);
@@ -253,12 +255,14 @@ public class SPWeaponMgr {
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                player.sendTitle("", "プレイヤーを狙って右クリックで発射！", 3, 30, 3);
                 break;
             case "ジェットパック":
                 JetPack.JetPackRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                player.sendTitle("", "右クリックで発射！", 5, 20, 5);
                 break;
             case "スーパーショット":
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
@@ -266,6 +270,7 @@ public class SPWeaponMgr {
                 //player.getInventory().setItem(1, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                player.sendTitle("", "右クリックで発射！", 5, 20, 5);
                 break;
             case "メガホンレーザー":
                 if(player.isOnGround()){

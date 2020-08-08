@@ -14,6 +14,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.block.Action;
@@ -167,6 +169,17 @@ public class Shooter {
                     if(target.getLocation().distance(position) < 2){
                         isLockOnPlayer = true;
                         break check;
+                    }
+                }
+            }
+            
+            for(Entity as : player.getWorld().getEntities()){
+                if (as.getLocation().distance(position) <= 2){
+                    if(as instanceof ArmorStand){
+                        if(as.getCustomName() != null){
+                            isLockOnPlayer = true;
+                            break check;
+                        }
                     }
                 }
             }

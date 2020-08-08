@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
@@ -71,18 +72,26 @@ public class OpenGUI {
             b.setItemMeta(bmeta);
             inv.setItem(8, b);
         }else{
+            /*
             ItemStack b = new ItemStack(Material.ARMOR_STAND);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
             b.setItemMeta(bmeta);
             inv.setItem(8, b);
+            */
+            ItemStack b = new ItemStack(Material.PAPER);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("ショップを開く / OPEN SHOP");
+            b.setItemMeta(bmeta);
+            inv.setItem(8, b);
         }
-        
+        /*
         ItemStack b = new ItemStack(Material.PAPER);
         ItemMeta bmeta = b.getItemMeta();
         bmeta.setDisplayName("ショップを開く / OPEN SHOP");
         b.setItemMeta(bmeta);
         inv.setItem(8, b);
+        */
         
         player.openInventory(inv);
     }
@@ -107,13 +116,13 @@ public class OpenGUI {
         
         ItemStack n = new ItemStack(Gear.getGearMaterial(DataMgr.getPlayerData(player).getGearNumber()));
         ItemMeta nmeta = n.getItemMeta();
-        nmeta.setDisplayName("ギア変更 / GEAR");
+        nmeta.setDisplayName("§bギア変更 / GEAR");
         n.setItemMeta(nmeta);
         inv.setItem(15, n);
         
         ItemStack t = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
         ItemMeta tmeta = t.getItemMeta();
-        tmeta.setDisplayName("武器変更 / WEAPON");
+        tmeta.setDisplayName("§6武器変更 / WEAPON");
         t.setItemMeta(tmeta);
         inv.setItem(11, t);
         
@@ -154,9 +163,13 @@ public class OpenGUI {
         ItemMeta ism = is.getItemMeta();
         ism.setDisplayName("リスポーン地点");
         is.setItemMeta(ism);
-        if(DataMgr.getPlayerData(player).getMatchLocation().getWorld() == player.getWorld())
-            if(player.getLocation().distance(DataMgr.getPlayerData(player).getMatchLocation()) > 10)
-                inv.setItem(0, is);
+        Location loc = Main.lobby.clone();
+        if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+            loc = DataMgr.getPlayerData(player).getMatchLocation().clone();
+        if(loc.getWorld() == player.getWorld()){
+            if(player.getLocation().distance(loc) > 10)
+                inv.setItem(0, is); 
+        }
         
         int slotnum = 1;
         
@@ -331,7 +344,7 @@ public class OpenGUI {
                                 slotnum++;
                             }
                         }else{
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0){
+                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
                                 shooter.setItem(slotnum, item);
                                 slotnum++;
                             }else if(PlayerStatusMgr.haveWeapon(player, classname)){
@@ -375,7 +388,7 @@ public class OpenGUI {
                                 slotnum++;
                             }
                         }else{
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0){
+                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
                                 roller.setItem(slotnum, item);
                                 slotnum++;
                             }else if(PlayerStatusMgr.haveWeapon(player, classname)){
@@ -419,7 +432,7 @@ public class OpenGUI {
                                 slotnum++;
                             }
                         }else{
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0){
+                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
                                 charger.setItem(slotnum, item);
                                 slotnum++;
                             }else if(PlayerStatusMgr.haveWeapon(player, classname)){

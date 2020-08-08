@@ -46,6 +46,32 @@ public class ArmorStandMgr {
         spawnedStand = is;
     }
     
+    public static void ArmorStandEquipPacketSender(World world){
+        BukkitRunnable task = new BukkitRunnable(){
+            int c = 0;
+            @Override
+            public void run(){
+                for(Entity as : world.getEntities()){
+                    if(as instanceof ArmorStand){
+                        if(as.getCustomName() == null)
+                            continue;
+                        if(!((ArmorStand) as).isVisible())
+                            continue;
+                        if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                            for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.LEATHER_HELMET))));
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(new ItemStack(Material.LEATHER_CHESTPLATE))));
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(new ItemStack(Material.LEATHER_LEGGINGS))));
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(new ItemStack(Material.LEATHER_BOOTS))));
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 10);
+    }
+    
     public static void ArmorStandSetup(Player player){
         for(Entity e : player.getWorld().getEntities()){
             if(e instanceof ArmorStand)
@@ -61,10 +87,11 @@ public class ArmorStandMgr {
             Location il = new Location(w, ix + 0.5D, iy, iz + 0.5D);
             il.setYaw(iyaw);
             ArmorStand as = (ArmorStand) w.spawnEntity(il, EntityType.ARMOR_STAND);
-            as.setHelmet(new ItemStack(Material.LEATHER_HELMET));
-            as.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-            as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-            as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+            //as.setHelmet(new ItemStack(Material.LEATHER_HELMET));
+            //as.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+            //as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+            //as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+            as.setInvulnerable(true);
             as.setCustomName("20");
             as.setCustomNameVisible(true);
             as.setVisible(true);
@@ -278,10 +305,17 @@ public class ArmorStandMgr {
 
                     as.setCustomNameVisible(false);
                     as.setVisible(false);
-                    as.setHelmet(new ItemStack(Material.AIR));
-                    as.setChestplate(new ItemStack(Material.AIR));
-                    as.setLeggings(new ItemStack(Material.AIR));
-                    as.setBoots(new ItemStack(Material.AIR));
+                    //as.setHelmet(new ItemStack(Material.AIR));
+                    //as.setChestplate(new ItemStack(Material.AIR));
+                    //as.setLeggings(new ItemStack(Material.AIR));
+                    //as.setBoots(new ItemStack(Material.AIR));
+                    
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                        ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                        ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                        ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                    }
 
 
                     BukkitRunnable delay = new BukkitRunnable(){
@@ -293,10 +327,11 @@ public class ArmorStandMgr {
                             drop4.remove();
                             as.setCustomNameVisible(true);
                             as.setVisible(true);
-                            as.setHelmet(new ItemStack(Material.LEATHER_HELMET));
-                            as.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-                            as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-                            as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+                            as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1F, 1F);
+                            //as.setHelmet(new ItemStack(Material.LEATHER_HELMET));
+                            //as.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+                            //as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+                            //as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
                             as.setCustomName("20");
                         }
                     };

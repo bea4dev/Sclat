@@ -8,9 +8,13 @@ import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
+import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Blaster;
+import be4rjp.sclat.weapon.Charger;
+import be4rjp.sclat.weapon.Kasa;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
+import be4rjp.sclat.weapon.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -115,15 +119,17 @@ public class GameMgr implements Listener{
         item.setItemMeta(meta);
         data.setPlayerHead(CraftItemStack.asNMSCopy(item));
         
+        PlayerStatusMgr.setupPlayerStatus(player);
+        DataMgr.getPlayerData(player).setGearNumber(PlayerStatusMgr.getGear(player));
+        DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
+        
         //遅れても問題ない処理をここですることによって処理の分散を図る
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             @Override
             public void run(){
-                PlayerStatusMgr.setupPlayerStatus(p);
-                PlayerStatusMgr.sendHologram(p);
-                DataMgr.getPlayerData(p).setGearNumber(PlayerStatusMgr.getGear(p));
-                DataMgr.getPlayerData(p).setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(p)));
+                if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                    PlayerStatusMgr.sendHologram(player);
             }
         };
         task.runTaskLater(Main.getPlugin(), 1);
@@ -137,8 +143,10 @@ public class GameMgr implements Listener{
             Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
             data.setMatch(match);
             data.setTeam(match.getTeam0());
+            match.getTeam0().getTeam().addPlayer(player);
+            //match.getBlockUpdater().start();
             player.teleport(Main.lobby);
-            WeaponClassMgr.setWeaponClass(player);
+            //WeaponClassMgr.setWeaponClass(player);
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();
             joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
@@ -146,8 +154,9 @@ public class GameMgr implements Listener{
             player.getInventory().clear();
             Shooter.ShooterRunnable(player);
             SPWeaponMgr.SPWeaponRunnable(player);
-            WeaponClassMgr.setWeaponClass(player);
+            //WeaponClassMgr.setWeaponClass(player);
             SquidMgr.SquidRunnable(player);
+            SquidMgr.SquidShowRunnable(player);
             player.setExp(0.99F);
             player.getInventory().setItem(7, join);
             
@@ -182,6 +191,78 @@ public class GameMgr implements Listener{
                     block.setType(match.getTeam0().getTeamColor().getGlass());
                 }
             }
+            
+            //Equipment
+            player.getInventory().clear();
+                DataMgr.getPlayerData(player).setIsInMatch(false);
+                DataMgr.getPlayerData(player).setIsJoined(false);
+                
+                
+                for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                    if(DataMgr.getBeaconFromplayer(player) == as)
+                        as.remove();
+                }
+                for(ArmorStand as : DataMgr.getSprinklerMap().values()){
+                    if(DataMgr.getSprinklerFromplayer(player) == as)
+                        as.remove();
+                }
+
+                BukkitRunnable delay = new BukkitRunnable(){
+                    Player p = player;
+                    @Override
+                    public void run(){
+                        DataMgr.getPlayerData(p).setIsInMatch(true);
+                        DataMgr.getPlayerData(p).setIsJoined(true);
+                        DataMgr.getPlayerData(p).setMainItemGlow(false);
+                        DataMgr.getPlayerData(p).setTick(10);
+                        WeaponClass wc = DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(p));
+                        DataMgr.getPlayerData(p).setWeaponClass(wc);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
+                            ArmorStandMgr.BeaconArmorStandSetup(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+                            ArmorStandMgr.SprinklerArmorStandSetup(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter")){
+                            Shooter.ShooterRunnable(p);
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                Shooter.ManeuverRunnable(p);
+                                Shooter.ManeuverShootRunnable(p);
+                            }
+                        }
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster")){
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                Shooter.ManeuverRunnable(p);
+                            }
+                        }
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
+                            Charger.ChargerRunnable(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
+                            Spinner.SpinnerRunnable(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
+                            Roller.HoldRunnable(p);
+                            Roller.RollPaintRunnable(p);
+                        }
+
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
+                            Kasa.KasaRunnable(p, false);
+                        }
+
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Camping")){
+                            Kasa.KasaRunnable(p, true);
+                            DataMgr.getPlayerData(p).setMainItemGlow(true);
+                            WeaponClassMgr.setWeaponClass(p);
+                        }
+                        WeaponClassMgr.setWeaponClass(p);
+                        ItemStack join = new ItemStack(Material.CHEST);
+                        ItemMeta joinmeta = join.getItemMeta();
+                        joinmeta.setDisplayName("メインメニュー");
+                        join.setItemMeta(joinmeta);
+                        player.getInventory().setItem(7, join);
+                        player.setExp(0.99F);
+                        SPWeaponMgr.SPWeaponRunnable(player);
+                        SquidMgr.SquidShowRunnable(player);
+                    }
+                };
+                delay.runTaskLater(Main.getPlugin(), 15);
             
             return;
         }
@@ -351,7 +432,10 @@ public class GameMgr implements Listener{
                         BungeeCordMgr.PlayerSendServer(player, "lobby");
                         DataMgr.getPlayerData(player).setServerName("Lobby");
                         break;
-
+                    case "Return to sclat":
+                        BungeeCordMgr.PlayerSendServer(player, "sclat");
+                        DataMgr.getPlayerData(player).setServerName("Sclat");
+                        break;
                 }
             }
         }

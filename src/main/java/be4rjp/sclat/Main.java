@@ -3,6 +3,7 @@ package be4rjp.sclat;
 import be4rjp.sclat.GUI.ClickListener;
 import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
@@ -35,6 +36,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scoreboard.NameTagVisibility;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 /**
  *
@@ -83,7 +87,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         int iy = conf.getConfig().getInt("Lobby.Y");
         int iz = conf.getConfig().getInt("Lobby.Z");
         int iyaw = conf.getConfig().getInt("Lobby.Yaw");
-        lobby = new Location(w, ix, iy, iz);
+        lobby = new Location(w, ix + 0.5, iy, iz + 0.5);
         lobby.setYaw(iyaw);
         
         PluginManager pm = getServer().getPluginManager();
@@ -109,6 +113,28 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         //ArmorStandMgr.ArmorStandSetup();
         
         //OpenGUI.WeaponSelectSetup();
+        
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            ScoreboardManager manager = Bukkit.getScoreboardManager();
+            Scoreboard scoreboard = manager.getNewScoreboard();
+
+            Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
+
+            org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
+            bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
+            bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
+
+            org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
+            bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
+            bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
+
+            match.getTeam0().setTeam(bteam0);
+            match.getTeam1().setTeam(bteam1);
+            
+            ArmorStandMgr.ArmorStandEquipPacketSender(w);
+        }
         
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
