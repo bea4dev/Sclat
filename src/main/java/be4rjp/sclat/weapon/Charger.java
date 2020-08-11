@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
@@ -193,7 +194,7 @@ public class Charger {
                                 target.setGameMode(GameMode.SPECTATOR);
                                 DeathMgr.PlayerDeathRunnable(target, player, "killed");
                                 PaintMgr.Paint(target.getLocation(), player, true);
-                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.8F, 9F);
+                                player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
                             }
 
                             //AntiNoDamageTime
@@ -231,6 +232,10 @@ public class Charger {
                                         break loop;
                                     }
                                 }else{
+                                    if(Sclat.isNumber(as.getCustomName()))
+                                        if(!as.getCustomName().equals("21") && !as.getCustomName().equals("100"))
+                                            if(((ArmorStand) as).isVisible())
+                                                player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                     break loop;
                                 }

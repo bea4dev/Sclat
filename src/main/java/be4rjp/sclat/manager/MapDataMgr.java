@@ -123,8 +123,8 @@ public class MapDataMgr {
             
             
             boolean canpaintbblock = false;
-            if(conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock") == true)
-                canpaintbblock = true;
+            if(conf.getMapConfig().contains("Maps." + mapname + ".CanPaintBarrierBlock"))
+                canpaintbblock = conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock");
             
             
             map.setIntro(il);

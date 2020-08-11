@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.SplashShieldData;
@@ -242,7 +243,7 @@ public class SnowballListener implements Listener {
                         
                         if(DataMgr.mws.contains(projectile.getCustomName())){
                             if(DataMgr.tsl.contains(projectile.getCustomName()))
-                                shooter.playSound(shooter.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.8F, 9F);
+                                shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
                             
                             if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
                                 DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
@@ -283,7 +284,18 @@ public class SnowballListener implements Listener {
             }else if(event.getEntity() instanceof ArmorStand){
                 ArmorStand as = (ArmorStand) event.getEntity();
                 if(projectile.getCustomName() != null){
+                    if(DataMgr.mws.contains(projectile.getCustomName()))
+                        if(DataMgr.tsl.contains(projectile.getCustomName()))
+                            if(Sclat.isNumber(as.getCustomName()))
+                                if(!as.getCustomName().equals("21") && !as.getCustomName().equals("100"))
+                                    if(as.isVisible())
+                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                    
                     if(projectile.getCustomName().equals("SuperShot")){
+                        ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
+                        return;
+                    }
+                    if(projectile.getCustomName().equals("JetPack")){
                         ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
                         return;
                     }

@@ -2,10 +2,12 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.SplashShieldData;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.minecraft.server.v1_13_R1.EnumItemSlot;
@@ -309,6 +311,17 @@ public class ArmorStandMgr {
                     //as.setChestplate(new ItemStack(Material.AIR));
                     //as.setLeggings(new ItemStack(Material.AIR));
                     //as.setBoots(new ItemStack(Material.AIR));
+                    
+                    //半径
+                    double maxDist = 3;
+
+                    //塗る
+                    for(int i = 0; i <= maxDist; i++){
+                        List<Location> p_locs = Sphere.getSphere(as.getLocation(), i, 20);
+                        for(Location loc : p_locs){
+                            PaintMgr.Paint(loc, shooter, false);
+                        }
+                    }
                     
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));

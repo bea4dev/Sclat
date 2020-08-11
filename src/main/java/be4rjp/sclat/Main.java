@@ -99,20 +99,40 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
         pm.registerEvents(new SnowballListener(), this);
         
-        getLogger().info("registerEvents ok");
+        getLogger().info("RegisteredEvents.");
         ColorMgr.SetupColor();
-        getLogger().info("SetupColor() ok");
+        getLogger().info("SetupColor.");
         MainWeaponMgr.SetupMainWeapon();
-        getLogger().info("SetupMainWeapon() ok");
+        getLogger().info("SetupMainWeapon.");
         WeaponClassMgr.WeaponClassSetup();
-        getLogger().info("WeaponClassSetup() ok");
+        getLogger().info("WeaponClassSetup.");
         MapDataMgr.SetupMap();
-        getLogger().info("SetupMap() ok");
+        getLogger().info("SetupMap.");
         MatchMgr.MatchSetup();
-        getLogger().info("MatchSetup() ok");
-        //ArmorStandMgr.ArmorStandSetup();
+        getLogger().info("MatchSetup.");
         
-        //OpenGUI.WeaponSelectSetup();
+        
+        
+        //---------------------Enable mode message---------------------------
+        int length = conf.getConfig().getString("WorkMode").length();
+        
+        StringBuilder buff = new StringBuilder();
+        buff.append("### This plugin started in [");
+        buff.append(conf.getConfig().getString("WorkMode"));
+        buff.append("] mode! ");
+        for (int i = 0; i < 7 - length; i++){
+            buff.append(" ");
+        }
+        buff.append("###");
+        
+        getLogger().info("##############################################");
+        getLogger().info("###                                        ###");
+        getLogger().info(buff.toString());
+        getLogger().info("###                                        ###");
+        getLogger().info("##############################################");
+        //-------------------------------------------------------------------
+        
+        
         
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ScoreboardManager manager = Bukkit.getScoreboardManager();
