@@ -135,7 +135,7 @@ public class Amehurasi {
                         }
                     }
                     for(Location loc : locList){
-                        if(new Random().nextInt(400) == 1)
+                        if(new Random().nextInt(350) == 1)
                             SnowballAmehurasiRunnable(p, loc);
                     }
                     if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){

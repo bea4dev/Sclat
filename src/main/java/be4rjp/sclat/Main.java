@@ -3,6 +3,7 @@ package be4rjp.sclat;
 import be4rjp.sclat.GUI.ClickListener;
 import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
@@ -64,32 +65,45 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         plugin = this;
         glow = new Glow();
         
-        //APICheck
+        
+        
+        //----------------------------APICheck-------------------------------
         boolean NoteBlockAPI = true;
         if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")){
             getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
             NoteBlockAPI = false;
             return;
         }
+        //-------------------------------------------------------------------
         
+        
+        
+        //--------------------------Load config------------------------------
         getLogger().info("Loading config files...");
         conf = new Config();
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
+        //-------------------------------------------------------------------
+        
+        
+        
+        //--------------------------Lobby location---------------------------
         String WorldName = conf.getConfig().getString("Lobby.WorldName");
         Bukkit.createWorld(new WorldCreator(WorldName));
-        //getServer().getWorlds().add(w);
-
         World w = Bukkit.getWorld(WorldName);
-        getLogger().info(w.getName());
         int ix = conf.getConfig().getInt("Lobby.X");
         int iy = conf.getConfig().getInt("Lobby.Y");
         int iz = conf.getConfig().getInt("Lobby.Z");
         int iyaw = conf.getConfig().getInt("Lobby.Yaw");
         lobby = new Location(w, ix + 0.5, iy, iz + 0.5);
         lobby.setYaw(iyaw);
+        //-------------------------------------------------------------------
         
+        
+        
+        //------------------------RegisteredEvents---------------------------
+        getLogger().info("RegisteredEvents...");
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);
@@ -98,18 +112,27 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
         pm.registerEvents(new SnowballListener(), this);
+        //-------------------------------------------------------------------
+
         
-        getLogger().info("RegisteredEvents.");
+        
+        //------------------------Setup from config--------------------------
+        getLogger().info("SetupColor...");
         ColorMgr.SetupColor();
-        getLogger().info("SetupColor.");
+        getLogger().info("SetupMainWeapon...");
         MainWeaponMgr.SetupMainWeapon();
-        getLogger().info("SetupMainWeapon.");
+        getLogger().info("WeaponClassSetup...");
         WeaponClassMgr.WeaponClassSetup();
-        getLogger().info("WeaponClassSetup.");
+        getLogger().info("Setup Map...");
+        getLogger().info("");
+        getLogger().info("-----------------MAP LIST-----------------");
         MapDataMgr.SetupMap();
-        getLogger().info("SetupMap.");
+        getLogger().info("------------------------------------------");
+        getLogger().info("");
+        getLogger().info("MatchSetup...");
         MatchMgr.MatchSetup();
-        getLogger().info("MatchSetup.");
+        getLogger().info("Setup is finished!");
+        //-------------------------------------------------------------------
         
         
         
@@ -134,6 +157,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         
         
+        //------------------------Only trial mode----------------------------
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ScoreboardManager manager = Bukkit.getScoreboardManager();
             Scoreboard scoreboard = manager.getNewScoreboard();
@@ -155,12 +179,22 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             
             ArmorStandMgr.ArmorStandEquipPacketSender(w);
         }
+        //-------------------------------------------------------------------
         
+        
+        
+        //------------------------BungeeCord setup---------------------------
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+        //-------------------------------------------------------------------
         
+        
+        
+        //------------------------Load NBS songs-----------------------------
         if(NoteBlockAPI)
             NoteBlockAPIMgr.LoadSongFiles();
+        //-------------------------------------------------------------------
+        
     }
     
     @Override
@@ -204,11 +238,19 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     @Override
     public void onDisable() {
+        
+        //Wiremeshの停止
+        try {
+            for(MapData mData : DataMgr.maplist)
+                if(mData.getWiremeshListTask() != null)
+                    mData.getWiremeshListTask().stopTask();
+        } catch (Exception e) {}
+        
         //塗りリセット
         for(PaintData data : DataMgr.getBlockDataMap().values()){
-            
-                data.getBlock().setType(data.getOriginalType());
-                data = null;
+            data.getBlock().setType(data.getOriginalType());
+            if(data.getBlockData() != null)
+                data.getBlock().setBlockData(data.getBlockData());
         }
         DataMgr.getBlockDataMap().clear();
         

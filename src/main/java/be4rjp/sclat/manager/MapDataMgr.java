@@ -7,6 +7,7 @@ import be4rjp.sclat.data.Color;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Path;
+import be4rjp.sclat.data.WiremeshListTask;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -125,6 +126,33 @@ public class MapDataMgr {
             boolean canpaintbblock = false;
             if(conf.getMapConfig().contains("Maps." + mapname + ".CanPaintBarrierBlock"))
                 canpaintbblock = conf.getMapConfig().getBoolean("Maps." + mapname + ".CanPaintBarrierBlock");
+            
+            
+            if(conf.getMapConfig().contains("Maps." + mapname + ".Wiremesh")){
+                boolean trapDoor = false;
+                if(conf.getMapConfig().contains("Maps." + mapname + ".Wiremesh.TrapDoor"))
+                    trapDoor = conf.getMapConfig().getBoolean("Maps." + mapname + ".Wiremesh.TrapDoor");
+                boolean ironBars = false;
+                if(conf.getMapConfig().contains("Maps." + mapname + ".Wiremesh.IronBars"))
+                    ironBars = conf.getMapConfig().getBoolean("Maps." + mapname + ".Wiremesh.IronBars");
+                boolean fence = false;
+                if(conf.getMapConfig().contains("Maps." + mapname + ".Wiremesh.Fence"))
+                    fence = conf.getMapConfig().getBoolean("Maps." + mapname + ".Wiremesh.Fence");
+                
+                double flocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.From.X") + 0.5;
+                double flocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.From.Y");
+                double flocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.From.Z") + 0.5;
+                Location from = new Location(w, flocx, flocy, flocz);
+                
+                double tolocx = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.To.X") + 0.5;
+                double tolocy = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.To.Y");
+                double tolocz = conf.getMapConfig().getDouble("Maps." + mapname + ".Wiremesh.To.Z") + 0.5;
+                Location to = new Location(w, tolocx, tolocy, tolocz);
+                
+                WiremeshListTask wmListTask = new WiremeshListTask(from, to, trapDoor, ironBars, fence);
+                wmListTask.startTask();
+                map.setWiremeshListTask(wmListTask);
+            }
             
             
             map.setIntro(il);

@@ -56,6 +56,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -149,7 +150,7 @@ public class MatchMgr {
                             }
                             StartMatch(match);
                             for(Entity entity : p.getWorld().getEntities()){
-                                if(!(entity instanceof Player)){
+                                if(!(entity instanceof Player) && !(entity instanceof FallingBlock)){
                                     entity.remove();
                                 }
                             }
@@ -243,8 +244,9 @@ public class MatchMgr {
     public static void RollBack(){
         if(!canRollback) return;
         for(PaintData data : DataMgr.getBlockDataMap().values()){
-            Sclat.setBlockByNMS(data.getBlock(), data.getOriginalType(), false);
-            //data.getBlock().setType(data.getOriginalType());
+            data.getBlock().setType(data.getOriginalType());
+            if(data.getBlockData() != null)
+                data.getBlock().setBlockData(data.getBlockData());
             data = null;
         }
         DataMgr.getBlockDataMap().clear();

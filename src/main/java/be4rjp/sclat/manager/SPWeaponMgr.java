@@ -208,6 +208,19 @@ public class SPWeaponMgr {
     
     public static void UseSPWeapon(Player player, String name){
         PlayerData data = DataMgr.getPlayerData(player);
+        
+        switch (name) {
+            case "カーソルを合わせて右クリックで発射":
+                AirStrike.AirStrikeRunnable(player);
+                break;
+            case "プレイヤーを狙って右クリックで発射":
+                DataMgr.getPlayerData(player).setIsUsingMM(false);
+                break;
+        }
+        
+        if(data.getIsUsingSP())
+            return;
+        
         switch (name) {
             case "インクアーマー":
                 SuperArmor.setArmor(player, 20, 160, true);
@@ -282,12 +295,6 @@ public class SPWeaponMgr {
                     player.sendMessage(ChatColor.RED + "空中では展開できない！");
                     player.playNote(player.getLocation(), Instrument.STICKS, Note.natural(1, Note.Tone.E));
                 }
-                break;
-            case "カーソルを合わせて右クリックで発射":
-                AirStrike.AirStrikeRunnable(player);
-                break;
-            case "プレイヤーを狙って右クリックで発射":
-                DataMgr.getPlayerData(player).setIsUsingMM(false);
                 break;
         }
     }

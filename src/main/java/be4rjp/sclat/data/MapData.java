@@ -45,6 +45,8 @@ public class MapData {
     
     private List<Area> areas = new ArrayList<>();
     
+    private WiremeshListTask wmlTask;
+    
     
     
     public MapData(String mapname){this.mapname = mapname;}
@@ -85,6 +87,8 @@ public class MapData {
     
     public List<Area> getAreaList(){return this.areas;}
     
+    public WiremeshListTask getWiremeshListTask(){return this.wmlTask;}
+    
     
     
     public void setIntro(Location l){this.Intro = l;}
@@ -116,6 +120,8 @@ public class MapData {
     public void setNoBlockLocation(Location loc){this.noBlockLoc = loc;}
     
     public void setCanAreaBattle(boolean is ){this.canAreaBattle = is;}
+    
+    public void setWiremeshListTask(WiremeshListTask wmlListTask){this.wmlTask = wmlListTask;}
     
     
     public void addPath(Path path){this.path.add(path);}

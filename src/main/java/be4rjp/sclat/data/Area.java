@@ -27,8 +27,8 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Be4rJP
  */
 public class Area {
-    private Location from;
-    private Location to;
+    private final Location from;
+    private final Location to;
     private Match match;
     private Team team = null;
     private BukkitRunnable task;
@@ -48,7 +48,8 @@ public class Area {
         for(int x = this.from.getBlockX(); x <= this.to.getBlockX(); x++){
             for(int z = this.from.getBlockZ(); z <= this.to.getBlockZ(); z++){
                 Location loc = new Location(this.from.getWorld(), x, this.from.getBlockY(), z);
-                this.blist.add(loc.getBlock());
+                if(!loc.getBlock().getType().equals(Material.AIR))
+                    this.blist.add(loc.getBlock());
                 if(x == this.from.getBlockX() || x == this.to.getBlockX() || z == this.from.getBlockZ() || z == this.to.getBlockZ()){
                     Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc, EntityType.SHULKER);
                     sl.setAI(false);

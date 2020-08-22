@@ -2,6 +2,7 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
+import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
@@ -62,37 +63,40 @@ public class PaintMgr {
                 return;
             
             if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB") || block.getType().toString().contains("DOOR"))){
-                if(!(DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)){
-                    if(DataMgr.getBlockDataMap().containsKey(block)){
-                        PaintData data = DataMgr.getPaintDataFromBlock(block);
-                        Team BTeam = data.getTeam();
-                        Team ATeam = DataMgr.getPlayerData(player).getTeam();
-                        if(BTeam != ATeam){
-                            data.setTeam(ATeam);
-                            BTeam.subtractPaintCount();
-                            ATeam.addPaintCount();
-                            //Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
-                            DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
-                            DataMgr.getPlayerData(player).addPaintCount();
-                            if(new Random().nextInt((int)(10 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
-                                SPWeaponMgr.addSPCharge(player);
-                        }
-                    }else{
-                        Team team = DataMgr.getPlayerData(player).getTeam();
-                        team.addPaintCount(); 
-                        PaintData data = new PaintData(block);
-                        data.setMatch(DataMgr.getPlayerData(player).getMatch());
-                        data.setTeam(team);
-                        data.setOrigianlType(block.getType());
-                        //data.setOriginalState(block.getState());
-                        DataMgr.setPaintDataFromBlock(block, data);
-                        //Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
-                        DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
+                if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                    if(!DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)
+                        return;
+                if(DataMgr.getBlockDataMap().containsKey(block)){
+                    PaintData data = DataMgr.getPaintDataFromBlock(block);
+                    Team BTeam = data.getTeam();
+                    Team ATeam = DataMgr.getPlayerData(player).getTeam();
+                    if(BTeam != ATeam){
+                        data.setTeam(ATeam);
+                        BTeam.subtractPaintCount();
+                        ATeam.addPaintCount();
+                        //Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
+                        DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
                         DataMgr.getPlayerData(player).addPaintCount();
-                        if(new Random().nextInt((int)(12 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                        if(new Random().nextInt((int)(10 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);
                     }
+                }else{
+                    Team team = DataMgr.getPlayerData(player).getTeam();
+                    team.addPaintCount(); 
+                    PaintData data = new PaintData(block);
+                    data.setMatch(DataMgr.getPlayerData(player).getMatch());
+                    data.setTeam(team);
+                    data.setOrigianlType(block.getType());
+                    data.setBlockData(block.getBlockData());
+                    //data.setOriginalState(block.getState());
+                    DataMgr.setPaintDataFromBlock(block, data);
+                    //Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
+                    DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
+                    DataMgr.getPlayerData(player).addPaintCount();
+                    if(new Random().nextInt((int)(12 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP))) == 1 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                        SPWeaponMgr.addSPCharge(player);
                 }
+                
                 
             }
         }
@@ -120,6 +124,7 @@ public class PaintMgr {
                 data.setMatch(match);
                 data.setTeam(team);
                 data.setOrigianlType(block.getType());
+                data.setBlockData(block.getBlockData());
                 DataMgr.setPaintDataFromBlock(block, data);
                 match.getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
             }
