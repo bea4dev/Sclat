@@ -93,7 +93,6 @@ public class MainWeapon implements Listener{
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
                 SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
-        event.setCancelled(true);
     }
     
     @EventHandler
@@ -104,8 +103,6 @@ public class MainWeapon implements Listener{
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
                 SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
-        
-        event.setCancelled(true);
     }
     
     @EventHandler
@@ -115,10 +112,7 @@ public class MainWeapon implements Listener{
         
         if(DataMgr.getPlayerData(player).isInMatch())
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
-                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
-        
-        event.getPlayerItem().setType(Material.AIR);
-        event.setCancelled(true);
+                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());  
     }
     
     @EventHandler

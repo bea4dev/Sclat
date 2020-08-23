@@ -50,7 +50,10 @@ public class SplashBomb {
                         drop.setVelocity(p.getEyeLocation().getDirection());
                     }
 
-
+                    if(gc >= 10 && gc < 20){
+                        if(gc % 2 == 0)
+                            player.getWorld().playSound(drop.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1.6F);
+                    }
 
                     if(gc == 30){
                         //爆発音

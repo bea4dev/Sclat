@@ -95,6 +95,11 @@ public class KBomb {
                         drop.setVelocity(new Vector(0, 0, 0));
                         cc++;
                     }
+                    
+                    if(cc >= 40 && cc < 50){
+                        if(cc % 2 == 0)
+                            player.getWorld().playSound(drop.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1.6F);
+                    }
 
                     if(cc == 60){
 

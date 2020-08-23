@@ -75,7 +75,7 @@ public class MatchMgr {
     
     public static int matchcount = 0;
     public static int mapcount = 0;
-    public static byte volume = 22;
+    public static byte volume = 20;
     
     public static boolean canRollback = true;
     
