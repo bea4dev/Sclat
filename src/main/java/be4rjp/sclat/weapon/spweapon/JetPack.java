@@ -70,7 +70,7 @@ public class JetPack {
 
                 boolean onBlock = false;
                 int yh = 1;
-                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 10; y--){
+                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 7; y--){
                     Location bl = new Location(p.getLocation().getWorld(), p.getLocation().getX(), y, p.getLocation().getZ());
                     if(bl.getBlock().getType() != Material.AIR && bl.getBlock().getType() != Material.WATER){
                         onBlock = true;

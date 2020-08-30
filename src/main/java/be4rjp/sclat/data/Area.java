@@ -6,7 +6,7 @@ import be4rjp.sclat.manager.PaintMgr;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.v1_13_R1.EntityShulker;
-import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
+//import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,11 +61,13 @@ public class Area {
                     esl.setFlag(5, true);
                     esl.setFlag(6, true);
                     this.slist.add(sl);
+                    
+                    /*
                     for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         if(DataMgr.getPlayerData(oplayer).isInMatch()){
                             ((CraftPlayer)oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
                         }
-                    }
+                    }*/
                 }
                 for(Shulker sl : this.slist){
                     Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
@@ -183,7 +185,7 @@ public class Area {
                 String name = mname.replaceAll("WOOL", "CARPET");
                 match.getBlockUpdater().setBlock(b, Material.getMaterial(name));
             }
-            
+            /*
             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                     EntityShulker esl = ((CraftShulker)sl).getHandle(); 
@@ -191,10 +193,12 @@ public class Area {
                 }
             }
             ShulkerDestroyRunnable(sl);
+            */
             this.team.getTeam().addEntry(sl.getUniqueId().toString());
         }
     }
     
+    /*
     private void ShulkerDestroyRunnable(Shulker sl){
         BukkitRunnable task = new BukkitRunnable(){
             @Override
@@ -207,7 +211,7 @@ public class Area {
             }
         };
         task.runTaskLater(Main.getPlugin(), 20);
-    }
+    }*/
     
     public void removeColor(){
         for(Shulker sl : this.slist){
@@ -216,6 +220,7 @@ public class Area {
             if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
                 match.getBlockUpdater().setBlock(b, Material.WHITE_CARPET);
             }
+            /*
             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                     EntityShulker esl = ((CraftShulker)sl).getHandle(); 
@@ -223,6 +228,7 @@ public class Area {
                 }
             }
             ShulkerDestroyRunnable(sl);
+            */
         }
     }
 }

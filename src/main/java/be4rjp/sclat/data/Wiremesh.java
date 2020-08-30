@@ -5,6 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +19,7 @@ public class Wiremesh {
     private final Block block;
     private final Material originalType;
     private FallingBlock fb;
+    private ArmorStand as;
     private final BukkitRunnable task;
     private final BlockData blockData;
     
@@ -38,11 +41,20 @@ public class Wiremesh {
         fb.setGravity(false);
         fb.setTicksLived(1);
         
+        as = (ArmorStand)block.getWorld().spawnEntity(loc.clone().add(0, 0, 0), EntityType.ARMOR_STAND);
+        as.setVisible(false);
+        as.setGravity(false);
+        as.setMarker(true);
+        
+        as.addPassenger(fb);
         
         this.task = new BukkitRunnable() {
+            
             @Override
             public void run() {
                 try{
+                    boolean near = false;
+                    
                     for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(block.getWorld() == player.getWorld()){
                             
@@ -58,31 +70,44 @@ public class Wiremesh {
                                     player.sendBlockChange(block.getLocation(), blockData);
                             }
                             
+                            if(block.getLocation().distance(player.getLocation()) <= 5)
+                                near = true;
+                        }
+                    }
+                    
+                    //一人でも近いプレイヤーがいればFallingBlockをスポーンさせる
+                    if(near){
+                        if(spawn){
+                            fb = block.getWorld().spawnFallingBlock(loc, blockData);
+                            fb.setDropItem(false);
+                            fb.setHurtEntities(false);
+                            fb.setGravity(false);
+                            fb.setTicksLived(1);
+
                             
-                            if(block.getLocation().distance(player.getLocation()) >= 5){
-                                if(despawn){
-                                    fb.remove();
-                                    despawn = false;
-                                    spawn = true;
-                                }
-                            }
+                            as = (ArmorStand)block.getWorld().spawnEntity(loc.clone().add(0, 0, 0), EntityType.ARMOR_STAND);
+                            as.setVisible(false);
+                            as.setGravity(false);
+                            as.setMarker(true);
                             
-                            if(block.getLocation().distance(player.getLocation()) <= 5){
-                                if(spawn && is){
-                                    fb = block.getWorld().spawnFallingBlock(loc, blockData);
-                                    fb.setDropItem(false);
-                                    fb.setHurtEntities(false);
-                                    fb.setGravity(false);
-                                    fb.setTicksLived(1);
-                                    despawn = true;
-                                    spawn = false;
-                                }
-                            }
+                            as.addPassenger(fb);
+                            
+
+                            despawn = true;
+                            spawn = false;
+                        }
+                    }else{
+                        if(despawn){
+                            fb.remove();
+                            as.remove();
+                            despawn = false;
+                            spawn = true;
                         }
                     }
                     
                     //Falling block death cancel
                     fb.setTicksLived(1);
+                    
                 }catch(Exception e){cancel();}
             }
         };
@@ -98,5 +123,7 @@ public class Wiremesh {
         this.block.setBlockData(blockData);
         if(this.fb != null)
             this.fb.remove();
+        if(this.as != null)
+            this.as.remove();
     }
 }
