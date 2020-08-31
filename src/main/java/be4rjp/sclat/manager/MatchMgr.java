@@ -151,9 +151,6 @@ public class MatchMgr {
                             StartMatch(match);
                             for(Entity entity : p.getWorld().getEntities()){
                                 if(!(entity instanceof Player) && !(entity instanceof FallingBlock)){
-                                    if(entity.getCustomName() != null)
-                                        if(entity.getCustomName().equals("Wiremesh"))
-                                            continue;
                                     entity.remove();
                                 }
                             }

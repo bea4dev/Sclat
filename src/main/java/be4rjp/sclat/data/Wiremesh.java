@@ -41,12 +41,15 @@ public class Wiremesh {
         fb.setGravity(false);
         fb.setTicksLived(1);
         
-        as = (ArmorStand)block.getWorld().spawnEntity(loc.clone().add(0, 0, 0), EntityType.ARMOR_STAND);
-        as.setVisible(false);
-        as.setGravity(false);
-        as.setMarker(true);
+        
+        as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {
+            armorStand.setVisible(false);
+            armorStand.setGravity(false);
+            armorStand.setMarker(true);
+        });
         
         as.addPassenger(fb);
+        
         
         this.task = new BukkitRunnable() {
             
@@ -85,10 +88,11 @@ public class Wiremesh {
                             fb.setTicksLived(1);
 
                             
-                            as = (ArmorStand)block.getWorld().spawnEntity(loc.clone().add(0, 0, 0), EntityType.ARMOR_STAND);
-                            as.setVisible(false);
-                            as.setGravity(false);
-                            as.setMarker(true);
+                            as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {
+                                armorStand.setVisible(false);
+                                armorStand.setGravity(false);
+                                armorStand.setMarker(true);
+                            });
                             
                             as.addPassenger(fb);
                             
