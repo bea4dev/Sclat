@@ -18,10 +18,13 @@ import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntity;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_13_R1.World;
 import net.minecraft.server.v1_13_R1.WorldServer;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
@@ -41,6 +44,15 @@ import org.bukkit.util.Vector;
  */
 public class SuperJumpMgr {
     public static void SuperJumpCollTime(Player player, Location loc){
+        if(player.getWorld() != loc.getWorld())
+            return;
+        
+        if(player.getLocation().distance(loc) <= 3){
+            player.sendMessage(ChatColor.RED + "目的地が近すぎます！");
+            player.playNote(player.getLocation(), Instrument.BASS_GUITAR, Note.flat(0, Note.Tone.G));
+            return;
+        }
+        
         player.getInventory().clear();
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, 10));
         BukkitRunnable task = new BukkitRunnable(){

@@ -161,7 +161,7 @@ public class OpenGUI {
         
         ItemStack is = new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass());
         ItemMeta ism = is.getItemMeta();
-        ism.setDisplayName("リスポーン地点");
+        ism.setDisplayName("§r§6リスポーン地点へジャンプ");
         is.setItemMeta(ism);
         Location loc = Main.lobby.clone();
         if(!conf.getConfig().getString("WorkMode").equals("Trial"))
@@ -175,9 +175,15 @@ public class OpenGUI {
         
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
-                if(p.getLocation().distance(player.getLocation()) > 10){
+                if(p.getLocation().distance(player.getLocation()) > 10 && DataMgr.getPlayerData(p).getPlayerHead() != null){
                     if (slotnum <= 17){
-                        inv.setItem(slotnum, CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()));
+                        ItemStack head = CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()).clone();
+                        ItemMeta headM = head.getItemMeta();
+                        List lores = new ArrayList();
+                        lores.add("§r§aプレイヤーへジャンプ");
+                        headM.setLore(lores);
+                        head.setItemMeta(headM);
+                        inv.setItem(slotnum, head);
                     }
                     slotnum++;
                 }
@@ -192,6 +198,9 @@ public class OpenGUI {
                             ItemStack item = new ItemStack(Material.IRON_TRAPDOOR);
                             ItemMeta im = item.getItemMeta();
                             im.setDisplayName(p.getName());
+                            List lores = new ArrayList();
+                            lores.add("§r§6プレイヤーのビーコンへジャンプ");
+                            im.setLore(lores);
                             item.setItemMeta(im);
                             if (slotnum <= 17){
                                 inv.setItem(slotnum, item);

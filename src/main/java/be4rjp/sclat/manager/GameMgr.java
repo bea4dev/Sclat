@@ -51,6 +51,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -77,62 +78,70 @@ public class GameMgr implements Listener{
         PlayerData data = new PlayerData(player);
         
         String uuid = player.getUniqueId().toString();
-        PlayerSettings settings = new PlayerSettings(player);
-        
-        String def = "111111111";
-        
-        if(conf.getPlayerSettings().contains("Settings." + uuid)){
-            
-            if(conf.getPlayerSettings().getString("Settings." + uuid).length() != def.length())
-                conf.getPlayerSettings().set("Settings." + uuid, def);
-            
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
-                settings.S_ShowEffect_Shooter();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
-                settings.S_ShowEffect_ChargerLine();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(3,4).equals("0"))
-                settings.S_ShowEffect_ChargerShot();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
-                settings.S_ShowEffect_RollerRoll();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
-                settings.S_ShowEffect_RollerShot();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
-                settings.S_PlayBGM();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))
-                settings.S_ShowEffect_Bomb();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
-                settings.S_ShowEffect_BombEx();
-            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(8,9).equals("0"))
-                settings.S_doChargeKeep();
-        }else{
-            conf.getPlayerSettings().set("Settings." + uuid, def);
-        }
-            
+        PlayerSettings settings = new PlayerSettings(player);        
         data.setSettings(settings);
         data.setWeaponClass(DataMgr.getWeaponClass(conf.getConfig().getString("DefaultClass")));
         DataMgr.setPlayerData(player, data);
         
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta)item.getItemMeta();
-        meta.setOwningPlayer(player);
-        meta.setDisplayName(player.getName());
-        item.setItemMeta(meta);
-        data.setPlayerHead(CraftItemStack.asNMSCopy(item));
         
         PlayerStatusMgr.setupPlayerStatus(player);
         DataMgr.getPlayerData(player).setGearNumber(PlayerStatusMgr.getGear(player));
         DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
         
-        //遅れても問題ない処理をここですることによって処理の分散を図る
+        //処理の分散
         BukkitRunnable task = new BukkitRunnable(){
-            Player p = player;
+            int i = 0;
             @Override
             public void run(){
-                if(!conf.getConfig().getString("WorkMode").equals("Trial"))
-                    PlayerStatusMgr.sendHologram(player);
+                switch(i){
+                    case 0:{//----------------------------------------------------------------------------
+                        if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                            PlayerStatusMgr.sendHologram(player);
+                    }
+                    case 1:{//----------------------------------------------------------------------------
+                        String def = "111111111";
+                        if(conf.getPlayerSettings().contains("Settings." + uuid)){
+
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).length() != def.length())
+                                conf.getPlayerSettings().set("Settings." + uuid, def);
+
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
+                                settings.S_ShowEffect_Shooter();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
+                                settings.S_ShowEffect_ChargerLine();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(3,4).equals("0"))
+                                settings.S_ShowEffect_ChargerShot();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
+                                settings.S_ShowEffect_RollerRoll();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
+                                settings.S_ShowEffect_RollerShot();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
+                                settings.S_PlayBGM();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))
+                                settings.S_ShowEffect_Bomb();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
+                                settings.S_ShowEffect_BombEx();
+                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(8,9).equals("0"))
+                                settings.S_doChargeKeep();
+                        }else{
+                            conf.getPlayerSettings().set("Settings." + uuid, def);
+                        }
+                        data.setSettings(settings);
+                    }
+                    case 2:{//----------------------------------------------------------------------------
+                        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+                        SkullMeta meta = (SkullMeta)item.getItemMeta();
+                        meta.setOwningPlayer(player);
+                        meta.setDisplayName(player.getName());
+                        item.setItemMeta(meta);
+                        data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+                    }
+                }
+                
+                i++;
             }
         };
-        task.runTaskLater(Main.getPlugin(), 1);
+        task.runTaskTimer(Main.getPlugin(), 0, 5);
         
         
         //試し撃ちモード
@@ -254,7 +263,7 @@ public class GameMgr implements Listener{
                         WeaponClassMgr.setWeaponClass(p);
                         ItemStack join = new ItemStack(Material.CHEST);
                         ItemMeta joinmeta = join.getItemMeta();
-                        joinmeta.setDisplayName("メインメニュー");
+                        joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
                         join.setItemMeta(joinmeta);
                         player.getInventory().setItem(7, join);
                         player.setExp(0.99F);
@@ -268,11 +277,8 @@ public class GameMgr implements Listener{
         }
         
         DataMgr.setUUIDData(player.getUniqueId().toString(), data);
-        //MatchMgr.PlayerJoinMatch(player);
         player.setWalkSpeed(0.2F);
         SquidMgr.SquidRunnable(player);
-        
-        //Main.getPlugin().getLogger().info(Main.lobby.getWorld().getName());
         
         player.teleport(Main.lobby);
         ItemStack join = new ItemStack(Material.CHEST);
@@ -281,9 +287,6 @@ public class GameMgr implements Listener{
         join.setItemMeta(joinmeta);
         player.getInventory().clear();
         player.getInventory().setItem(0, join);
-        //Shooter.ShooterRunnable(player);
-        
-        //SquidMgr.SquidRunnable(player);
         
         Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);
         data.setMatch(match);

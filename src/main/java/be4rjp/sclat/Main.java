@@ -21,6 +21,8 @@ import be4rjp.sclat.weapon.MainWeapon;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import static org.bukkit.Bukkit.getServer;
@@ -55,6 +57,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static Glow glow;
     
+    public static List<Player> pdspList;
+    
     //重複しない数字
     //ボム等で使用
     private static int NDNumber = 0;
@@ -65,6 +69,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         plugin = this;
         glow = new Glow();
         
+        pdspList = new ArrayList<>();
         
         
         //----------------------------APICheck-------------------------------

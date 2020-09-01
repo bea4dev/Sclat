@@ -52,6 +52,7 @@ public class PlayerData {
     private boolean isUsingJetPack = false;
     private boolean doChargeKeep = false;
     private boolean MItemGlow = false;
+    private boolean amehurashi = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -138,6 +139,8 @@ public class PlayerData {
     
     public boolean getMainItemGlow(){return this.MItemGlow;}
     
+    public boolean getIsUsingAmehurashi(){return this.amehurashi;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -215,6 +218,8 @@ public class PlayerData {
     
     public void setMainItemGlow(boolean is){this.MItemGlow = is;}
     
+    public void setIsUsingAmehurashi(boolean is){this.amehurashi = is;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -254,6 +259,7 @@ public class PlayerData {
         this.issliding = false;
         this.isUsingJetPack = false;
         this.MItemGlow = false;
+        this.amehurashi = false;
     }
     
 }

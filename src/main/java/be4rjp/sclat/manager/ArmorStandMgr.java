@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.minecraft.server.v1_13_R1.EnumItemSlot;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +22,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
@@ -94,7 +97,7 @@ public class ArmorStandMgr {
             //as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
             //as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
             as.setInvulnerable(true);
-            as.setCustomName("20");
+            as.setCustomName("20.0");
             as.setCustomNameVisible(true);
             as.setVisible(true);
             DataMgr.setArmorStandPlayer(as, player);
@@ -284,11 +287,12 @@ public class ArmorStandMgr {
         }
         
         double health = Double.parseDouble(as.getCustomName());
-        if(health <= 20){
+        if(health <= 20.0){
             if(as.isVisible()){
                 if(health > damage){
-                    int h = (int)(health - damage);
-                    as.setCustomName(String.valueOf(h));
+                    double h = health - damage;
+                    double rh = ((double)Math.round(h * 10))/10;
+                    as.setCustomName(String.valueOf(rh));
                     as.getLocation().getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 1);
                 }else{
                     shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 10);
@@ -307,6 +311,7 @@ public class ArmorStandMgr {
 
                     as.setCustomNameVisible(false);
                     as.setVisible(false);
+                    as.setMarker(true);
                     //as.setHelmet(new ItemStack(Material.AIR));
                     //as.setChestplate(new ItemStack(Material.AIR));
                     //as.setLeggings(new ItemStack(Material.AIR));
@@ -328,6 +333,7 @@ public class ArmorStandMgr {
                         ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
                         ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
                         ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.FEET, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                        ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(as.getEntityId()));
                     }
 
 
@@ -338,14 +344,17 @@ public class ArmorStandMgr {
                             drop2.remove();
                             drop3.remove();
                             drop4.remove();
+                            for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) 
+                                ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(((CraftArmorStand)as).getHandle()));
                             as.setCustomNameVisible(true);
                             as.setVisible(true);
+                            as.setMarker(false);
                             as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1F, 1F);
                             //as.setHelmet(new ItemStack(Material.LEATHER_HELMET));
                             //as.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
                             //as.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
                             //as.setBoots(new ItemStack(Material.LEATHER_BOOTS));
-                            as.setCustomName("20");
+                            as.setCustomName("20.0");
                         }
                     };
                     delay.runTaskLater(Main.getPlugin(), 60);

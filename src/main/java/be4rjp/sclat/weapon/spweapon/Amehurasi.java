@@ -10,6 +10,7 @@ import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
+import be4rjp.sclat.manager.WeaponClassMgr;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Color;
@@ -55,6 +56,7 @@ public class Amehurasi {
             public void run(){
                 try{
                     if(c == 0){
+                        DataMgr.getPlayerData(player).setIsUsingAmehurashi(true);
                         ItemStack bom = new ItemStack(Material.BEACON).clone();
                         ItemMeta bom_m = bom.getItemMeta();
                         bom_m.setLocalizedName(String.valueOf(Main.getNotDuplicateNumber()));
@@ -69,6 +71,12 @@ public class Amehurasi {
                     if(drop.isOnGround()){
                         AmehurasiRunnable(p, drop.getLocation(), vec);
                         drop.remove();
+                        cancel();
+                    }
+                    
+                    if(drop.getLocation().getY() <= 0 || drop.isDead()){
+                        DataMgr.getPlayerData(player).setIsUsingAmehurashi(false);
+                        WeaponClassMgr.setWeaponClass(p);
                         cancel();
                     }
 
@@ -98,7 +106,8 @@ public class Amehurasi {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 1);
+        if(!DataMgr.getPlayerData(player).getIsUsingAmehurashi())
+            task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
     public static void AmehurasiRunnable(Player player, Location loc, Vector vec){

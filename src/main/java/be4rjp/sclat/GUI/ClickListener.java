@@ -278,7 +278,7 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("Chose Target")){
-            if(name.equals("リスポーン地点")){
+            if(name.equals("§r§6リスポーン地点へジャンプ")){
                 Location loc = Main.lobby.clone();
                 if(!conf.getConfig().getString("WorkMode").equals("Trial"))
                     loc = DataMgr.getPlayerData(player).getMatchLocation();
