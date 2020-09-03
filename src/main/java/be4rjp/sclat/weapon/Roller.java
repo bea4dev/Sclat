@@ -80,7 +80,7 @@ public class Roller {
                     //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
                     Location front = eloc.add(vec.getX() * 2, -0.9, vec.getZ() * 2);
                     if(data.getWeaponClass().getMainWeapon().getIsHude())
-                        front = eloc.add(vec.getX() * 3.3, -0.9, vec.getZ() * 3.3);
+                        front = eloc.add(vec.getX() * 1.5, -0.9, vec.getZ() * 1.5);
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
@@ -275,7 +275,10 @@ public class Roller {
                 
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 5);
+        if(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getIsHude())
+            task.runTaskTimer(Main.getPlugin(), 0, 1);
+        else
+            task.runTaskTimer(Main.getPlugin(), 0, 5);
     }
     
     public static void ShootPaintRunnable(Player player){

@@ -25,11 +25,7 @@ public class RayTrace {
     
     public boolean isOnLine(Vector position) {
         double t = (position.getX() - origin.getX()) / direction.getX();
-        ;
-        if (position.getBlockY() == origin.getY() + (t * direction.getY()) && position.getBlockZ() == origin.getZ() + (t * direction.getZ())) {
-            return true;
-        }
-        return false;
+        return position.getBlockY() == origin.getY() + (t * direction.getY()) && position.getBlockZ() == origin.getZ() + (t * direction.getZ());
     }
 
     
