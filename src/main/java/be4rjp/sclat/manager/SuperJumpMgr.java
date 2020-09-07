@@ -119,7 +119,7 @@ public class SuperJumpMgr {
                     p.teleport(toloc.clone().add(0, 5, 0));
                 }
                 
-                if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
+                if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline() || DataMgr.getPlayerData(p).getIsUsingTyakuti()){
                     cancel();
                 }
                 

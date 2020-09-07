@@ -117,13 +117,13 @@ public class Amehurasi {
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             int c = 0;
-            List<Location> locList = Sphere.getXZCircle(loc.clone().add(0, 18, 0), 8, 100);
+            List<Location> locList = Sphere.getXZCircle(loc.clone().add(0, 18, 0), 8, 1, 100);
             @Override
             public void run(){
                 try{
                     if(c % 4 == 0){
                         locList.clear();
-                        locList = Sphere.getXZCircle(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12), 8, 100);
+                        locList = Sphere.getXZCircle(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12), 8, 1, 100);
                     }
 
                     //雲エフェクト

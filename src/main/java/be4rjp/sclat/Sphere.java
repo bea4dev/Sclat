@@ -31,9 +31,9 @@ public class Sphere {
         return tempList;
     }
     
-    public static List<Location> getXZCircle(Location baseLoc, double r ,int accuracy){
+    public static List<Location> getXZCircle(Location baseLoc, double r, double r_accuracy ,int accuracy){
         List<Location> tempList = new ArrayList<Location>();
-        for(int tr = 1; tr <= r; tr++){
+        for(int tr = 1; tr <= r; tr+=r_accuracy){
             for(int t = 0; t < 360; t += accuracy/tr){
                 double x = tr * Math.sin(Math.toRadians(t));
                 double z = tr * Math.cos(Math.toRadians(t));

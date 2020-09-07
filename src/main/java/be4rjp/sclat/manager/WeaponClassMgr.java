@@ -48,6 +48,7 @@ public class WeaponClassMgr {
         meta.setDisplayName("スーパージャンプ");
         co.setItemMeta(meta);
         player.getInventory().setItem(6, co);
+        player.getEquipment().setHelmet(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBougu());
         
         if(data.getSPGauge() == 100)
             SPWeaponMgr.setSPWeapon(player);

@@ -53,6 +53,7 @@ public class PlayerData {
     private boolean doChargeKeep = false;
     private boolean MItemGlow = false;
     private boolean amehurashi = false;
+    private boolean isUsingTyakuti = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -141,6 +142,8 @@ public class PlayerData {
     
     public boolean getIsUsingAmehurashi(){return this.amehurashi;}
     
+    public boolean getIsUsingTyakuti(){return  this.isUsingTyakuti;}
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -220,6 +223,8 @@ public class PlayerData {
     
     public void setIsUsingAmehurashi(boolean is){this.amehurashi = is;}
     
+    public void setIsUsingTyakuti(boolean is){this.isUsingTyakuti = is;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -260,6 +265,7 @@ public class PlayerData {
         this.isUsingJetPack = false;
         this.MItemGlow = false;
         this.amehurashi = false;
+        this.isUsingTyakuti = false;
     }
     
 }

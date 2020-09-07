@@ -15,6 +15,7 @@ import be4rjp.sclat.weapon.spweapon.MultiMissile;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import be4rjp.sclat.weapon.spweapon.SuperSensor;
 import be4rjp.sclat.weapon.spweapon.SuperShot;
+import be4rjp.sclat.weapon.spweapon.SuperTyakuti;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import net.md_5.bungee.api.ChatColor;
@@ -205,6 +206,13 @@ public class SPWeaponMgr {
                 is8.setItemMeta(ism8);
                 p.getInventory().setItem(4, is8);
                 break;
+            case "スーパーチャクチ":
+                ItemStack is9 = new ItemStack(Material.RABBIT_HIDE);
+                ItemMeta ism9 = is9.getItemMeta();
+                ism9.setDisplayName("スーパーチャクチ");
+                is9.setItemMeta(ism9);
+                p.getInventory().setItem(4, is9);
+                break;
         }
     }
     
@@ -286,6 +294,12 @@ public class SPWeaponMgr {
                 player.setExp(0.99F);
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 player.sendTitle("", "右クリックで発射！", 5, 20, 5);
+                break;
+            case "スーパーチャクチ":
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                SuperTyakuti.SuperTyakutiRunnable(player);
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "メガホンレーザー":
                 if(player.isOnGround()){

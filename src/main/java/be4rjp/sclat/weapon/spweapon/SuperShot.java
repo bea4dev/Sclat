@@ -100,10 +100,10 @@ public class SuperShot {
         player.setVelocity(vec.clone().multiply(-0.5));
         
         for(double y = 0; y <= 8; y+=0.5){
-            ShootSnowball(player, loc1.clone().add(0, y, 0), vec);
-            ShootSnowball(player, loc3.clone().add(0, y, 0), vec);
-            ShootSnowball(player, loc4.clone().add(0, y, 0), vec);
-            ShootSnowball(player, loc5.clone().add(0, y, 0), vec);
+            ShootSnowball(player, loc1.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
+            ShootSnowball(player, loc3.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
+            ShootSnowball(player, loc4.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
+            ShootSnowball(player, loc5.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
         }
         
         BukkitRunnable task = new BukkitRunnable() {

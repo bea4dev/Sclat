@@ -126,7 +126,7 @@ public class ArmorStandMgr {
             public void run(){
                 if(as.getCustomName().equals("21")){
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
+                    p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.7, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
                     if(c % 10 == 0){
                         for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(as.getWorld() == player.getWorld()){
@@ -182,7 +182,7 @@ public class ArmorStandMgr {
             public void run(){
                 if(as.getCustomName().equals("21")){
                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                    p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.3, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
+                    p.getWorld().spawnParticle(Particle.REDSTONE, as.getLocation().add(0, 0.7, 0), 3, 0.3, 0.3, 0.3, 1, dustOptions);
                     if(c % 10 == 0){
                         for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(as.getWorld() == player.getWorld()){
