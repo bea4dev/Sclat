@@ -6,6 +6,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.JetPack;
 import be4rjp.sclat.weapon.spweapon.SuperShot;
 import be4rjp.sclat.weapon.subweapon.Beacon;
+import be4rjp.sclat.weapon.subweapon.CurlingBomb;
 import be4rjp.sclat.weapon.subweapon.KBomb;
 import be4rjp.sclat.weapon.subweapon.Poison;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
@@ -71,6 +72,11 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("スプラッシュシールド");
                 break;
+            case "カーリングボム":
+                is = new ItemStack(Material.QUARTZ_SLAB);
+                ism = is.getItemMeta();
+                ism.setDisplayName("カーリングボム");
+                break;
         }
         is.setItemMeta(ism);
         //player.getInventory().setItem(2, is);  
@@ -126,6 +132,10 @@ public class SubWeaponMgr {
                 break;
             case "スプラッシュシールド":
                 SplashShield.SplashShieldThrowRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "カーリングボム":
+                CurlingBomb.CurlingBombRunnable(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

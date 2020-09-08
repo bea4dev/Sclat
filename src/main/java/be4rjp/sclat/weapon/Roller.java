@@ -55,7 +55,6 @@ public class Roller {
                     data.setCanPaint(false);
                     data.setCanShoot(true);
                 }
-                
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
