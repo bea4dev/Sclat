@@ -83,7 +83,7 @@ public class SuperShot {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_STRONG, 1.5F, 1.2F);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.3F, 2F);
         
-        Location ploc = player.getEyeLocation().add(0, -1, 0);
+        Location ploc = player.getEyeLocation().add(0, -1.5, 0);
         Vector pvec = player.getEyeLocation().getDirection();
         Vector vec = new Vector(pvec.getX(), 0, pvec.getZ());
         Vector vv1 = new Vector(pvec.getZ() * -1, 0, pvec.getX()).normalize().multiply(0.3);
@@ -99,7 +99,7 @@ public class SuperShot {
         
         player.setVelocity(vec.clone().multiply(-0.5));
         
-        for(double y = 0; y <= 8; y+=0.5){
+        for(double y = 0; y <= 8.5; y+=0.5){
             ShootSnowball(player, loc1.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
             ShootSnowball(player, loc3.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));
             ShootSnowball(player, loc4.clone().add(0, y, 0), vec.clone().normalize().multiply(1.8));

@@ -33,6 +33,7 @@ public class SuperTyakuti {
         player.getInventory().clear();
         DataMgr.getPlayerData(player).setIsUsingSP(true);
         DataMgr.getPlayerData(player).setIsUsingTyakuti(true);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
         SPWeaponMgr.setSPCoolTimeAnimation(player, 40);
         BukkitRunnable task = new BukkitRunnable() {
             int i = 0;

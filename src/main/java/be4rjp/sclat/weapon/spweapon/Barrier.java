@@ -38,7 +38,7 @@ public class Barrier {
                     DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
                 }
-                if(c == 9){
+                if(c == 5){
                     data.setArmor(Double.MAX_VALUE);
                     p.playSound(player.getLocation(), Sound.BLOCK_SHULKER_BOX_CLOSE, 1.2F, 2F);
                     player.sendMessage("§b§lバリア発動完了！");
@@ -49,7 +49,7 @@ public class Barrier {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                        if(c <= 9){
+                        if(c >= 5){
                             for(Location e_loc : s_locs)
                                 if(o_player.getWorld() == e_loc.getWorld())
                                     if(o_player.getLocation().distance(e_loc) < conf.getConfig().getInt("ParticlesRenderDistance"))

@@ -346,7 +346,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
+                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 shooter.setItem(slotnum, item);
@@ -390,7 +390,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Kasa") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Camping"))){
+                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Kasa") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Camping"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 roller.setItem(slotnum, item);
@@ -434,7 +434,7 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
+                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 charger.setItem(slotnum, item);
