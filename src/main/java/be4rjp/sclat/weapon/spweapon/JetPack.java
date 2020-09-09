@@ -183,6 +183,7 @@ public class JetPack {
                         as.setBasePlate(false);
                         as.setGravity(false);
                         as.setSmall(true);
+                        as.setMarker(true);
                     }
 
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {

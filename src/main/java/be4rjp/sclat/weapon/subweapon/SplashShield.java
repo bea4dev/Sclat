@@ -74,7 +74,8 @@ public class SplashShield {
                     }
                     
                     if(drop.getLocation().getY() < 0 || drop.getLocation().getY() < p.getLocation().getY() - 100 || drop.isDead())
-                        DataMgr.getPlayerData(p).setCanUseSubWeapon(true);
+                        cancel();
+                    
 
                     if(drop.isOnGround()){
                         Location loc = drop.getLocation();

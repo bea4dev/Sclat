@@ -82,13 +82,16 @@ public class CurlingBomb {
                     ((CraftArmorStand)as2).getHandle().setPositionRotation(as1l.getX(), as1l.getY(), as1l.getZ(), 0, 0);
                     as3.teleport(aloc);
                     fb.setTicksLived(1);
-
-                    if(i >= 2 && as1.isOnGround()){
-                        if(bloc.getX() == as1l.getX())
+                    
+                    if(i >= 10 && as1.isOnGround()){
+                        if(bloc.getX() == as1l.getX() && bloc.getZ() != as1l.getZ())
                             aVec = new Vector(aVec.getX() * -1, 0, aVec.getZ());
-                        if(bloc.getZ() == as1l.getZ())
+                        if(bloc.getZ() == as1l.getZ() && bloc.getX() != as1l.getX())
                             aVec = new Vector(aVec.getX(), 0, aVec.getZ() * -1);
                     }
+                    
+                    if(as1.isOnGround())
+                        as1.setVelocity(aVec);
 
                     PaintMgr.PaintHightestBlock(as1l, player, false, true);
 
@@ -142,6 +145,19 @@ public class CurlingBomb {
                                     }
                                 }
                             } 
+                        }
+                        
+                        for(Entity as : player.getWorld().getEntities()){
+                            if (as.getLocation().distance(as1l) <= 1.2){
+                                if(as instanceof ArmorStand){
+                                    double damage = 2;
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                    if(as.getCustomName() != null){
+                                        if(as.getCustomName().equals("SplashShield") || as.getCustomName().equals("Kasa"))
+                                            break;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -215,8 +231,6 @@ public class CurlingBomb {
                                         }
                                     };
                                     task.runTaskLater(Main.getPlugin(), 1);
-
-
                                 }
                             }
                         }
@@ -240,9 +254,6 @@ public class CurlingBomb {
                         fb.remove();
                         cancel();
                     }
-
-                    if(as1.isOnGround())
-                        as1.setVelocity(aVec);
 
                     i++;
                 }catch(Exception e){
