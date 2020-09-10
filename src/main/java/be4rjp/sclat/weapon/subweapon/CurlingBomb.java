@@ -102,7 +102,7 @@ public class CurlingBomb {
                             ((CraftPlayer)o_player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as3.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()))));
                     }
 
-                    if(i >= 130 && i <= 140){
+                    if(i >= 80 && i <= 90){
                         if(i % 2 == 0)
                             player.getWorld().playSound(as1l, Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1.6F);
                     }
@@ -161,7 +161,7 @@ public class CurlingBomb {
                         }
                     }
 
-                    if(i == 150 || !player.isOnline() || !DataMgr.getPlayerData(player).isInMatch()){
+                    if(i == 100 || !player.isOnline() || !DataMgr.getPlayerData(player).isInMatch()){
                         //半径
                         double maxDist = 4;
 

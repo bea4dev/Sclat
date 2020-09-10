@@ -85,8 +85,8 @@ public class GameMgr implements Listener{
         
         
         PlayerStatusMgr.setupPlayerStatus(player);
-        DataMgr.getPlayerData(player).setGearNumber(PlayerStatusMgr.getGear(player));
-        DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
+        data.setGearNumber(PlayerStatusMgr.getGear(player));
+        data.setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
         
         //処理の分散
         BukkitRunnable task = new BukkitRunnable(){
@@ -99,12 +99,8 @@ public class GameMgr implements Listener{
                             PlayerStatusMgr.sendHologram(player);
                     }
                     case 1:{//----------------------------------------------------------------------------
-                        String def = "111111111";
+                        String def = "011111111";
                         if(conf.getPlayerSettings().contains("Settings." + uuid)){
-
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).length() != def.length())
-                                conf.getPlayerSettings().set("Settings." + uuid, def);
-
                             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
                                 settings.S_ShowEffect_Shooter();
                             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
@@ -125,6 +121,7 @@ public class GameMgr implements Listener{
                                 settings.S_doChargeKeep();
                         }else{
                             conf.getPlayerSettings().set("Settings." + uuid, def);
+                            settings.S_PlayBGM();
                         }
                         data.setSettings(settings);
                     }
@@ -135,6 +132,9 @@ public class GameMgr implements Listener{
                         meta.setDisplayName(player.getName());
                         item.setItemMeta(meta);
                         data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+                    }
+                    case 3:{
+                        cancel();
                     }
                 }
                 
@@ -380,7 +380,7 @@ public class GameMgr implements Listener{
     
     
     @EventHandler
-    public void onbWeatherChange(WeatherChangeEvent event){
+    public void onWeatherChange(WeatherChangeEvent event){
         event.setCancelled(true);
     }
     

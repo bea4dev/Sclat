@@ -54,6 +54,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ClickListener implements Listener{
     @EventHandler
     public void onGUIClick(InventoryClickEvent event){
+        if(event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null)
+            return;
+        
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         Player player = (Player)event.getWhoClicked();
         player.closeInventory();
@@ -355,7 +358,11 @@ public class ClickListener implements Listener{
     public void onOpenMainMenu(PlayerInteractEvent event){
         Player player = (Player)event.getPlayer();
         Action action = event.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
+        
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
             if(player.getInventory().getItemInMainHand().getType().equals(Material.CHEST))
                 OpenGUI.openMenu(player);
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("スーパージャンプ"))

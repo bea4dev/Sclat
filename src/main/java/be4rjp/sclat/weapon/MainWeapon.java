@@ -55,19 +55,10 @@ public class MainWeapon implements Listener{
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
             MainWeaponMgr.UseMainWeapon(player);
         }
-        if(action.equals(Action.LEFT_CLICK_AIR))
+        if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK))
             if(DataMgr.getPlayerData(player).isInMatch())
                 SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
         
-    }
-    
-    @EventHandler
-    public void onPlayerClick(PlayerAnimationEvent event){
-        Player player = event.getPlayer();
-        if(event.getAnimationType() == PlayerAnimationType.ARM_SWING){
-            if(DataMgr.getPlayerData(player).isInMatch())
-                SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
-        }
     }
     
     @EventHandler
@@ -90,9 +81,11 @@ public class MainWeapon implements Listener{
         Player player = event.getPlayer();
         MainWeaponMgr.UseMainWeapon(player);
         
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        
         if(DataMgr.getPlayerData(player).isInMatch())
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
-                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+                    SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
     }
     
     @EventHandler
@@ -100,9 +93,11 @@ public class MainWeapon implements Listener{
         Player player = event.getPlayer();
         MainWeaponMgr.UseMainWeapon(player);
         
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        
         if(DataMgr.getPlayerData(player).isInMatch())
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
-                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+                    SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
     }
     
     @EventHandler
@@ -110,9 +105,11 @@ public class MainWeapon implements Listener{
         Player player = event.getPlayer();
         MainWeaponMgr.UseMainWeapon(player);
         
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        
         if(DataMgr.getPlayerData(player).isInMatch())
-            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null)
-                SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());  
+                    SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
     }
     
     @EventHandler
