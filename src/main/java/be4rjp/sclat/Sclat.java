@@ -1,5 +1,8 @@
 package be4rjp.sclat;
 
+import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.Team;
+import java.util.logging.Logger;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;
@@ -114,6 +117,60 @@ public class Sclat {
         }
         
     }
+    
+    public static class MessageType {
+        public static final int ALL_PLAYER = 0;
+        public static final int TEAM = 1;
+        public static final int CONSOLE = 2;
+        public static final int BROADCAST = 3;
+        public static final int PLAYER = 4;
+    }
+    
+    /*
+    public static void sendMessage(String message, int type){
+        String sclat = "[§6Sclat§r] ";
+        StringBuilder buff = new StringBuilder();
+        buff.append(sclat);
+        buff.append(message);
+        switch(type){
+            case 0:{
+                for (Player player : Main.getPlugin().getServer().getOnlinePlayers()){
+                    player.sendMessage(buff.toString());
+                }
+            }
+            case 2:{
+                Main.getPlugin().getServer().getLogger().info(buff.toString());
+            }
+            case 3:{
+                Main.getPlugin().getServer().broadcastMessage(buff.toString());
+            }
+        }
+    }
+    
+    public static void sendMessage(String message, int type, Team team){
+        String sclat = "[§6Sclat§r] ";
+        StringBuilder buff = new StringBuilder();
+        buff.append(sclat);
+        buff.append(message);
+        if(type == MessageType.TEAM){
+            for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                Team playerTeam = DataMgr.getPlayerData(player).getTeam();
+                if(playerTeam == null) continue;
+                if(team == null) continue;
+                if(playerTeam != team) continue;
+                player.sendMessage(buff.toString());
+            }
+        }
+    }
+    
+    public static void sendMessage(String message, int type, Player player){
+        String sclat = "[§6Sclat§r] ";
+        StringBuilder buff = new StringBuilder();
+        buff.append(sclat);
+        buff.append(message);
+        if(type == MessageType.PLAYER)
+            player.sendMessage(buff.toString());
+    }*/
     
     public static boolean isNumber(String s) {
         try {
