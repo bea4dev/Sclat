@@ -50,6 +50,7 @@ public class MainWeapon implements Listener{
         
         if(e.getAction() == null || e.getItem() == null)
             return;
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
         
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
@@ -79,10 +80,12 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void PlayerRightClick(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        MainWeaponMgr.UseMainWeapon(player);
-        
         if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
             return;
+        
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
+        
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
@@ -91,10 +94,11 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
         Player player = event.getPlayer();
-        MainWeaponMgr.UseMainWeapon(player);
-        
         if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
             return;
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
+        
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
@@ -103,10 +107,12 @@ public class MainWeapon implements Listener{
     @EventHandler
     public void onArmorStand(PlayerArmorStandManipulateEvent event){
         Player player = event.getPlayer();
-        MainWeaponMgr.UseMainWeapon(player);
         
         if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
             return;
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
+        
+        MainWeaponMgr.UseMainWeapon(player);
         
         if(DataMgr.getPlayerData(player).isInMatch())
             SPWeaponMgr.UseSPWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());

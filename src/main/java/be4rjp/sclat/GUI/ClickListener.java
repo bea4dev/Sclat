@@ -3,6 +3,9 @@ package be4rjp.sclat.GUI;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.MessageType;
+import be4rjp.sclat.Sclat;
+import be4rjp.sclat.SoundType;
 import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
@@ -146,7 +149,7 @@ public class ClickListener implements Listener{
                 if(Gear.getGearName(i).equals(name)){
                     DataMgr.getPlayerData(player).setGearNumber(i);
                     PlayerStatusMgr.setGear(player, i);
-                    player.sendMessage("ギア[" + ChatColor.AQUA + name + ChatColor.RESET + "]を選択しました");
+                    Sclat.sendMessage("ギア[" + ChatColor.AQUA + name + ChatColor.RESET + "]を選択しました", MessageType.PLAYER, player);
                     break;
                 }
                 i++;
@@ -246,7 +249,7 @@ public class ClickListener implements Listener{
             }else{
                 DataMgr.getPlayerData(player).setWeaponClass(DataMgr.getWeaponClass(name));
             }
-            player.sendMessage("ブキ[" + ChatColor.GOLD + name + ChatColor.RESET + "]を選択しました");
+            Sclat.sendMessage("ブキ[" + ChatColor.GOLD + name + ChatColor.RESET + "]を選択しました", MessageType.PLAYER, player);
         }
         
         if(event.getClickedInventory().getTitle().equals("Shop")){
@@ -271,12 +274,12 @@ public class ClickListener implements Listener{
             if(PlayerStatusMgr.getMoney(player) >= DataMgr.getWeaponClass(name).getMainWeapon().getMoney()){
                 PlayerStatusMgr.addWeapon(player, name);
                 PlayerStatusMgr.subMoney(player, DataMgr.getWeaponClass(name).getMainWeapon().getMoney());
-                player.sendMessage(ChatColor.GREEN + "購入に成功しました");
-                player.playNote(player.getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
+                Sclat.sendMessage(ChatColor.GREEN + "購入に成功しました", MessageType.PLAYER, player);
+                Sclat.playGameSound(player, SoundType.SUCCESS);
                 PlayerStatusMgr.sendHologramUpdate(player);
             }else{
-                player.sendMessage(ChatColor.RED + "お金が足りません");
-                player.playNote(player.getLocation(), Instrument.BASS_GUITAR, Note.flat(0, Note.Tone.G));
+                Sclat.sendMessage(ChatColor.RED + "お金が足りません", MessageType.PLAYER, player);
+                Sclat.playGameSound(player, SoundType.ERROR);
             }
         }
         

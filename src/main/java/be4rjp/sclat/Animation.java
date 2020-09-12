@@ -44,7 +44,7 @@ public class Animation {
                 }
                 if(i == 40){
                     if(winteam == DataMgr.getPlayerData(player).getTeam())
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                        Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
                     cancel();
                 }
                 i++;
@@ -74,7 +74,7 @@ public class Animation {
                 }
                 if(i == 40){
                     if(winteam == DataMgr.getPlayerData(player).getTeam())
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                        Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
                     cancel();
                 }
                 i++;
@@ -112,7 +112,7 @@ public class Animation {
                 }
                 if(i == 40){
                     if(winteam == DataMgr.getPlayerData(player).getTeam())
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                        Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
                     cancel();
                 }
                 i++;

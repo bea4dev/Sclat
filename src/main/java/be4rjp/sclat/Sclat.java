@@ -12,6 +12,9 @@ import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import net.minecraft.server.v1_13_R1.PacketPlayOutBlockChange;
 import net.minecraft.server.v1_13_R1.PacketPlayOutMultiBlockChange;
 import net.minecraft.server.v1_13_R1.PacketPlayOutMapChunk;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 
@@ -118,31 +121,26 @@ public class Sclat {
         
     }
     
-    public static class MessageType {
-        public static final int ALL_PLAYER = 0;
-        public static final int TEAM = 1;
-        public static final int CONSOLE = 2;
-        public static final int BROADCAST = 3;
-        public static final int PLAYER = 4;
-    }
     
-    /*
     public static void sendMessage(String message, int type){
-        String sclat = "[§6Sclat§r] ";
+        String sclat = "[§bSclat§r] ";
         StringBuilder buff = new StringBuilder();
         buff.append(sclat);
         buff.append(message);
         switch(type){
-            case 0:{
+            case MessageType.ALL_PLAYER:{
                 for (Player player : Main.getPlugin().getServer().getOnlinePlayers()){
                     player.sendMessage(buff.toString());
                 }
+                break;
             }
-            case 2:{
+            case MessageType.CONSOLE:{
                 Main.getPlugin().getServer().getLogger().info(buff.toString());
+                break;
             }
-            case 3:{
+            case MessageType.BROADCAST:{
                 Main.getPlugin().getServer().broadcastMessage(buff.toString());
+                break;
             }
         }
     }
@@ -170,7 +168,21 @@ public class Sclat {
         buff.append(message);
         if(type == MessageType.PLAYER)
             player.sendMessage(buff.toString());
-    }*/
+    }
+    
+    public static void playGameSound(Player player, int type){
+        switch(type){
+            case SoundType.ERROR:
+                player.playNote(player.getLocation(), Instrument.BASS_GUITAR, Note.flat(0, Note.Tone.G));
+                break;
+            case SoundType.SUCCESS:
+                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 2F);
+                break;
+            case SoundType.CONGRATULATIONS:
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+                break;
+        }
+    }
     
     public static boolean isNumber(String s) {
         try {

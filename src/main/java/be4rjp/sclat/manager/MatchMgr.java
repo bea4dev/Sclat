@@ -5,7 +5,9 @@ import be4rjp.sclat.Animation;
 import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+import be4rjp.sclat.MessageType;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.SoundType;
 import be4rjp.sclat.data.Area;
 import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.Color;
@@ -85,7 +87,8 @@ public class MatchMgr {
         PlayerData data = DataMgr.getPlayerData(player);
         
         if(DataMgr.getPlayerIsQuit(player.getUniqueId().toString())){
-            player.sendMessage("§c§n途中で退出した場合再参加はできません");
+            Sclat.sendMessage("§c§n途中で退出した場合再参加はできません", MessageType.PLAYER, player);
+            Sclat.playGameSound(player, SoundType.ERROR);
             return;
         }
         
@@ -96,7 +99,7 @@ public class MatchMgr {
             match.addPlayerCount();
             int playercount = match.getPlayerCount();
         if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
-            Main.getPlugin().getServer().broadcastMessage("§b§n" + player.getDisplayName() + " joined the match");
+            Sclat.sendMessage("§b§n" + player.getDisplayName() + " joined the match", MessageType.ALL_PLAYER);
 
             if(playercount == 1)
                 match.setLeaderPlayer(player);
@@ -124,21 +127,22 @@ public class MatchMgr {
                     @Override
                     public void run(){
                         if(s == 0)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後20秒");
+                            Sclat.sendMessage("§a試合開始まで後20秒", MessageType.ALL_PLAYER);
                         if(s == 10)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後10秒");
+                            Sclat.sendMessage("§a試合開始まで後10秒", MessageType.ALL_PLAYER);
                         if(s == 15)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後5秒");
+                            Sclat.sendMessage("§a試合開始まで後5秒", MessageType.ALL_PLAYER);
                         if(s == 16)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後4秒");
+                            Sclat.sendMessage("§a試合開始まで後4秒", MessageType.ALL_PLAYER);
                         if(s == 17)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後3秒");
+                            Sclat.sendMessage("§a試合開始まで後3秒", MessageType.ALL_PLAYER);
                         if(s == 18)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後2秒");
+                            Sclat.sendMessage("§a試合開始まで後2秒", MessageType.ALL_PLAYER);
                         if(s == 19)
-                            Main.getPlugin().getServer().broadcastMessage("§a試合開始まで後1秒");
+                            Sclat.sendMessage("§a試合開始まで後1秒", MessageType.ALL_PLAYER);
                         if(s == 20){
                             match.setCanJoin(false);
+                            Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
                             if(conf.getConfig().getBoolean("CanVoting")){
                                 if(match.getNawabari_T_Count() >= match.getTDM_T_Count() && match.getNawabari_T_Count() >= match.getGatiArea_T_Count()){
                                     conf.getConfig().set("WorkMode", "Nomal");
@@ -163,15 +167,16 @@ public class MatchMgr {
                 
             }
         }else{
-            player.sendMessage("§c§n上限人数を超えているため参加できません");
+            Sclat.sendMessage("§c§n上限人数を超えているため参加できません", MessageType.PLAYER, player);
+            Sclat.playGameSound(player, SoundType.ERROR);
         }
         }else{
-            player.sendMessage("§c§nこのマッチには既に開始しているため参加できません");
-            return;
+            Sclat.sendMessage("§c§nこのマッチには既に開始しているため参加できません", MessageType.PLAYER, player);
+            Sclat.playGameSound(player, SoundType.ERROR);
         }
         }else{
-            player.sendMessage("§c§n既にチームに参加しています");
-            return;
+            Sclat.sendMessage("§c§n既にチームに参加しています", MessageType.PLAYER, player);
+            Sclat.playGameSound(player, SoundType.ERROR);
         }
         
     }
@@ -390,11 +395,11 @@ public class MatchMgr {
                     Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); 
                     Score s2 = objective.getScore("");
                     if(conf.getConfig().getString("WorkMode").equals("TDM"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7チームデスマッチ"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ"); 
                     else if(conf.getConfig().getString("WorkMode").equals("Area"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ガチエリア"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア"); 
                     else
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ナワバリバトル"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル"); 
 
                     s2.setScore(2);
                     score.setScore(1);
@@ -659,11 +664,11 @@ public class MatchMgr {
                         score = objective.getScore(ChatColor.YELLOW + "TimeLeft:  ...延長中...");
                     Score s2 = objective.getScore("");
                     if(conf.getConfig().getString("WorkMode").equals("TDM"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7チームデスマッチ");
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ");
                     else if(conf.getConfig().getString("WorkMode").equals("Area"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ガチエリア");
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア");
                     else
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  §7ナワバリバトル"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル"); 
                     s2.setScore(2);
                     score.setScore(1);
                     
@@ -731,6 +736,7 @@ public class MatchMgr {
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                     oplayer.sendTitle("", "§7延長戦！", 10, 20, 10);
+                                    Sclat.sendMessage("§7延長戦！", MessageType.PLAYER, oplayer);
                                 }
                             }
                         }
@@ -750,6 +756,7 @@ public class MatchMgr {
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                     oplayer.sendTitle("", "§7残りカウントあとわずか！", 10, 20, 10);
+                                    Sclat.sendMessage("§7残りカウントあとわずか！", MessageType.PLAYER, oplayer);
                                     p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 8.0F, 2.0F);
                                 }
                             }
@@ -760,9 +767,7 @@ public class MatchMgr {
                     if(s == 60 && !conf.getConfig().getString("WorkMode").equals("Area")){
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).getIsJoined()){
-                                oplayer.sendMessage("");
-                                oplayer.sendMessage("§6§l残り1分！");
-                                oplayer.sendMessage("");
+                                Sclat.sendMessage("§6§n残り1分！", MessageType.PLAYER, oplayer);
                             }
                         }
                         if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
@@ -1023,12 +1028,8 @@ public class MatchMgr {
                     //int paint = data.getPaintCount();
                     
                     
-                    
-                    p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage("§a§l§n_______________________________");
-                    p.sendMessage("");
-                    p.sendMessage("§a§l                  [ 試合結果 ]");
-                    p.sendMessage(ChatColor.GREEN + "");
+                    Sclat.sendMessage("§a----------<< Match result >>----------", MessageType.PLAYER, p);
+                    Sclat.sendMessage("", MessageType.PLAYER, p);
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
@@ -1036,14 +1037,14 @@ public class MatchMgr {
                             continue;
                         if(odata.getTeam().getID() == data.getTeam().getID()){
                             if(op.equals(p)){
-                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                                Sclat.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount(), MessageType.PLAYER, p);
+                                //p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                             }else{
-                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                                Sclat.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount(), MessageType.PLAYER, p);
+                                //p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                             }
                         }
                     }
-                    
-                    p.sendMessage(ChatColor.GREEN + "");       
                     
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerData odata = DataMgr.getPlayerData(op);
@@ -1051,9 +1052,11 @@ public class MatchMgr {
                             continue;
                         if(odata.getTeam().getID() != data.getTeam().getID()){
                             if(op.equals(p)){
-                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                                Sclat.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount(), MessageType.PLAYER, p);
+                                //p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "§l[ §l" + op.getDisplayName() + "§l ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                             }else{
-                                p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
+                                Sclat.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount(), MessageType.PLAYER, p);
+                                //p.sendMessage(odata.getTeam().getTeamColor().getColorCode() + "[ " + op.getDisplayName() + " ]" + ChatColor.RESET + "Kills : " + ChatColor.YELLOW + odata.getKillCount() + "   " + ChatColor.RESET + "Points : " + ChatColor.YELLOW + odata.getPaintCount());
                             }
                         }
                     }
@@ -1061,11 +1064,6 @@ public class MatchMgr {
                 
                 if(i == 157){
                     PlayerData data = DataMgr.getPlayerData(p);
-                    
-                    p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage("§a§l§n_______________________________");
-                    p.sendMessage(ChatColor.GREEN + "");
                     
                     int pMoney = (int)((double)data.getKillCount() * 100D + (double)data.getPaintCount() / 5D);
                     int pLv = 1;
@@ -1082,20 +1080,19 @@ public class MatchMgr {
                         PlayerStatusMgr.setRank(p, 0);
                     PlayerStatusMgr.addLv(p, pLv);
                     PlayerStatusMgr.addMoney(p, pMoney);
-                
-                    p.sendMessage("§a§l§n_______________________________");
-                    p.sendMessage("");
-                    p.sendMessage("§a§l                  [ ボーナス ]");
-                    p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage(ChatColor.GREEN + " Money : " + ChatColor.RESET + "+" + String.valueOf(pMoney) + ChatColor.AQUA + "  Lv : " + ChatColor.RESET + "+" + String.valueOf(pLv));
-                    p.sendMessage("");
-                    if(pRank < 0)
-                        p.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]");
-                    else
-                        p.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]");
-                    p.sendMessage(ChatColor.GREEN + "");
-                    p.sendMessage("§a§l§n_______________________________");
                     
+                    Sclat.sendMessage("", MessageType.PLAYER, p);
+                    Sclat.sendMessage("§a----------<< Match bonus >>----------", MessageType.PLAYER, p);
+                
+                    Sclat.sendMessage("", MessageType.PLAYER, p);
+                    Sclat.sendMessage(ChatColor.GREEN + " Money : " + ChatColor.RESET + "+" + String.valueOf(pMoney) + ChatColor.AQUA + "  Lv : " + ChatColor.RESET + "+" + String.valueOf(pLv), MessageType.PLAYER, p);
+                    Sclat.sendMessage("", MessageType.PLAYER, p);
+                    if(pRank < 0)
+                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]", MessageType.PLAYER, p);
+                    else
+                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]", MessageType.PLAYER, p);
+                    Sclat.sendMessage("", MessageType.PLAYER, p);
+                    Sclat.sendMessage("§a-----------------------------------", MessageType.PLAYER, p);
                     /*
                     p.sendMessage(ChatColor.GREEN + "##########################");
                     p.sendMessage(ChatColor.GREEN + "          試合結果");

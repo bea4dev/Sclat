@@ -2,6 +2,8 @@
 package be4rjp.sclat.data;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.MessageType;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +98,7 @@ public class Area {
                 if(team != null){
                     if(team == match.getTeam0()){
                         if((blist.size() * 0.5) < (double)t1c){
-                            Main.getPlugin().getServer().broadcastMessage("§3§lカウントストップ!");
+                            Sclat.sendMessage("§3§lカウントストップ!", MessageType.ALL_PLAYER);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 2F);
@@ -108,7 +110,7 @@ public class Area {
                     }
                     if(team == match.getTeam1()){
                         if((blist.size() * 0.5) < (double)t0c){
-                            Main.getPlugin().getServer().broadcastMessage("§3§lカウントストップ!");
+                            Sclat.sendMessage("§3§lカウントストップ!", MessageType.ALL_PLAYER);
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 2F);
@@ -124,9 +126,11 @@ public class Area {
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                 if(team == DataMgr.getPlayerData(oplayer).getTeam()){
+                                    Sclat.sendMessage("§fエリアを確保した!", MessageType.PLAYER, oplayer);
                                     oplayer.sendTitle("", "§fエリアを確保した!", 10, 20, 10);
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
                                 }else{
+                                    Sclat.sendMessage("§4エリアが確保された!", MessageType.PLAYER, oplayer);
                                     oplayer.sendTitle("", "§4エリアが確保された!", 10, 20, 10);
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
                                 }
@@ -138,9 +142,11 @@ public class Area {
                         for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                 if(team == DataMgr.getPlayerData(oplayer).getTeam()){
+                                    Sclat.sendMessage("§fエリアを確保した!", MessageType.PLAYER, oplayer);
                                     oplayer.sendTitle("", "§fエリアを確保した!", 10, 20, 10);
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
                                 }else{
+                                    Sclat.sendMessage("§4エリアが確保された!", MessageType.PLAYER, oplayer);
                                     oplayer.sendTitle("", "§4エリアが確保された!", 10, 20, 10);
                                     oplayer.playSound(oplayer.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
                                 }

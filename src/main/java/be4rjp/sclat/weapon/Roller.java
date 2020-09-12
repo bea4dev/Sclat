@@ -65,213 +65,215 @@ public class Roller {
             Player p = player;
             @Override
             public void run(){
-                PlayerData data = DataMgr.getPlayerData(p);
-                if(data.getIsHolding() && data.getCanPaint()){
-                    if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
-                        player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
-                        return;
-                    }
-                    p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
-                    Vector locvec = p.getEyeLocation().getDirection();
-                    Location eloc = p.getEyeLocation();
-                    Vector vec = new Vector(locvec.getX(), 0, locvec.getZ()).normalize();
-                    //RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
-                    //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
-                    Location front = eloc.add(vec.getX() * 2, -0.9, vec.getZ() * 2);
-                    if(data.getWeaponClass().getMainWeapon().getIsHude())
-                        front = eloc.add(vec.getX() * 1.5, -0.9, vec.getZ() * 1.5);
-                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                            if(target.getWorld() == p.getWorld())
-                                if(target.getLocation().distance(front) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                    target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
-                    }
-                    Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
-                    Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
-                    
-                    //筆系武器
-                    if(data.getWeaponClass().getMainWeapon().getIsHude()){
-                        Location position = p.getLocation();
-                        PaintMgr.PaintHightestBlock(front, p, false, true);
-                        p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
-                        
+                try{
+                    PlayerData data = DataMgr.getPlayerData(p);
+                    if(data.getIsHolding() && data.getCanPaint() && data.isInMatch()){
+                        if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
+                            player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
+                            return;
+                        }
+                        p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
+                        Vector locvec = p.getEyeLocation().getDirection();
+                        Location eloc = p.getEyeLocation();
+                        Vector vec = new Vector(locvec.getX(), 0, locvec.getZ()).normalize();
+                        //RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
+                        //ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
+                        Location front = eloc.add(vec.getX() * 2, -0.9, vec.getZ() * 2);
+                        if(data.getWeaponClass().getMainWeapon().getIsHude())
+                            front = eloc.add(vec.getX() * 1.5, -0.9, vec.getZ() * 1.5);
+                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
                                 if(target.getWorld() == p.getWorld())
-                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                                    if(target.getLocation().distance(front) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
                         }
-                        
-                        double maxDist = 2;
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
-                                continue;
-                            if (target.getLocation().distance(position) <= maxDist) {
-                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                    
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    
-                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        DamageMgr.SclatGiveDamage(target, damage);
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                    }else{
-                                        target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                        PaintMgr.Paint(target.getLocation(), p, true);
-                                        
+                        Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
+                        Vector vec2 = new Vector(vec.getZ(), 0, vec.getX() * -1);
+
+                        //筆系武器
+                        if(data.getWeaponClass().getMainWeapon().getIsHude()){
+                            Location position = p.getLocation();
+                            PaintMgr.PaintHightestBlock(front, p, false, true);
+                            p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                    if(target.getWorld() == p.getWorld())
+                                        if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                            }
+
+                            double maxDist = 2;
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(!DataMgr.getPlayerData(target).isInMatch())
+                                    continue;
+                                if (target.getLocation().distance(position) <= maxDist) {
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+
+                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                            DamageMgr.SclatGiveDamage(target, damage);
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                        }else{
+                                            target.setGameMode(GameMode.SPECTATOR);
+                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            for(Entity as : player.getWorld().getEntities()){
+                                if (as.getLocation().distance(position) <= maxDist){
+                                    if(as instanceof ArmorStand){
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                    }
+                                }
+                            }
+                            p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
+                            return;
+                        }
+
+                        //法線ベクトルでロール部分の取得
+
+
+                        RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
+                        ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
+                        loop : for(int i = 0; i < positions1.size();i++){
+                            Location position = positions1.get(i).toLocation(p.getLocation().getWorld());
+                            Block block = p.getLocation().getWorld().getBlockAt(position);
+                            if(!block.getType().equals(Material.AIR))
+                                break loop;
+                            PaintMgr.PaintHightestBlock(position, p, false, true);
+                            p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                    if(target.getWorld() == p.getWorld())
+                                        if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                            }
+
+                            double maxDist = 2;
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(!DataMgr.getPlayerData(target).isInMatch())
+                                    continue;
+                                if (target.getLocation().distance(position) <= maxDist) {
+                                    if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                        if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+
+                                            double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+
+                                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                                DamageMgr.SclatGiveDamage(target, damage);
+                                                PaintMgr.Paint(target.getLocation(), p, true);
+                                                p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                            }else{
+                                                target.setGameMode(GameMode.SPECTATOR);
+                                                DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                                PaintMgr.Paint(target.getLocation(), p, true);
+
+                                            }
+
+                                            //AntiNoDamageTime
+                                            BukkitRunnable task = new BukkitRunnable(){
+                                                Player p = target;
+                                                @Override
+                                                public void run(){
+                                                    target.setNoDamageTicks(0);
+                                                }
+                                            };
+                                            task.runTaskLater(Main.getPlugin(), 1);
+                                            break loop;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for(Entity as : player.getWorld().getEntities()){
+                                if (as.getLocation().distance(position) <= maxDist){
+                                    if(as instanceof ArmorStand){
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                     }
                                 }
                             }
                         }
-                        
-                        for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(position) <= maxDist){
-                                if(as instanceof ArmorStand){
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+
+
+                        RayTrace rayTrace2 = new RayTrace(front.toVector(), vec2);
+                        ArrayList<Vector> positions2 = rayTrace2.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
+                        loop : for(int i = 0; i < positions2.size();i++){
+                            Location position = positions2.get(i).toLocation(p.getLocation().getWorld());
+                            Block block = p.getLocation().getWorld().getBlockAt(position);
+                            if(!block.getType().equals(Material.AIR))
+                                break loop;
+                            PaintMgr.PaintHightestBlock(position, p, false, true);
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                    if(target.getWorld() == p.getWorld())
+                                        if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
+                            }
+
+                            double maxDist = 2;
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(!DataMgr.getPlayerData(target).isInMatch())
+                                    continue;
+                                if (target.getLocation().distance(position) <= maxDist) {
+                                    if(rayTrace2.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                        if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+
+                                            double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+
+                                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
+                                                DamageMgr.SclatGiveDamage(target, damage);
+                                                PaintMgr.Paint(target.getLocation(), p, true);
+                                                p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
+                                            }else{
+                                                target.setGameMode(GameMode.SPECTATOR);
+                                                DeathMgr.PlayerDeathRunnable(target, p, "killed");
+                                                PaintMgr.Paint(target.getLocation(), p, true);
+
+                                            }
+
+                                            //AntiNoDamageTime
+                                            BukkitRunnable task = new BukkitRunnable(){
+                                                Player p = target;
+                                                @Override
+                                                public void run(){
+                                                    target.setNoDamageTicks(0);
+                                                }
+                                            };
+                                            task.runTaskLater(Main.getPlugin(), 1);
+                                            break loop;
+                                        }
+                                    }
+                                }
+                            }
+
+                            for(Entity as : player.getWorld().getEntities()){
+                                if (as.getLocation().distance(position) <= maxDist){
+                                    if(as instanceof ArmorStand){
+                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                                    }     
                                 }
                             }
                         }
+                        PaintMgr.PaintHightestBlock(eloc, p, false, true);
                         p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
-                        return;
                     }
-                    
-                    //法線ベクトルでロール部分の取得
-                    
-                    
-                    RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
-                    ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
-                    loop : for(int i = 0; i < positions1.size();i++){
-                        Location position = positions1.get(i).toLocation(p.getLocation().getWorld());
-                        Block block = p.getLocation().getWorld().getBlockAt(position);
-                        if(!block.getType().equals(Material.AIR))
-                            break loop;
-                        PaintMgr.PaintHightestBlock(position, p, false, true);
-                        p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
-                        
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                                if(target.getWorld() == p.getWorld())
-                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
-                        }
-                        
-                        double maxDist = 2;
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
-                                continue;
-                            if (target.getLocation().distance(position) <= maxDist) {
-                                if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
-                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
 
-                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveDamage(target, damage);
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-
-                                        }
-
-                                        //AntiNoDamageTime
-                                        BukkitRunnable task = new BukkitRunnable(){
-                                            Player p = target;
-                                            @Override
-                                            public void run(){
-                                                target.setNoDamageTicks(0);
-                                            }
-                                        };
-                                        task.runTaskLater(Main.getPlugin(), 1);
-                                        break loop;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(position) <= maxDist){
-                                if(as instanceof ArmorStand){
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    RayTrace rayTrace2 = new RayTrace(front.toVector(), vec2);
-                    ArrayList<Vector> positions2 = rayTrace2.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
-                    loop : for(int i = 0; i < positions2.size();i++){
-                        Location position = positions2.get(i).toLocation(p.getLocation().getWorld());
-                        Block block = p.getLocation().getWorld().getBlockAt(position);
-                        if(!block.getType().equals(Material.AIR))
-                            break loop;
-                        PaintMgr.PaintHightestBlock(position, p, false, true);
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
-                                if(target.getWorld() == p.getWorld())
-                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
-                        }
-                        
-                        double maxDist = 2;
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
-                                continue;
-                            if (target.getLocation().distance(position) <= maxDist) {
-                                if(rayTrace2.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
-                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-
-                                        double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveDamage(target, damage);
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-
-                                        }
-
-                                        //AntiNoDamageTime
-                                        BukkitRunnable task = new BukkitRunnable(){
-                                            Player p = target;
-                                            @Override
-                                            public void run(){
-                                                target.setNoDamageTicks(0);
-                                            }
-                                        };
-                                        task.runTaskLater(Main.getPlugin(), 1);
-                                        break loop;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(position) <= maxDist){
-                                if(as instanceof ArmorStand){
-                                    double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
-                                }     
-                            }
-                        }
-                    }
-                    PaintMgr.PaintHightestBlock(eloc, p, false, true);
-                    p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
-                }
-                
                 if(!data.isInMatch())
                     cancel();
                 
+                }catch(Exception e){cancel();}
             }
         };
         if(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getIsHude())
@@ -311,7 +313,6 @@ public class Roller {
                     ShootRunnable(p);
                     data.setCanPaint(true);
                 }
-
             }
         
         };
