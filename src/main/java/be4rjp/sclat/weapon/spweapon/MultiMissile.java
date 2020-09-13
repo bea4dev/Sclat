@@ -11,14 +11,17 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.server.v1_13_R1.EntityArmorStand;
 import net.minecraft.server.v1_13_R1.EntitySquid;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityTeleport;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnPosition;
+import net.minecraft.server.v1_13_R1.PlayerConnection;
 import net.minecraft.server.v1_13_R1.WorldServer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -29,9 +32,11 @@ import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
@@ -48,6 +53,7 @@ public class MultiMissile {
     public static void MMLockRunnable(Player player){
         BukkitRunnable task = new BukkitRunnable(){
             Map<Player, EntitySquid> ps = new HashMap<>();
+            Map<Entity, EntityArmorStand> asl = new HashMap<>();
             Player p = player;
             int c = 0;
             @Override
@@ -79,6 +85,21 @@ public class MultiMissile {
                             ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
                         }
                     }
+                    for(Entity e : p.getWorld().getEntities()){
+                        if(e instanceof ArmorStand){
+                            ArmorStand as = (ArmorStand)e;
+                            if(as.getCustomName() == null) continue;
+                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                EntityArmorStand eas = new EntityArmorStand(nmsWorld);
+                                eas.setInvisible(true);
+                                eas.setSmall(as.isSmall());
+                                eas.setBasePlate(as.hasBasePlate());
+                                eas.setNoGravity(true);
+                                asl.put(as, eas);
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
+                            }
+                        }
+                    }
                 }
                 if(c != 0){
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
@@ -95,19 +116,61 @@ public class MultiMissile {
                             ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
                         }
                     }
+                    for(Entity e : p.getWorld().getEntities()){
+                        if(e instanceof ArmorStand){
+                            ArmorStand as = (ArmorStand)e;
+                            if(as.getCustomName() == null) continue;
+                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                EntityArmorStand eas = asl.get(as);
+                                Location loc = as.getLocation();
+                                eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                if(MMCheckCanLock(p, as))
+                                    eas.setFlag(6, true);
+                                else
+                                    eas.setFlag(6, false);
+                                
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
+                            }
+                        }
+                    }
                 }
                 if(!DataMgr.getPlayerData(p).getIsUsingMM() || c == 200){
+                    List<Entity> targetList = new ArrayList<>();
+                    int count = 0;
                     for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
                             EntitySquid es = ps.get(op);
                             ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
                             if(MMCheckCanLock(p, op)){
-                                op.sendTitle("", ChatColor.RED + "敵に狙われている！", 0, 20, 4);
-                                op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
-                                MMShootRunnable(p, op);
+                                op.sendTitle("", ChatColor.RED + "ミサイル接近中！", 0, 40, 4);
+                                op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
+                                targetList.add(op);
+                                count++;
                             }
                         }
                     }
+                    for(Entity e : p.getWorld().getEntities()){
+                        if(e instanceof ArmorStand){
+                            ArmorStand as = (ArmorStand)e;
+                            if(as.getCustomName() == null) continue;
+                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                EntityArmorStand eas = asl.get(as);
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
+                                Location loc = as.getLocation();
+                                eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                if(MMCheckCanLock(p, as)){
+                                    targetList.add(as);
+                                    as.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                    
+                    for(Entity e : targetList)
+                        MMShootRunnable(p, e, count > 6 ? 2 : 4);
+                    
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
                     p.getInventory().clear();
@@ -125,47 +188,73 @@ public class MultiMissile {
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
-    public static void MMShootRunnable(Player shooter, Player target){
+    public static void MMShootRunnable(Player shooter, Entity target, int i){
         BukkitRunnable task = new BukkitRunnable(){
             Player s = shooter;
-            Player t = target;
             int c = 0;
             @Override
             public void run(){
-                MMRunnable(s, t);
-                if(c == 4 || t.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(s).isInMatch())
-                    cancel();
+                if(target instanceof Player){
+                    Player t = (Player)target;
+                    if(c == i || t.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(s).isInMatch())
+                        cancel();
+                }else{
+                    if(c == i || !DataMgr.getPlayerData(s).isInMatch())
+                        cancel();
+                }
+                MMRunnable(s, target);
                 c++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 10);
     }
     
-    public static void MMRunnable(Player shooter, Player target){
+    public static void MMRunnable(Player shooter, Entity target){
         BukkitRunnable task = new BukkitRunnable(){
             Player s = shooter;
-            Player t = target;
+            Entity t = target;
             Location tl = target.getLocation();
             Item drop;
+            Snowball ball;
             int c = 0;
-            boolean finded = false;
+            boolean reached = false;
             @Override
             public void run(){
                 if(c == 0){
                     drop = shooter.getWorld().dropItem(t.getLocation().add(0, 40, 0), new ItemStack(DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool()));
                     drop.setGravity(false);
+                    ball = (Snowball)s.getWorld().spawnEntity(drop.getLocation(), EntityType.SNOWBALL);
+                    ball.setGravity(false);
+                    ball.setShooter(s);
+                    ball.setVelocity(new Vector(0, 0, 0));
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
+                        connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
+                    }
+                    DataMgr.setSnowballIsHit(ball, false);
                 }
                 Location dl = drop.getLocation();
-                if(dl.distance(tl) < 10){
-                    finded = true;
-                }else{
-                    tl = t.getLocation();
+                
+                if(!drop.isOnGround()){
+                    ball.teleport(drop.getLocation());
+                    ball.setVelocity(drop.getVelocity());  
                 }
                 
-                if(t.getGameMode().equals(GameMode.SPECTATOR))
-                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));
-                else if(!finded)
-                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
+                if(dl.distance(tl) < 10){
+                    reached = true;
+                }
+                
+                if(t instanceof Player)
+                    if(((Player)t).getGameMode().equals(GameMode.SPECTATOR) || !((Player)t).isOnline())
+                        reached = true;
+                
+                if(!reached)
+                    tl = t.getLocation();
+                
+                if(!reached)
+                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.9));
+                else
+                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));  
                 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -173,9 +262,9 @@ public class MultiMissile {
                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
                 
-                if(drop.isOnGround()){
+                if(DataMgr.getSnowballIsHit(ball)){
                     //半径
-                    double maxDist = 3;
+                    double maxDist = 4;
                     
                     //爆発音
                     s.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
@@ -198,15 +287,12 @@ public class MultiMissile {
                         }
                     }
                     
-                    
-                    
                     //攻撃判定の処理
-               
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != s.getWorld())
                             continue;
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
+                            double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 14;
                             if(DataMgr.getPlayerData(s).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
@@ -266,25 +352,14 @@ public class MultiMissile {
         es.setNoAI(true);
         es.setFlag(6, true);
         ((CraftPlayer)shooter).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
-        
-        BukkitRunnable task = new BukkitRunnable(){
-            Player s = shooter;
-            Player t = target;
-            @Override
-            public void run(){
-                
-            }
-        };
     }
     
-    public static boolean MMCheckCanLock(Player sp, Player target){
+    public static boolean MMCheckCanLock(Player sp, Entity target){
         Vector sv = sp.getEyeLocation().getDirection().normalize();
         Location tl = target.getLocation();
         Location sl = sp.getLocation();
         Vector tpv = (new Vector(tl.getX() - sl.getX(), tl.getY() - sl.getY(), tl.getZ() - sl.getZ())).normalize();
         float angle = sv.angle(tpv);
-        if(angle < 0.4F)
-            return true;
-        return false;
+        return angle < 0.4F;
     }
 }

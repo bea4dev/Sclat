@@ -119,6 +119,7 @@ public class Poison {
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
                                 if(as.getCustomName() != null){
+                                    if(as.getCustomName() == null) continue;
                                     if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
                                         ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 1));
                                     }

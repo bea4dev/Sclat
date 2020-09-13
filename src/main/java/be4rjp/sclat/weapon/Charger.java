@@ -69,6 +69,7 @@ public class Charger {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, (int)charge / 3));
                         else
                             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 3));
+                        
                     }
                     
                     wm.setDisplayName(wm.getDisplayName() + "§7[" + GaugeAPI.toGauge(charge, max, data.getTeam().getTeamColor().getColorCode(), "§7") + "]");
