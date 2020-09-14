@@ -169,7 +169,7 @@ public class MultiMissile {
                     }
                     
                     for(Entity e : targetList)
-                        MMShootRunnable(p, e, count > 6 ? 2 : 4);
+                        MMShootRunnable(p, e, count >= 4 ? 2 : 4);
                     
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
@@ -252,7 +252,7 @@ public class MultiMissile {
                     tl = t.getLocation();
                 
                 if(!reached)
-                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.9));
+                    drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
                 else
                     drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));  
                 
@@ -264,7 +264,7 @@ public class MultiMissile {
                 
                 if(DataMgr.getSnowballIsHit(ball)){
                     //半径
-                    double maxDist = 4;
+                    double maxDist = 3;
                     
                     //爆発音
                     s.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
