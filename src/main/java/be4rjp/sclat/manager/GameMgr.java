@@ -146,9 +146,6 @@ public class GameMgr implements Listener{
         
         //試し撃ちモード
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
-            data.setTick(10);
-            data.setIsJoined(true);
-            data.setIsInMatch(true);
             Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
             data.setMatch(match);
             data.setTeam(match.getTeam0());
@@ -161,9 +158,6 @@ public class GameMgr implements Listener{
             joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
             join.setItemMeta(joinmeta);
             player.getInventory().clear();
-            Shooter.ShooterRunnable(player);
-            SPWeaponMgr.SPWeaponRunnable(player);
-            //WeaponClassMgr.setWeaponClass(player);
             SquidMgr.SquidRunnable(player);
             SquidMgr.SquidShowRunnable(player);
             player.setExp(0.99F);
@@ -203,75 +197,33 @@ public class GameMgr implements Listener{
             
             //Equipment
             player.getInventory().clear();
-                DataMgr.getPlayerData(player).setIsInMatch(false);
-                DataMgr.getPlayerData(player).setIsJoined(false);
                 
-                
-                for(ArmorStand as : DataMgr.getBeaconMap().values()){
-                    if(DataMgr.getBeaconFromplayer(player) == as)
-                        as.remove();
+
+            for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                if(DataMgr.getBeaconFromplayer(player) == as)
+                    as.remove();
+            }
+            for(ArmorStand as : DataMgr.getSprinklerMap().values()){
+                if(DataMgr.getSprinklerFromplayer(player) == as)
+                    as.remove();
+            }
+
+            BukkitRunnable delay = new BukkitRunnable(){
+                Player p = player;
+                @Override
+                public void run(){
+                    //WeaponClassMgr.setWeaponClass(p);
+                    ItemStack join = new ItemStack(Material.CHEST);
+                    ItemMeta joinmeta = join.getItemMeta();
+                    joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
+                    join.setItemMeta(joinmeta);
+                    player.getInventory().setItem(7, join);
+                    player.setExp(0.99F);
+                    SPWeaponMgr.SPWeaponRunnable(player);
+                    SquidMgr.SquidShowRunnable(player);
                 }
-                for(ArmorStand as : DataMgr.getSprinklerMap().values()){
-                    if(DataMgr.getSprinklerFromplayer(player) == as)
-                        as.remove();
-                }
-
-                BukkitRunnable delay = new BukkitRunnable(){
-                    Player p = player;
-                    @Override
-                    public void run(){
-                        DataMgr.getPlayerData(p).setIsInMatch(true);
-                        DataMgr.getPlayerData(p).setIsJoined(true);
-                        DataMgr.getPlayerData(p).setMainItemGlow(false);
-                        DataMgr.getPlayerData(p).setTick(10);
-                        WeaponClass wc = DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(p));
-                        DataMgr.getPlayerData(p).setWeaponClass(wc);
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
-                            ArmorStandMgr.BeaconArmorStandSetup(p);
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
-                            ArmorStandMgr.SprinklerArmorStandSetup(p);
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter")){
-                            Shooter.ShooterRunnable(p);
-                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
-                                Shooter.ManeuverRunnable(p);
-                                Shooter.ManeuverShootRunnable(p);
-                            }
-                        }
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster")){
-                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
-                                Shooter.ManeuverRunnable(p);
-                            }
-                        }
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
-                            Charger.ChargerRunnable(p);
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
-                            Spinner.SpinnerRunnable(p);
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
-                            Roller.HoldRunnable(p);
-                            Roller.RollPaintRunnable(p);
-                        }
-
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
-                            Kasa.KasaRunnable(p, false);
-                        }
-
-                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Camping")){
-                            Kasa.KasaRunnable(p, true);
-                            DataMgr.getPlayerData(p).setMainItemGlow(true);
-                            WeaponClassMgr.setWeaponClass(p);
-                        }
-                        WeaponClassMgr.setWeaponClass(p);
-                        ItemStack join = new ItemStack(Material.CHEST);
-                        ItemMeta joinmeta = join.getItemMeta();
-                        joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
-                        join.setItemMeta(joinmeta);
-                        player.getInventory().setItem(7, join);
-                        player.setExp(0.99F);
-                        SPWeaponMgr.SPWeaponRunnable(player);
-                        SquidMgr.SquidShowRunnable(player);
-                    }
-                };
-                delay.runTaskLater(Main.getPlugin(), 15);
+            };
+            delay.runTaskLater(Main.getPlugin(), 15);
             
             return;
         }
@@ -436,6 +388,14 @@ public class GameMgr implements Listener{
                         DataMgr.getPlayerData(player).setServerName("Lobby");
                         break;
                     case "Return to sclat":
+                        BungeeCordMgr.PlayerSendServer(player, "sclat");
+                        DataMgr.getPlayerData(player).setServerName("Sclat");
+                        break;
+                    case "[Charge special]":
+                        if(DataMgr.getPlayerData(player).isInMatch())
+                            DataMgr.getPlayerData(player).setSPGauge(100);
+                        break;
+                    case "[ Sclat ]":
                         BungeeCordMgr.PlayerSendServer(player, "sclat");
                         DataMgr.getPlayerData(player).setServerName("Sclat");
                         break;
