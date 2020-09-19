@@ -30,6 +30,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -79,7 +80,7 @@ public class ArmorStandMgr {
     
     public static void ArmorStandSetup(Player player){
         for(Entity e : player.getWorld().getEntities()){
-            if(e instanceof ArmorStand)
+            if(e instanceof ArmorStand || e instanceof Snowball)
                 e.remove();
         }
         

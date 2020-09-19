@@ -325,9 +325,9 @@ public class OpenGUI {
         }
     }
     
-    public static void openWeaponSelect(Player player, String name, boolean shop){
-        switch(name){
-            case"Shooter":
+    public static void openWeaponSelect(Player player, String type, String weaponType, boolean shop){
+        switch(type){
+            case"Weapon":
                 int slotnum = 0;
                 Inventory shooter = Bukkit.createInventory(null, 54, "武器選択");
                 if(shop)
@@ -346,7 +346,32 @@ public class OpenGUI {
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);
-                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
+                    
+                    List<String> list = new ArrayList<>();
+                    list.add(weaponType);
+                    
+                    switch(weaponType){
+                        case"Slosher":
+                            list.add("Bucket");
+                            break;
+                        case"Kasa":
+                            list.add("Camping");
+                    }
+                    boolean equals = false;
+                    for(String wtype : list){
+                        if(wtype.equals(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType()))
+                            equals = true;
+                    }
+                    if(weaponType.equals("Hude") && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller")){
+                        if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getIsHude())
+                            equals = true;
+                    }
+                    if(weaponType.equals("Roller") && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller")){
+                        if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getIsHude())
+                            equals = false;
+                    }
+                    
+                    if (slotnum <= 52 && equals){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
                                 shooter.setItem(slotnum, item);
@@ -371,94 +396,6 @@ public class OpenGUI {
                 
                 player.openInventory(shooter);
                 break;
-            case"Roller":
-                slotnum = 0;
-                Inventory roller = Bukkit.createInventory(null, 54, "武器選択");
-                if(shop)
-                    roller = Bukkit.createInventory(null, 54, "Shop");
-                for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-                    String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
-                    ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
-                    ItemMeta itemm = item.getItemMeta();
-                    itemm.setDisplayName(ClassName);
-                    List lores = new ArrayList();
-                    lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-                    lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
-                    if(shop){
-                        lores.add("");
-                        lores.add("§r§bMoney  : " + String.valueOf(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney()));
-                    }
-                    itemm.setLore(lores);
-                    item.setItemMeta(itemm);
-                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Kasa") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Camping"))){
-                        if(shop){
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
-                                roller.setItem(slotnum, item);
-                                slotnum++;
-                            }
-                        }else{
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
-                                roller.setItem(slotnum, item);
-                                slotnum++;
-                            }else if(PlayerStatusMgr.haveWeapon(player, classname)){
-                                roller.setItem(slotnum, item);
-                                slotnum++;
-                            }
-                        }
-                    }   
-                }
-                is = new ItemStack(Material.OAK_DOOR);
-                ism = is.getItemMeta();
-                ism.setDisplayName("戻る");
-                is.setItemMeta(ism);
-                roller.setItem(53, is);
-                
-                player.openInventory(roller);
-                break;
-            case"Charger":
-                Inventory charger = Bukkit.createInventory(null, 54, "武器選択");
-                if(shop)
-                    charger = Bukkit.createInventory(null, 54, "Shop");
-                slotnum = 0;
-                for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-                    String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
-                    ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
-                    ItemMeta itemm = item.getItemMeta();
-                    itemm.setDisplayName(ClassName);
-                    List lores = new ArrayList();
-                    lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-                    lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
-                    if(shop){
-                        lores.add("");
-                        lores.add("§r§bMoney  : " + String.valueOf(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney()));
-                    }
-                    itemm.setLore(lores);
-                    item.setItemMeta(itemm);
-                    if (slotnum <= 52 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
-                        if(shop){
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
-                                charger.setItem(slotnum, item);
-                                slotnum++;
-                            }
-                        }else{
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
-                                charger.setItem(slotnum, item);
-                                slotnum++;
-                            }else if(PlayerStatusMgr.haveWeapon(player, classname)){
-                                charger.setItem(slotnum, item);
-                                slotnum++;
-                            }
-                        }
-                    }
-                }
-                is = new ItemStack(Material.OAK_DOOR);
-                ism = is.getItemMeta();
-                ism.setDisplayName("戻る");
-                is.setItemMeta(ism);
-                charger.setItem(53, is);
-                
-                player.openInventory(charger);
-                break;
             case"Main":
                 Inventory wm = Bukkit.createInventory(null, 9, "武器選択");
                 if(shop)
@@ -468,20 +405,56 @@ public class OpenGUI {
                 ItemMeta sm = s.getItemMeta();
                 sm.setDisplayName("シューター");
                 s.setItemMeta(sm);
+                
+                ItemStack b = new ItemStack(Material.DIAMOND_SHOVEL);
+                ItemMeta bm = b.getItemMeta();
+                bm.setDisplayName("ブラスター");
+                b.setItemMeta(bm);
+                
+                ItemStack ba = new ItemStack(Material.DIAMOND_AXE);
+                ItemMeta bam = ba.getItemMeta();
+                bam.setDisplayName("バーストシューター");
+                ba.setItemMeta(bam);
 
                 ItemStack r = new ItemStack(Material.STONE_PICKAXE);
                 ItemMeta rm = r.getItemMeta();
                 rm.setDisplayName("ローラー");
                 r.setItemMeta(rm);
+                
+                ItemStack f = new ItemStack(Material.CARROT_ON_A_STICK);
+                ItemMeta fm = f.getItemMeta();
+                fm.setDisplayName("ブラシ");
+                f.setItemMeta(fm);
+                
+                ItemStack sy = new ItemStack(Material.KELP);
+                ItemMeta sym = sy.getItemMeta();
+                sym.setDisplayName("シェルター");
+                sy.setItemMeta(sym);
+                
+                ItemStack sr = new ItemStack(Material.NETHER_BRICK);
+                ItemMeta srm = sr.getItemMeta();
+                srm.setDisplayName("スロッシャー");
+                sr.setItemMeta(srm);
 
                 ItemStack c = new ItemStack(Material.WOODEN_SWORD);
                 ItemMeta cm = c.getItemMeta();
                 cm.setDisplayName("チャージャー");
                 c.setItemMeta(cm);
+                
+                ItemStack sp = new ItemStack(Material.IRON_INGOT);
+                ItemMeta spm = sp.getItemMeta();
+                spm.setDisplayName("スピナー");
+                sp.setItemMeta(spm);
 
-                wm.setItem(2, s);
-                wm.setItem(4, r);
-                wm.setItem(6, c);
+                wm.setItem(0, s);
+                wm.setItem(1, b);
+                wm.setItem(2, ba);
+                wm.setItem(3, r);
+                wm.setItem(4, f);
+                wm.setItem(5, sy);
+                wm.setItem(6, sr);
+                wm.setItem(7, c);
+                wm.setItem(8, sp);
                 player.openInventory(wm);
                 break;
         }

@@ -213,6 +213,7 @@ public class GameMgr implements Listener{
                 @Override
                 public void run(){
                     //WeaponClassMgr.setWeaponClass(p);
+                    player.getInventory().clear();
                     ItemStack join = new ItemStack(Material.CHEST);
                     ItemMeta joinmeta = join.getItemMeta();
                     joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
@@ -221,6 +222,7 @@ public class GameMgr implements Listener{
                     player.setExp(0.99F);
                     SPWeaponMgr.SPWeaponRunnable(player);
                     SquidMgr.SquidShowRunnable(player);
+                    OpenGUI.openWeaponSelect(p, "Main", "null", false);
                 }
             };
             delay.runTaskLater(Main.getPlugin(), 15);
@@ -367,7 +369,7 @@ public class GameMgr implements Listener{
                         OpenGUI.equipmentGUI(player);
                         break;
                     case "[ Weapon Shop ]":
-                        OpenGUI.openWeaponSelect(player, "Main", true);
+                        OpenGUI.openWeaponSelect(player, "Main", "null", true);
                         break;
                     case "[ OpenMenu ]":
                         OpenGUI.openMenu(player);
@@ -392,7 +394,7 @@ public class GameMgr implements Listener{
                         DataMgr.getPlayerData(player).setServerName("Sclat");
                         break;
                     case "[Charge special]":
-                        if(DataMgr.getPlayerData(player).isInMatch())
+                        if(DataMgr.getPlayerData(player).isInMatch() && !DataMgr.getPlayerData(player).getIsUsingSP())
                             DataMgr.getPlayerData(player).setSPGauge(100);
                         break;
                     case "[ Sclat ]":

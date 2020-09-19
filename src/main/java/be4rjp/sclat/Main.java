@@ -59,6 +59,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static List<Player> pdspList;
     
+    public static boolean tutorial = false;
+    
     //重複しない数字
     //ボム等で使用
     private static int NDNumber = 0;
@@ -89,6 +91,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         conf.LoadConfig();
         for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
             Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
+        if(conf.getConfig().contains("Tutorial"))
+            tutorial = conf.getConfig().getBoolean("Tutorial");
         //-------------------------------------------------------------------
         
         

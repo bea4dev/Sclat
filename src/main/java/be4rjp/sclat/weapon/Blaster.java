@@ -138,12 +138,12 @@ public class Blaster {
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
-                        if (target.getLocation().distance(inkball.getLocation()) <= maxDist) {
+                        if (target.getLocation().distance(inkball.getLocation()) <= maxDist + 1) {
                             double damage = 10;
                             if(data.getWeaponClass().getMainWeapon().getIsManeuver())
                                 damage = data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                             else
-                                damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
+                                damage = (maxDist + 1 - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                     DamageMgr.SclatGiveDamage(target, damage);
@@ -172,8 +172,8 @@ public class Blaster {
                     
                     for(Entity as : player.getWorld().getEntities()){
                         if(as instanceof ArmorStand){
-                            if (as.getLocation().distance(inkball.getLocation()) <= maxDist) {
-                                double damage = (maxDist - as.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
+                            if (as.getLocation().distance(inkball.getLocation()) <= maxDist + 1) {
+                                double damage = (maxDist + 1 - as.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                                 ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                             }
                         }

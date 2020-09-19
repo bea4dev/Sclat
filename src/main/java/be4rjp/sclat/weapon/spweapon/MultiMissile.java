@@ -58,134 +58,157 @@ public class MultiMissile {
             int c = 0;
             @Override
             public void run(){
-                if(c == 0){
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100000, 10));
-                    p.getInventory().clear();
-                    ItemStack item = new ItemStack(Material.PRISMARINE_SHARD);
-                    ItemMeta meta = item.getItemMeta();
-                    meta.setDisplayName("プレイヤーを狙って右クリックで発射");
-                    item.setItemMeta(meta);
-                    for (int count = 0; count < 9; count++){
-                        player.getInventory().setItem(count, item);
-                    }
-                    player.updateInventory();
-                    
-                    DataMgr.getPlayerData(p).setIsUsingMM(true);
-                    WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
-                    for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
-                            Location loc = op.getLocation();
-                            EntitySquid es = new EntitySquid(nmsWorld);
-                            es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                            es.setInvisible(true);
-                            es.setNoGravity(true);
-                            es.setNoAI(true);
-                            //es.setFlag(6, true);
-                            ps.put(op, es);
-                            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
+                try{
+                    if(c == 0){
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100000, 10));
+                        p.getInventory().clear();
+                        ItemStack item = new ItemStack(Material.PRISMARINE_SHARD);
+                        ItemMeta meta = item.getItemMeta();
+                        meta.setDisplayName("プレイヤーを狙って右クリックで発射");
+                        item.setItemMeta(meta);
+                        for (int count = 0; count < 9; count++){
+                            player.getInventory().setItem(count, item);
                         }
-                    }
-                    for(Entity e : p.getWorld().getEntities()){
-                        if(e instanceof ArmorStand){
-                            ArmorStand as = (ArmorStand)e;
-                            if(as.getCustomName() == null) continue;
-                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
-                                EntityArmorStand eas = new EntityArmorStand(nmsWorld);
-                                eas.setInvisible(true);
-                                eas.setSmall(as.isSmall());
-                                eas.setBasePlate(as.hasBasePlate());
-                                eas.setNoGravity(true);
-                                asl.put(as, eas);
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
+                        player.updateInventory();
+
+                        DataMgr.getPlayerData(p).setIsUsingMM(true);
+                        WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
+                        for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
+                                Location loc = op.getLocation();
+                                EntitySquid es = new EntitySquid(nmsWorld);
+                                es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                es.setInvisible(true);
+                                es.setNoGravity(true);
+                                es.setNoAI(true);
+                                //es.setFlag(6, true);
+                                ps.put(op, es);
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
                             }
                         }
-                    }
-                }
-                if(c != 0){
-                    for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
-                            EntitySquid es = ps.get(op);
-                            Location loc = op.getLocation();
-                            es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                            if(MMCheckCanLock(p, op))
-                                es.setFlag(6, true);
-                            else
-                                es.setFlag(6, false);
-                            //((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(es));
-                            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
-                            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
-                        }
-                    }
-                    for(Entity e : p.getWorld().getEntities()){
-                        if(e instanceof ArmorStand){
-                            ArmorStand as = (ArmorStand)e;
-                            if(as.getCustomName() == null) continue;
-                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
-                                EntityArmorStand eas = asl.get(as);
-                                Location loc = as.getLocation();
-                                eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                                if(MMCheckCanLock(p, as))
-                                    eas.setFlag(6, true);
-                                else
-                                    eas.setFlag(6, false);
-                                
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
-                            }
-                        }
-                    }
-                }
-                if(!DataMgr.getPlayerData(p).getIsUsingMM() || c == 200){
-                    List<Entity> targetList = new ArrayList<>();
-                    int count = 0;
-                    for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
-                            EntitySquid es = ps.get(op);
-                            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
-                            if(MMCheckCanLock(p, op)){
-                                op.sendTitle("", ChatColor.RED + "ミサイル接近中！", 0, 40, 4);
-                                op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
-                                targetList.add(op);
-                                count++;
-                            }
-                        }
-                    }
-                    for(Entity e : p.getWorld().getEntities()){
-                        if(e instanceof ArmorStand){
-                            ArmorStand as = (ArmorStand)e;
-                            if(as.getCustomName() == null) continue;
-                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
-                                EntityArmorStand eas = asl.get(as);
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
-                                Location loc = as.getLocation();
-                                eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                                if(MMCheckCanLock(p, as)){
-                                    targetList.add(as);
-                                    as.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
-                                    count++;
+                        for(Entity e : p.getWorld().getEntities()){
+                            if(e instanceof ArmorStand){
+                                ArmorStand as = (ArmorStand)e;
+                                if(as.getCustomName() == null) continue;
+                                if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                    EntityArmorStand eas = new EntityArmorStand(nmsWorld);
+                                    eas.setInvisible(true);
+                                    eas.setSmall(as.isSmall());
+                                    eas.setBasePlate(as.hasBasePlate());
+                                    eas.setNoGravity(true);
+                                    asl.put(as, eas);
+                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
                                 }
                             }
                         }
                     }
-                    
-                    for(Entity e : targetList)
-                        MMShootRunnable(p, e, count >= 4 ? 2 : 4);
-                    
-                    if(p.hasPotionEffect(PotionEffectType.SLOW))
-                        p.removePotionEffect(PotionEffectType.SLOW);
-                    p.getInventory().clear();
-                    WeaponClassMgr.setWeaponClass(p);
-                    DataMgr.getPlayerData(p).setIsUsingSP(true);
-                    Firework f = (Firework) p.getWorld().spawn(player.getLocation(), Firework.class);
-                    SPWeaponMgr.setSPCoolTimeAnimation(p, 100);
+                    if(c != 0){
+                        for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
+                                EntitySquid es = ps.get(op);
+                                Location loc = op.getLocation();
+                                es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                if(MMCheckCanLock(p, op))
+                                    es.setFlag(6, true);
+                                else
+                                    es.setFlag(6, false);
+                                //((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(es));
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
+                            }
+                        }
+                        for(Entity e : p.getWorld().getEntities()){
+                            if(e instanceof ArmorStand){
+                                ArmorStand as = (ArmorStand)e;
+                                if(as.getCustomName() == null) continue;
+                                if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                    EntityArmorStand eas = asl.get(as);
+                                    Location loc = as.getLocation();
+                                    eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                    if(MMCheckCanLock(p, as))
+                                        eas.setFlag(6, true);
+                                    else
+                                        eas.setFlag(6, false);
+
+                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
+                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
+                                }
+                            }
+                        }
+                    }
+                    if(!DataMgr.getPlayerData(p).getIsUsingMM() || c == 200){
+                        List<Entity> targetList = new ArrayList<>();
+                        int count = 0;
+                        for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                            if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
+                                EntitySquid es = ps.get(op);
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
+                                if(MMCheckCanLock(p, op)){
+                                    op.sendTitle("", ChatColor.RED + "ミサイル接近中！", 0, 40, 4);
+                                    op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
+                                    targetList.add(op);
+                                    count++;
+                                }
+                            }
+                        }
+                        for(Entity e : p.getWorld().getEntities()){
+                            if(e instanceof ArmorStand){
+                                ArmorStand as = (ArmorStand)e;
+                                if(as.getCustomName() == null) continue;
+                                if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                    EntityArmorStand eas = asl.get(as);
+                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
+                                    Location loc = as.getLocation();
+                                    eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+                                    if(MMCheckCanLock(p, as)){
+                                        targetList.add(as);
+                                        as.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+
+                        for(Entity e : targetList)
+                            MMShootRunnable(p, e, count >= 4 ? 2 : 4);
+
+                        if(p.hasPotionEffect(PotionEffectType.SLOW))
+                            p.removePotionEffect(PotionEffectType.SLOW);
+                        p.getInventory().clear();
+                        WeaponClassMgr.setWeaponClass(p);
+                        DataMgr.getPlayerData(p).setIsUsingSP(true);
+                        FireworksRunnable(p);
+                        SPWeaponMgr.setSPCoolTimeAnimation(p, 100);
+                        cancel();
+                    }
+                    if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                        cancel();
+                    c++;
+                }catch(Exception e){
                     cancel();
                 }
-                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
-                    cancel();
-                c++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
+    }
+    
+    public static void FireworksRunnable(Player player){
+        BukkitRunnable task = new BukkitRunnable() {
+            Player p = player;
+            int i = 0;
+            @Override
+            public void run() {
+                try{
+                    Firework f = (Firework) p.getWorld().spawn(p.getLocation(), Firework.class);
+                    i++;
+                    if(i == 5)
+                        cancel();
+                }catch(Exception e){
+                    cancel();
+                }
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
     public static void MMShootRunnable(Player shooter, Entity target, int i){
@@ -233,6 +256,13 @@ public class MultiMissile {
                     }
                     DataMgr.setSnowballIsHit(ball, false);
                 }
+                
+                if(!DataMgr.getPlayerData(s).isInMatch() || !s.isOnline() || drop.isDead()){
+                    drop.remove();
+                    ball.remove();
+                    cancel();
+                }
+                
                 Location dl = drop.getLocation();
                 
                 if(!drop.isOnGround()){
@@ -327,11 +357,6 @@ public class MultiMissile {
                         }
                     }
                     
-                    drop.remove();
-                    cancel();
-                }
-                
-                if(!DataMgr.getPlayerData(s).isInMatch() || !s.isOnline() || drop.isDead()){
                     drop.remove();
                     cancel();
                 }

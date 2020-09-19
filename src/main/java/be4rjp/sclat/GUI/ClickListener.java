@@ -76,13 +76,13 @@ public class ClickListener implements Listener{
                 OpenGUI.gearGUI(player);
                 break;
             case"§6武器変更 / WEAPON":
-                OpenGUI.openWeaponSelect(player, "Main", false);
+                OpenGUI.openWeaponSelect(player, "Main", "null", false);
                 break;
             case"設定 / SETTINGS":
                 OpenGUI.openSettingsUI(player);
                 break;
             case"ショップを開く / OPEN SHOP":
-                OpenGUI.openWeaponSelect(player, "Main", true);
+                OpenGUI.openWeaponSelect(player, "Main", "null", true);
                 break;
             case"塗りをリセット / RESET INK":
                 Match match = DataMgr.getPlayerData(player).getMatch();
@@ -156,19 +156,37 @@ public class ClickListener implements Listener{
             }
         }
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー")){
+            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
                 switch(name){
                     case"シューター":
-                        OpenGUI.openWeaponSelect(player, "Shooter", false);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", false);
+                        break;
+                    case"ブラスター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Blaster", false);
+                        break;
+                    case"バーストシューター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Burst", false);
                         break;
                     case"ローラー":
-                        OpenGUI.openWeaponSelect(player, "Roller", false);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Roller", false);
+                        break;
+                    case"スロッシャー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Slosher", false);
+                        break;
+                    case"シェルター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Kasa", false);
+                        break;
+                    case"ブラシ":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Hude", false);
+                        break;
+                    case"スピナー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Spinner", false);
                         break;
                     case"チャージャー":
-                        OpenGUI.openWeaponSelect(player, "Charger", false);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Charger", false);
                         break;
                     case"戻る":
-                        OpenGUI.openWeaponSelect(player, "Main", false);
+                        OpenGUI.openWeaponSelect(player, "Main", "null", false);
                         break;
                 }
                 return;
@@ -253,19 +271,37 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("Shop")){
-            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー")){
+            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
                 switch(name){
                     case"シューター":
-                        OpenGUI.openWeaponSelect(player, "Shooter", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", true);
+                        break;
+                    case"ブラスター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Blaster", true);
+                        break;
+                    case"バーストシューター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Burst", true);
                         break;
                     case"ローラー":
-                        OpenGUI.openWeaponSelect(player, "Roller", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Roller", true);
+                        break;
+                    case"スロッシャー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Slosher", true);
+                        break;
+                    case"シェルター":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Kasa", true);
+                        break;
+                    case"ブラシ":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Hude", true);
+                        break;
+                    case"スピナー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Spinner", true);
                         break;
                     case"チャージャー":
-                        OpenGUI.openWeaponSelect(player, "Charger", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Charger", true);
                         break;
                     case"戻る":
-                        OpenGUI.openWeaponSelect(player, "Main", true);
+                        OpenGUI.openWeaponSelect(player, "Main", "null", true);
                         break;
                 }
                 return;

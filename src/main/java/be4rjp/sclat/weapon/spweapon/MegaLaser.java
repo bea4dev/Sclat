@@ -31,6 +31,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -50,9 +51,16 @@ public class MegaLaser {
             int c = 0;
             @Override
             public void run(){
-
                 if(c == 0){
                     p.getInventory().clear();
+                    ItemStack item = new ItemStack(Material.SHULKER_SHELL);
+                    ItemMeta meta = item.getItemMeta();
+                    meta.setDisplayName("メガホンレーザー");
+                    item.setItemMeta(meta);
+                    for (int count = 0; count < 9; count++){
+                        player.getInventory().setItem(count, item);
+                    }
+                    player.updateInventory();
                     DataMgr.getPlayerData(p).setIsUsingSP(true);
                     SPWeaponMgr.setSPCoolTimeAnimation(player, 180);
                     as9 = (ArmorStand)p.getWorld().spawnEntity(p.getLocation().add(0, -1.6, 0), EntityType.ARMOR_STAND);

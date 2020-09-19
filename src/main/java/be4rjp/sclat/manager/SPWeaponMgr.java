@@ -85,7 +85,7 @@ public class SPWeaponMgr {
         };
         task.runTaskTimer(Main.getPlugin(), 0, 5);
         
-        BossBar bar = Main.getPlugin().getServer().createBossBar("§6§lSPGauge", BarColor.GREEN, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        BossBar bar = Main.getPlugin().getServer().createBossBar("§6§lSpecial Weapon", BarColor.GREEN, BarStyle.SOLID, BarFlag.CREATE_FOG);
         bar.setProgress(0);
         bar.addPlayer(player);
         
@@ -99,7 +99,7 @@ public class SPWeaponMgr {
                 else if(DataMgr.getPlayerData(p).getIsUsingSP())
                     bar.setTitle("§6§lIn Use...");
                 else
-                    bar.setTitle("§6§lSPGauge : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
+                    bar.setTitle("§6§lSpecial Weapon : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
                 if(!DataMgr.getPlayerData(p).isInMatch()){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
                     bar.removeAll();
