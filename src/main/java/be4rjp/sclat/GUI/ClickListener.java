@@ -259,6 +259,10 @@ public class ClickListener implements Listener{
                         join.setItemMeta(joinmeta);
                         player.getInventory().setItem(7, join);
                         player.setExp(0.99F);
+                        
+                        //p.setScoreboard(DataMgr.getPlayerData(p).getMatch().getScoreboard());
+                        //DataMgr.getPlayerData(p).getTeam().getTeam().addEntry(p.getName());
+                        
                         SPWeaponMgr.SPWeaponRunnable(player);
                         SquidMgr.SquidShowRunnable(player);
                     }

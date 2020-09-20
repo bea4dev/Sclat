@@ -122,30 +122,30 @@ public class Sclat {
     }
     
     
-    public static void sendMessage(String message, int type){
+    public static void sendMessage(String message, MessageType type){
         String sclat = "[§bSclat§r] ";
         StringBuilder buff = new StringBuilder();
         buff.append(sclat);
         buff.append(message);
         switch(type){
-            case MessageType.ALL_PLAYER:{
+            case ALL_PLAYER:{
                 for (Player player : Main.getPlugin().getServer().getOnlinePlayers()){
                     player.sendMessage(buff.toString());
                 }
                 break;
             }
-            case MessageType.CONSOLE:{
+            case CONSOLE:{
                 Main.getPlugin().getServer().getLogger().info(buff.toString());
                 break;
             }
-            case MessageType.BROADCAST:{
+            case BROADCAST:{
                 Main.getPlugin().getServer().broadcastMessage(buff.toString());
                 break;
             }
         }
     }
     
-    public static void sendMessage(String message, int type, Team team){
+    public static void sendMessage(String message, MessageType type, Team team){
         String sclat = "[§6Sclat§r] ";
         StringBuilder buff = new StringBuilder();
         buff.append(sclat);
@@ -161,7 +161,7 @@ public class Sclat {
         }
     }
     
-    public static void sendMessage(String message, int type, Player player){
+    public static void sendMessage(String message, MessageType type, Player player){
         String sclat = "[§6Sclat§r] ";
         StringBuilder buff = new StringBuilder();
         buff.append(sclat);
@@ -170,15 +170,15 @@ public class Sclat {
             player.sendMessage(buff.toString());
     }
     
-    public static void playGameSound(Player player, int type){
+    public static void playGameSound(Player player, SoundType type){
         switch(type){
-            case SoundType.ERROR:
+            case ERROR:
                 player.playNote(player.getLocation(), Instrument.BASS_GUITAR, Note.flat(0, Note.Tone.G));
                 break;
-            case SoundType.SUCCESS:
+            case SUCCESS:
                 player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 2F);
                 break;
-            case SoundType.CONGRATULATIONS:
+            case CONGRATULATIONS:
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
                 break;
         }

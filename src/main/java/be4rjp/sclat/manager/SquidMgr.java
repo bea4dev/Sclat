@@ -25,8 +25,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.minecraft.server.v1_13_R1.PacketPlayOutSpawnEntityLiving;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R1.PacketPlayOutEntityTeleport;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftSquid;
 import org.bukkit.craftbukkit.v1_13_R1.util.CraftChatMessage;
+import org.bukkit.entity.Squid;
+import org.bukkit.scoreboard.NameTagVisibility;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 /**
  *
@@ -168,6 +174,39 @@ public class SquidMgr {
     }
     
     public static void SquidShowRunnable(Player player){
+        PlayerData data = DataMgr.getPlayerData(player);
+        
+        /*
+        Squid squid = (Squid)player.getWorld().spawnEntity(player.getLocation(), EntityType.SQUID);
+        squid.setAI(false);
+        squid.setSilent(true);
+        squid.setRemainingAir(Integer.MAX_VALUE);
+        squid.setMaximumAir(Integer.MAX_VALUE);
+        ((LivingEntity)squid).setCollidable(false);
+        ((LivingEntity)player).setCollidable(false);
+        
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            ScoreboardManager manager = Bukkit.getScoreboardManager();
+            Scoreboard scoreboard = manager.getNewScoreboard();
+
+            org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(data.getTeam().getTeamColor().getColorName());
+            bteam0.setColor(data.getTeam().getTeamColor().getChatColor());
+            //bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.NEVER);
+            
+            player.setScoreboard(scoreboard);
+            bteam0.addEntry(player.getName());
+            
+            bteam0.addEntry(squid.getUniqueId().toString());
+        }
+        
+        if(data.getTeam() != null){
+            squid.setCustomName(player.getName());
+            squid.setCustomNameVisible(true);
+            if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                data.getTeam().getTeam().addEntry(squid.getUniqueId().toString());
+        }*/
+        
         BukkitRunnable task = new BukkitRunnable() {
             Player p = player;
             boolean is = false;
@@ -181,7 +220,7 @@ public class SquidMgr {
             
             @Override
             public void run() {
-                PlayerData data = DataMgr.getPlayerData(p);
+                
                 boolean Bslot = false;
                 if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
                     Bslot = true;
@@ -190,8 +229,32 @@ public class SquidMgr {
                     set = true;
                     es.setNoAI(true);
                     es.setNoGravity(true);
-                    //es.setCustomName(CraftChatMessage.fromStringOrNull(player.getName()));
-                    //data.getTeam().getTeam().addEntry(String.valueOf(es.getBukkitEntity().getEntityId()));
+                    es.setCustomName(CraftChatMessage.fromStringOrNull(player.getName()));
+                    es.setCustomNameVisible(true);
+                    ((LivingEntity)es.getBukkitEntity()).setCollidable(false);
+                    //data.getTeam().getTeam().addEntry(es.getBukkitEntity().getUniqueId().toString());
+                    
+                    if(conf.getConfig().getString("WorkMode").equals("Trial")){
+                        
+                        ScoreboardManager manager = Bukkit.getScoreboardManager();
+                        Scoreboard scoreboard = manager.getNewScoreboard();
+
+                        org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(data.getTeam().getTeamColor().getColorName());
+                        bteam0.setColor(data.getTeam().getTeamColor().getChatColor());
+                        //bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+                        bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+                        
+                        player.setScoreboard(scoreboard);
+                        bteam0.addEntry(player.getName());
+                        
+                        bteam0.addEntry(es.getBukkitEntity().getUniqueId().toString());
+                        
+                        //player.setScoreboard(data.getMatch().getScoreboard());
+                        //data.getTeam().getTeam().addEntry(player.getName());
+                        
+                        //data.getTeam().getTeam().addEntry(es.getBukkitEntity().getUniqueId().toString());
+                    }else
+                        data.getTeam().getTeam().addEntry(es.getBukkitEntity().getUniqueId().toString());
                 }
                 
                 try {
@@ -204,15 +267,16 @@ public class SquidMgr {
                             is = true;
                             PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(es);
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(p != target && p.getWorld() == target.getWorld()){
+                                if(p.getWorld() == target.getWorld()){
                                     ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
                                 }
                             }
                         }
-
+                        //squid.teleport(p);
+                        
                         PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(es);
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(p != target && p.getWorld() == target.getWorld()){
+                            if(p.getWorld() == target.getWorld()){
                                 ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
                             }
                         }
@@ -222,7 +286,7 @@ public class SquidMgr {
                             is2 = true;
                             PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId());
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(p != target && p.getWorld() == target.getWorld()){
+                                if(p.getWorld() == target.getWorld()){
                                     ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
                                 }
                             }
@@ -255,7 +319,7 @@ public class SquidMgr {
                     try {
                         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId());
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(p != target && p.getWorld() == target.getWorld()){
+                            if(p.getWorld() == target.getWorld()){
                                 ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
                             }
                         }
@@ -266,12 +330,13 @@ public class SquidMgr {
                     try {
                         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId());
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(p != target && p.getWorld() == target.getWorld()){
+                            if(p.getWorld() == target.getWorld()){
                                 ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
                             }
                         }
                     } catch (Exception e) {
                     }
+                    //squid.remove();
                     cancel();
                 }
             }

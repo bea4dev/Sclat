@@ -228,14 +228,14 @@ public class MatchMgr {
         DataMgr.ColorShuffle();
         Color lc0 = DataMgr.getColorRandom(0);
         Color lc1 = DataMgr.getColorRandom(1);
-        team0.setTeamColor(lc0);
-        team1.setTeamColor(lc1);
+        lobby_t0.setTeamColor(lc0);
+        lobby_t1.setTeamColor(lc1);
         
         lobby_m.setTeam0(lobby_t0);
         lobby_m.setTeam1(lobby_t1);
         
         MapData map1 = DataMgr.getMapRandom(0);
-        lobby_m.setMapData(map);
+        lobby_m.setMapData(map1);
         
         
         DataMgr.setMatch(id2, lobby_m);
@@ -244,6 +244,26 @@ public class MatchMgr {
         //teamloc.SetupTeam0Loc();
         //teamloc.SetupTeam1Loc();
         //DataMgr.setTeamLoc(map, teamloc);
+        
+        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+            ScoreboardManager manager = Bukkit.getScoreboardManager();
+            Scoreboard scoreboard = manager.getNewScoreboard();
+
+            org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
+            bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
+            bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+
+            org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
+            bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
+            bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+            
+            team0.setTeam(bteam0);
+            team1.setTeam(bteam1);
+            
+            match.setScoreboard(scoreboard);
+        }
     }
     
     public static void RollBack(){
@@ -620,16 +640,17 @@ public class MatchMgr {
         Scoreboard scoreboard = manager.getNewScoreboard();
             
         Match match = DataMgr.getPlayerData(player).getMatch();
+        match.setScoreboard(scoreboard);
         
         org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
         bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
         bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
-        bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.ALWAYS);
+        bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
 
         org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
         bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
         bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
-        bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.ALWAYS);
+        bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
         
         match.getTeam0().setTeam(bteam0);
         match.getTeam1().setTeam(bteam1);

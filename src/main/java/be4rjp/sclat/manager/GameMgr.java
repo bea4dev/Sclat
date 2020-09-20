@@ -33,6 +33,7 @@ import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -83,6 +84,7 @@ public class GameMgr implements Listener{
         data.setWeaponClass(DataMgr.getWeaponClass(conf.getConfig().getString("DefaultClass")));
         DataMgr.setPlayerData(player, data);
         
+        //((LivingEntity)player).setCollidable(false);
         
         PlayerStatusMgr.setupPlayerStatus(player);
         data.setGearNumber(PlayerStatusMgr.getGear(player));
@@ -149,7 +151,8 @@ public class GameMgr implements Listener{
             Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
             data.setMatch(match);
             data.setTeam(match.getTeam0());
-            match.getTeam0().getTeam().addPlayer(player);
+            //player.setScoreboard(match.getScoreboard());
+            //match.getTeam0().getTeam().addEntry(player.getName());
             //match.getBlockUpdater().start();
             player.teleport(Main.lobby);
             //WeaponClassMgr.setWeaponClass(player);

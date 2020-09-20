@@ -11,6 +11,8 @@ import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
+import be4rjp.sclat.raytrace.RayTrace;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Color;
@@ -143,6 +145,58 @@ public class Amehurasi {
                             }
                         }
                     }
+                    
+                    
+                    if(c >= 30){
+                        //攻撃判定
+                        RayTrace rayTrace4 = new RayTrace(loc.clone().add(vec.getX() * c / 12, 18, vec.getZ() * c / 12).toVector(), new Vector(0, -1, 0));
+                        ArrayList<Vector> positions4 = rayTrace4.traverse(300, 1);
+                        for(int i = 1; i < positions4.size();i++){
+                            Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
+
+                            if(position.getBlock().getType() != Material.AIR) break;
+
+                            double maxDist = 6.5;
+                            double damage = 2;
+                            for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if(!DataMgr.getPlayerData(target).isInMatch())
+                                    continue;
+                                if(target.getWorld() != p.getWorld())
+                                    continue;
+                                if (target.getLocation().distance(position) <= maxDist) {
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
+                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage && new Random().nextInt(50) == 0){
+                                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
+                                            //PaintMgr.Paint(target.getLocation(), p, true);
+                                        }else{
+                                            target.setGameMode(GameMode.SPECTATOR);
+                                            DeathMgr.PlayerDeathRunnable(target, p, "spWeapon");
+                                            PaintMgr.Paint(target.getLocation(), p, true);
+                                        }
+
+                                        //AntiNoDamageTime
+                                        BukkitRunnable task = new BukkitRunnable(){
+                                            Player p = target;
+                                            @Override
+                                            public void run(){
+                                                target.setNoDamageTicks(0);
+                                            }
+                                        };
+                                        task.runTaskLater(Main.getPlugin(), 1);
+                                    }
+                                }
+                            }
+
+                            for(Entity as : player.getWorld().getEntities()){
+                                if (as.getLocation().distance(position) <= maxDist && new Random().nextInt(50) == 0){
+                                    if(as instanceof ArmorStand){
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                    }          
+                                }
+                            }
+                        }
+                    }
+                    
                     for(Location loc : locList){
                         if(new Random().nextInt(350) == 1)
                             SnowballAmehurasiRunnable(p, loc);

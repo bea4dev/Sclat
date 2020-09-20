@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 /**
  *
@@ -26,6 +27,7 @@ public class Match {
     private BlockUpdater bur;
     private Team winteam;
     private boolean hikiwake = false;
+    private Scoreboard scoreboard;
     
     
     
@@ -59,6 +61,8 @@ public class Match {
     
     public boolean getIsHikiwake(){return this.hikiwake;}
     
+    public Scoreboard getScoreboard(){return this.scoreboard;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -79,6 +83,8 @@ public class Match {
     public void setWinTeam(Team team){this.winteam = team;}
     
     public void setIsHikiwake(boolean is){this.hikiwake = is;}
+    
+    public void setScoreboard(Scoreboard sc){this.scoreboard = sc;}
     
     
     public void addNawabari_T_Count(){this.c_nawabari++;}
