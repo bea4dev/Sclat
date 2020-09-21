@@ -68,10 +68,11 @@ public class SPWeaponMgr {
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
                 if(data.getSPGauge() == 100){
-                    if(!DataMgr.getPlayerData(p).getIsSP()){
+                    if(!data.getIsSP()){
                         setSPWeapon(p);
                         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.8F, 2);
                         Sclat.sendMessage("§6§l！ スペシャルウエポン使用可能 ！", MessageType.PLAYER, player);
+                        data.setIsUsingSP(false);
                     }
                     DataMgr.getPlayerData(p).setIsSP(true);
                 }else{
@@ -276,6 +277,7 @@ public class SPWeaponMgr {
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "マルチミサイル":
+                data.setIsUsingSP(true);
                 MultiMissile.MMLockRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
@@ -283,6 +285,7 @@ public class SPWeaponMgr {
                 player.sendTitle("", "プレイヤーを狙って右クリックで発射！", 3, 30, 3);
                 break;
             case "ジェットパック":
+                data.setIsUsingSP(true);
                 JetPack.JetPackRunnable(player);
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));
                 player.setExp(0.99F);
@@ -305,6 +308,7 @@ public class SPWeaponMgr {
                 break;
             case "メガホンレーザー":
                 if(player.isOnGround()){
+                    data.setIsUsingSP(true);
                     MegaLaser.MegaLaserRunnable(player);
                     player.getInventory().setItem(4, new ItemStack(Material.AIR));
                     player.setExp(0.99F);

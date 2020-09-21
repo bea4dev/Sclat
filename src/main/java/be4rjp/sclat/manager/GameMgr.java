@@ -166,6 +166,25 @@ public class GameMgr implements Listener{
             player.setExp(0.99F);
             player.getInventory().setItem(7, join);
             
+            BukkitRunnable delay = new BukkitRunnable(){
+                Player p = player;
+                @Override
+                public void run(){
+                    //WeaponClassMgr.setWeaponClass(p);
+                    player.getInventory().clear();
+                    ItemStack join = new ItemStack(Material.CHEST);
+                    ItemMeta joinmeta = join.getItemMeta();
+                    joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
+                    join.setItemMeta(joinmeta);
+                    player.getInventory().setItem(7, join);
+                    player.setExp(0F);
+                    SPWeaponMgr.SPWeaponRunnable(player);
+                    SquidMgr.SquidShowRunnable(player);
+                    OpenGUI.openWeaponSelect(p, "Main", "null", false);
+                }
+            };
+            delay.runTaskLater(Main.getPlugin(), 15);
+            
             BukkitRunnable armor = new BukkitRunnable(){
                 @Override
                 public void run(){
@@ -210,25 +229,6 @@ public class GameMgr implements Listener{
                 if(DataMgr.getSprinklerFromplayer(player) == as)
                     as.remove();
             }
-
-            BukkitRunnable delay = new BukkitRunnable(){
-                Player p = player;
-                @Override
-                public void run(){
-                    //WeaponClassMgr.setWeaponClass(p);
-                    player.getInventory().clear();
-                    ItemStack join = new ItemStack(Material.CHEST);
-                    ItemMeta joinmeta = join.getItemMeta();
-                    joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
-                    join.setItemMeta(joinmeta);
-                    player.getInventory().setItem(7, join);
-                    player.setExp(0.99F);
-                    SPWeaponMgr.SPWeaponRunnable(player);
-                    SquidMgr.SquidShowRunnable(player);
-                    OpenGUI.openWeaponSelect(p, "Main", "null", false);
-                }
-            };
-            delay.runTaskLater(Main.getPlugin(), 15);
             
             return;
         }

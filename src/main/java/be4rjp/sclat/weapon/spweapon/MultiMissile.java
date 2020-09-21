@@ -181,8 +181,10 @@ public class MultiMissile {
                         SPWeaponMgr.setSPCoolTimeAnimation(p, 100);
                         cancel();
                     }
-                    if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
+                    if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline() || p.getGameMode() == GameMode.SPECTATOR){
+                        DataMgr.getPlayerData(p).setIsUsingSP(false);
                         cancel();
+                    }
                     c++;
                 }catch(Exception e){
                     cancel();

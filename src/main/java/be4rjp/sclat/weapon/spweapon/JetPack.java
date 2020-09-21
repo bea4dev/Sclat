@@ -150,7 +150,7 @@ public class JetPack {
 
                 if(i == 0){
                     DataMgr.getPlayerData(p).setIsUsingSP(true);
-                    SPWeaponMgr.setSPCoolTimeAnimation(player, 170);
+                    SPWeaponMgr.setSPCoolTimeAnimation(player, 175);
                     DataMgr.getPlayerData(p).setIsUsingJetPack(true);
                     
                     p.getInventory().clear();

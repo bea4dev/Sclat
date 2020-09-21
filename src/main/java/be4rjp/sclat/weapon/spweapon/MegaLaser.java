@@ -53,13 +53,6 @@ public class MegaLaser {
             public void run(){
                 if(c == 0){
                     p.getInventory().clear();
-                    ItemStack item = new ItemStack(Material.SHULKER_SHELL);
-                    ItemMeta meta = item.getItemMeta();
-                    meta.setDisplayName("メガホンレーザー");
-                    item.setItemMeta(meta);
-                    for (int count = 0; count < 9; count++){
-                        player.getInventory().setItem(count, item);
-                    }
                     player.updateInventory();
                     DataMgr.getPlayerData(p).setIsUsingSP(true);
                     SPWeaponMgr.setSPCoolTimeAnimation(player, 180);
@@ -69,6 +62,7 @@ public class MegaLaser {
                     ol = p.getLocation();
                     v = p.getEyeLocation().getDirection();
                 }
+                
                 if(!as9.getPassengers().contains(p) && c < 9)
                     as9.addPassenger(p);
 
