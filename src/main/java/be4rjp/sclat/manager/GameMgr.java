@@ -36,6 +36,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -304,14 +305,18 @@ public class GameMgr implements Listener{
     
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        event.setCancelled(true);
-        Player player = event.getPlayer();
-        if(DataMgr.getPlayerData(player).isInMatch())
-            Main.getPlugin().getServer().broadcastMessage("<" + DataMgr.getPlayerData(player).getTeam().getTeamColor().getColorCode() + player.getDisplayName() + "§r> " + event.getMessage());
-        else
-            Main.getPlugin().getServer().broadcastMessage("<" + player.getDisplayName() + "§r> " + event.getMessage());
+        //event.setCancelled(true);
+        
+        if(!Main.LunaChat){
+            Player player = event.getPlayer();
+            if(DataMgr.getPlayerData(player).isInMatch())
+                event.setFormat("<" + DataMgr.getPlayerData(player).getTeam().getTeamColor().getColorCode() + player.getName() + "§r> " + event.getMessage());
+            else
+                event.setFormat("<" + player.getName() + "§r> ");
+        }
+        
     }
     
     @EventHandler

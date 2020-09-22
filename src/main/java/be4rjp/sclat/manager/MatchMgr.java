@@ -565,7 +565,7 @@ public class MatchMgr {
 
                     //p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
-                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1 && Main.NoteBlockAPI){
                         NoteBlockSong nbs = NoteBlockAPIMgr.getRandomNomalSong();
                         Song song = nbs.getSong();
                         RadioSongPlayer radio = new RadioSongPlayer(song);
@@ -646,11 +646,13 @@ public class MatchMgr {
         bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
         bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+        bteam0.setPrefix(match.getTeam0().getTeamColor().getColorCode());
 
         org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
         bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
         bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+        bteam1.setPrefix(match.getTeam1().getTeamColor().getColorCode());
         
         match.getTeam0().setTeam(bteam0);
         match.getTeam1().setTeam(bteam1);
@@ -791,7 +793,7 @@ public class MatchMgr {
                                 Sclat.sendMessage("§6§n残り1分！", MessageType.PLAYER, oplayer);
                             }
                         }
-                        if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+                        if(DataMgr.getPlayerData(p).getPlayerNumber() == 1 && Main.NoteBlockAPI){
                             NoteBlockSong nbs = NoteBlockAPIMgr.getRandomFinalSong();
                             Song song = nbs.getSong();
                             RadioSongPlayer radio = new RadioSongPlayer(song);

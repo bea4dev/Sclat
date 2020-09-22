@@ -630,7 +630,8 @@ public class OpenGUI {
             bgm_p_r.add("§7§l[Disable]");
         bgm_p_m.setLore(bgm_p_r);
         bgm_p.setItemMeta(bgm_p_m);
-        inv.setItem(26, bgm_p);
+        if(Main.NoteBlockAPI)
+            inv.setItem(26, bgm_p);
         
         ItemStack bgm = new ItemStack(Material.MUSIC_DISC_13);
         ItemMeta bgm_m = bgm.getItemMeta();
@@ -642,7 +643,8 @@ public class OpenGUI {
             bgm_r.add("§7§l[Disable]");
         bgm_m.setLore(bgm_r);
         bgm.setItemMeta(bgm_m);
-        inv.setItem(17, bgm);
+        if(Main.NoteBlockAPI)
+            inv.setItem(17, bgm);
         
         
         

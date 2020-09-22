@@ -8,6 +8,7 @@ import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
+import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.ColorMgr;
 import be4rjp.sclat.manager.GameMgr;
@@ -61,6 +62,10 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static boolean tutorial = false;
     
+    //API
+    public static boolean NoteBlockAPI = true;
+    public static boolean LunaChat = true;
+    
     //重複しない数字
     //ボム等で使用
     private static int NDNumber = 0;
@@ -75,11 +80,17 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         
         //----------------------------APICheck-------------------------------
-        boolean NoteBlockAPI = true;
+        NoteBlockAPI = true;
         if (!Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")){
             getLogger().severe("*** NoteBlockAPI is not installed or not enabled. ***");
             NoteBlockAPI = false;
             return;
+        }
+        
+        //LunaChat
+        if (!Bukkit.getPluginManager().isPluginEnabled("LunaChat")){
+            getLogger().severe("*** LunaChat is not installed or not enabled. ***");
+            LunaChat = false;
         }
         //-------------------------------------------------------------------
         
@@ -121,6 +132,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
         pm.registerEvents(new SnowballListener(), this);
+        
+        if(LunaChat)
+            pm.registerEvents(new LunaChatListener(), this);
         //-------------------------------------------------------------------
 
         

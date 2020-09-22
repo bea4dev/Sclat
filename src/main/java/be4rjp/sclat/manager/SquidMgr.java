@@ -242,6 +242,7 @@ public class SquidMgr {
                         org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(data.getTeam().getTeamColor().getColorName());
                         bteam0.setColor(data.getTeam().getTeamColor().getChatColor());
                         //bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+                        bteam0.setPrefix(data.getTeam().getTeamColor().getColorCode());
                         bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
                         
                         player.setScoreboard(scoreboard);

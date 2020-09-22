@@ -72,6 +72,11 @@ public class SuperJumpMgr {
     
     public static void SuperJumpRunnable(Player player, Location toloc){
         
+        if(player.getLocation().distance(toloc) <= 3){
+            player.setVelocity(new Vector(0, 2, 0));
+            return;
+        }  
+        
         Location from = player.getLocation().clone();
         Location to = toloc;
         Vector vec = new Vector(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ()).normalize();
