@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class Beacon {
     public static void setBeacon(Player player){
-        if(player.isOnGround() && DataMgr.getPlayerData(player).isInMatch() && player.getExp() >= 0.4){
+        if(player.isOnGround() && DataMgr.getPlayerData(player).isInMatch() && player.getExp() >= 0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)){
             ArmorStand as = DataMgr.getBeaconFromplayer(player);
             as.setVisible(false);
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {

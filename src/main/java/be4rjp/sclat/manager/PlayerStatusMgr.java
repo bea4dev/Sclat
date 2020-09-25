@@ -47,6 +47,8 @@ public class PlayerStatusMgr {
             wlist.add(conf.getConfig().getString("DefaultClass"));
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Gear", 0);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Kill", 0);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Paint", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".EquiptClass", conf.getConfig().getString("DefaultClass"));
         }
     }
@@ -75,7 +77,7 @@ public class PlayerStatusMgr {
         connection.sendPacket(new PacketPlayOutAnimation(npc, 0));
         
         EntityArmorStand as = new EntityArmorStand(nmsWorld);
-        as.setLocation(location.getX(), location.getY() + 0.4D, location.getZ(), location.getYaw(), 0);
+        as.setLocation(location.getX(), location.getY() + 0.8D, location.getZ(), location.getYaw(), 0);
         as.setInvisible(true);
         as.setCustomNameVisible(true);
         as.setNoGravity(true);
@@ -84,14 +86,22 @@ public class PlayerStatusMgr {
         list.put(player, as);
         
         EntityArmorStand as1 = new EntityArmorStand(nmsWorld);
-        as1.setLocation(location.getX(), location.getY() + 0.8D, location.getZ(), location.getYaw(), 0);
+        as1.setLocation(location.getX(), location.getY() + 1.2D, location.getZ(), location.getYaw(), 0);
         as1.setInvisible(true);
         as1.setCustomNameVisible(true);
         as1.setNoGravity(true);
         as1.setCustomName(CraftChatMessage.fromStringOrNull("§6Rank : §r" + String.valueOf(getRank(player)) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]"));
+    
+        EntityArmorStand as2 = new EntityArmorStand(nmsWorld);
+        as2.setLocation(location.getX(), location.getY() + 0.4D, location.getZ(), location.getYaw(), 0);
+        as2.setInvisible(true);
+        as2.setCustomNameVisible(true);
+        as2.setNoGravity(true);
+        as2.setCustomName(CraftChatMessage.fromStringOrNull("§aPaints : §r" + String.valueOf(getPaint(player)) + "  §aKills : §r" + String.valueOf(getKill(player))));
         
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as1));
+        connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as2));
     }
     
     public static void sendHologramUpdate(Player player){
@@ -148,6 +158,16 @@ public class PlayerStatusMgr {
         conf.getPlayerStatus().set("Status." + uuid + ".Rank", conf.getPlayerStatus().getInt("Status." + uuid + ".Rank") + m);
     }
     
+    public static void addKill(Player player, int m){
+        String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".Kill", conf.getPlayerStatus().getInt("Status." + uuid + ".Kill") + m);
+    }
+    
+    public static void addPaint(Player player, int m){
+        String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".Paint", conf.getPlayerStatus().getInt("Status." + uuid + ".Paint") + m);
+    }
+    
     public static int getMoney(Player player){
         String uuid = player.getUniqueId().toString();
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Money");
@@ -166,6 +186,16 @@ public class PlayerStatusMgr {
     public static int getGear(Player player){
         String uuid = player.getUniqueId().toString();
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Gear");
+    }
+    
+    public static int getKill(Player player){
+        String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
+    }
+    
+    public static int getPaint(Player player){
+        String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
     }
     
     public static String getEquiptClass(Player player){

@@ -1104,6 +1104,9 @@ public class MatchMgr {
                     PlayerStatusMgr.addLv(p, pLv);
                     PlayerStatusMgr.addMoney(p, pMoney);
                     
+                    PlayerStatusMgr.addPaint(p, data.getPaintCount());
+                    PlayerStatusMgr.addKill(p, data.getKillCount());
+                    
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     Sclat.sendMessage("§a----------<< Match bonus >>----------", MessageType.PLAYER, p);
                 

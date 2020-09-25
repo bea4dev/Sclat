@@ -163,9 +163,9 @@ public class Amehurasi {
                                     continue;
                                 if(target.getWorld() != p.getWorld())
                                     continue;
-                                if (target.getLocation().distance(position) <= maxDist) {
+                                if (target.getLocation().distance(position) <= maxDist && new Random().nextInt(100) == 0) {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage && new Random().nextInt(50) == 0){
+                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                             DamageMgr.SclatGiveStrongDamage(target, damage, player);
                                             //PaintMgr.Paint(target.getLocation(), p, true);
                                         }else{
@@ -188,7 +188,7 @@ public class Amehurasi {
                             }
 
                             for(Entity as : player.getWorld().getEntities()){
-                                if (as.getLocation().distance(position) <= maxDist && new Random().nextInt(50) == 0){
+                                if (as.getLocation().distance(position) <= maxDist && new Random().nextInt(100) == 0){
                                     if(as instanceof ArmorStand){
                                         ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                     }          

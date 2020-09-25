@@ -5,15 +5,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.spweapon.JetPack;
 import be4rjp.sclat.weapon.spweapon.SuperShot;
-import be4rjp.sclat.weapon.subweapon.Beacon;
-import be4rjp.sclat.weapon.subweapon.CurlingBomb;
-import be4rjp.sclat.weapon.subweapon.KBomb;
-import be4rjp.sclat.weapon.subweapon.Poison;
-import be4rjp.sclat.weapon.subweapon.QuickBomb;
-import be4rjp.sclat.weapon.subweapon.Sensor;
-import be4rjp.sclat.weapon.subweapon.SplashBomb;
-import be4rjp.sclat.weapon.subweapon.SplashShield;
-import be4rjp.sclat.weapon.subweapon.Sprinkler;
+import be4rjp.sclat.weapon.subweapon.*;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,6 +69,11 @@ public class SubWeaponMgr {
                 ism = is.getItemMeta();
                 ism.setDisplayName("カーリングボム");
                 break;
+            case "トラップ":
+                is = new ItemStack(Material.MUSIC_DISC_STAL);
+                ism = is.getItemMeta();
+                ism.setDisplayName("トラップ");
+                break;
         }
         is.setItemMeta(ism);
         //player.getInventory().setItem(2, is);  
@@ -136,6 +133,10 @@ public class SubWeaponMgr {
                 break;
             case "カーリングボム":
                 CurlingBomb.CurlingBombRunnable(player);
+                data.setCanUseSubWeapon(false);
+                break;
+            case "トラップ":
+                Trap.useTrap(player);
                 data.setCanUseSubWeapon(false);
                 break;
         }

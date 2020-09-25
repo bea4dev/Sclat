@@ -90,7 +90,7 @@ public class Blaster {
                 inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
                     if(!inkball.equals(ball)){
-                        i+=DataMgr.getSnowballHitCount(name);
+                        i+=DataMgr.getSnowballHitCount(name) - 1;
                         DataMgr.setSnowballHitCount(name, 0);
                     }
                 
@@ -102,7 +102,7 @@ public class Blaster {
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
 
-                if(i >= tick && !ball.isDead()){
+                if(i >= tick && !inkball.isDead()){
                     //半径
                     double maxDist = data.getWeaponClass().getMainWeapon().getBlasterExHankei();
                     
@@ -188,9 +188,6 @@ public class Blaster {
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
-        
-        
-        
     }
     
 }

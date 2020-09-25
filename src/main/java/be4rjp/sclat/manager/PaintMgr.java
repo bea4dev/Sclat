@@ -62,7 +62,7 @@ public class PaintMgr {
             if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER"))
                 return;
             
-            if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB") || block.getType().toString().contains("DOOR"))){
+            if(canPaint(block)){
                 if(!conf.getConfig().getString("WorkMode").equals("Trial"))
                     if(!DataMgr.getPlayerData(player).getMatch().getMapData().canPaintBBlock() && block.getType() == Material.BARRIER)
                         return;
@@ -100,6 +100,10 @@ public class PaintMgr {
                 
             }
         }
+    }
+    
+    public static boolean canPaint(Block block){
+        return !(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB") || block.getType().toString().contains("DOOR"));
     }
     
     

@@ -159,7 +159,7 @@ public class QuickBomb {
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
                                 if(as instanceof ArmorStand){
-                                    double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
+                                    double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 5 * Gear.getGearInfluence(p, Gear.Type.SUB_SPEC_UP);
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                                     if(as.getCustomName() != null){
                                         if(as.getCustomName().equals("SplashShield") || as.getCustomName().equals("Kasa"))

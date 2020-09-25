@@ -97,7 +97,7 @@ public class SnowballListener implements Listener {
                                     ball2.setShooter(shooter);
                                     ball2.setVelocity(vec);
                                     ball2.setCustomName(ball.getCustomName());
-                                    if(!DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                                    //if(!DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                                         DataMgr.addSnowballHitCount(ball.getCustomName());
                                     DataMgr.getMainSnowballNameMap().put(ball.getCustomName(), ball2);
                                 }
@@ -115,7 +115,7 @@ public class SnowballListener implements Listener {
                                     ball2.setShooter(shooter);
                                     ball2.setVelocity(vec);
                                     ball2.setCustomName(ball.getCustomName());
-                                    if(!DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
+                                    //if(!DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster"))
                                         DataMgr.addSnowballHitCount(ball.getCustomName());
                                     DataMgr.getMainSnowballNameMap().put(ball.getCustomName(), ball2);
                                 }

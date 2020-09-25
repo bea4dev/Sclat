@@ -54,6 +54,7 @@ public class PlayerData {
     private boolean MItemGlow = false;
     private boolean amehurashi = false;
     private boolean isUsingTyakuti = false;
+    private int trapCount = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -142,7 +143,9 @@ public class PlayerData {
     
     public boolean getIsUsingAmehurashi(){return this.amehurashi;}
     
-    public boolean getIsUsingTyakuti(){return  this.isUsingTyakuti;}
+    public boolean getIsUsingTyakuti(){return this.isUsingTyakuti;}
+    
+    public int getTrapCount(){return this.trapCount;}
     
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
@@ -237,6 +240,8 @@ public class PlayerData {
     
     public void resetSPGauge(){this.spgauge = 0;}
     
+    public void addTrapCount(){this.trapCount++;}
+    
     public void reset(){
         this.inmatch = false;
         this.playernumber = 0;
@@ -266,6 +271,7 @@ public class PlayerData {
         this.MItemGlow = false;
         this.amehurashi = false;
         this.isUsingTyakuti = false;
+        this.trapCount = 0;
     }
     
 }
