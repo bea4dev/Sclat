@@ -102,7 +102,7 @@ public class Blaster {
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
 
-                if(i >= tick){
+                if(i >= tick && !ball.isDead()){
                     //半径
                     double maxDist = data.getWeaponClass().getMainWeapon().getBlasterExHankei();
                     
