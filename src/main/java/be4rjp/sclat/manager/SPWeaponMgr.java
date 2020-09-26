@@ -236,10 +236,10 @@ public class SPWeaponMgr {
         
         switch (name) {
             case "インクアーマー":
-                SuperArmor.setArmor(player, 20, 160, true);
+                SuperArmor.setArmor(player, 30, 160, true);
                 for (Player op : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(player != op && DataMgr.getPlayerData(player).getTeam() == DataMgr.getPlayerData(op).getTeam()){
-                        SuperArmor.setArmor(op, 10, 80, true);
+                        SuperArmor.setArmor(op, 20, 80, true);
                     }
                 }
                 player.getInventory().setItem(4, new ItemStack(Material.AIR));

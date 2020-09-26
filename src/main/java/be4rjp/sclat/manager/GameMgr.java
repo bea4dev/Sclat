@@ -311,10 +311,10 @@ public class GameMgr implements Listener{
         
         if(!Main.LunaChat){
             Player player = event.getPlayer();
-            if(DataMgr.getPlayerData(player).isInMatch())
+            if(DataMgr.getPlayerData(player).getIsJoined())
                 event.setFormat("<" + DataMgr.getPlayerData(player).getTeam().getTeamColor().getColorCode() + player.getName() + "§r> " + event.getMessage());
             else
-                event.setFormat("<" + player.getName() + "§r> ");
+                event.setFormat("<" + player.getName() + "> " + event.getMessage());
         }
         
     }
@@ -374,10 +374,10 @@ public class GameMgr implements Listener{
                         MatchMgr.PlayerJoinMatch(player);
                         break;
                     case "[ Equipment ]":
-                        OpenGUI.equipmentGUI(player);
+                        OpenGUI.equipmentGUI(player, false);
                         break;
-                    case "[ Weapon Shop ]":
-                        OpenGUI.openWeaponSelect(player, "Main", "null", true);
+                    case "[ Equip shop ]":
+                        OpenGUI.equipmentGUI(player, true);
                         break;
                     case "[ OpenMenu ]":
                         OpenGUI.openMenu(player);

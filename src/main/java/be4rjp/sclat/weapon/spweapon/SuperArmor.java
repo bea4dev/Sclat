@@ -20,7 +20,7 @@ public class SuperArmor {
     public static void setArmor(Player player, double armor, long delay, boolean effect){
         
         if(effect){
-            if(armor != 10){
+            if(armor != 20){
                 DataMgr.getPlayerData(player).setIsUsingSP(true);
                 SPWeaponMgr.setSPCoolTimeAnimation(player, (int)delay);
             }
@@ -35,7 +35,7 @@ public class SuperArmor {
             @Override
             public void run(){
                 if(!data.isInMatch() || !player.getGameMode().equals(GameMode.ADVENTURE)){
-                    if(armor != 10)
+                    if(armor != 20)
                         DataMgr.getPlayerData(player).setIsUsingSP(false);
                     cancel();
                 }

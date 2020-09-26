@@ -40,12 +40,15 @@ public class PlayerStatusMgr {
     
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 10000);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 1000000);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
             List<String> wlist = new ArrayList<String>();
             wlist.add(conf.getConfig().getString("DefaultClass"));
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
+            List<Integer> glist = new ArrayList<Integer>();
+            glist.add(0);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".GearList", glist);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Gear", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Kill", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Paint", 0);
@@ -117,6 +120,11 @@ public class PlayerStatusMgr {
         return wlist.contains(wname);
     }
     
+    public static boolean haveGear(Player player, int g){
+        List<Integer> glist = conf.getPlayerStatus().getIntegerList("Status." + player.getUniqueId().toString() + ".GearList");
+        return glist.contains(g);
+    }
+    
     public static void setRank(Player player, int rank){
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".Rank", rank);
@@ -136,6 +144,12 @@ public class PlayerStatusMgr {
         List<String> wlist = conf.getPlayerStatus().getStringList("Status." + player.getUniqueId().toString() + ".WeaponClass");
         wlist.add(wname);
         conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
+    }
+    
+    public static void addGear(Player player, int g){
+        List<Integer> glist = conf.getPlayerStatus().getIntegerList("Status." + player.getUniqueId().toString() + ".GearList");
+        glist.add(g);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".GearList", glist);
     }
     
     public static void addMoney(Player player, int m){

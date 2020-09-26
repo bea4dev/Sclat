@@ -123,7 +123,7 @@ public class Blaster {
                     }
                     
                     //塗る
-                    for(int i = 0; i <= maxDist; i++){
+                    for(int i = 0; i <= maxDist - 1; i++){
                         List<Location> p_locs = Sphere.getSphere(inkball.getLocation(), i, 20);
                         for(Location loc : p_locs){
                             PaintMgr.Paint(loc, p, false);

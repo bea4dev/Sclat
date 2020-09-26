@@ -57,32 +57,44 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ClickListener implements Listener{
     @EventHandler
     public void onGUIClick(InventoryClickEvent event){
-        if(event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null)
+        if(event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null || event.getClickedInventory().getTitle() == null)
             return;
         
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         Player player = (Player)event.getWhoClicked();
-        player.closeInventory();
+        if(name.equals(""))
+            return;
+        else
+            player.closeInventory();
         //player.sendMessage(name);
+        
+        if(name.equals("."))
+            return;
         
         switch(name){
             case"試合に参加 / JOIN THE MATCH":
                 MatchMgr.PlayerJoinMatch(player);
                 break;
             case"装備変更 / EQUIPMENT":
-                OpenGUI.equipmentGUI(player);
+                OpenGUI.equipmentGUI(player, false);
                 break;
             case"§bギア変更 / GEAR":
-                OpenGUI.gearGUI(player);
+                OpenGUI.gearGUI(player, false);
                 break;
             case"§6武器変更 / WEAPON":
                 OpenGUI.openWeaponSelect(player, "Main", "null", false);
+                break;
+            case"§bギア購入 / GEAR":
+                OpenGUI.gearGUI(player, true);
+                break;
+            case"§6武器購入 / WEAPON":
+                OpenGUI.openWeaponSelect(player, "Main", "null", true);
                 break;
             case"設定 / SETTINGS":
                 OpenGUI.openSettingsUI(player);
                 break;
             case"ショップを開く / OPEN SHOP":
-                OpenGUI.openWeaponSelect(player, "Main", "null", true);
+                OpenGUI.equipmentGUI(player, true);
                 break;
             case"塗りをリセット / RESET INK":
                 Match match = DataMgr.getPlayerData(player).getMatch();
@@ -150,6 +162,23 @@ public class ClickListener implements Listener{
                     DataMgr.getPlayerData(player).setGearNumber(i);
                     PlayerStatusMgr.setGear(player, i);
                     Sclat.sendMessage("ギア[" + ChatColor.AQUA + name + ChatColor.RESET + "]を選択しました", MessageType.PLAYER, player);
+                    break;
+                }
+                i++;
+            }
+        }else if(event.getClickedInventory().getTitle().equals("Gear shop")){
+            for(int i = 0; i <= 8;){
+                if(Gear.getGearName(i).equals(name)){
+                    if(PlayerStatusMgr.getMoney(player) >= Gear.getGearPrice(i)){
+                        PlayerStatusMgr.addGear(player, i);
+                        PlayerStatusMgr.subMoney(player, Gear.getGearPrice(i));
+                        Sclat.sendMessage(ChatColor.GREEN + "購入に成功しました", MessageType.PLAYER, player);
+                        Sclat.playGameSound(player, SoundType.SUCCESS);
+                        PlayerStatusMgr.sendHologramUpdate(player);
+                    }else{
+                        Sclat.sendMessage(ChatColor.RED + "お金が足りません", MessageType.PLAYER, player);
+                        Sclat.playGameSound(player, SoundType.ERROR);
+                    }
                     break;
                 }
                 i++;
@@ -342,6 +371,11 @@ public class ClickListener implements Listener{
         
         
         if(event.getClickedInventory().getTitle().equals("設定")){
+            if(name.equals("戻る")){
+                OpenGUI.openMenu(player);
+                return;
+            }
+            
             switch (name){
                 case "シューターのパーティクル":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Shooter();

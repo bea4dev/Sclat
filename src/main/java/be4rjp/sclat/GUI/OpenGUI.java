@@ -96,33 +96,79 @@ public class OpenGUI {
         player.openInventory(inv);
     }
     
-    public static void gearGUI(Player player){
-        Inventory inv = Bukkit.createInventory(null, 9, "Gear");
+    public static void gearGUI(Player player, boolean shop){
+        Inventory inv = Bukkit.createInventory(null, 9, shop ? "Gear shop" : "Gear");
         
-        for(int i = 0; i <= 8;){
-            ItemStack n = new ItemStack(Gear.getGearMaterial(i));
-            ItemMeta nmeta = n.getItemMeta();
-            nmeta.setDisplayName(Gear.getGearName(i));
-            n.setItemMeta(nmeta);
-            inv.setItem(i, n);
-            i++;
+        if(shop) {
+            for (int i = 0; i <= 8; ) {
+        
+                if (PlayerStatusMgr.haveGear(player, i)) {
+                    ItemStack n = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                    ItemMeta nmeta = n.getItemMeta();
+                    nmeta.setDisplayName(".");
+                    n.setItemMeta(nmeta);
+                    inv.setItem(i, n);
+                    i++;
+                    continue;
+                }
+        
+                ItemStack n = new ItemStack(Gear.getGearMaterial(i));
+                ItemMeta nmeta = n.getItemMeta();
+                nmeta.setDisplayName(Gear.getGearName(i));
+                List<String> list = new ArrayList<>();
+                list.add("");
+                list.add("§r§bMoney  : " + String.valueOf(Gear.getGearPrice(i)));
+                nmeta.setLore(list);
+                n.setItemMeta(nmeta);
+                inv.setItem(i, n);
+                i++;
+            }
+        }else {
+            for (int i = 0; i <= 8; ) {
+    
+                if (!(PlayerStatusMgr.haveGear(player, i) || conf.getConfig().getString("WorkMode").equals("Trial"))) {
+                    ItemStack n = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                    ItemMeta nmeta = n.getItemMeta();
+                    nmeta.setDisplayName(".");
+                    n.setItemMeta(nmeta);
+                    inv.setItem(i, n);
+                    i++;
+                    continue;
+                }
+        
+                ItemStack n = new ItemStack(Gear.getGearMaterial(i));
+                ItemMeta nmeta = n.getItemMeta();
+                nmeta.setDisplayName(Gear.getGearName(i));
+                n.setItemMeta(nmeta);
+                inv.setItem(i, n);
+                i++;
+            }
         }
         
         player.openInventory(inv);
     }
     
-    public static void equipmentGUI(Player player){
-        Inventory inv = Bukkit.createInventory(null, 27, " ");
+    public static void equipmentGUI(Player player, boolean shop){
+        Inventory inv = Bukkit.createInventory(null, 27, shop ? "Equipment shop" : "Equipment");
+    
+        for (int i = 0; i <= 26; ) {
+            ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            ItemMeta ism = is.getItemMeta();
+            ism.setDisplayName(".");
+            is.setItemMeta(ism);
+            inv.setItem(i, is);
+            i++;
+        }
         
         ItemStack n = new ItemStack(Gear.getGearMaterial(DataMgr.getPlayerData(player).getGearNumber()));
         ItemMeta nmeta = n.getItemMeta();
-        nmeta.setDisplayName("§bギア変更 / GEAR");
+        nmeta.setDisplayName(shop ? "§bギア購入 / GEAR" : "§bギア変更 / GEAR");
         n.setItemMeta(nmeta);
         inv.setItem(15, n);
         
         ItemStack t = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
         ItemMeta tmeta = t.getItemMeta();
-        tmeta.setDisplayName("§6武器変更 / WEAPON");
+        tmeta.setDisplayName(shop ? "§6武器購入 / WEAPON" : "§6武器変更 / WEAPON");
         t.setItemMeta(tmeta);
         inv.setItem(11, t);
         
@@ -132,6 +178,15 @@ public class OpenGUI {
     
     public static void MatchTohyoGUI(Player player){
         Inventory inv = Bukkit.createInventory(null, 18, "Chose a Gamemode");
+    
+        for (int i = 0; i <= 17; ) {
+            ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            ItemMeta ism = is.getItemMeta();
+            ism.setDisplayName(".");
+            is.setItemMeta(ism);
+            inv.setItem(i, is);
+            i++;
+        }
         
         ItemStack n = new ItemStack(Material.SNOWBALL);
         ItemMeta nmeta = n.getItemMeta();
@@ -462,6 +517,21 @@ public class OpenGUI {
     
     public static void openSettingsUI(Player player){
         Inventory inv = Bukkit.createInventory(null, 36, "設定");
+        
+        for (int i = 0; i <= 35; ) {
+            ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            ItemMeta ism = is.getItemMeta();
+            ism.setDisplayName(".");
+            is.setItemMeta(ism);
+            inv.setItem(i, is);
+            i++;
+        }
+    
+        ItemStack is = new ItemStack(Material.OAK_DOOR);
+        ItemMeta ism = is.getItemMeta();
+        ism.setDisplayName("戻る");
+        is.setItemMeta(ism);
+        inv.setItem(35, is);
         
         ItemStack shooter = new ItemStack(Material.WOODEN_HOE);
         ItemMeta shooter_m = shooter.getItemMeta();

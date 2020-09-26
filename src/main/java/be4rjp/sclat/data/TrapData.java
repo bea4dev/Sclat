@@ -51,7 +51,7 @@ public class TrapData {
                         for(Location loc : s_locs){
                             if(o_player.getWorld() == loc.getWorld() && DataMgr.getPlayerData(o_player).getTeam() != null){
                                 if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance") && (DataMgr.getPlayerData(o_player).getTeam() == team || near)){
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(near ? DataMgr.getPlayerData(o_player).getTeam().getTeamColor().getBukkitColor() : Color.BLACK, 1);
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(near ? DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor() : Color.BLACK, 1);
                                     o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 5, dustOptions);
                                 }
                             }
