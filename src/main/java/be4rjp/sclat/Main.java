@@ -9,15 +9,7 @@ import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
-import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.ColorMgr;
-import be4rjp.sclat.manager.GameMgr;
-import be4rjp.sclat.manager.MainWeaponMgr;
-import be4rjp.sclat.manager.MapDataMgr;
-import be4rjp.sclat.manager.MatchMgr;
-import be4rjp.sclat.manager.NPCMgr;
-import be4rjp.sclat.manager.NoteBlockAPIMgr;
-import be4rjp.sclat.manager.WeaponClassMgr;
+import be4rjp.sclat.manager.*;
 import be4rjp.sclat.weapon.MainWeapon;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
@@ -61,6 +53,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     public static List<Player> pdspList;
     
     public static boolean tutorial = false;
+    
+    public static ServerType type = ServerType.NORMAL;
     
     //API
     public static boolean NoteBlockAPI = true;
@@ -218,6 +212,30 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             NoteBlockAPIMgr.LoadSongFiles();
         //-------------------------------------------------------------------
         
+        
+        
+        //--------------------------Server type------------------------------
+        if(conf.getConfig().contains("ServerType")) {
+            switch (conf.getConfig().getString("ServerType")){
+                case "NORMAL":
+                    type = ServerType.NORMAL;
+                    break;
+                case "LOBBY":
+                    type = ServerType.LOBBY;
+                    break;
+                case "MATCH":
+                    type = ServerType.MATCH;
+                    break;
+            }
+        }
+        //-------------------------------------------------------------------
+        
+        
+        
+        //---------------------------Server status---------------------------
+        if(type == ServerType.LOBBY)
+            ServerStatusManager.setupServerStatusGUI();
+        //-------------------------------------------------------------------
     }
     
     @Override
@@ -289,6 +307,11 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         for(ArmorStand as : DataMgr.al)
             as.remove();
+    
+    
+        if(type == ServerType.LOBBY){
+            ServerStatusManager.stopTask();
+        }
     }
     
     public static Main getPlugin(){

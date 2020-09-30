@@ -1,25 +1,12 @@
 
 package be4rjp.sclat.GUI;
 
-import be4rjp.sclat.Main;
+import be4rjp.sclat.*;
+
 import static be4rjp.sclat.Main.conf;
-import be4rjp.sclat.MessageType;
-import be4rjp.sclat.Sclat;
-import be4rjp.sclat.SoundType;
-import be4rjp.sclat.data.BlockUpdater;
-import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.data.Match;
-import be4rjp.sclat.data.PaintData;
-import be4rjp.sclat.data.PlayerData;
-import be4rjp.sclat.data.WeaponClass;
-import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.BungeeCordMgr;
-import be4rjp.sclat.manager.MatchMgr;
-import be4rjp.sclat.manager.PlayerStatusMgr;
-import be4rjp.sclat.manager.SPWeaponMgr;
-import be4rjp.sclat.manager.SquidMgr;
-import be4rjp.sclat.manager.SuperJumpMgr;
-import be4rjp.sclat.manager.WeaponClassMgr;
+
+import be4rjp.sclat.data.*;
+import be4rjp.sclat.manager.*;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Gear;
 import be4rjp.sclat.weapon.Kasa;
@@ -73,7 +60,10 @@ public class ClickListener implements Listener{
         
         switch(name){
             case"試合に参加 / JOIN THE MATCH":
-                MatchMgr.PlayerJoinMatch(player);
+                if(Main.type == ServerType.LOBBY)
+                    ServerStatusManager.openServerList(player);
+                else
+                    MatchMgr.PlayerJoinMatch(player);
                 break;
             case"装備変更 / EQUIPMENT":
                 OpenGUI.equipmentGUI(player, false);
@@ -184,6 +174,21 @@ public class ClickListener implements Listener{
                 i++;
             }
         }
+        if(event.getClickedInventory().getTitle().equals("Server List")){
+            for (ServerStatus ss : ServerStatusManager.serverList){
+                if(ss.getDisplayName().equals(name)){
+                    if(ss.isOnline()) {
+                        BungeeCordMgr.PlayerSendServer(player, ss.getServerName());
+                        DataMgr.getPlayerData(player).setServerName(ss.getDisplayName());
+                    }else{
+                        Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
+                        Sclat.playGameSound(player, SoundType.ERROR);
+                    }
+                    return;
+                }
+            }
+        }
+        
         if(event.getClickedInventory().getTitle().equals("武器選択")){
             if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
                 switch(name){

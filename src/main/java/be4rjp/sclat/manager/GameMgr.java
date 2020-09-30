@@ -3,6 +3,8 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
@@ -371,7 +373,10 @@ public class GameMgr implements Listener{
                 String line = sign.getLine(2);
                 switch(line){
                     case "[ Join ]":
-                        MatchMgr.PlayerJoinMatch(player);
+                        if(Main.type == ServerType.LOBBY)
+                            ServerStatusManager.openServerList(player);
+                        else
+                            MatchMgr.PlayerJoinMatch(player);
                         break;
                     case "[ Equipment ]":
                         OpenGUI.equipmentGUI(player, false);

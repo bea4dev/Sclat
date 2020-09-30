@@ -152,7 +152,7 @@ public class OpenGUI {
         Inventory inv = Bukkit.createInventory(null, 27, shop ? "Equipment shop" : "Equipment");
     
         for (int i = 0; i <= 26; ) {
-            ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            ItemStack is = new ItemStack(shop ? Material.WHITE_STAINED_GLASS_PANE : Material.BLACK_STAINED_GLASS_PANE);
             ItemMeta ism = is.getItemMeta();
             ism.setDisplayName(".");
             is.setItemMeta(ism);
