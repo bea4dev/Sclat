@@ -156,6 +156,10 @@ public class PlayerStatusMgr {
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".Money", conf.getPlayerStatus().getInt("Status." + uuid + ".Money") + m);
     }
+
+    public static void addMoney(String uuid, int m){
+        conf.getPlayerStatus().set("Status." + uuid + ".Money", conf.getPlayerStatus().getInt("Status." + uuid + ".Money") + m);
+    }
     
     public static void subMoney(Player player, int m){
         String uuid = player.getUniqueId().toString();
@@ -179,6 +183,22 @@ public class PlayerStatusMgr {
     
     public static void addPaint(Player player, int m){
         String uuid = player.getUniqueId().toString();
+        conf.getPlayerStatus().set("Status." + uuid + ".Paint", conf.getPlayerStatus().getInt("Status." + uuid + ".Paint") + m);
+    }
+
+    public static void addLv(String uuid, int m){
+        conf.getPlayerStatus().set("Status." + uuid + ".Lv", conf.getPlayerStatus().getInt("Status." + uuid + ".Lv") + m);
+    }
+
+    public static void addRank(String uuid, int m){
+        conf.getPlayerStatus().set("Status." + uuid + ".Rank", conf.getPlayerStatus().getInt("Status." + uuid + ".Rank") + m);
+    }
+
+    public static void addKill(String uuid, int m){
+        conf.getPlayerStatus().set("Status." + uuid + ".Kill", conf.getPlayerStatus().getInt("Status." + uuid + ".Kill") + m);
+    }
+
+    public static void addPaint(String uuid, int m){
         conf.getPlayerStatus().set("Status." + uuid + ".Paint", conf.getPlayerStatus().getInt("Status." + uuid + ".Paint") + m);
     }
     
