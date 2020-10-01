@@ -1,13 +1,11 @@
 
 package be4rjp.sclat.manager;
 
-import be4rjp.sclat.Animation;
+import be4rjp.sclat.*;
 import be4rjp.sclat.GUI.OpenGUI;
-import be4rjp.sclat.Main;
+
 import static be4rjp.sclat.Main.conf;
-import be4rjp.sclat.MessageType;
-import be4rjp.sclat.Sclat;
-import be4rjp.sclat.SoundType;
+
 import be4rjp.sclat.data.Area;
 import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.Color;
@@ -1139,12 +1137,14 @@ public class MatchMgr {
                     il.setYaw(iyaw);
                     WeaponClass wc = DataMgr.getPlayerData(p).getWeaponClass();
                     p.teleport(il);
-                    ItemStack join = new ItemStack(org.bukkit.Material.CHEST);
-                    ItemMeta joinmeta = join.getItemMeta();
-                    joinmeta.setDisplayName("メインメニュー");
-                    join.setItemMeta(joinmeta);
-                    p.getInventory().clear();
-                    p.getInventory().setItem(0, join);
+                    if(Main.type != ServerType.MATCH) {
+                        ItemStack join = new ItemStack(org.bukkit.Material.CHEST);
+                        ItemMeta joinmeta = join.getItemMeta();
+                        joinmeta.setDisplayName("メインメニュー");
+                        join.setItemMeta(joinmeta);
+                        p.getInventory().clear();
+                        p.getInventory().setItem(0, join);
+                    }
                     
                     PlayerStatusMgr.sendHologram(p);
                     
@@ -1175,7 +1175,10 @@ public class MatchMgr {
                         p.showPlayer(Main.getPlugin(), player);
                     }
                     
-                    
+                    if(Main.type == ServerType.MATCH){
+                        BungeeCordMgr.PlayerSendServer(player, "sclat");
+                        DataMgr.getPlayerData(player).setServerName("Sclat");
+                    }
                     
                     cancel();
                     

@@ -88,11 +88,13 @@ public class GameMgr implements Listener{
         DataMgr.setPlayerData(player, data);
         
         //((LivingEntity)player).setCollidable(false);
-        
+
         PlayerStatusMgr.setupPlayerStatus(player);
-        data.setGearNumber(PlayerStatusMgr.getGear(player));
-        data.setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
-        
+
+        if(Main.type != ServerType.MATCH){
+            data.setGearNumber(PlayerStatusMgr.getGear(player));
+            data.setWeaponClass(DataMgr.getWeaponClass(PlayerStatusMgr.getEquiptClass(player)));
+        }
         //処理の分散
         BukkitRunnable task = new BukkitRunnable(){
             int i = 0;
@@ -137,6 +139,9 @@ public class GameMgr implements Listener{
                         meta.setDisplayName(player.getName());
                         item.setItemMeta(meta);
                         data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+                        if(Main.type == ServerType.MATCH){
+                            MatchMgr.PlayerJoinMatch(player);
+                        }
                     }
                     case 3:{
                         cancel();
@@ -239,14 +244,17 @@ public class GameMgr implements Listener{
         DataMgr.setUUIDData(player.getUniqueId().toString(), data);
         player.setWalkSpeed(0.2F);
         SquidMgr.SquidRunnable(player);
-        
-        player.teleport(Main.lobby);
-        ItemStack join = new ItemStack(Material.CHEST);
-        ItemMeta joinmeta = join.getItemMeta();
-        joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
-        join.setItemMeta(joinmeta);
+
         player.getInventory().clear();
-        player.getInventory().setItem(0, join);
+        player.teleport(Main.lobby);
+        if(Main.type != ServerType.MATCH) {
+            ItemStack join = new ItemStack(Material.CHEST);
+            ItemMeta joinmeta = join.getItemMeta();
+            joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
+            join.setItemMeta(joinmeta);
+            player.getInventory().clear();
+            player.getInventory().setItem(0, join);
+        }
         
         Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);
         data.setMatch(match);
