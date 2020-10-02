@@ -9,6 +9,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.Area;
 import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.Color;
+import be4rjp.sclat.server.StatusClient;
 import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
@@ -1104,6 +1105,19 @@ public class MatchMgr {
                     
                     PlayerStatusMgr.addPaint(p, data.getPaintCount());
                     PlayerStatusMgr.addKill(p, data.getKillCount());
+
+                    if(Main.type == ServerType.MATCH){
+                        System.out.println("test");
+                        StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                                conf.getConfig().getInt("StatusShare.Port"));
+                        sc.start();
+                        sc.addCommand("add money " + pMoney + " " + p.getUniqueId().toString());
+                        sc.addCommand("add level " + pLv + " " + p.getUniqueId().toString());
+                        sc.addCommand("add rank " + pRank + " " + p.getUniqueId().toString());
+                        sc.addCommand("add kill " + data.getKillCount() + " " + p.getUniqueId().toString());
+                        sc.addCommand("add paint " + data.getPaintCount() + " " + p.getUniqueId().toString());
+                        sc.addCommand("stop");
+                    }
                     
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     Sclat.sendMessage("§a----------<< Match bonus >>----------", MessageType.PLAYER, p);

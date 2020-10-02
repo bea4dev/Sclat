@@ -10,6 +10,8 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.*;
+import be4rjp.sclat.server.StatusClient;
+import be4rjp.sclat.server.StatusServer;
 import be4rjp.sclat.weapon.MainWeapon;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
@@ -55,6 +57,10 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     public static boolean tutorial = false;
     
     public static ServerType type = ServerType.NORMAL;
+
+
+    //StatusShare
+    public static StatusServer ss = null;
     
     //API
     public static boolean NoteBlockAPI = true;
@@ -235,6 +241,27 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         //---------------------------Server status---------------------------
         if(type == ServerType.LOBBY)
             ServerStatusManager.setupServerStatusGUI();
+        //-------------------------------------------------------------------
+
+
+
+        //----------------------Status server and client---------------------
+        if(type == ServerType.LOBBY){
+            ss = new StatusServer(conf.getConfig().getInt("StatusShare.Port"));
+            ss.start();
+            getLogger().info("StatusServer is ready!");
+        }else if(type == ServerType.MATCH){
+            StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                    conf.getConfig().getInt("StatusShare.Port"));
+            sc.start();
+            sc.addCommand("test");
+            sc.addCommand("test2");
+            sc.addCommand("stop");
+            getLogger().info("StatusClient is ready!");
+        }
+
+
+
         //-------------------------------------------------------------------
     }
     

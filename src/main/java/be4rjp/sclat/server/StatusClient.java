@@ -9,13 +9,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusClient {
+public class StatusClient extends Thread{
     
     private BufferedReader reader = null;
     private PrintWriter writer = null;
     private Socket cSocket = null;
     
-    private List<String> commands = new ArrayList<>();
+    private List<String> commands;
     
     private final String host;
     private final int port;
@@ -23,10 +23,12 @@ public class StatusClient {
     public StatusClient(String host, int port) {
         this.host = host;
         this.port = port;
+        commands = new ArrayList<>();
     }
-    
-    public void runClient() {
+
+    public void run() {
         try {
+            System.out.println("test");
             //IPアドレスとポート番号を指定してクライアント側のソケットを作成
             cSocket = new Socket(host, port);
     
@@ -39,22 +41,23 @@ public class StatusClient {
             //命令送信ループ
             String cmd = null;
             while (true) {
-                if(commands.size() == 0) continue;
-                
-                cmd = commands.get(0);
-    
-                //送信用の文字を送信
-                writer.println(cmd);
-    
-                //stopの入力でループを抜ける
-                if (cmd.equals("stop")) {
-                    break;
+                if(commands.size() != 0) {
+
+                    //stopの入力でループを抜ける
+                    if (cmd.equals("stop")) {
+                        break;
+                    }
+
+                    cmd = commands.get(0);
+
+                    //送信用の文字を送信
+                    writer.println(cmd);
+
+                    //サーバ側からの受取の結果を表示
+                    //System.out.println("result：" + reader.readLine());
+
+                    commands.remove(0);
                 }
-    
-                //サーバ側からの受取の結果を表示
-                //System.out.println("result：" + reader.readLine());
-                
-                commands.remove(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
