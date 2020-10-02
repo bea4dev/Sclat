@@ -21,11 +21,7 @@ import be4rjp.sclat.weapon.spweapon.SuperTyakuti;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
 import be4rjp.sclat.weapon.subweapon.SplashBomb;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
@@ -101,8 +97,34 @@ public class SPWeaponMgr {
                     bar.setTitle("§6§lIn Use...");
                 else
                     bar.setTitle("§6§lSpecial Weapon : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
-                if(!DataMgr.getPlayerData(p).isInMatch()){
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    bar.removeAll();
+                    cancel();
+                }
+            }
+        };
+        anime.runTaskTimer(Main.getPlugin(), 0, 1);
+    }
+    
+    public static void ArmorRunnable(Player player){
+        BossBar bar = Main.getPlugin().getServer().createBossBar(DataMgr.getPlayerData(player).getTeam().getTeamColor().getColorCode() + "§lInk Armor", BarColor.YELLOW, BarStyle.SOLID, BarFlag.CREATE_FOG);
+        bar.setProgress(0);
+        bar.addPlayer(player);
+    
+        BukkitRunnable anime = new BukkitRunnable(){
+            Player p = player;
+            @Override
+            public void run(){
+                PlayerData data = DataMgr.getPlayerData(p);
+                if(data.getArmor() > 0) {
+                    bar.setProgress(data.getArmor() >= 30 ? 1D : data.getArmor() / 30D);
+                    if (!bar.getPlayers().contains(p))
+                        bar.addPlayer(p);
+                }else {
+                    bar.removeAll();
+                }
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
                     bar.removeAll();
                     cancel();
                 }
@@ -233,7 +255,6 @@ public class SPWeaponMgr {
         
         if(data.getIsUsingSP())
             return;
-        
         switch (name) {
             case "インクアーマー":
                 SuperArmor.setArmor(player, 30, 160, true);

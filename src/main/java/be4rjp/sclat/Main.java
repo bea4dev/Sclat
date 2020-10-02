@@ -10,6 +10,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.*;
+import be4rjp.sclat.server.EquipmentServer;
 import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.server.StatusServer;
 import be4rjp.sclat.weapon.MainWeapon;
@@ -61,6 +62,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     //StatusShare
     public static StatusServer ss = null;
+    
+    //EquipmentShare
+    public static EquipmentServer es = null;
     
     //API
     public static boolean NoteBlockAPI = true;
@@ -250,18 +254,21 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             ss = new StatusServer(conf.getConfig().getInt("StatusShare.Port"));
             ss.start();
             getLogger().info("StatusServer is ready!");
-        }else if(type == ServerType.MATCH){
-            StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
-                    conf.getConfig().getInt("StatusShare.Port"));
-            sc.start();
-            sc.addCommand("test");
-            sc.addCommand("test2");
-            sc.addCommand("stop");
-            getLogger().info("StatusClient is ready!");
         }
-
-
-
+        //-------------------------------------------------------------------
+    
+    
+    
+        //----------------------Equip server and client----------------------
+        if(type == ServerType.MATCH){
+            es = new EquipmentServer(conf.getConfig().getInt("EquipShare.Port"));
+            es.start();
+            getLogger().info("StatusServer is ready!");
+        }
+        //-------------------------------------------------------------------
+        
+        //--------------------------Return task------------------------------
+        PlayerReturnManager.runRemoveTask();
         //-------------------------------------------------------------------
     }
     

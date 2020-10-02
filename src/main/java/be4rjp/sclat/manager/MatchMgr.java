@@ -9,6 +9,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.Area;
 import be4rjp.sclat.data.BlockUpdater;
 import be4rjp.sclat.data.Color;
+import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
 import org.bukkit.entity.Player;
 import be4rjp.sclat.data.DataMgr;
@@ -88,6 +89,8 @@ public class MatchMgr {
         if(DataMgr.getPlayerIsQuit(player.getUniqueId().toString())){
             Sclat.sendMessage("§c§n途中で退出した場合再参加はできません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
+            if(Main.type == ServerType.MATCH)
+                Sclat.sendSclatLobby(player);
             return;
         }
         
@@ -142,6 +145,7 @@ public class MatchMgr {
                         if(s == 20){
                             match.setCanJoin(false);
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
+                            EquipmentServerManager.doCommands();
                             if(conf.getConfig().getBoolean("CanVoting")){
                                 if(match.getNawabari_T_Count() >= match.getTDM_T_Count() && match.getNawabari_T_Count() >= match.getGatiArea_T_Count()){
                                     conf.getConfig().set("WorkMode", "Nomal");
@@ -168,14 +172,20 @@ public class MatchMgr {
         }else{
             Sclat.sendMessage("§c§n上限人数を超えているため参加できません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
+            if(Main.type == ServerType.MATCH)
+                Sclat.sendSclatLobby(player);
         }
         }else{
             Sclat.sendMessage("§c§nこのマッチには既に開始しているため参加できません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
+            if(Main.type == ServerType.MATCH)
+                Sclat.sendSclatLobby(player);
         }
         }else{
             Sclat.sendMessage("§c§n既にチームに参加しています", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
+            if(Main.type == ServerType.MATCH)
+                Sclat.sendSclatLobby(player);
         }
         
     }
@@ -543,8 +553,9 @@ public class MatchMgr {
 
                     p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());
 
-                    SuperArmor.setArmor(p, 20, 100, false);
+                    SuperArmor.setArmor(p, 31, 100, false);
                     SPWeaponMgr.SPWeaponRunnable(p);
+                    SPWeaponMgr.ArmorRunnable(p);
 
                     DataMgr.getPlayerData(p).setTick(10);
                         //Shooter.ShooterRunnable(p);
@@ -1042,6 +1053,16 @@ public class MatchMgr {
                 if(i >= 46 && i <= 156){
                     p.teleport(DataMgr.getPlayerData(p).getMatch().getMapData().getResultLoc());
                 }
+    
+                if(i == 80){
+                    PlayerData data = DataMgr.getPlayerData(p);
+                    List<String> commands = new ArrayList<>();
+                    commands.add("return " + p.getUniqueId().toString());
+                    commands.add("stop");
+                    StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                            conf.getConfig().getInt("StatusShare.Port"), commands);
+                    sc.startClient();
+                }
                 
                 if(i == 137){
                     PlayerData data = DataMgr.getPlayerData(p);
@@ -1096,10 +1117,9 @@ public class MatchMgr {
                         pRank = 80 + (int)((double)data.getKillCount() * 2D + (double)data.getPaintCount() / 500D);
                     if(data.getMatch().getPlayerCount() == 1)
                         pRank = 0;
-                    if(PlayerStatusMgr.getRank(p) + pRank > 0)
-                        PlayerStatusMgr.addRank(p, pRank);
-                    else
-                        PlayerStatusMgr.setRank(p, 0);
+                    
+                    PlayerStatusMgr.addRank(p, pRank);
+                    
                     PlayerStatusMgr.addLv(p, pLv);
                     PlayerStatusMgr.addMoney(p, pMoney);
                     
@@ -1107,16 +1127,16 @@ public class MatchMgr {
                     PlayerStatusMgr.addKill(p, data.getKillCount());
 
                     if(Main.type == ServerType.MATCH){
-                        System.out.println("test");
+                        List<String> commands = new ArrayList<>();
+                        commands.add("add money " + pMoney + " " + p.getUniqueId().toString());
+                        commands.add("add level " + pLv + " " + p.getUniqueId().toString());
+                        commands.add("add rank " + pRank + " " + p.getUniqueId().toString());
+                        commands.add("add kill " + data.getKillCount() + " " + p.getUniqueId().toString());
+                        commands.add("add paint " + data.getPaintCount() + " " + p.getUniqueId().toString());
+                        commands.add("stop");
                         StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
-                                conf.getConfig().getInt("StatusShare.Port"));
-                        sc.start();
-                        sc.addCommand("add money " + pMoney + " " + p.getUniqueId().toString());
-                        sc.addCommand("add level " + pLv + " " + p.getUniqueId().toString());
-                        sc.addCommand("add rank " + pRank + " " + p.getUniqueId().toString());
-                        sc.addCommand("add kill " + data.getKillCount() + " " + p.getUniqueId().toString());
-                        sc.addCommand("add paint " + data.getPaintCount() + " " + p.getUniqueId().toString());
-                        sc.addCommand("stop");
+                                conf.getConfig().getInt("StatusShare.Port"), commands);
+                        sc.startClient();
                     }
                     
                     Sclat.sendMessage("", MessageType.PLAYER, p);
@@ -1190,8 +1210,8 @@ public class MatchMgr {
                     }
                     
                     if(Main.type == ServerType.MATCH){
-                        BungeeCordMgr.PlayerSendServer(player, "sclat");
-                        DataMgr.getPlayerData(player).setServerName("Sclat");
+                        BungeeCordMgr.PlayerSendServer(p, "sclat");
+                        DataMgr.getPlayerData(p).setServerName("Sclat");
                     }
                     
                     cancel();

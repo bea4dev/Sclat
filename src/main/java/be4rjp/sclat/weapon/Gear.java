@@ -71,21 +71,21 @@ public class Gear {
     public static int getGearPrice(int gearN){
         switch(gearN){
             case 1:
-                return 520000;
+                return 65000;
             case 2:
-                return 500000;
+                return 60000;
             case 3:
-                return 850000;
-            case 4:
-                return 100000;
-            case 5:
                 return 120000;
+            case 4:
+                return 55000;
+            case 5:
+                return 50000;
             case 6:
-                return 110000;
+                return 100000;
             case 7:
-                return 1000000;
+                return 200000;
             case 8:
-                return 700000;
+                return 110000;
             default:
                 return 0;
         }

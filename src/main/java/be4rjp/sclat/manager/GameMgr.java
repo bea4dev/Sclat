@@ -11,6 +11,8 @@ import be4rjp.sclat.data.PaintData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
 import be4rjp.sclat.data.WeaponClass;
+import be4rjp.sclat.server.EquipmentClient;
+import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.weapon.Blaster;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Kasa;
@@ -78,6 +80,9 @@ public class GameMgr implements Listener{
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
         
+        if(PlayerReturnManager.isReturned(player.getUniqueId().toString()))
+            e.setJoinMessage(ChatColor.GOLD + player.getName() + " returned from a match.");
+        
         player.setGameMode(GameMode.ADVENTURE);
         PlayerData data = new PlayerData(player);
         
@@ -106,31 +111,7 @@ public class GameMgr implements Listener{
                             PlayerStatusMgr.sendHologram(player);
                     }
                     case 1:{//----------------------------------------------------------------------------
-                        String def = "011111111";
-                        if(conf.getPlayerSettings().contains("Settings." + uuid)){
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
-                                settings.S_ShowEffect_Shooter();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
-                                settings.S_ShowEffect_ChargerLine();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(3,4).equals("0"))
-                                settings.S_ShowEffect_ChargerShot();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
-                                settings.S_ShowEffect_RollerRoll();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
-                                settings.S_ShowEffect_RollerShot();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
-                                settings.S_PlayBGM();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))
-                                settings.S_ShowEffect_Bomb();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(7,8).equals("0"))
-                                settings.S_ShowEffect_BombEx();
-                            if(conf.getPlayerSettings().getString("Settings." + uuid).substring(8,9).equals("0"))
-                                settings.S_doChargeKeep();
-                        }else{
-                            conf.getPlayerSettings().set("Settings." + uuid, def);
-                            settings.S_PlayBGM();
-                        }
-                        data.setSettings(settings);
+                        SettingMgr.setSettings(settings, player);
                     }
                     case 2:{//----------------------------------------------------------------------------
                         ItemStack item = new ItemStack(Material.PLAYER_HEAD);
@@ -187,6 +168,7 @@ public class GameMgr implements Listener{
                     player.getInventory().setItem(7, join);
                     player.setExp(0F);
                     SPWeaponMgr.SPWeaponRunnable(player);
+                    SPWeaponMgr.ArmorRunnable(p);
                     SquidMgr.SquidShowRunnable(player);
                     OpenGUI.openWeaponSelect(p, "Main", "null", false);
                 }
@@ -448,8 +430,26 @@ public class GameMgr implements Listener{
         }
         
         String server = DataMgr.getPlayerData(player).getServername();
-        if(!server.equals(""))
+        if(!server.equals("")) {
             event.setQuitMessage("§6" + player.getName() + " switched to " + server);
+    
+            if(Main.type == ServerType.LOBBY) {
+                for (String serverName : conf.getServers().getConfigurationSection("Servers").getKeys(false)) {
+                    String name = conf.getServers().getString("Servers." + serverName + ".Server");
+                    String displayName = conf.getServers().getString("Servers." + serverName + ".DisplayName");
+                    if (displayName.equals(server)) {
+                        List<String> commands = new ArrayList<>();
+                        commands.add("set weapon " + data.getWeaponClass().getClassName() + " " + player.getUniqueId().toString());
+                        commands.add("set gear " + data.getGearNumber() + " " + player.getUniqueId().toString());
+                        commands.add("setting " + conf.getPlayerSettings().getString("Settings." + player.getUniqueId().toString()) + " " + player.getUniqueId().toString());
+                        commands.add("stop");
+                        EquipmentClient sc = new EquipmentClient(conf.getConfig().getString("EquipShare." + name + ".Host"),
+                                conf.getConfig().getInt("EquipShare." + name + ".Port"), commands);
+                        sc.startClient();
+                    }
+                }
+            }
+        }
         
         if(data.getWeaponClass().getSubWeaponName().equals("ビーコン") && data.isInMatch()){
             DataMgr.getBeaconFromplayer(player).remove();

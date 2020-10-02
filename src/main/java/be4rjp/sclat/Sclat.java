@@ -3,6 +3,8 @@ package be4rjp.sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Team;
 import java.util.logging.Logger;
+
+import be4rjp.sclat.manager.BungeeCordMgr;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;
@@ -16,6 +18,7 @@ import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 /**
@@ -183,6 +186,19 @@ public class Sclat {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
                 break;
         }
+    }
+    
+    public static void sendSclatLobby(Player player){
+        BukkitRunnable send = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    BungeeCordMgr.PlayerSendServer(player, "sclat");
+                    DataMgr.getPlayerData(player).setServerName("Sclat");
+                }catch (Exception e){}
+            }
+        };
+        send.runTaskLater(Main.getPlugin(), 20);
     }
     
     public static boolean isNumber(String s) {
