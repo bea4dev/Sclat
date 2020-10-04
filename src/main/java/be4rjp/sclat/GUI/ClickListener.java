@@ -178,8 +178,13 @@ public class ClickListener implements Listener{
             for (ServerStatus ss : ServerStatusManager.serverList){
                 if(ss.getDisplayName().equals(name)){
                     if(ss.isOnline()) {
-                        BungeeCordMgr.PlayerSendServer(player, ss.getServerName());
-                        DataMgr.getPlayerData(player).setServerName(ss.getDisplayName());
+                        if(ss.getPlayerCount() < ss.getMaxPlayer()) {
+                            BungeeCordMgr.PlayerSendServer(player, ss.getServerName());
+                            DataMgr.getPlayerData(player).setServerName(ss.getDisplayName());
+                        }else{
+                            Sclat.sendMessage("§c§nこのサーバーは満員のため参加できません", MessageType.PLAYER, player);
+                            Sclat.playGameSound(player, SoundType.ERROR);
+                        }
                     }else{
                         Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
                         Sclat.playGameSound(player, SoundType.ERROR);

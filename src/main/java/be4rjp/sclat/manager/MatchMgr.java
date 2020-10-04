@@ -89,8 +89,6 @@ public class MatchMgr {
         if(DataMgr.getPlayerIsQuit(player.getUniqueId().toString())){
             Sclat.sendMessage("§c§n途中で退出した場合再参加はできません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
-            if(Main.type == ServerType.MATCH)
-                Sclat.sendSclatLobby(player);
             return;
         }
         
@@ -172,20 +170,14 @@ public class MatchMgr {
         }else{
             Sclat.sendMessage("§c§n上限人数を超えているため参加できません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
-            if(Main.type == ServerType.MATCH)
-                Sclat.sendSclatLobby(player);
         }
         }else{
             Sclat.sendMessage("§c§nこのマッチには既に開始しているため参加できません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
-            if(Main.type == ServerType.MATCH)
-                Sclat.sendSclatLobby(player);
         }
         }else{
             Sclat.sendMessage("§c§n既にチームに参加しています", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
-            if(Main.type == ServerType.MATCH)
-                Sclat.sendSclatLobby(player);
         }
         
     }
@@ -1146,7 +1138,7 @@ public class MatchMgr {
                     Sclat.sendMessage(ChatColor.GREEN + " Money : " + ChatColor.RESET + "+" + String.valueOf(pMoney) + ChatColor.AQUA + "  Lv : " + ChatColor.RESET + "+" + String.valueOf(pLv), MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     if(pRank < 0)
-                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]", MessageType.PLAYER, p);
+                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
                     else
                         Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]", MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);

@@ -40,7 +40,7 @@ public class PlayerStatusMgr {
     
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 10000);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 100000000);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
             List<String> wlist = new ArrayList<String>();
@@ -195,7 +195,11 @@ public class PlayerStatusMgr {
     }
 
     public static void addRank(String uuid, int m){
-        conf.getPlayerStatus().set("Status." + uuid + ".Rank", conf.getPlayerStatus().getInt("Status." + uuid + ".Rank") + m);
+        if(PlayerStatusMgr.getRank(uuid) + m > 0) {
+            conf.getPlayerStatus().set("Status." + uuid + ".Rank", conf.getPlayerStatus().getInt("Status." + uuid + ".Rank") + m);
+        }else {
+            conf.getPlayerStatus().set("Status." + uuid + ".Rank", 0);
+        }
     }
 
     public static void addKill(String uuid, int m){
@@ -218,6 +222,10 @@ public class PlayerStatusMgr {
     
     public static int getRank(Player player){
         String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Rank");
+    }
+    
+    public static int getRank(String uuid){
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Rank");
     }
     

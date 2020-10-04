@@ -407,7 +407,7 @@ public class JetPack {
                     z = drop.getLocation().getZ();
 
 
-                    if(c > 50){
+                    if(c > 20){
                         drop.remove();
                         ball.remove();
                         cancel();

@@ -114,12 +114,18 @@ public class GameMgr implements Listener{
                         SettingMgr.setSettings(settings, player);
                     }
                     case 2:{//----------------------------------------------------------------------------
-                        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-                        SkullMeta meta = (SkullMeta)item.getItemMeta();
-                        meta.setOwningPlayer(player);
-                        meta.setDisplayName(player.getName());
-                        item.setItemMeta(meta);
-                        data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+                        BukkitRunnable head = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+                                SkullMeta meta = (SkullMeta)item.getItemMeta();
+                                meta.setOwningPlayer(player);
+                                meta.setDisplayName(player.getName());
+                                item.setItemMeta(meta);
+                                data.setPlayerHead(CraftItemStack.asNMSCopy(item));
+                            }
+                        };
+                        head.runTaskAsynchronously(Main.getPlugin());
                         if(Main.type == ServerType.MATCH){
                             MatchMgr.PlayerJoinMatch(player);
                         }
@@ -403,6 +409,9 @@ public class GameMgr implements Listener{
                     case "[ Sclat ]":
                         BungeeCordMgr.PlayerSendServer(player, "sclat");
                         DataMgr.getPlayerData(player).setServerName("Sclat");
+                        break;
+                    case "[ Instructions ]":
+                        player.performCommand("torisetu");
                         break;
                 }
             }

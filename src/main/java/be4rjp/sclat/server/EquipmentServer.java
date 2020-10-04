@@ -45,7 +45,7 @@ public class EquipmentServer extends Thread {
             try{
                 if (sSocket!=null)
                     sSocket.close();
-                System.out.println("Status server is stopped!");
+                System.out.println("Equipment server is stopped!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
