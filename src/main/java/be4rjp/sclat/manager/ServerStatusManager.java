@@ -42,6 +42,7 @@ public class ServerStatusManager {
                 int i = 0;
                 for(ServerStatus ss : serverList){
                     Material mt = Material.LIME_STAINED_GLASS;
+                    if(ss.getRunningMatch()) mt = Material.YELLOW_STAINED_GLASS;
                     if(ss.getPlayerCount() >= ss.getMaxPlayer()) mt = Material.RED_STAINED_GLASS;
                     if(!ss.isOnline()) mt = Material.IRON_BARS;
                     
@@ -53,10 +54,12 @@ public class ServerStatusManager {
                         role.add("");
                         role.add("§r§7[Players] §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
                         role.add("");
-                        role.add("§r§7[Status]   §aOnline");
+                        role.add("§r§7[Status]   §aONLINE");
+                        role.add("");
+                        role.add("§r§7[Match]    " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
                     }else{
                         role.add("");
-                        role.add("§r§7[Status]   §cOffline");
+                        role.add("§r§7[Status]   §cOFFLINE");
                     }
                     itemMeta.setLore(role);
                     is.setItemMeta(itemMeta);
@@ -66,7 +69,7 @@ public class ServerStatusManager {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 100);
+        task.runTaskTimer(Main.getPlugin(), 0, 40);
     }
     
     public static void openServerList(Player player){player.openInventory(inv);}

@@ -120,7 +120,8 @@ public class MatchMgr {
             
             data.setMatch(match);
             data.setIsJoined(true);
-            if(playercount == conf.getConfig().getInt("StartPlayerCount")){
+            if(playercount == conf.getConfig().getInt("StartPlayerCount") && !match.getIsStarted()){
+                match.setIsStarted(true);
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
                     Player p = player;
@@ -159,13 +160,24 @@ public class MatchMgr {
                                     entity.remove();
                                 }
                             }
+                            
+                            //Send match status
+                            if(Main.type == ServerType.MATCH){
+                                List<String> commands = new ArrayList<>();
+                                commands.add("started " + conf.getServers().getString("ServerName"));
+                                commands.add("stop");
+                                StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                                        conf.getConfig().getInt("StatusShare.Port"), commands);
+                                sc.startClient();
+                            }
+                            
+                            
                             cancel();
                         }
                         s++;
                     }
                 };
                 task.runTaskTimer(Main.getPlugin(), 0, 20);
-                
             }
         }else{
             Sclat.sendMessage("§c§n上限人数を超えているため参加できません", MessageType.PLAYER, player);
@@ -594,6 +606,8 @@ public class MatchMgr {
                             }
                         }
                     }
+                    
+                    ((LivingEntity)p).setCollidable(true);
 
                     cancel();
                 }
@@ -1140,7 +1154,7 @@ public class MatchMgr {
                     if(pRank < 0)
                         Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
                     else
-                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]", MessageType.PLAYER, p);
+                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     Sclat.sendMessage("§a-----------------------------------", MessageType.PLAYER, p);
                     /*
@@ -1175,6 +1189,17 @@ public class MatchMgr {
                     PlayerStatusMgr.sendHologram(p);
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+                        
+                        //Send match status
+                        if(Main.type == ServerType.MATCH){
+                            List<String> commands = new ArrayList<>();
+                            commands.add("stopped " + conf.getServers().getString("ServerName"));
+                            commands.add("stop");
+                            StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                                    conf.getConfig().getInt("StatusShare.Port"), commands);
+                            sc.startClient();
+                        }
+                        
                         RollBack();
                         matchcount++;
                         

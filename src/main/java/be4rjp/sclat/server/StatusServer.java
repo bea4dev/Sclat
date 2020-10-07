@@ -1,8 +1,10 @@
 package be4rjp.sclat.server;
 
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.data.ServerStatus;
 import be4rjp.sclat.manager.PlayerReturnManager;
 import be4rjp.sclat.manager.PlayerStatusMgr;
+import be4rjp.sclat.manager.ServerStatusManager;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
@@ -119,6 +121,26 @@ class EchoThread extends Thread {
                                         case "paint":
                                             PlayerStatusMgr.addPaint(args[3], Integer.parseInt(args[2]));
                                             break;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case "started":{
+                            if (args.length == 2) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setRunningMatch(true);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case "stopped":{
+                            if (args.length == 2) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setRunningMatch(false);
                                     }
                                 }
                             }

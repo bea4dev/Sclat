@@ -79,6 +79,10 @@ public class GameMgr implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         Player player = e.getPlayer();
+        player.getInventory().clear();
+        player.getInventory().setHeldItemSlot(0);
+    
+        ((LivingEntity)player).setCollidable(false);
         
         if(PlayerReturnManager.isReturned(player.getUniqueId().toString()))
             e.setJoinMessage(ChatColor.GOLD + player.getName() + " returned from a match.");
@@ -241,6 +245,19 @@ public class GameMgr implements Listener{
             joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
             join.setItemMeta(joinmeta);
             player.getInventory().clear();
+            player.getInventory().setItem(0, join);
+        }else{
+            ItemStack b = new ItemStack(Material.BARRIER);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("§c§n右クリックで退出");
+            b.setItemMeta(bmeta);
+            player.getInventory().clear();
+            player.getInventory().setItem(8, b);
+    
+            ItemStack join = new ItemStack(Material.LIME_STAINED_GLASS);
+            ItemMeta joinmeta = join.getItemMeta();
+            joinmeta.setDisplayName("§a§n右クリックで参加");
+            join.setItemMeta(joinmeta);
             player.getInventory().setItem(0, join);
         }
         
@@ -436,6 +453,7 @@ public class GameMgr implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.getIsJoined()){
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
+            data.getMatch().subPlayerCount();
         }
         
         String server = DataMgr.getPlayerData(player).getServername();

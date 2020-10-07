@@ -179,6 +179,11 @@ public class ClickListener implements Listener{
                 if(ss.getDisplayName().equals(name)){
                     if(ss.isOnline()) {
                         if(ss.getPlayerCount() < ss.getMaxPlayer()) {
+                            if(ss.getRunningMatch()) {
+                                Sclat.sendMessage("§c§nこのサーバーは試合中のため参加できません", MessageType.PLAYER, player);
+                                Sclat.playGameSound(player, SoundType.ERROR);
+                                return;
+                            }
                             BungeeCordMgr.PlayerSendServer(player, ss.getServerName());
                             DataMgr.getPlayerData(player).setServerName(ss.getDisplayName());
                         }else{
@@ -452,8 +457,21 @@ public class ClickListener implements Listener{
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
             if(player.getInventory().getItemInMainHand().getType().equals(Material.CHEST))
                 OpenGUI.openMenu(player);
+            switch (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()){
+                case "スーパージャンプ":
+                    OpenGUI.SuperJumpGUI(player);
+                    break;
+                case "§c§n右クリックで退出":
+                    BungeeCordMgr.PlayerSendServer(player, "sclat");
+                    DataMgr.getPlayerData(player).setServerName("Sclat");
+                    break;
+                case "§a§n右クリックで参加":
+                    MatchMgr.PlayerJoinMatch(player);
+                    break;
+            }
             if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("スーパージャンプ"))
                 OpenGUI.SuperJumpGUI(player);
+            
         }
     }
 }

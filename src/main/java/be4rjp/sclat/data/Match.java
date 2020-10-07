@@ -28,6 +28,7 @@ public class Match {
     private Team winteam;
     private boolean hikiwake = false;
     private Scoreboard scoreboard;
+    private boolean started = false;
     
     
     
@@ -63,6 +64,8 @@ public class Match {
     
     public Scoreboard getScoreboard(){return this.scoreboard;}
     
+    public boolean getIsStarted(){return this.started;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -86,10 +89,14 @@ public class Match {
     
     public void setScoreboard(Scoreboard sc){this.scoreboard = sc;}
     
+    public void setIsStarted(boolean is){this.started = is;}
+    
     
     public void addNawabari_T_Count(){this.c_nawabari++;}
     
     public void addTDM_T_Count(){this.c_tdm++;}
     
     public void addGatiArea_T_Count(){this.c_ga++;}
+    
+    public void subPlayerCount(){this.playercount--;}
 }

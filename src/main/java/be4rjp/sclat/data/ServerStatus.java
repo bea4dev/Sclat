@@ -16,6 +16,7 @@ public class ServerStatus {
     
     private int playerCount = 0;
     private boolean online = false;
+    private boolean runningMatch = false;
     
     public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period){
         this.serverName = serverName;
@@ -32,8 +33,11 @@ public class ServerStatus {
                     MineStat ms = new MineStat(host, port);
                     playerCount = Integer.parseInt(ms.getCurrentPlayers());
                     online = ms.isServerUp();
+                    if(!online)
+                        runningMatch = false;
                 }catch (Exception e){
                     online = false;
+                    runningMatch = false;
                 }
             }
         };
@@ -48,7 +52,11 @@ public class ServerStatus {
     
     public String getDisplayName(){return this.displayName;}
     
+    public boolean getRunningMatch(){return this.runningMatch;}
+    
     public boolean isOnline(){return this.online;}
+    
+    public void setRunningMatch(boolean is){this.runningMatch = is;}
     
     public void stopTask(){this.task.cancel();}
     
