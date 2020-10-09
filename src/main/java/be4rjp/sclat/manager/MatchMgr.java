@@ -86,11 +86,12 @@ public class MatchMgr {
     public static void PlayerJoinMatch(Player player){
         PlayerData data = DataMgr.getPlayerData(player);
         
+        /*
         if(DataMgr.getPlayerIsQuit(player.getUniqueId().toString())){
             Sclat.sendMessage("§c§n途中で退出した場合再参加はできません", MessageType.PLAYER, player);
             Sclat.playGameSound(player, SoundType.ERROR);
             return;
-        }
+        }*/
         
         if(!data.getIsJoined()){
             
@@ -107,7 +108,7 @@ public class MatchMgr {
             data.setPlayerNumber(playercount);
             
             player.teleport(match.getMapData().getTaikibayso());
-            if(conf.getConfig().getBoolean("CanVoting"))
+            if(conf.getConfig().getBoolean("CanVoting") && !DataMgr.getPlayerIsQuit(player.getUniqueId().toString()))
                 OpenGUI.MatchTohyoGUI(player);
             
             if(playercount%2==0){
@@ -128,20 +129,22 @@ public class MatchMgr {
                     @Override
                     public void run(){
                         if(s == 0)
-                            Sclat.sendMessage("§a試合開始まで後20秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後30秒", MessageType.ALL_PLAYER);
                         if(s == 10)
+                            Sclat.sendMessage("§a試合開始まで後20秒", MessageType.ALL_PLAYER);
+                        if(s == 20)
                             Sclat.sendMessage("§a試合開始まで後10秒", MessageType.ALL_PLAYER);
-                        if(s == 15)
+                        if(s == 25)
                             Sclat.sendMessage("§a試合開始まで後5秒", MessageType.ALL_PLAYER);
-                        if(s == 16)
+                        if(s == 26)
                             Sclat.sendMessage("§a試合開始まで後4秒", MessageType.ALL_PLAYER);
-                        if(s == 17)
+                        if(s == 27)
                             Sclat.sendMessage("§a試合開始まで後3秒", MessageType.ALL_PLAYER);
-                        if(s == 18)
+                        if(s == 28)
                             Sclat.sendMessage("§a試合開始まで後2秒", MessageType.ALL_PLAYER);
-                        if(s == 19)
+                        if(s == 29)
                             Sclat.sendMessage("§a試合開始まで後1秒", MessageType.ALL_PLAYER);
-                        if(s == 20){
+                        if(s == 30){
                             match.setCanJoin(false);
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
                             EquipmentServerManager.doCommands();
@@ -640,14 +643,16 @@ public class MatchMgr {
     }
     
     public static void StartMatch(Match match){
+        Player leader = match.getLeaderPlayer();
+        boolean leaderLeft = true;
         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             PlayerData data = DataMgr.getPlayerData(player);
-            if(data.getMatch() == match){
+            if(data.getMatch() == match)
                 MatchRunnable(player, match);
-            }
+            if(player.getUniqueId().toString().equals(leader.getUniqueId().toString()))
+                leaderLeft = false;
         }
-        Player leader = match.getLeaderPlayer();
-        if(DataMgr.getPlayerIsQuit(leader.getUniqueId().toString()))
+        if(leaderLeft)
             MatchRunnable(leader, match);
     }
         

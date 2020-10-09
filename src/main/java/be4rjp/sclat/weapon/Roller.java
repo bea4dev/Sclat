@@ -67,6 +67,9 @@ public class Roller {
             public void run(){
                 try{
                     PlayerData data = DataMgr.getPlayerData(p);
+                    if(!data.isInMatch() || !p.isOnline())
+                        cancel();
+                    
                     if(data.getIsHolding() && data.getCanPaint() && data.isInMatch()){
                         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
                             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
@@ -269,9 +272,6 @@ public class Roller {
                         PaintMgr.PaintHightestBlock(eloc, p, false, true);
                         p.setWalkSpeed((float)(data.getWeaponClass().getMainWeapon().getUsingWalkSpeed() * Gear.getGearInfluence(p, Gear.Type.MAIN_SPEC_UP)));
                     }
-
-                if(!data.isInMatch())
-                    cancel();
                 
                 }catch(Exception e){cancel();}
             }
@@ -289,7 +289,7 @@ public class Roller {
             PlayerData data = pdata;
             @Override
             public void run(){
-                if(!DataMgr.getPlayerData(p).isInMatch()){
+                if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
                     cancel();
                     return;
                 }
