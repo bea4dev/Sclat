@@ -1,6 +1,6 @@
 package be4rjp.sclat.data;
 
-import net.minecraft.server.v1_13_R1.ItemStack;
+import net.minecraft.server.v1_13_R2.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

@@ -16,12 +16,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.minecraft.server.v1_13_R1.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R1.PlayerConnection;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -183,10 +183,13 @@ public class SnowballListener implements Listener {
                     if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                         if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(shooter);
-                        if(DataMgr.getPlayerData(target).getArmor() > 40){
-                            Vector vec = projectile.getVelocity();
-                            Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
-                            target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                        if(DataMgr.getPlayerData(target).getArmor() > 0){
+                            target.getWorld().playSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1F, 1.5F);
+                            if(DataMgr.getPlayerData(target).getArmor() > 10000) {
+                                Vector vec = projectile.getVelocity();
+                                Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
+                                target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                            }
                         }
                         
                         if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 20){
@@ -211,10 +214,13 @@ public class SnowballListener implements Listener {
                 if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                     if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
                         SPWeaponMgr.addSPCharge(shooter);
-                    if(DataMgr.getPlayerData(target).getArmor() > 40){
-                        Vector vec = projectile.getVelocity();
-                        Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
-                        target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                    if(DataMgr.getPlayerData(target).getArmor() > 0){
+                        target.getWorld().playSound(target.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 0.2F, 1.7F);
+                        if(DataMgr.getPlayerData(target).getArmor() > 10000) {
+                            Vector vec = projectile.getVelocity();
+                            Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
+                            target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                        }
                     }
                     if(projectile.getCustomName() != null){
                         if(projectile.getCustomName().equals("Sprinkler") || projectile.getCustomName().equals("Amehurasi")){
@@ -245,7 +251,7 @@ public class SnowballListener implements Listener {
                         
                         if(DataMgr.mws.contains(projectile.getCustomName())){
                             if(DataMgr.tsl.contains(projectile.getCustomName()))
-                                shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                shooter.playSound(shooter.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 0.2F, 1.7F);
                             
                             if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
                                 DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
@@ -291,7 +297,7 @@ public class SnowballListener implements Listener {
                             if(Sclat.isNumber(as.getCustomName()))
                                 if(!as.getCustomName().equals("21") && !as.getCustomName().equals("100"))
                                     if(as.isVisible())
-                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.5F, 1.6F);
                     
                     if(projectile.getCustomName().equals("SuperShot")){
                         ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);

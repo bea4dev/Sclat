@@ -5,15 +5,15 @@ import be4rjp.sclat.data.Team;
 import java.util.logging.Logger;
 
 import be4rjp.sclat.manager.BungeeCordMgr;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
-import net.minecraft.server.v1_13_R1.*;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R1.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
-import net.minecraft.server.v1_13_R1.PacketPlayOutBlockChange;
-import net.minecraft.server.v1_13_R1.PacketPlayOutMultiBlockChange;
-import net.minecraft.server.v1_13_R1.PacketPlayOutMapChunk;
+import org.bukkit.craftbukkit.v1_13_R2.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import net.minecraft.server.v1_13_R2.PacketPlayOutBlockChange;
+import net.minecraft.server.v1_13_R2.PacketPlayOutMultiBlockChange;
+import net.minecraft.server.v1_13_R2.PacketPlayOutMapChunk;
 import org.bukkit.Instrument;
 import org.bukkit.Note;
 import org.bukkit.Sound;
@@ -34,7 +34,7 @@ public class Sclat {
     public static void setBlockByNMS(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
         Location loc = b.getLocation();
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
-        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         BlockPosition bp = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
         IBlockData ibd = block.getBlockData();
         nmsWorld.setTypeAndData(bp, ibd, applyPhysics ? 3 : 2);
@@ -46,11 +46,11 @@ public class Sclat {
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
-        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         BlockPosition bp = new BlockPosition(x, y, z);
         IBlockData ibd = block.getBlockData();
-        nmsChunk.a(bp, ibd, true);
+        nmsChunk.setType(bp, ibd, applyPhysics);
     }
     
     public static void sendBlockChangeForAllPlayer(org.bukkit.block.Block b, org.bukkit.Material material){
@@ -59,8 +59,8 @@ public class Sclat {
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
         BlockPosition bp = new BlockPosition(x, y, z);
-        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
         IBlockAccess iba = (IBlockAccess)nmsWorld;
         PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(iba, bp);
@@ -73,7 +73,7 @@ public class Sclat {
     
     public static void sendWorldBorderWarningPacket(Player player){
         EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        net.minecraft.server.v1_13_R1.WorldBorder wb = new WorldBorder();
+        net.minecraft.server.v1_13_R2.WorldBorder wb = new WorldBorder();
         wb.world = nmsPlayer.getWorldServer();
         wb.setSize(1);
         wb.setCenter(player.getLocation().getX() + 10_000, player.getLocation().getZ() + 10_000);
@@ -83,7 +83,7 @@ public class Sclat {
     
     public static void sendWorldBorderWarningClearPacket(Player player){
         EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        net.minecraft.server.v1_13_R1.WorldBorder wb = new WorldBorder();
+        net.minecraft.server.v1_13_R2.WorldBorder wb = new WorldBorder();
         wb.world = nmsPlayer.getWorldServer();
         wb.setSize(30_000_000);
         wb.setCenter(player.getLocation().getX(), player.getLocation().getZ());
@@ -98,8 +98,8 @@ public class Sclat {
         int x = loc.getBlockX();
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
-        net.minecraft.server.v1_13_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         ChunkSection cs = nmsChunk.getSections()[y >> 4];
         IBlockData ibd = block.getBlockData();
         if (cs == nmsChunk.a()) {
