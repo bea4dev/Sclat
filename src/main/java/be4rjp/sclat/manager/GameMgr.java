@@ -75,6 +75,7 @@ public class GameMgr implements Listener{
         player.getInventory().setHeldItemSlot(0);
     
         ((LivingEntity)player).setCollidable(false);
+        player.setDisplayName(player.getName());
         
         if(PlayerReturnManager.isReturned(player.getUniqueId().toString()))
             e.setJoinMessage(ChatColor.GOLD + player.getName() + " returned from a match.");
@@ -320,10 +321,10 @@ public class GameMgr implements Listener{
     
     }
     
-    @EventHandler(priority = EventPriority.LOWEST)
+    //@EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         //event.setCancelled(true);
-        
+        /*
         if(!Main.LunaChat){
             Player player = event.getPlayer();
             if(DataMgr.getPlayerData(player).getIsJoined())
@@ -331,7 +332,7 @@ public class GameMgr implements Listener{
             else
                 event.setFormat("<" + player.getName() + "> " + event.getMessage());
         }
-        
+        */
     }
     
     @EventHandler
@@ -453,7 +454,7 @@ public class GameMgr implements Listener{
         PlayerData data = DataMgr.getPlayerData(player);
         if(data.getIsJoined()){
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
-            data.getMatch().subPlayerCount();
+            data.getMatch().subJoinedPlayerCount();
         }
         
         String server = DataMgr.getPlayerData(player).getServername();

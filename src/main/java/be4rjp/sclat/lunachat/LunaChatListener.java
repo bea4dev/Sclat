@@ -13,8 +13,9 @@ import org.bukkit.event.Listener;
  * @author Be4rJP
  */
 public class LunaChatListener implements Listener{
-    @EventHandler
+    //@EventHandler
     public void onChat(LunaChatBukkitPreChatEvent event){
+        
         Player sender = null;
         for(Player player : Main.getPlugin().getServer().getOnlinePlayers()){
             if(player.getName().equals(event.getMember().getName())){
@@ -26,5 +27,6 @@ public class LunaChatListener implements Listener{
             if(data.getIsJoined())
                 event.setMessage(data.getTeam().getTeamColor().getColorCode() + event.getMessage());
         }
+        
     }
 }

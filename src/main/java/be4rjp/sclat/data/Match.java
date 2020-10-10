@@ -29,6 +29,7 @@ public class Match {
     private boolean hikiwake = false;
     private Scoreboard scoreboard;
     private boolean started = false;
+    private int joinedPlayerCount = 0;
     
     
     
@@ -66,6 +67,8 @@ public class Match {
     
     public boolean getIsStarted(){return this.started;}
     
+    public int getJoinedPlayerCount(){return this.joinedPlayerCount;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -98,5 +101,9 @@ public class Match {
     
     public void addGatiArea_T_Count(){this.c_ga++;}
     
+    public void addJoinedPlayerCount(){this.joinedPlayerCount++;}
+    
     public void subPlayerCount(){this.playercount--;}
+    
+    public void subJoinedPlayerCount(){this.joinedPlayerCount--;}
 }

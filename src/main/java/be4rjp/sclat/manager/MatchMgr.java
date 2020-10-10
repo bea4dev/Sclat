@@ -99,7 +99,9 @@ public class MatchMgr {
         if(match.canJoin()){
             match.addPlayerCount();
             int playercount = match.getPlayerCount();
-        if(playercount <= conf.getConfig().getInt("MaxPlayerCount")){
+        if(match.getJoinedPlayerCount() < conf.getConfig().getInt("MaxPlayerCount")){
+            match.addJoinedPlayerCount();
+            
             Sclat.sendMessage("§b§n" + player.getDisplayName() + " joined the match", MessageType.ALL_PLAYER);
 
             if(playercount == 1)
@@ -121,6 +123,9 @@ public class MatchMgr {
             
             data.setMatch(match);
             data.setIsJoined(true);
+            
+            player.setDisplayName(data.getTeam().getTeamColor().getColorCode() + player.getName());
+            
             if(playercount == conf.getConfig().getInt("StartPlayerCount") && !match.getIsStarted()){
                 match.setIsStarted(true);
                 BukkitRunnable task = new BukkitRunnable(){
@@ -396,7 +401,7 @@ public class MatchMgr {
                         DataMgr.getPlayerData(p).setMatchLocation(sl);
                     }
 
-                    if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
                         Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
                         squid = (LivingEntity)e;
                         squid.setAI(false);
@@ -467,11 +472,11 @@ public class MatchMgr {
 
                         }
                         if(s == 120){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1))
                                 squid.remove();
                         }
                         if(s == 100){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
@@ -487,11 +492,11 @@ public class MatchMgr {
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                         }
                         if(s == 180){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1))
                                 squid.remove();
                         }
                         if(s == 160){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
@@ -600,7 +605,6 @@ public class MatchMgr {
                             StopMusic(radio, 2400, match);
                     }
                     
-                    
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         PathMgr.setupPath(match);
                         if(conf.getConfig().getString("WorkMode").equals("Area")){
@@ -643,16 +647,14 @@ public class MatchMgr {
     }
     
     public static void StartMatch(Match match){
-        Player leader = match.getLeaderPlayer();
-        boolean leaderLeft = true;
         for(Player player : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
             PlayerData data = DataMgr.getPlayerData(player);
-            if(data.getMatch() == match)
+            if(data.getMatch() == match){
                 MatchRunnable(player, match);
-            if(player.getUniqueId().toString().equals(leader.getUniqueId().toString()))
-                leaderLeft = false;
+            }
         }
-        if(leaderLeft)
+        Player leader = match.getLeaderPlayer();
+        if(DataMgr.getPlayerIsQuit(leader.getUniqueId().toString()))
             MatchRunnable(leader, match);
     }
         
@@ -1214,6 +1216,8 @@ public class MatchMgr {
                             is = false;
                         
                     }
+    
+                    player.setDisplayName(player.getName());
                     
                     DataMgr.getPlayerData(p).reset();
                     DataMgr.getPlayerData(p).setWeaponClass(wc);
