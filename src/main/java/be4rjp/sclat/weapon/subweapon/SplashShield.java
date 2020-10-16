@@ -196,6 +196,7 @@ public class SplashShield {
                         for(ArmorStand a : list){
                             DataMgr.setSplashShieldDataWithARmorStand(a, ssdata);
                             DataMgr.ssa.add(a);
+                            a.setMarker(true);
                             a.setVisible(false);
                             a.setBasePlate(false);
                             a.setGravity(false);
@@ -234,6 +235,12 @@ public class SplashShield {
                             i++;
                         }
                         p.getWorld().playSound(loc, Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+                    }
+                    
+                    if(c == 30){
+                        for(ArmorStand a : list){
+                            a.setMarker(false);
+                        }
                     }
 
                     if(c >= 15 && c % 2 == 0){
@@ -335,7 +342,7 @@ public class SplashShield {
                     }
 
 
-                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 40){
+                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 60){
                         for(ArmorStand a : list)
                             a.remove();
                         list.get(0).getWorld().playSound(list.get(0).getLocation(), Sound.ENTITY_ITEM_BREAK, 0.8F, 0.8F);

@@ -51,6 +51,7 @@ public class DataMgr {
     public static List<String> pul = new ArrayList<>();
     public static List<String> tsl = new ArrayList<>();
     public static List<MapData> maplist = new ArrayList<>();
+    public static List<String> uuids = new ArrayList<>();
     
     public static PlayerData getPlayerData(Player player){return playerdata.get(player);}
     public static PlayerData getUUIDData(String uuid){return uuiddata.get(uuid);}

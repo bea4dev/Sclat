@@ -28,45 +28,49 @@ public class BlockUpdater {
             int i = 0;
             @Override
             public void run(){
-                List<Block> tb = blocks.subList(c, blocks.size());
-                loop : for(Block block : tb){
-                    //Sclat.setBlockByNMS(block, blocklist.get(block), true);
-                    if(block.getLocation().getChunk().isLoaded()){
-                        try{
-                            //Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
-                            
-                            List<Block> list = new ArrayList<>();
-                            Block up = block.getRelative(BlockFace.UP);
-                            Block west = block.getRelative(BlockFace.WEST);
-                            Block east = block.getRelative(BlockFace.EAST);
-                            Block south = block.getRelative(BlockFace.SOUTH);
-                            Block north = block.getRelative(BlockFace.NORTH);
-                            Block down = block.getRelative(BlockFace.DOWN);
-                            list.add(up);
-                            list.add(west);
-                            list.add(east);
-                            list.add(south);
-                            list.add(north);
-                            list.add(down);
-                            
-                            check : for(Block cb : list){
-                                if(cb.getType().equals(Material.AIR)){
-                                    Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
-                                    continue check;
+                try {
+                    List<Block> tb = blocks.subList(c, blocks.size());
+                    loop:
+                    for (Block block : tb) {
+                        //Sclat.setBlockByNMS(block, blocklist.get(block), true);
+                        if (block.getLocation().getChunk().isLoaded()) {
+                            try {
+                                //Sclat.setBlockByNMSChunk(block, blocklist.get(block), true);
+                
+                                List<Block> list = new ArrayList<>();
+                                Block up = block.getRelative(BlockFace.UP);
+                                Block west = block.getRelative(BlockFace.WEST);
+                                Block east = block.getRelative(BlockFace.EAST);
+                                Block south = block.getRelative(BlockFace.SOUTH);
+                                Block north = block.getRelative(BlockFace.NORTH);
+                                Block down = block.getRelative(BlockFace.DOWN);
+                                list.add(up);
+                                list.add(west);
+                                list.add(east);
+                                list.add(south);
+                                list.add(north);
+                                list.add(down);
+                
+                                check:
+                                for (Block cb : list) {
+                                    if (cb.getType().equals(Material.AIR)) {
+                                        Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                                        continue check;
+                                    }
                                 }
+                            } catch (Exception e) {
                             }
-                        }catch(Exception e){
+                        } else {
                         }
-                    }else{
+                        //block.setType(blocklist.get(block));
+                        c++;
+                        i++;
+                        if (i == maxBlock) {
+                            i = 0;
+                            break;
+                        }
                     }
-                    //block.setType(blocklist.get(block));
-                    c++;
-                    i++;
-                    if(i == maxBlock){
-                        i = 0;
-                        break;
-                    }
-                }
+                }catch (Exception e){cancel();}
             }
         };
     }

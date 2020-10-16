@@ -120,8 +120,8 @@ public class ClickListener implements Listener{
                 }
                 break;
             case"ロビーへ戻る / RETURN TO LOBBY":
-                BungeeCordMgr.PlayerSendServer(player, "lobby");
-                DataMgr.getPlayerData(player).setServerName("Lobby");
+                BungeeCordMgr.PlayerSendServer(player, "sclat");
+                DataMgr.getPlayerData(player).setServerName("Sclat");
                 break;
             case"試し打ちサーバーへ接続 / TRAINING FIELD":
                 BungeeCordMgr.PlayerSendServer(player, "trial");

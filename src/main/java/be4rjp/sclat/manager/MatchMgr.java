@@ -355,6 +355,7 @@ public class MatchMgr {
 
             @Override
             public void run(){
+                try{
 
                 if(s == 0){
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
@@ -433,14 +434,14 @@ public class MatchMgr {
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
 
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00"); 
+                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00");
                     Score s2 = objective.getScore("");
                     if(conf.getConfig().getString("WorkMode").equals("TDM"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ");
                     else if(conf.getConfig().getString("WorkMode").equals("Area"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア");
                     else
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル"); 
+                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル");
 
                     s2.setScore(2);
                     score.setScore(1);
@@ -619,6 +620,7 @@ public class MatchMgr {
                     cancel();
                 }
                 s++;
+                }catch (Exception e){cancel();}
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
@@ -697,6 +699,7 @@ public class MatchMgr {
                 Player p = player;
                 @Override
                 public void run(){
+                    try{
                     Objective objective = sb.registerNewObjective(String.valueOf(s), String.valueOf(s));
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
                     objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
@@ -852,6 +855,7 @@ public class MatchMgr {
                         //Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + "試合終了まで: " + String.valueOf(s));
                     
                     s--;
+                    }catch (Exception e){cancel();}
                 }
             };
             task.runTaskTimer(Main.getPlugin(), 0, 20);
@@ -867,6 +871,7 @@ public class MatchMgr {
             int i = 0;
             @Override
             public void run(){
+                try{
                 if(i == 0){
                     DataMgr.getPlayerData(p).getMatch().setIsFinished(true);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
@@ -1212,8 +1217,9 @@ public class MatchMgr {
                         
                         MatchSetup();
                         //DataMgr.getPlayerData(p).reset();
-                        for(boolean is : DataMgr.getPlayerIsQuitMap().values())
-                            is = false;
+                        for(String uuid : DataMgr.pul){
+                            DataMgr.setPlayerIsQuit(uuid, false);
+                        }
                         
                     }
     
@@ -1246,6 +1252,7 @@ public class MatchMgr {
                                     
                     
                 i++;
+                }catch (Exception e){cancel();}
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);

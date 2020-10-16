@@ -48,9 +48,10 @@ public class MainWeapon implements Listener{
     public void onClickWeapon(PlayerInteractEvent e){
         Player player = e.getPlayer();
         
-        if(e.getAction() == null || e.getItem() == null)
-            return;
+        if(e.getAction() == null || e.getItem() == null) return;
         if(!DataMgr.getPlayerData(player).isInMatch()) return;
+    
+        if(e.getItem().getItemMeta().getDisplayName() == null) return;
         
         Action action = e.getAction();
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)){
