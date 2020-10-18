@@ -177,6 +177,11 @@ public class ClickListener implements Listener{
         if(event.getClickedInventory().getTitle().equals("Server List")){
             for (ServerStatus ss : ServerStatusManager.serverList){
                 if(ss.getDisplayName().equals(name)){
+                    if(ss.getRestartingServer()){
+                        Sclat.sendMessage("§c§nこのサーバーは再起動中のため参加できません", MessageType.PLAYER, player);
+                        Sclat.playGameSound(player, SoundType.ERROR);
+                        return;
+                    }
                     if(ss.isOnline()) {
                         if(ss.getPlayerCount() < ss.getMaxPlayer()) {
                             if(ss.getRunningMatch()) {

@@ -146,6 +146,26 @@ class EchoThread extends Thread {
                             }
                             break;
                         }
+                        case "restart":{
+                            if (args.length == 2) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setRestartingServer(true);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case "restarted":{
+                            if (args.length == 2) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setRestartingServer(false);
+                                    }
+                                }
+                            }
+                            break;
+                        }
                     }
                 }
             }

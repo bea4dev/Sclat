@@ -44,22 +44,27 @@ public class ServerStatusManager {
                     Material mt = Material.LIME_STAINED_GLASS;
                     if(ss.getRunningMatch()) mt = Material.YELLOW_STAINED_GLASS;
                     if(ss.getPlayerCount() >= ss.getMaxPlayer()) mt = Material.RED_STAINED_GLASS;
-                    if(!ss.isOnline()) mt = Material.IRON_BARS;
+                    if(!ss.isOnline() || ss.getRestartingServer()) mt = Material.IRON_BARS;
                     
                     ItemStack is = new ItemStack(mt);
                     ItemMeta itemMeta = is.getItemMeta();
                     itemMeta.setDisplayName(ss.getDisplayName());
                     List<String> role = new ArrayList<>();
-                    if(ss.isOnline()) {
+                    if(ss.getRestartingServer()){
                         role.add("");
-                        role.add("§r§7[Players] §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
-                        role.add("");
-                        role.add("§r§7[Status]   §aONLINE");
-                        role.add("");
-                        role.add("§r§7[Match]    " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
-                    }else{
-                        role.add("");
-                        role.add("§r§7[Status]   §cOFFLINE");
+                        role.add("§r§7[Status]   §eRESTARTING...");
+                    }else {
+                        if (ss.isOnline()) {
+                            role.add("");
+                            role.add("§r§7[Players] §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
+                            role.add("");
+                            role.add("§r§7[Status]   §aONLINE");
+                            role.add("");
+                            role.add("§r§7[Match]    " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
+                        } else {
+                            role.add("");
+                            role.add("§r§7[Status]   §cOFFLINE");
+                        }
                     }
                     itemMeta.setLore(role);
                     is.setItemMeta(itemMeta);

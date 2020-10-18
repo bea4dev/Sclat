@@ -203,6 +203,11 @@ public class MatchMgr {
     }
     
     public static synchronized void MatchSetup(){
+        //再起動オプション
+        if(conf.getConfig().contains("RestartMatchCount"))
+            if(conf.getConfig().getInt("RestartMatchCount") == matchcount)
+                Sclat.restartServer();
+    
         final int id = matchcount;
         Match match = new Match(id);
         Team team0 = new Team(id * 2);
@@ -467,7 +472,7 @@ public class MatchMgr {
                     Location introl = match.getMapData().getTeam0Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
-                        if(s >= 101 && s <= 120){
+                        if(s >= 101 && s <= 120 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
 
@@ -488,7 +493,7 @@ public class MatchMgr {
                     Location introl = match.getMapData().getTeam1Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
-                        if(s >= 161 && s <= 180){
+                        if(s >= 161 && s <= 180 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                         }
@@ -1241,7 +1246,7 @@ public class MatchMgr {
                         p.showPlayer(Main.getPlugin(), player);
                     }
                     
-                    if(Main.type == ServerType.MATCH){
+                    if(Main.type == ServerType.MATCH && !conf.getConfig().contains("RestartMatchCount")){
                         BungeeCordMgr.PlayerSendServer(p, "sclat");
                         DataMgr.getPlayerData(p).setServerName("Sclat");
                     }

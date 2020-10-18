@@ -270,6 +270,11 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         //--------------------------Return task------------------------------
         PlayerReturnManager.runRemoveTask();
         //-------------------------------------------------------------------
+        
+        //--------------------Send restarted server info---------------------
+        if(conf.getConfig().contains("RestartMatchCount"))
+            Sclat.sendRestartedServerInfo();
+        //-------------------------------------------------------------------
     }
     
     @Override

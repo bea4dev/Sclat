@@ -2,9 +2,13 @@ package be4rjp.sclat;
 
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Team;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import be4rjp.sclat.manager.BungeeCordMgr;
+import be4rjp.sclat.server.StatusClient;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
@@ -19,6 +23,8 @@ import org.bukkit.Note;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static be4rjp.sclat.Main.conf;
 
 
 /**
@@ -109,6 +115,36 @@ public class Sclat {
 
         cs.getBlocks().setBlock(x & 15, y & 15, z & 15, ibd);
     }*/
+    
+    public static void restartServer(){
+        List<String> commands = new ArrayList<>();
+        commands.add("restart " + conf.getServers().getString("ServerName"));
+        commands.add("stop");
+        StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                conf.getConfig().getInt("StatusShare.Port"), commands);
+        sc.startClient();
+        
+        for(Player player : Main.getPlugin().getServer().getOnlinePlayers()){
+            BungeeCordMgr.PlayerSendServer(player, "sclat");
+            DataMgr.getPlayerData(player).setServerName("Sclat");
+        }
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
+            }
+        };
+        task.runTaskLater(Main.getPlugin(), 100);
+    }
+    
+    public static void sendRestartedServerInfo(){
+        List<String> commands = new ArrayList<>();
+        commands.add("restarted " + conf.getServers().getString("ServerName"));
+        commands.add("stop");
+        StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                conf.getConfig().getInt("StatusShare.Port"), commands);
+        sc.startClient();
+    }
     
     public static void setPlayerPrefix(Player player, String prefix) {
         String name = prefix + player.getDisplayName();
