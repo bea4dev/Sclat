@@ -1,37 +1,28 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.GUI.ClickListener;
-import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MapData;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.data.PaintData;
-import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.commands.sclatCommandExecutor;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.*;
 import be4rjp.sclat.server.EquipmentServer;
-import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.server.StatusServer;
-import be4rjp.sclat.weapon.MainWeapon;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
-import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -126,8 +117,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         
         
-        //------------------------RegisteredEvents---------------------------
-        getLogger().info("RegisteredEvents...");
+        //------------------------RegisteringEvents--------------------------
+        getLogger().info("Registering Events...");
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new GameMgr(), this);
         pm.registerEvents(new SquidListener(), this);
@@ -139,6 +130,14 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         if(LunaChat)
             pm.registerEvents(new LunaChatListener(), this);
+        //-------------------------------------------------------------------
+
+
+
+        //------------------------RegisteringCommands------------------------
+        getLogger().info("Registering Commands...");
+        getCommand("sclat").setExecutor(new sclatCommandExecutor());
+        getCommand("sclat").setTabCompleter(new sclatCommandExecutor());
         //-------------------------------------------------------------------
 
         
@@ -287,32 +286,6 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         if (subchannel.equals("SomeSubChannel")) {
           
         }
-    }
-    
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("setUpdateBlockCount")){
-            if (args.length != 0) {
-                String num = args[0];
-                boolean result = true;
-                for(int i = 0; i < num.length(); i++) {
-                    if(Character.isDigit(num.charAt(i))) {
-                    }else{
-                        result = false;
-                        break;
-                    }
-                }
-                if(result){
-                    conf.getConfig().set("OneTickUpdateBlocks", Integer.valueOf(num));
-                    sender.sendMessage("setConfig [OneTickUpdateBlocks]  :  " + num);
-                    return true;
-                }else{
-                    sender.sendMessage("Please type with number");
-                    return false;
-                }
-            }
-        }
-        return false;
     }
 
 

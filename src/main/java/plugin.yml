@@ -3,11 +3,15 @@ version: 0.1
 description: Sclat
 author: Be4rJP
 api-version: 1.13
-#-----------
+#--------------------------------------
 main: be4rjp.sclat.Main
 depend: [NoteBlockAPI]
-
+#--------------------------------------
 commands:
-  setUpdateBlockCount:
-    description: Set update block count in one tick.
-    usage: /<command> [number]
+  sclat:
+    description: Type /sclat help
+    usage: Type /sclat help
+#--------------------------------------
+permissions:
+  sclat.admin:
+    description: admin command.
