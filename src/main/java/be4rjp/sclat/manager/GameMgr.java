@@ -318,7 +318,8 @@ public class GameMgr implements Listener{
     public void onPlaceBlockByEntity(EntityChangeBlockEvent event){
         if (!(event.getEntity() instanceof Player)){
             event.setCancelled(true);
-            event.getBlock().getState().update(false, false);
+            if(event.getBlock().getType().toString().contains("CONCRETE"))
+                event.getBlock().getState().update(false, false);
         }
     
     }
@@ -345,7 +346,8 @@ public class GameMgr implements Listener{
     
     @EventHandler
     public void onBlockFall(BlockPhysicsEvent event){
-        event.setCancelled(true);
+        if(event.getChangedType().toString().contains("CONCRETE"))
+            event.setCancelled(true);
     }
     
     @EventHandler

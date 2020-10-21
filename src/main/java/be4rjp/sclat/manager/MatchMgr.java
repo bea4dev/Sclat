@@ -216,8 +216,8 @@ public class MatchMgr {
         DataMgr.setTeam(id * 2 + 1, team1);
         
         BlockUpdater bur = new BlockUpdater();
-        if(conf.getConfig().contains("OneTickUpdateBlocks"))
-            bur.setMaxBlockInOneTick(conf.getConfig().getInt("OneTickUpdateBlocks"));
+        if(conf.getConfig().contains("BlockUpdateRate"))
+            bur.setMaxBlockInOneTick(conf.getConfig().getInt("BlockUpdateRate"));
         bur.start();
         match.setBlockUpdater(bur);
         
@@ -1246,7 +1246,7 @@ public class MatchMgr {
                         p.showPlayer(Main.getPlugin(), player);
                     }
                     
-                    if(Main.type == ServerType.MATCH && !conf.getConfig().contains("RestartMatchCount")){
+                    if(Main.type == ServerType.MATCH){
                         BungeeCordMgr.PlayerSendServer(p, "sclat");
                         DataMgr.getPlayerData(p).setServerName("Sclat");
                     }

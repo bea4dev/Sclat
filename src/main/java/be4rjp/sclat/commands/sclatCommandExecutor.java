@@ -42,8 +42,8 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
 
             String num = args[1];
             if (Sclat.isNumber(num)) {
-                Main.conf.getConfig().set("OneTickUpdateBlocks", Integer.valueOf(num));
-                sender.sendMessage("setConfig [OneTickUpdateBlocks]  :  " + num);
+                Main.conf.getConfig().set("BlockUpdateRate", Integer.valueOf(num));
+                sender.sendMessage("setConfig [BlockUpdateRate]  :  " + num);
                 return true;
             } else {
                 sender.sendMessage("Please type with number");

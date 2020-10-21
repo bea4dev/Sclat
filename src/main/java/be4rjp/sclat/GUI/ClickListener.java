@@ -92,8 +92,8 @@ public class ClickListener implements Listener{
                 MatchMgr.RollBack();
                 player.setExp(0.99F);
                 BlockUpdater bur = new BlockUpdater();
-                if(conf.getConfig().contains("OneTickUpdateBlocks"))
-                    bur.setMaxBlockInOneTick(conf.getConfig().getInt("OneTickUpdateBlocks"));
+                if(conf.getConfig().contains("BlockUpdateRate"))
+                    bur.setMaxBlockInOneTick(conf.getConfig().getInt("BlockUpdateRate"));
                 bur.start();
                 match.setBlockUpdater(bur);
                 player.sendMessage("3分後に再リセットできるようになります");

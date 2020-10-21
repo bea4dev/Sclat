@@ -58,7 +58,7 @@ public class SquidMgr {
                     p.setWalkSpeed(0.2F);
                     p.setExp(0);
                     p.setMaxHealth(20);
-                    if(!p.isOp()){
+                    if(!p.hasPermission("sclat.lobbyfly")){
                         p.setAllowFlight(false);
                         p.setFlying(false);
                     }else{

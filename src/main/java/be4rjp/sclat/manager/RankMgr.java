@@ -12,6 +12,7 @@ public class RankMgr {
 
     //レートを500単位で区切ってランク付けする
     public static String toABCRank(int ir){
-        return ir >= 0 ? ranks[ir / 500] : "UnRanked";
+        int MaxRate = (ranks.length - 1) * 500;
+        return ir >= 0 ? ranks[ir <= MaxRate ? ir / 500 : ranks.length - 1] : "UnRanked";
     }
 }
