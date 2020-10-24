@@ -126,7 +126,8 @@ public class OpenGUI {
         }else {
             for (int i = 0; i <= 8; ) {
     
-                if (!(PlayerStatusMgr.haveGear(player, i) || conf.getConfig().getString("WorkMode").equals("Trial"))) {
+                if (!(PlayerStatusMgr.haveGear(player, i) || conf.getConfig().getString("WorkMode").equals("Trial") ||
+                        !Main.shop)) {
                     ItemStack n = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
                     ItemMeta nmeta = n.getItemMeta();
                     nmeta.setDisplayName(".");
@@ -436,7 +437,7 @@ public class OpenGUI {
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
                                 shooter.setItem(slotnum, item);
                                 slotnum++;
-                            }else if(PlayerStatusMgr.haveWeapon(player, classname)){
+                            }else if(PlayerStatusMgr.haveWeapon(player, classname) || !Main.shop){
                                 shooter.setItem(slotnum, item);
                                 slotnum++;
                             }

@@ -29,6 +29,7 @@ public class Trap{
                 TrapData trapData = new TrapData(player.getLocation().add(0, -1, 0), player, data.getTeam(), data.getTrapCount());
                 data.addTrapCount();
                 player.setExp(player.getExp() - (float)(0.39 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)));
+                player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, 1F, 1.2F);
             }else if (player.getExp() < (float) (0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
                 player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
             else if(!player.isOnGround())

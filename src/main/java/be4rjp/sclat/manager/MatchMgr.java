@@ -770,6 +770,35 @@ public class MatchMgr {
                         }
                         
                         if(is){
+                            
+                            Team wteam = t; //エリアを確保しているチーム
+                            Team lteam = t; //エリアを確保できていないチーム
+                            if(match.getTeam0() == t)
+                                lteam = match.getTeam1();
+                            else
+                                lteam = match.getTeam0();
+                            
+                            if(wteam.getGatiCount() == lteam.getGatiCount()){
+                                if(wteam.getGatiCount() + 1 > lteam.getGatiCount()){
+                                    if(wteam.getGatiCount() != 0) {
+                                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                            PlayerData data = DataMgr.getPlayerData(player);
+                                            if (data.getTeam() == null || !data.isInMatch()) continue;
+        
+                                            if (data.getTeam() == wteam) {
+                                                Sclat.sendMessage("§b§lカウントリードした!", MessageType.PLAYER, player);
+                                                player.sendTitle("", "§b§lカウントリードした!", 10, 20, 10);
+                                                Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
+                                            } else {
+                                                Sclat.sendMessage("§c§lカウントリードされた!", MessageType.PLAYER, player);
+                                                player.sendTitle("", "§c§lカウントリードされた!", 10, 20, 10);
+                                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
                             list.get(0).addGatiCount();
                             isgc = is;
                             gcteam = list.get(0);

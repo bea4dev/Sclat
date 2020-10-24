@@ -40,7 +40,7 @@ public class PlayerStatusMgr {
     
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 100000000);
+            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
             List<String> wlist = new ArrayList<String>();

@@ -49,6 +49,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     public static boolean tutorial = false;
     
     public static ServerType type = ServerType.NORMAL;
+    
+    public static boolean shop = true;
 
 
     //StatusShare
@@ -266,13 +268,24 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         }
         //-------------------------------------------------------------------
         
+        
+        
         //--------------------------Return task------------------------------
         PlayerReturnManager.runRemoveTask();
         //-------------------------------------------------------------------
         
+        
+        
         //--------------------Send restarted server info---------------------
         if(conf.getConfig().contains("RestartMatchCount"))
             Sclat.sendRestartedServerInfo();
+        //-------------------------------------------------------------------
+        
+        
+        
+        //-----------------------------Shop----------------------------------
+        if(conf.getConfig().contains("Shop"))
+            shop = conf.getConfig().getBoolean("Shop");
         //-------------------------------------------------------------------
     }
     

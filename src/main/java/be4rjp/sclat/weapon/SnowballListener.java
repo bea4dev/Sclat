@@ -297,7 +297,7 @@ public class SnowballListener implements Listener {
                             if(Sclat.isNumber(as.getCustomName()))
                                 if(!as.getCustomName().equals("21") && !as.getCustomName().equals("100"))
                                     if(as.isVisible())
-                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.5F, 1.6F);
+                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
                     
                     if(projectile.getCustomName().equals("SuperShot")){
                         ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
