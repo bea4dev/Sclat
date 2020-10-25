@@ -18,6 +18,7 @@ public class ServerStatus {
     private boolean online = false;
     private boolean runningMatch = false;
     private boolean restartingServer = false;
+    private String mapName = "";
     
     public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period){
         this.serverName = serverName;
@@ -58,11 +59,15 @@ public class ServerStatus {
     
     public boolean getRestartingServer(){return this.restartingServer;}
     
+    public String getMapName(){return this.mapName;}
+    
     public boolean isOnline(){return this.online;}
     
     public void setRunningMatch(boolean is){this.runningMatch = is;}
     
     public void setRestartingServer(boolean is){this.restartingServer = is;}
+    
+    public void setMapName(String name){this.mapName = name;}
     
     public void stopTask(){this.task.cancel();}
     

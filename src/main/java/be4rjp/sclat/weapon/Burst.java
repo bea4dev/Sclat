@@ -47,11 +47,11 @@ public class Burst {
             public void run(){
                 c++;
                 if(c == DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerShootQuantity()){
-                    Shooter.Shoot(p, false, true);
+                    Shooter.Shoot(p, false, true, false);
                     cancel();
                 }
                 else
-                    Shooter.Shoot(p, false, false);
+                    Shooter.Shoot(p, false, false, false);
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootTick());

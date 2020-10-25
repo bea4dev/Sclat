@@ -166,6 +166,16 @@ class EchoThread extends Thread {
                             }
                             break;
                         }
+                        case "map":{
+                            if (args.length == 3) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setMapName(args[2]);
+                                    }
+                                }
+                            }
+                            break;
+                        }
                     }
                 }
             }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import be4rjp.sclat.manager.BungeeCordMgr;
+import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.server.StatusClient;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import net.minecraft.server.v1_13_R2.*;
@@ -140,6 +141,7 @@ public class Sclat {
     public static void sendRestartedServerInfo(){
         List<String> commands = new ArrayList<>();
         commands.add("restarted " + conf.getServers().getString("ServerName"));
+        commands.add("map " + conf.getServers().getString("ServerName") + " " + DataMgr.getMapRandom(MatchMgr.mapcount == 0 ? 0 : MatchMgr.mapcount - 1).getMapName());
         commands.add("stop");
         StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
                 conf.getConfig().getInt("StatusShare.Port"), commands);

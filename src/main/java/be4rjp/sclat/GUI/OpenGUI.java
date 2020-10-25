@@ -117,7 +117,7 @@ public class OpenGUI {
                 nmeta.setDisplayName(Gear.getGearName(i));
                 List<String> list = new ArrayList<>();
                 list.add("");
-                list.add("§r§bMoney  : " + String.valueOf(Gear.getGearPrice(i)));
+                list.add("§r§bMoney : " + String.valueOf(Gear.getGearPrice(i)));
                 nmeta.setLore(list);
                 n.setItemMeta(nmeta);
                 inv.setItem(i, n);
@@ -270,92 +270,6 @@ public class OpenGUI {
         player.openInventory(inv);
     }
     
-    public static void WeaponSelectSetup(){
-        int slotnum = 0;
-        Inventory shooter = Bukkit.createInventory(null, 54, "武器選択");
-        Inventory roller = Bukkit.createInventory(null, 54, "武器選択");
-        Inventory charger = Bukkit.createInventory(null, 54, "武器選択");
-        Inventory wm = Bukkit.createInventory(null, 9, "武器選択");
-        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
-            ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
-            ItemMeta itemm = item.getItemMeta();
-            itemm.setDisplayName(ClassName);
-            List lores = new ArrayList();
-            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
-            itemm.setLore(lores);
-            item.setItemMeta(itemm);
-            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster"))){
-                shooter.setItem(slotnum, item);
-                slotnum++;
-            }
-        }
-        
-        slotnum = 0;
-        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
-            ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
-            ItemMeta itemm = item.getItemMeta();
-            itemm.setDisplayName(ClassName);
-            List lores = new ArrayList();
-            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
-            itemm.setLore(lores);
-            item.setItemMeta(itemm);
-            if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Roller") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Bucket") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Slosher"))){
-                roller.setItem(slotnum, item);
-                slotnum++;
-            }   
-        }
-        
-        slotnum = 0;
-        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
-            ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
-            ItemMeta itemm = item.getItemMeta();
-            itemm.setDisplayName(ClassName);
-            List lores = new ArrayList();
-            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
-            itemm.setLore(lores);
-            item.setItemMeta(itemm);
-            if (slotnum <= 44 && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Charger") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner")){
-                charger.setItem(slotnum, item);
-                slotnum++;
-            }
-        }
-        
-        ItemStack is = new ItemStack(Material.OAK_DOOR);
-        ItemMeta ism = is.getItemMeta();
-        ism.setDisplayName("戻る");
-        is.setItemMeta(ism);
-        shooter.setItem(53, is);
-        roller.setItem(53, is);
-        charger.setItem(53, is);
-        
-        
-        ItemStack s = new ItemStack(Material.WOODEN_HOE);
-        ItemMeta sm = s.getItemMeta();
-        sm.setDisplayName("シューター");
-        s.setItemMeta(sm);
-        
-        ItemStack r = new ItemStack(Material.STONE_PICKAXE);
-        ItemMeta rm = r.getItemMeta();
-        rm.setDisplayName("ローラー");
-        r.setItemMeta(rm);
-        
-        ItemStack c = new ItemStack(Material.WOODEN_SWORD);
-        ItemMeta cm = c.getItemMeta();
-        cm.setDisplayName("チャージャー");
-        c.setItemMeta(cm);
-        
-        wm = Bukkit.createInventory(null, 9, "武器選択");
-        wm.setItem(2, s);
-        wm.setItem(4, r);
-        wm.setItem(6, c);
-    }
-    
     public static void openShop(Player player){
         int slotnum = 0;
         Inventory shooter = Bukkit.createInventory(null, 54, "武器選択");
@@ -398,7 +312,7 @@ public class OpenGUI {
                     lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
                     if(shop){
                         lores.add("");
-                        lores.add("§r§bMoney  : " + String.valueOf(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney()));
+                        lores.add("§r§bMoney : " + String.valueOf(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney()));
                     }
                     itemm.setLore(lores);
                     item.setItemMeta(itemm);

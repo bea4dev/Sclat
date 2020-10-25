@@ -106,6 +106,15 @@ public class MainWeaponMgr {
             mw.setCanChargeKeep(ck);
             mw.setChargeKeepingTime(ckt);
             mw.setHanbunCharge(hc);
+    
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".SPRate"))
+                mw.setSPRate(conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".SPRate"));
+    
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".MaxRandom"))
+                mw.setMaxRandom(conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".MaxRandom"));
+    
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".MaxRandomCount"))
+                mw.setMaxRandomCount(conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".MaxRandomCount"));
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Scope"))
                 mw.setScope(conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".Scope"));

@@ -11,6 +11,7 @@ public class MainWeapon {
     private String WeaponType;
     private ItemStack weaponitem;
     private double random;
+    private double maxRandom = 0;
     private int distancetick;
     private double shootspeed;
     private int shoottick;
@@ -40,6 +41,8 @@ public class MainWeapon {
     private boolean canChargeKeep = false;
     private int chargeKeepingTime = 0;
     private boolean hanbunCharge = false;
+    private double SPRate = 1.0;
+    private int maxRandomCount = 1;
     
     
     
@@ -50,6 +53,8 @@ public class MainWeapon {
     public ItemStack getWeaponIteamStack(){return this.weaponitem;}
     
     public double getRandom(){return random;}
+    
+    public double getMaxRandom(){return maxRandom;}
     
     public int getDistanceTick(){return distancetick;}
     
@@ -109,12 +114,18 @@ public class MainWeapon {
     
     public boolean getHanbunCharge(){return this.hanbunCharge;}
     
+    public double getSPRate(){return this.SPRate;}
+    
+    public int getMaxRandomCount(){return this.maxRandomCount;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
     public void setWeaponItemStack(ItemStack is){this.weaponitem = is;}
     
     public void setRandom(double random){this.random = random;}
+    
+    public void setMaxRandom(double random){this.maxRandom = random;}
     
     public void setDistanceTick(int distick){this.distancetick = distick;}
     
@@ -173,5 +184,9 @@ public class MainWeapon {
     public void setChargeKeepingTime(int i){this.chargeKeepingTime = i;}
     
     public void setHanbunCharge(boolean is){this.hanbunCharge = is;}
+    
+    public void setSPRate(double rate){this.SPRate = rate;}
+    
+    public void setMaxRandomCount(int count){this.maxRandomCount = count;}
     
 }

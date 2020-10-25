@@ -1235,21 +1235,22 @@ public class MatchMgr {
                     PlayerStatusMgr.sendHologram(p);
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
+    
+                        RollBack();
+                        matchcount++;
+                        MatchSetup();
                         
                         //Send match status
                         if(Main.type == ServerType.MATCH){
                             List<String> commands = new ArrayList<>();
                             commands.add("stopped " + conf.getServers().getString("ServerName"));
+                            commands.add("map " + conf.getServers().getString("ServerName") + " " + DataMgr.getMapRandom(MatchMgr.mapcount == 0 ? 0 : MatchMgr.mapcount - 1).getMapName());
                             commands.add("stop");
                             StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
                                     conf.getConfig().getInt("StatusShare.Port"), commands);
                             sc.startClient();
                         }
                         
-                        RollBack();
-                        matchcount++;
-                        
-                        MatchSetup();
                         //DataMgr.getPlayerData(p).reset();
                         for(String uuid : DataMgr.pul){
                             DataMgr.setPlayerIsQuit(uuid, false);

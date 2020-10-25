@@ -56,11 +56,15 @@ public class ServerStatusManager {
                     }else {
                         if (ss.isOnline()) {
                             role.add("");
-                            role.add("§r§7[Players] §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
+                            role.add("§r§7[Players]  §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
                             role.add("");
-                            role.add("§r§7[Status]   §aONLINE");
+                            role.add("§r§7[Status]  §aONLINE");
                             role.add("");
-                            role.add("§r§7[Match]    " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
+                            role.add("§r§7[Match]  " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
+                            if(ss.getMapName() != ""){
+                                role.add("");
+                                role.add("§r§7[Map]  §f§l" + ss.getMapName());
+                            }
                         } else {
                             role.add("");
                             role.add("§r§7[Status]   §cOFFLINE");
