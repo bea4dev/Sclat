@@ -113,16 +113,22 @@ public class MatchMgr {
             if(conf.getConfig().getBoolean("CanVoting") && !DataMgr.getPlayerIsQuit(player.getUniqueId().toString()))
                 OpenGUI.MatchTohyoGUI(player);
             
-            if(playercount%2==0){
-                data.setTeam(match.getTeam1());
-                //data.setMatchLocation(DataMgr.getTeamLoc(match.getMapData()).getTeam1Loc(matchcount/2));
-            }else{
-                data.setTeam(match.getTeam0());
-                //data.setMatchLocation(DataMgr.getTeamLoc(match.getMapData()).getTeam0Loc((matchcount+1)/2));
+            if(conf.getConfig().getBoolean("RateMatch")){
+                if(match.getTeam0().getRateTotal() <= match.getTeam1().getRateTotal())
+                    data.setTeam(match.getTeam0());
+                else
+                    data.setTeam(match.getTeam1());
+            }else {
+                if (playercount % 2 == 0)
+                    data.setTeam(match.getTeam1());
+                else
+                    data.setTeam(match.getTeam0());
             }
             
             data.setMatch(match);
             data.setIsJoined(true);
+            
+            data.getTeam().addRateTotal(PlayerStatusMgr.getRank(player));
             
             player.setDisplayName(data.getTeam().getTeamColor().getColorCode() + player.getName());
             
@@ -151,11 +157,43 @@ public class MatchMgr {
                             Sclat.sendMessage("§a試合開始まで後1秒", MessageType.ALL_PLAYER);
                         if(s == 30){
                             match.setCanJoin(false);
+                            
+                            if(conf.getConfig().getBoolean("RateMatch")){
+                                List<Player> t0pl = new ArrayList<>();
+                                List<Player> t1pl = new ArrayList<>();
+                                for(Player jp : Main.getPlugin().getServer().getOnlinePlayers()){
+                                    PlayerData jpd = DataMgr.getPlayerData(jp);
+                                    if(jpd.getIsJoined()){
+                                        if(jpd.getTeam() == match.getTeam0())
+                                            t0pl.add(jp);
+                                        else
+                                            t1pl.add(jp);
+                                    }
+                                }
+                                
+                                int t0c = 3;
+                                for(Player t0p : t0pl){
+                                    DataMgr.getPlayerData(t0p).setPlayerNumber(t0c);
+                                    t0c+=2;
+                                }
+    
+                                int t1c = 2;
+                                for(Player t1p : t1pl){
+                                    DataMgr.getPlayerData(t1p).setPlayerNumber(t1c);
+                                    t1c+=2;
+                                }
+                            }
+                            
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
+                            if(conf.getConfig().getBoolean("RateMatch")){
+                                Sclat.sendMessage("", MessageType.ALL_PLAYER);
+                                Sclat.sendMessage(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + " §rTeam's rating : §b" + match.getTeam0().getRateTotal(), MessageType.ALL_PLAYER);
+                                Sclat.sendMessage(match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + " §rTeam's rating : §b" + match.getTeam1().getRateTotal(), MessageType.ALL_PLAYER);
+                            }
                             EquipmentServerManager.doCommands();
                             if(conf.getConfig().getBoolean("CanVoting")){
                                 if(match.getNawabari_T_Count() >= match.getTDM_T_Count() && match.getNawabari_T_Count() >= match.getGatiArea_T_Count()){
-                                    conf.getConfig().set("WorkMode", "Nomal");
+                                    conf.getConfig().set("WorkMode", "Normal");
                                 }else if(match.getTDM_T_Count() >= match.getGatiArea_T_Count()){
                                     conf.getConfig().set("WorkMode", "TDM");
                                 }else{
@@ -594,7 +632,7 @@ public class MatchMgr {
                     //p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1 && Main.NoteBlockAPI){
-                        NoteBlockSong nbs = NoteBlockAPIMgr.getRandomNomalSong();
+                        NoteBlockSong nbs = NoteBlockAPIMgr.getRandomNormalSong();
                         Song song = nbs.getSong();
                         RadioSongPlayer radio = new RadioSongPlayer(song);
                         radio.setVolume(volume);

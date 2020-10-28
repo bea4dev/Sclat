@@ -33,6 +33,7 @@ import org.bukkit.entity.Squid;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 /**
  *
@@ -148,8 +149,8 @@ public class SquidMgr {
                     else
                         speed = conf.getConfig().getDouble("PlayerWalkSpeed") * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
                     
-                    if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NomalRecovery"))){
-                        p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NomalRecovery"));
+                    if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NormalRecovery"))){
+                        p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NormalRecovery"));
                     }
                     
                     if(data.getIsHolding() && data.getCanPaint() && p.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk()){
@@ -243,10 +244,10 @@ public class SquidMgr {
                         bteam0.setColor(data.getTeam().getTeamColor().getChatColor());
                         //bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
                         bteam0.setPrefix(data.getTeam().getTeamColor().getColorCode());
-                        bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
+                        bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
                         
+                        bteam0.addPlayer(player);
                         player.setScoreboard(scoreboard);
-                        bteam0.addEntry(player.getName());
                         
                         bteam0.addEntry(es.getBukkitEntity().getUniqueId().toString());
                         

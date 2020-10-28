@@ -5,12 +5,7 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 
 import be4rjp.sclat.ServerType;
-import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.data.Match;
-import be4rjp.sclat.data.PaintData;
-import be4rjp.sclat.data.PlayerData;
-import be4rjp.sclat.data.PlayerSettings;
-import be4rjp.sclat.data.WeaponClass;
+import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.weapon.Blaster;
@@ -459,6 +454,11 @@ public class GameMgr implements Listener{
         if(data.getIsJoined()){
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
             data.getMatch().subJoinedPlayerCount();
+        }
+        
+        if(data.getIsJoined()){
+            Team team = data.getTeam();
+            team.subtractRateTotal(PlayerStatusMgr.getRank(player));
         }
         
         String server = DataMgr.getPlayerData(player).getServername();

@@ -21,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
@@ -141,53 +142,135 @@ public class SplashShield {
                         RayTrace rayTrace2 = new RayTrace(loc.clone().add(0, 0.8, 0).toVector(), vec2);
                         ArrayList<Vector> positions2 = rayTrace2.traverse(3, 0.2);
 
-                        ArmorStand as1 = (ArmorStand)player.getWorld().spawnEntity(loc.clone().add(0, -0.6, 0), EntityType.ARMOR_STAND);
+                        ArmorStand as1 = player.getWorld().spawn(loc.clone().add(0, -0.6, 0), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
+                        });
                         list.add(as1);
-                        ArmorStand as2 = (ArmorStand)player.getWorld().spawnEntity(loc.clone().add(0, 0.0, 0), EntityType.ARMOR_STAND);
+                        ArmorStand as2 = player.getWorld().spawn(loc.clone().add(0, 0.0, 0), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
+                        });
                         list.add(as2);
-                        ArmorStand as3 = (ArmorStand)player.getWorld().spawnEntity(loc.clone().add(0, 0.6, 0), EntityType.ARMOR_STAND);
+                        ArmorStand as3 = player.getWorld().spawn(loc.clone().add(0, 0.6, 0), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
+                        });
                         list.add(as3);
-                        ArmorStand as4 = (ArmorStand)player.getWorld().spawnEntity(loc.clone().add(0, 1.05, 0), EntityType.ARMOR_STAND);
+                        ArmorStand as4 = player.getWorld().spawn(loc.clone().add(0, 1.05, 0), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
+                        });
                         list.add(as4);
-                        ArmorStand as5 = (ArmorStand)player.getWorld().spawnEntity(loc.clone().add(0, -0.6, 0), EntityType.ARMOR_STAND);
+                        ArmorStand as5 = player.getWorld().spawn(loc.clone().add(0, -0.6, 0), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
+                        });
                         list.add(as5);
                         Location l6 = positions2.get(5).toLocation(loc.getWorld()).add(0, 0.25, 0);
                         l6.setYaw(yaw);
-                        ArmorStand as6 = (ArmorStand)player.getWorld().spawnEntity(l6, EntityType.ARMOR_STAND);
+                        ArmorStand as6 = player.getWorld().spawn(l6, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(270)));
+                        });
                         list.add(as6);
                         Location l7 = positions1.get(4).toLocation(loc.getWorld());
                         l7.setYaw(yaw);
-                        ArmorStand as7 = (ArmorStand)player.getWorld().spawnEntity(l7, EntityType.ARMOR_STAND);
+                        ArmorStand as7 = player.getWorld().spawn(l7, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
+                        });
                         list.add(as7);
                         Location l8 = positions1.get(7).toLocation(loc.getWorld());
                         l8.setYaw(yaw);
-                        ArmorStand as8 = (ArmorStand)player.getWorld().spawnEntity(l8, EntityType.ARMOR_STAND);
+                        ArmorStand as8 = player.getWorld().spawn(l8, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
+                        });
                         list.add(as8);
                         Location l9 = positions2.get(4).toLocation(loc.getWorld());
                         l9.setYaw(yaw);
-                        ArmorStand as9 = (ArmorStand)player.getWorld().spawnEntity(l9, EntityType.ARMOR_STAND);
+                        ArmorStand as9 = player.getWorld().spawn(l9, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
+                        });
                         list.add(as9);
                         Location l10 = positions2.get(7).toLocation(loc.getWorld());
                         l10.setYaw(yaw);
-                        ArmorStand as10 = (ArmorStand)player.getWorld().spawnEntity(l10, EntityType.ARMOR_STAND);
+                        ArmorStand as10 = player.getWorld().spawn(l10, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
+                        });
                         list.add(as10);
                         Location l11 = positions2.get(4).toLocation(loc.getWorld()).add(0, -0.45, 0);
                         l11.setYaw(yaw);
-                        ArmorStand as11 = (ArmorStand)player.getWorld().spawnEntity(l11, EntityType.ARMOR_STAND);
+                        ArmorStand as11 = player.getWorld().spawn(l11, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                        });
                         list.add(as11);
                         Location l12 = positions2.get(3).toLocation(loc.getWorld()).clone().add(pv2.getX(), -0.1, pv2.getZ());
                         l12.setYaw(yaw);
-                        ArmorStand as12 = (ArmorStand)player.getWorld().spawnEntity(l12, EntityType.ARMOR_STAND);
+                        ArmorStand as12 = player.getWorld().spawn(l12.add(vec1.clone().normalize().multiply(0.05)), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setSmall(true);
+                        });
                         as12.setSmall(true);
                         list.add(as12);
                         Location l13 = positions2.get(3).toLocation(loc.getWorld()).clone().add(pv2.getX(), -0.5, pv2.getZ());
                         l13.setYaw(yaw);
-                        ArmorStand as13 = (ArmorStand)player.getWorld().spawnEntity(l13, EntityType.ARMOR_STAND);
+                        ArmorStand as13 = player.getWorld().spawn(l13.add(vec1.clone().normalize().multiply(0.05)), ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                            armorStand.setSmall(true);
+                        });
                         as13.setSmall(true);
                         list.add(as13);
                         Location l14 = positions2.get(10).toLocation(loc.getWorld());
                         l14.setYaw(yaw);
-                        ArmorStand as14 = (ArmorStand)player.getWorld().spawnEntity(l14, EntityType.ARMOR_STAND);
+                        ArmorStand as14 = player.getWorld().spawn(l14, ArmorStand.class, armorStand -> {
+                            armorStand.setMarker(true);
+                            armorStand.setVisible(false);
+                            armorStand.setBasePlate(false);
+                            armorStand.setGravity(false);
+                        });
                         list.add(as14);
 
                         ssdata.setArmorStandList(list);
@@ -196,15 +279,8 @@ public class SplashShield {
                         for(ArmorStand a : list){
                             DataMgr.setSplashShieldDataWithARmorStand(a, ssdata);
                             DataMgr.ssa.add(a);
-                            a.setMarker(true);
-                            a.setVisible(false);
-                            a.setBasePlate(false);
-                            a.setGravity(false);
                             a.setCustomName("SplashShield");
-                            //if(i > 6)
-                                //a.teleport(new Location(a.getWorld(), a.getLocation().getX(), a.getLocation().getY(), a.getLocation().getZ(), yaw, 0F));
-
-
+                            
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(i <= 5)
                                     ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(a.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.BLAZE_ROD))));
@@ -213,16 +289,6 @@ public class SplashShield {
                             }
                             i++;
                         }
-                        as1.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
-                        as2.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
-                        as3.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
-                        as4.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
-                        as5.setHeadPose(new EulerAngle(0, 0, Math.toRadians(135)));
-                        as6.setHeadPose(new EulerAngle(0, 0, Math.toRadians(270)));
-                        as7.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
-                        as8.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
-                        as9.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
-                        as10.setHeadPose(new EulerAngle(0, 0, Math.toRadians(45)));
                     }
 
                     if(c == 10){
@@ -255,7 +321,7 @@ public class SplashShield {
 
                         Vector sv = pv.clone().multiply(-0.25);
 
-                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                        BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         ray : for(int i = 0; i < positions1.size() - 4;i++){
                             Location position = positions1.get(i).toLocation(p.getLocation().getWorld());
                             PaintMgr.PaintHightestBlock(position, p, false, false);
@@ -288,7 +354,7 @@ public class SplashShield {
 
 
                             for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                o_player.spawnParticle(org.bukkit.Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
                             }
                         }
 
@@ -323,9 +389,9 @@ public class SplashShield {
                             }
                             for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(i == 0 || i == 1 || i == 2)
-                                    o_player.spawnParticle(org.bukkit.Particle.FALLING_DUST, position.add(sv.getX(), -0.2, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                    o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), -0.2, sv.getZ()), 1, 0, 0, 0, 200, bd);
                                 else
-                                    o_player.spawnParticle(org.bukkit.Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                    o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
                             }
                         }
                     }

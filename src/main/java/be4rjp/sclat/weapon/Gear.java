@@ -33,9 +33,9 @@ public class Gear {
             case 4:
                 return Material.WHITE_STAINED_GLASS;
             case 5:
-                return Material.WHITE_WOOL;
+                return Material.WATER_BUCKET;
             case 6:
-                return Material.BOWL;
+                return Material.LAVA_BUCKET;
             case 7:
                 return Material.PRISMARINE_SHARD;
             case 8:

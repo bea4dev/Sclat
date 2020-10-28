@@ -43,7 +43,7 @@ public class NoteBlockAPIMgr {
         }
     }
     
-    public static NoteBlockSong getRandomNomalSong(){
+    public static NoteBlockSong getRandomNormalSong(){
         int random = new Random().nextInt(nBgm_C);
         String songname = nsnList.get(random);
         Song song = nsList.get(random);

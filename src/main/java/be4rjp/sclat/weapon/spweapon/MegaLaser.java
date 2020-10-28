@@ -60,7 +60,8 @@ public class MegaLaser {
                     as9.addPassenger(p);
                     list.add(as9);
                     ol = p.getLocation();
-                    v = p.getEyeLocation().getDirection();
+                    Vector pv = p.getEyeLocation().getDirection();
+                    v = new Vector(pv.getX(), 0, pv.getZ());
                 }
                 
                 if(!as9.getPassengers().contains(p) && c < 9)
@@ -259,10 +260,10 @@ public class MegaLaser {
                     
                     //攻撃判定
                     RayTrace rayTrace4 = new RayTrace(ol.clone().add(0, -1, 0).toVector(), v);
-                    ArrayList<Vector> positions4 = rayTrace4.traverse(300, 1);
+                    ArrayList<Vector> positions4 = rayTrace4.traverse(300, 0.5);
                     for(int i = 1; i < positions4.size();i++){
                         Location position = positions4.get(i).toLocation(p.getLocation().getWorld());
-                        if(i > 6){//攻撃判定
+                        if(i > 12){
                             double maxDist = 5;
                             double damage = 7.5;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -298,7 +299,7 @@ public class MegaLaser {
                                 if (as.getLocation().distance(position) <= maxDist){
                                     if(as instanceof ArmorStand){
                                         ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                    }          
+                                    }
                                 }
                             }
                         }
