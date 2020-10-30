@@ -35,6 +35,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+
+import static be4rjp.sclat.manager.PlayerStatusMgr.setupPlayerStatus;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Material;
 import be4rjp.sclat.data.Team;
@@ -47,11 +49,8 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Particle;
@@ -93,7 +92,7 @@ public class MatchMgr {
             return;
         }*/
         
-        if(!data.getIsJoined()){
+        if(!DataMgr.joinedList.contains(player)){
             
         Match match = DataMgr.getMatchFromId(matchcount);
         if(match.canJoin()){
@@ -101,36 +100,17 @@ public class MatchMgr {
             int playercount = match.getPlayerCount();
         if(match.getJoinedPlayerCount() < conf.getConfig().getInt("MaxPlayerCount")){
             match.addJoinedPlayerCount();
+    
+            data.setMatch(match);
+            data.setIsJoined(true);
+            
+            DataMgr.joinedList.add(player);
             
             Sclat.sendMessage("§b§n" + player.getDisplayName() + " joined the match", MessageType.ALL_PLAYER);
-
-            if(playercount == 1)
-                match.setLeaderPlayer(player);
-        
-            data.setPlayerNumber(playercount);
             
             player.teleport(match.getMapData().getTaikibayso());
             if(conf.getConfig().getBoolean("CanVoting") && !DataMgr.getPlayerIsQuit(player.getUniqueId().toString()))
                 OpenGUI.MatchTohyoGUI(player);
-            
-            if(conf.getConfig().getBoolean("RateMatch")){
-                if(match.getTeam0().getRateTotal() <= match.getTeam1().getRateTotal())
-                    data.setTeam(match.getTeam0());
-                else
-                    data.setTeam(match.getTeam1());
-            }else {
-                if (playercount % 2 == 0)
-                    data.setTeam(match.getTeam1());
-                else
-                    data.setTeam(match.getTeam0());
-            }
-            
-            data.setMatch(match);
-            data.setIsJoined(true);
-            
-            data.getTeam().addRateTotal(PlayerStatusMgr.getRank(player));
-            
-            player.setDisplayName(data.getTeam().getTeamColor().getColorCode() + player.getName());
             
             if(playercount == conf.getConfig().getInt("StartPlayerCount") && !match.getIsStarted()){
                 match.setIsStarted(true);
@@ -158,30 +138,45 @@ public class MatchMgr {
                         if(s == 30){
                             match.setCanJoin(false);
                             
-                            if(conf.getConfig().getBoolean("RateMatch")){
-                                List<Player> t0pl = new ArrayList<>();
-                                List<Player> t1pl = new ArrayList<>();
-                                for(Player jp : Main.getPlugin().getServer().getOnlinePlayers()){
-                                    PlayerData jpd = DataMgr.getPlayerData(jp);
-                                    if(jpd.getIsJoined()){
-                                        if(jpd.getTeam() == match.getTeam0())
-                                            t0pl.add(jp);
-                                        else
-                                            t1pl.add(jp);
-                                    }
+                            //かぶらないようにマッピング
+                            Map<Integer, Player> playerMap = new HashMap<>();
+                            for(Player jp : DataMgr.joinedList){
+                                int rate = PlayerStatusMgr.getRank(jp);
+                                while (playerMap.containsKey(rate)){
+                                    rate++;
                                 }
-                                
-                                int t0c = 3;
-                                for(Player t0p : t0pl){
-                                    DataMgr.getPlayerData(t0p).setPlayerNumber(t0c);
-                                    t0c+=2;
+                                playerMap.put(rate, jp);
+                            }
+                            
+                            //ソート
+                            List<Player> sortedMember = new ArrayList<>();
+                            if(conf.getConfig().getBoolean("RateMatch")) {
+                                Object[] playerMapKey = playerMap.keySet().toArray();
+                                Arrays.sort(playerMapKey);
+                                for (Integer nKey : playerMap.keySet()) {
+                                    sortedMember.add(playerMap.get(nKey));
                                 }
-    
-                                int t1c = 2;
-                                for(Player t1p : t1pl){
-                                    DataMgr.getPlayerData(t1p).setPlayerNumber(t1c);
-                                    t1c+=2;
+                            }
+                            
+                            int i = 0;
+                            for(Player jp : sortedMember){
+                                PlayerData data = DataMgr.getPlayerData(jp);
+                                if(i % 2 == 0)
+                                    data.setTeam(match.getTeam0());
+                                else
+                                    data.setTeam(match.getTeam1());
+                                i++;
+                            }
+                            
+                            int playerNumber = 1;
+                            for(Player jp : sortedMember){
+                                PlayerData data = DataMgr.getPlayerData(jp);
+                                if(jp.isOnline()){
+                                    data.setPlayerNumber(playerNumber);
+                                    data.getTeam().addRateTotal(PlayerStatusMgr.getRank(jp));
+                                    jp.setDisplayName(data.getTeam().getTeamColor().getColorCode() + jp.getName());
                                 }
+                                playerNumber++;
                             }
                             
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
@@ -698,9 +693,11 @@ public class MatchMgr {
                 MatchRunnable(player, match);
             }
         }
+        /*
         Player leader = match.getLeaderPlayer();
         if(DataMgr.getPlayerIsQuit(leader.getUniqueId().toString()))
             MatchRunnable(leader, match);
+        */
     }
         
     public static void InMatchCounter(Player player){
@@ -1301,7 +1298,7 @@ public class MatchMgr {
                     DataMgr.getPlayerData(p).reset();
                     DataMgr.getPlayerData(p).setWeaponClass(wc);
                     
-                    
+                    DataMgr.joinedList.clear();
                     
                     p.setWalkSpeed(0.2F);
                     p.setHealth(20);

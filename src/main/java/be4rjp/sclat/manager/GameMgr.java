@@ -451,14 +451,14 @@ public class GameMgr implements Listener{
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = (Player) event.getPlayer();
         PlayerData data = DataMgr.getPlayerData(player);
-        if(data.getIsJoined()){
+        if(DataMgr.joinedList.contains(player)){
             DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
             data.getMatch().subJoinedPlayerCount();
-        }
-        
-        if(data.getIsJoined()){
+            
             Team team = data.getTeam();
             team.subtractRateTotal(PlayerStatusMgr.getRank(player));
+            
+            DataMgr.joinedList.remove(player);
         }
         
         String server = DataMgr.getPlayerData(player).getServername();
@@ -474,6 +474,7 @@ public class GameMgr implements Listener{
                         commands.add("set weapon " + data.getWeaponClass().getClassName() + " " + player.getUniqueId().toString());
                         commands.add("set gear " + data.getGearNumber() + " " + player.getUniqueId().toString());
                         commands.add("setting " + conf.getPlayerSettings().getString("Settings." + player.getUniqueId().toString()) + " " + player.getUniqueId().toString());
+                        commands.add("set rank " + String.valueOf(PlayerStatusMgr.getRank(player)) + " " + player.getUniqueId().toString());
                         commands.add("stop");
                         EquipmentClient sc = new EquipmentClient(conf.getConfig().getString("EquipShare." + name + ".Host"),
                                 conf.getConfig().getInt("EquipShare." + name + ".Port"), commands);

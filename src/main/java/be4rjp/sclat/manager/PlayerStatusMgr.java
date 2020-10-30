@@ -130,6 +130,10 @@ public class PlayerStatusMgr {
         conf.getPlayerStatus().set("Status." + uuid + ".Rank", rank);
     }
     
+    public static void setRank(String uuid, int rank){
+        conf.getPlayerStatus().set("Status." + uuid + ".Rank", rank);
+    }
+    
     public static void setGear(Player player, int g){
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".Gear", g);
