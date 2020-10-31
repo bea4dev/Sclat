@@ -28,7 +28,7 @@ import org.bukkit.util.Vector;
  * @author Be4rJP
  */
 public class PathMgr {
-    public static void setPath(Player player, Location from, Location to){
+    public static void setPath(Player player, Location from, Location to, Team team){
         BukkitRunnable path = new BukkitRunnable(){
             Player p = player;
             Item drop;
@@ -48,7 +48,7 @@ public class PathMgr {
                 
                 drop.setVelocity(vec);
                 
-                if(drop.getLocation().distance(from) > from.distance(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
+                if(drop.getLocation().distance(from) > from.distance(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR) || DataMgr.getPlayerData(p).getTeam() != team){
                     DataMgr.getPlayerData(p).setIsOnPath(false);
                     drop.remove();
                     cancel();
@@ -131,7 +131,7 @@ public class PathMgr {
                         if(team != null){
                             if(DataMgr.getPlayerData(player).isInMatch() && player.getWorld() == from.getWorld() && player.getInventory().getItemInMainHand().getType().equals(Material.AIR) && DataMgr.getPlayerData(player).getTeam() == team && !DataMgr.getPlayerData(player).getIsOnPath()){
                                 if(player.getLocation().distance(from) < 1)
-                                    setPath(player, from, to);
+                                    setPath(player, from, to, team);
                             }
                         }
                     }

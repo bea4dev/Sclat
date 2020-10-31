@@ -287,6 +287,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         if(conf.getConfig().contains("Shop"))
             shop = conf.getConfig().getBoolean("Shop");
         //-------------------------------------------------------------------
+        
+        
+        
+        //----------------------------Tutorial-------------------------------
+        if(conf.getConfig().contains("Tutorial"))
+            tutorial = conf.getConfig().getBoolean("Tutorial");
+        //-------------------------------------------------------------------
     }
     
     @Override

@@ -30,6 +30,7 @@ public class Match {
     private Scoreboard scoreboard;
     private boolean started = false;
     private int joinedPlayerCount = 0;
+    private boolean isStartedCount = false;
     
     
     
@@ -69,6 +70,8 @@ public class Match {
     
     public int getJoinedPlayerCount(){return this.joinedPlayerCount;}
     
+    public boolean isStartedCount(){return this.isStartedCount;}
+    
     
     public void setTeam0(Team team){team0 = team;}
     
@@ -93,6 +96,8 @@ public class Match {
     public void setScoreboard(Scoreboard sc){this.scoreboard = sc;}
     
     public void setIsStarted(boolean is){this.started = is;}
+    
+    public void setIsStartedCount(boolean is){this.isStartedCount = is;}
     
     
     public void addNawabari_T_Count(){this.c_nawabari++;}

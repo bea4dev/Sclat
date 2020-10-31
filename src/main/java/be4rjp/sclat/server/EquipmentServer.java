@@ -97,19 +97,6 @@ class EquipEchoThread extends Thread {
                         }
                         break;
                     }
-    
-                    if(args[0].equals("set")){ //set [statusName] [number] [uuid]
-                        if (args.length == 4) {
-                            if (Sclat.isNumber(args[2]) && args[3].length() == 36) {
-                                switch (args[1]) {
-                                    case "rank":
-                                        PlayerStatusMgr.setRank(args[3], Integer.parseInt(args[2]));
-                                        break;
-                                }
-                            }
-                        }
-                        break;
-                    }
                 }
             }
         } catch (IOException e) {

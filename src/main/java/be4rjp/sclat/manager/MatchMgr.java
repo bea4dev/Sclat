@@ -111,14 +111,28 @@ public class MatchMgr {
             player.teleport(match.getMapData().getTaikibayso());
             if(conf.getConfig().getBoolean("CanVoting") && !DataMgr.getPlayerIsQuit(player.getUniqueId().toString()))
                 OpenGUI.MatchTohyoGUI(player);
+    
             
-            if(playercount == conf.getConfig().getInt("StartPlayerCount") && !match.getIsStarted()){
+            
+            int startPlayerCount = conf.getConfig().getInt("StartPlayerCount");
+            
+            if(match.getJoinedPlayerCount() < startPlayerCount)
+                Sclat.sendMessage("§a人数が足りないため試合を開始することができませんあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
+            
+            if(match.getJoinedPlayerCount() == startPlayerCount && !match.getIsStarted() && !match.isStartedCount()){
                 match.setIsStarted(true);
+                match.setIsStartedCount(true);
                 BukkitRunnable task = new BukkitRunnable(){
                     int s = 0;
                     Player p = player;
                     @Override
                     public void run(){
+                        if(match.getJoinedPlayerCount() < startPlayerCount){
+                            Sclat.sendMessage("§a人数が足りないため試合を開始することができませんあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
+                            match.setIsStartedCount(false);
+                            match.setIsStarted(false);
+                            cancel();
+                        }
                         if(s == 0)
                             Sclat.sendMessage("§a試合開始まで後30秒", MessageType.ALL_PLAYER);
                         if(s == 10)
@@ -151,11 +165,19 @@ public class MatchMgr {
                             //ソート
                             List<Player> sortedMember = new ArrayList<>();
                             if(conf.getConfig().getBoolean("RateMatch")) {
-                                Object[] playerMapKey = playerMap.keySet().toArray();
-                                Arrays.sort(playerMapKey);
-                                for (Integer nKey : playerMap.keySet()) {
-                                    sortedMember.add(playerMap.get(nKey));
+                                Map<Integer, Player> treeMap = new TreeMap<Integer, Player>(playerMap);
+                                if(match.getJoinedPlayerCount() == 3){
+                                    List<Player> list = new ArrayList<>();
+                                    for (Integer key : treeMap.keySet())
+                                        list.add(treeMap.get(key));
+                                    sortedMember.add(list.get(0));
+                                    sortedMember.add(list.get(2));
+                                    sortedMember.add(list.get(1));
+                                }else{
+                                    for (Integer key : treeMap.keySet())
+                                        sortedMember.add(treeMap.get(key));
                                 }
+                                
                             }
                             
                             int i = 0;
@@ -262,6 +284,9 @@ public class MatchMgr {
         
         match.setTeam0(team0);
         match.setTeam1(team1);
+        
+        if(id == 0)
+            DataMgr.MapDataShuffle();
         
         MapData map = DataMgr.getMapRandom(mapcount);
         match.setMapData(map);
@@ -440,7 +465,7 @@ public class MatchMgr {
                         DataMgr.getPlayerData(p).setMatchLocation(sl);
                     }
 
-                    if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                         Entity e = DataMgr.getPlayerData(p).getMatchLocation().getWorld().spawnEntity(DataMgr.getPlayerData(p).getMatchLocation(), EntityType.SQUID);
                         squid = (LivingEntity)e;
                         squid.setAI(false);
@@ -505,17 +530,17 @@ public class MatchMgr {
                     Location introl = match.getMapData().getTeam0Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
-                        if(s >= 101 && s <= 120 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
+                        if(s >= 101 && s <= 120){
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
 
                         }
                         if(s == 120){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1))
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
                                 squid.remove();
                         }
                         if(s == 100){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
@@ -526,16 +551,16 @@ public class MatchMgr {
                     Location introl = match.getMapData().getTeam1Intro().clone().add(0.5, 0, 0.5);
                     p.teleport(introl);
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam1()){
-                        if(s >= 161 && s <= 180 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
+                        if(s >= 161 && s <= 180){
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             introl.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, DataMgr.getPlayerData(p).getMatchLocation(), 10, 0.3, 0.4, 0.3, 1, bd);
                         }
                         if(s == 180){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1))
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8)
                                 squid.remove();
                         }
                         if(s == 160){
-                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8 && !(DataMgr.getPlayerIsQuit(player.getUniqueId().toString()) && DataMgr.getPlayerData(p).getPlayerNumber() == 1)){
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
                             NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
@@ -1080,9 +1105,9 @@ public class MatchMgr {
                                 if((per == 100 || per == 0) && !hikiwake)
                                     Animation.AreaResultAnimation(oplayer, per, 100 - per, team0code, team1code, winteam);
                                 else if(team0 == 100)
-                                    Animation.AreaResultAnimation(p, 100, 0, team0code, team1code, winteam);
+                                    Animation.AreaResultAnimation(oplayer, 100, 0, team0code, team1code, winteam);
                                 else if(team1 == 100)
-                                    Animation.AreaResultAnimation(p, 0, 100, team0code, team1code, winteam);
+                                    Animation.AreaResultAnimation(oplayer, 0, 100, team0code, team1code, winteam);
                                 else
                                     Animation.ResultAnimation(oplayer, per, 100 - per, team0code, team1code, winteam, hikiwake);
                             }
@@ -1202,7 +1227,7 @@ public class MatchMgr {
                     int pRank = -100 + (int)((double)data.getKillCount() * 2.5D + (double)data.getPaintCount() / 700D);
                     if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
                         pRank = 80 + (int)((double)data.getKillCount() * 2D + (double)data.getPaintCount() / 500D);
-                    if(data.getMatch().getPlayerCount() == 1)
+                    if(data.getMatch().getJoinedPlayerCount() == 1)
                         pRank = 0;
                     
                     PlayerStatusMgr.addRank(p, pRank);
