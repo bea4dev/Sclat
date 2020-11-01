@@ -11,6 +11,7 @@ import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.*;
 import be4rjp.sclat.server.EquipmentServer;
 import be4rjp.sclat.server.StatusServer;
+import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -293,6 +294,11 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         //----------------------------Tutorial-------------------------------
         if(conf.getConfig().contains("Tutorial"))
             tutorial = conf.getConfig().getBoolean("Tutorial");
+        if(tutorial){
+            Tutorial.setupTutorial(DataMgr.getMatchFromId(MatchMgr.matchcount));
+            Tutorial.clearRegionRunnable();
+            Tutorial.lobbyRegionRunnable();
+        }
         //-------------------------------------------------------------------
     }
     

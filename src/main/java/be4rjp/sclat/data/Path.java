@@ -29,6 +29,7 @@ public class Path {
     private Location from , to;
     private Team team = null;
     private ArmorStand as = null;
+    private boolean setTeamed = false;
     
     public Path(Location from, Location to){this.from = from; this.to = to;}
     
@@ -45,15 +46,34 @@ public class Path {
     
     
     
-    public void setTeam(Team team){
-        this.team = team;
+    public void setTeam(Team t){
+        this.team = t;
         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
             if(as.getWorld() != target.getWorld())
                 continue;
-            ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(team.getTeamColor().getGlass()))));
+            if(t == null)
+                ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.WHITE_STAINED_GLASS))));
+            else
+                ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(team.getTeamColor().getGlass()))));
         }
-        as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
-        //as.setHelmet(new ItemStack(team.getTeamColor().getGlass()));
+        if(t != null)
+            as.getWorld().playSound(as.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+        else
+            return;
+        
+        
+        
+        if(!setTeamed){
+            setTeamed = true;
+            BukkitRunnable task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    team = null;
+                    setTeamed = false;
+                }
+            };
+            task.runTaskLater(Main.getPlugin(), 400);
+        }
     }
     
     

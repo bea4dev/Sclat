@@ -2,7 +2,11 @@
 package be4rjp.sclat.manager;
 
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Main;
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.Color;
+import be4rjp.sclat.data.DataMgr;
 import com.mojang.authlib.GameProfile;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +57,11 @@ public class PlayerStatusMgr {
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Kill", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Paint", 0);
             conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".EquiptClass", conf.getConfig().getString("DefaultClass"));
+    
+            if(Main.type == ServerType.LOBBY) {
+                BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
+                DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
+            }
         }
     }
     

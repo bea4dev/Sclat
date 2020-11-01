@@ -68,6 +68,13 @@ public class SquidMgr {
                     return;
                 }
                 
+                //Sponge
+                Location pl = p.getLocation().add(0, 0.5, 0);
+                Block b1 = pl.getBlock();
+                Block b2 = pl.clone().add(0, 1, 0).getBlock();
+                if(b1.getType().toString().contains("POWDER") || b2.getType().toString().contains("POWDER")){
+                    p.teleport(pl.add(0, 0.5, 0));
+                }
                 
                 if(data.getWeaponClass().getMainWeapon().getIsManeuver()){
                     if(p.getInventory().getItemInMainHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType())){

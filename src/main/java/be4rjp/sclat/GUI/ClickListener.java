@@ -17,13 +17,8 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
+
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
@@ -96,7 +91,10 @@ public class ClickListener implements Listener{
                     bur.setMaxBlockInOneTick(conf.getConfig().getInt("BlockUpdateRate"));
                 bur.start();
                 match.setBlockUpdater(bur);
-                player.sendMessage("3分後に再リセットできるようになります");
+                Sclat.sendMessage("§a§lインクがリセットされました！", MessageType.ALL_PLAYER);
+                Sclat.sendMessage("§a§l3分後に再リセットできるようになります", MessageType.ALL_PLAYER);
+                for(Player op : Main.getPlugin().getServer().getOnlinePlayers())
+                    Sclat.playGameSound(op, SoundType.SUCCESS);
                 List<Block> blocks = new ArrayList<Block>();
                 Block b0 = Main.lobby.getBlock().getRelative(BlockFace.DOWN);
                 blocks.add(b0);
@@ -377,6 +375,15 @@ public class ClickListener implements Listener{
                 Location loc = Main.lobby.clone();
                 if(!conf.getConfig().getString("WorkMode").equals("Trial"))
                     loc = DataMgr.getPlayerData(player).getMatchLocation();
+                SuperJumpMgr.SuperJumpCollTime(player, loc);
+            }
+            if(name.equals("§r§6ロビーへジャンプ")){
+                String WorldName = conf.getConfig().getString("LobbyJump.WorldName");
+                World w = Bukkit.getWorld(WorldName);
+                int ix = conf.getConfig().getInt("LobbyJump.X");
+                int iy = conf.getConfig().getInt("LobbyJump.Y");
+                int iz = conf.getConfig().getInt("LobbyJump.Z");
+                Location loc = new Location(w, ix + 0.5, iy, iz + 0.5);
                 SuperJumpMgr.SuperJumpCollTime(player, loc);
             }
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){

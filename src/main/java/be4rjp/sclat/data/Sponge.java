@@ -91,11 +91,13 @@ public class Sponge {
         }
         
         //プレイヤーが近くにいないかチェック
+        /*
         for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
             if(player.getWorld() == this.block.getWorld())
                 if(player.getLocation().distance(this.block.getLocation()) < 3)
                     return;
         }
+        */
         
         //Block reset
         List<Block> rb = PaintMgr.getCubeBlocks(block, 2);
@@ -104,16 +106,16 @@ public class Sponge {
                 if(DataMgr.getBlockDataMap().containsKey(b)){
                     PaintData data = DataMgr.getPaintDataFromBlock(b);
                     data.setTeam(this.team);
-                    match.getBlockUpdater().setBlock(b, Material.AIR);
-                    //Sclat.setBlockByNMS(b, Material.AIR, true);
+                    //match.getBlockUpdater().setBlock(b, Material.AIR);
+                    Sclat.setBlockByNMS(b, Material.AIR, true);
                     //b.setType(Material.AIR);
                 }else{
                     PaintData data = new PaintData(b);
                     data.setMatch(match);
                     data.setOrigianlType(b.getType());
                     data.setTeam(this.team);
-                    match.getBlockUpdater().setBlock(b, Material.AIR);
-                    //Sclat.setBlockByNMS(b, Material.AIR, true);
+                    //match.getBlockUpdater().setBlock(b, Material.AIR);
+                    Sclat.setBlockByNMS(b, Material.AIR, true);
                     //b.setType(Material.AIR);
                     DataMgr.setPaintDataFromBlock(b, data);
                     DataMgr.setSpongeWithBlock(b, this);
@@ -126,8 +128,8 @@ public class Sponge {
             if(b.getType().equals(Material.AIR) || b.getType().toString().contains("POWDER")){
                 PaintData data = DataMgr.getPaintDataFromBlock(b);
                 data.setTeam(this.team);
-                match.getBlockUpdater().setBlock(b, Material.getMaterial(this.team.getTeamColor().getConcrete().toString() + "_POWDER"));
-                //Sclat.setBlockByNMS(b, Material.getMaterial(this.team.getTeamColor().getConcrete().toString() + "_POWDER"), false);
+                //match.getBlockUpdater().setBlock(b, Material.getMaterial(this.team.getTeamColor().getConcrete().toString() + "_POWDER"));
+                Sclat.setBlockByNMS(b, Material.getMaterial(this.team.getTeamColor().getConcrete().toString() + "_POWDER"), false);
                 //b.setType(Material.getMaterial(this.team.getTeamColor().getConcrete().toString() + "_POWDER"));
             }
         }

@@ -7,6 +7,7 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PlayerStatusMgr;
+import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,13 +218,13 @@ public class OpenGUI {
         
         ItemStack is = new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getGlass());
         ItemMeta ism = is.getItemMeta();
-        ism.setDisplayName("§r§6リスポーン地点へジャンプ");
+        ism.setDisplayName(Main.tutorial ? "§r§6ロビーへジャンプ" : "§r§6リスポーン地点へジャンプ");
         is.setItemMeta(ism);
         Location loc = Main.lobby.clone();
         if(!conf.getConfig().getString("WorkMode").equals("Trial"))
             loc = DataMgr.getPlayerData(player).getMatchLocation().clone();
         if(loc.getWorld() == player.getWorld()){
-            if(player.getLocation().distance(loc) > 10)
+            if(player.getLocation().distance(loc) > 10 && !Tutorial.clearList.contains(player))
                 inv.setItem(0, is); 
         }
         

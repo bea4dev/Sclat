@@ -28,8 +28,8 @@ import org.bukkit.util.Vector;
  * @author Be4rJP
  */
 public class PathMgr {
-    public static void setPath(Player player, Location from, Location to, Team team){
-        BukkitRunnable path = new BukkitRunnable(){
+    public static void setPath(Player player, Location from, Location to, Path path){
+        BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             Item drop;
             int c = 0;
@@ -48,7 +48,15 @@ public class PathMgr {
                 
                 drop.setVelocity(vec);
                 
-                if(drop.getLocation().distance(from) > from.distance(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR) || DataMgr.getPlayerData(p).getTeam() != team){
+                boolean is = false;
+                if(drop.getLocation().distance(from) > from.distance(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
+                    is = true;
+                if(path.getTeam() == null)
+                    is = true;
+                else if(path.getTeam() != DataMgr.getPlayerData(p).getTeam())
+                    is = true;
+                
+                if(is){
                     DataMgr.getPlayerData(p).setIsOnPath(false);
                     drop.remove();
                     cancel();
@@ -57,7 +65,7 @@ public class PathMgr {
                 c++;
             }
         };
-        path.runTaskTimer(Main.getPlugin(), 0, 1);
+        task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
     public static void setupPath(Match m){
@@ -131,7 +139,7 @@ public class PathMgr {
                         if(team != null){
                             if(DataMgr.getPlayerData(player).isInMatch() && player.getWorld() == from.getWorld() && player.getInventory().getItemInMainHand().getType().equals(Material.AIR) && DataMgr.getPlayerData(player).getTeam() == team && !DataMgr.getPlayerData(player).getIsOnPath()){
                                 if(player.getLocation().distance(from) < 1)
-                                    setPath(player, from, to, team);
+                                    setPath(player, from, to, path1);
                             }
                         }
                     }

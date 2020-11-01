@@ -8,6 +8,7 @@ import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.StatusClient;
+import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.Blaster;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Kasa;
@@ -99,7 +100,7 @@ public class GameMgr implements Listener{
             public void run(){
                 switch(i){
                     case 0:{//----------------------------------------------------------------------------
-                        if(!conf.getConfig().getString("WorkMode").equals("Trial"))
+                        if(!conf.getConfig().getString("WorkMode").equals("Trial") && Main.type != ServerType.MATCH)
                             PlayerStatusMgr.sendHologram(player);
                     }
                     case 1:{//----------------------------------------------------------------------------
@@ -138,11 +139,7 @@ public class GameMgr implements Listener{
             Match match = DataMgr.getMatchFromId(MatchMgr.matchcount);
             data.setMatch(match);
             data.setTeam(match.getTeam0());
-            //player.setScoreboard(match.getScoreboard());
-            //match.getTeam0().getTeam().addEntry(player.getName());
-            //match.getBlockUpdater().start();
             player.teleport(Main.lobby);
-            //WeaponClassMgr.setWeaponClass(player);
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();
             joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
@@ -152,6 +149,11 @@ public class GameMgr implements Listener{
             SquidMgr.SquidShowRunnable(player);
             player.setExp(0.99F);
             player.getInventory().setItem(7, join);
+    
+            if(Main.tutorial){
+                Tutorial.setInkResetTimer(player);
+                Tutorial.clearList.add(player);
+            }
             
             BukkitRunnable delay = new BukkitRunnable(){
                 Player p = player;
@@ -163,12 +165,87 @@ public class GameMgr implements Listener{
                     ItemMeta joinmeta = join.getItemMeta();
                     joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
                     join.setItemMeta(joinmeta);
-                    player.getInventory().setItem(7, join);
+                    if(!Main.tutorial)
+                        player.getInventory().setItem(7, join);
                     player.setExp(0F);
                     SPWeaponMgr.SPWeaponRunnable(player);
                     SPWeaponMgr.ArmorRunnable(p);
                     SquidMgr.SquidShowRunnable(player);
-                    OpenGUI.openWeaponSelect(p, "Main", "null", false);
+                    if(!Main.tutorial)
+                        OpenGUI.openWeaponSelect(p, "Main", "null", false);
+                    else{
+                        player.getInventory().clear();
+                        DataMgr.getPlayerData(player).setIsInMatch(false);
+                        DataMgr.getPlayerData(player).setIsJoined(false);
+    
+    
+                        for(ArmorStand as : DataMgr.getBeaconMap().values()){
+                            if(DataMgr.getBeaconFromplayer(player) == as)
+                                as.remove();
+                        }
+                        for(ArmorStand as : DataMgr.getSprinklerMap().values()){
+                            if(DataMgr.getSprinklerFromplayer(player) == as)
+                                as.remove();
+                        }
+    
+                        BukkitRunnable delay = new BukkitRunnable(){
+                            Player p = player;
+                            @Override
+                            public void run(){
+                                DataMgr.getPlayerData(p).setIsInMatch(true);
+                                DataMgr.getPlayerData(p).setIsJoined(true);
+                                DataMgr.getPlayerData(p).setMainItemGlow(false);
+                                DataMgr.getPlayerData(p).setTick(10);
+                                WeaponClass wc = DataMgr.getWeaponClass(conf.getConfig().getString("DefaultClass"));
+                                DataMgr.getPlayerData(p).setWeaponClass(wc);
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
+                                    ArmorStandMgr.BeaconArmorStandSetup(p);
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("スプリンクラー"))
+                                    ArmorStandMgr.SprinklerArmorStandSetup(p);
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Shooter")){
+                                    Shooter.ShooterRunnable(p);
+                                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                        Shooter.ManeuverRunnable(p);
+                                        Shooter.ManeuverShootRunnable(p);
+                                    }
+                                }
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Blaster")){
+                                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsManeuver()){
+                                        Shooter.ManeuverRunnable(p);
+                                    }
+                                }
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Charger"))
+                                    Charger.ChargerRunnable(p);
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
+                                    Spinner.SpinnerRunnable(p);
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
+                                    Roller.HoldRunnable(p);
+                                    Roller.RollPaintRunnable(p);
+                                }
+            
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
+                                    Kasa.KasaRunnable(p, false);
+                                }
+            
+                                if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Camping")){
+                                    Kasa.KasaRunnable(p, true);
+                                    DataMgr.getPlayerData(p).setMainItemGlow(true);
+                                    WeaponClassMgr.setWeaponClass(p);
+                                }
+                                WeaponClassMgr.setWeaponClass(p);
+                                ItemStack join = new ItemStack(Material.CHEST);
+                                ItemMeta joinmeta = join.getItemMeta();
+                                joinmeta.setDisplayName("メインメニュー");
+                                join.setItemMeta(joinmeta);
+                                player.getInventory().setItem(7, join);
+                                player.setExp(0.99F);
+                                
+                                SPWeaponMgr.SPWeaponRunnable(player);
+                                SquidMgr.SquidShowRunnable(player);
+                            }
+                        };
+                        delay.runTaskLater(Main.getPlugin(), 15);
+                    }
                 }
             };
             delay.runTaskLater(Main.getPlugin(), 15);
@@ -429,6 +506,15 @@ public class GameMgr implements Listener{
                         break;
                     case "[ Instructions ]":
                         player.performCommand("torisetu");
+                        break;
+                    case "[ Shooter ]":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", true);
+                        break;
+                    case "[ Roller ]":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Roller", true);
+                        break;
+                    case "[ Charger ]":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Charger", true);
                         break;
                 }
             }

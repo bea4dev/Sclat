@@ -134,21 +134,21 @@ public class MatchMgr {
                             cancel();
                         }
                         if(s == 0)
-                            Sclat.sendMessage("§a試合開始まで後30秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c30§a秒", MessageType.ALL_PLAYER);
                         if(s == 10)
-                            Sclat.sendMessage("§a試合開始まで後20秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c20§a秒", MessageType.ALL_PLAYER);
                         if(s == 20)
-                            Sclat.sendMessage("§a試合開始まで後10秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c10§a秒", MessageType.ALL_PLAYER);
                         if(s == 25)
-                            Sclat.sendMessage("§a試合開始まで後5秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c5§a秒", MessageType.ALL_PLAYER);
                         if(s == 26)
-                            Sclat.sendMessage("§a試合開始まで後4秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c4§a秒", MessageType.ALL_PLAYER);
                         if(s == 27)
-                            Sclat.sendMessage("§a試合開始まで後3秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c3§a秒", MessageType.ALL_PLAYER);
                         if(s == 28)
-                            Sclat.sendMessage("§a試合開始まで後2秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c2§a秒", MessageType.ALL_PLAYER);
                         if(s == 29)
-                            Sclat.sendMessage("§a試合開始まで後1秒", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a試合開始まで後§c1§a秒", MessageType.ALL_PLAYER);
                         if(s == 30){
                             match.setCanJoin(false);
                             
@@ -177,7 +177,6 @@ public class MatchMgr {
                                     for (Integer key : treeMap.keySet())
                                         sortedMember.add(treeMap.get(key));
                                 }
-                                
                             }
                             
                             int i = 0;

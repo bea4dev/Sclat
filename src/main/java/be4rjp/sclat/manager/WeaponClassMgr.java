@@ -54,7 +54,7 @@ public class WeaponClassMgr {
         if(data.getSPGauge() == 100)
             SPWeaponMgr.setSPWeapon(player);
         
-        if(conf.getConfig().getString("WorkMode").equals("Trial")){
+        if(conf.getConfig().getString("WorkMode").equals("Trial") && !Main.tutorial){
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();
             joinmeta.setDisplayName("メインメニュー");

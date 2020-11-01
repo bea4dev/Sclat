@@ -80,8 +80,11 @@ public class ArmorStandMgr {
     
     public static void ArmorStandSetup(Player player){
         for(Entity e : player.getWorld().getEntities()){
-            if(e instanceof ArmorStand || e instanceof Snowball)
+            if(e instanceof ArmorStand || e instanceof Snowball) {
+                if(e.getCustomName() == null) continue;
+                if(e.getCustomName().equals("Path")) continue;
                 e.remove();
+            }
         }
         
         for (String name : conf.getArmorStandSettings().getConfigurationSection("ArmorStand").getKeys(false)){
