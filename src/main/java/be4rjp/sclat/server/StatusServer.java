@@ -176,6 +176,12 @@ class EchoThread extends Thread {
                             }
                             break;
                         }
+                        case "tutorial":{
+                            if (args.length == 2) {
+                                PlayerStatusMgr.setTutorialState(args[1], 1);
+                            }
+                            break;
+                        }
                     }
                 }
             }

@@ -4,6 +4,8 @@ import be4rjp.sclat.GUI.OpenGUI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 
+import be4rjp.sclat.MessageType;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentClient;
@@ -19,13 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.bukkit.Bukkit;
+
+import org.bukkit.*;
+
 import static org.bukkit.Bukkit.getServer;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -303,14 +303,31 @@ public class GameMgr implements Listener{
         SquidMgr.SquidRunnable(player);
 
         player.getInventory().clear();
-        player.teleport(Main.lobby);
+        if(Main.type != ServerType.LOBBY) {
+            player.teleport(Main.lobby);
+        }else{
+            if(PlayerStatusMgr.getTutorialState(player.getUniqueId().toString()) == 1) {
+                String WorldName = conf.getConfig().getString("Tutorial.WorldName");
+                World w = Bukkit.getWorld(WorldName);
+                int ix = conf.getConfig().getInt("Tutorial.X");
+                int iy = conf.getConfig().getInt("Tutorial.Y");
+                int iz = conf.getConfig().getInt("Tutorial.Z");
+                int iyaw = conf.getConfig().getInt("Tutorial.Yaw");
+                Location tutorial = new Location(w, ix + 0.5, iy, iz + 0.5);
+                tutorial.setYaw(iyaw);
+                player.teleport(tutorial);
+            }else
+                player.teleport(Main.lobby);
+        }
         if(Main.type != ServerType.MATCH) {
-            ItemStack join = new ItemStack(Material.CHEST);
-            ItemMeta joinmeta = join.getItemMeta();
-            joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
-            join.setItemMeta(joinmeta);
-            player.getInventory().clear();
-            player.getInventory().setItem(0, join);
+            if(PlayerStatusMgr.getTutorialState(player.getUniqueId().toString()) == 2) {
+                ItemStack join = new ItemStack(Material.CHEST);
+                ItemMeta joinmeta = join.getItemMeta();
+                joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
+                join.setItemMeta(joinmeta);
+                player.getInventory().clear();
+                player.getInventory().setItem(0, join);
+            }
         }else{
             ItemStack b = new ItemStack(Material.BARRIER);
             ItemMeta bmeta = b.getItemMeta();
@@ -336,6 +353,21 @@ public class GameMgr implements Listener{
         
         if(!DataMgr.pul.contains(uuid))
             DataMgr.pul.add(uuid);
+        
+        if(Main.type == ServerType.LOBBY){
+            if(PlayerStatusMgr.getTutorialState(player.getUniqueId().toString()) == 0){
+                player.sendTitle("", "チュートリアルサーバーへ転送中...", 0, 20, 0);
+                Sclat.sendMessage("§bチュートリアルサーバーへ転送中...", MessageType.PLAYER, player);
+                BukkitRunnable run = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
+                        DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
+                    }
+                };
+                run.runTaskLater(Main.getPlugin(), 20);
+            }
+        }
         
         //player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
     }
@@ -508,13 +540,13 @@ public class GameMgr implements Listener{
                         player.performCommand("torisetu");
                         break;
                     case "[ Shooter ]":
-                        OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", false);
                         break;
                     case "[ Roller ]":
-                        OpenGUI.openWeaponSelect(player, "Weapon", "Roller", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Roller", false);
                         break;
                     case "[ Charger ]":
-                        OpenGUI.openWeaponSelect(player, "Weapon", "Charger", true);
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Charger", false);
                         break;
                 }
             }
@@ -537,15 +569,17 @@ public class GameMgr implements Listener{
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = (Player) event.getPlayer();
         PlayerData data = DataMgr.getPlayerData(player);
-        if(DataMgr.joinedList.contains(player)){
-            DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
-            if(data.getMatch().canJoin())
-                data.getMatch().subJoinedPlayerCount();
-            
-            Team team = data.getTeam();
-            team.subtractRateTotal(PlayerStatusMgr.getRank(player));
-            
-            DataMgr.joinedList.remove(player);
+        if(Main.type == ServerType.MATCH) {
+            if (DataMgr.joinedList.contains(player)) {
+                DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
+                if (data.getMatch().canJoin())
+                    data.getMatch().subJoinedPlayerCount();
+        
+                Team team = data.getTeam();
+                team.subtractRateTotal(PlayerStatusMgr.getRank(player));
+        
+                DataMgr.joinedList.remove(player);
+            }
         }
         
         String server = DataMgr.getPlayerData(player).getServername();

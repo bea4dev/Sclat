@@ -225,7 +225,8 @@ public class OpenGUI {
             loc = DataMgr.getPlayerData(player).getMatchLocation().clone();
         if(loc.getWorld() == player.getWorld()){
             if(player.getLocation().distance(loc) > 10 && !Tutorial.clearList.contains(player))
-                inv.setItem(0, is); 
+                if(!Main.tutorial)
+                    inv.setItem(0, is);
         }
         
         int slotnum = 1;

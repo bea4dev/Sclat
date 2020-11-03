@@ -44,25 +44,27 @@ public class PlayerStatusMgr {
     
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
-            List<String> wlist = new ArrayList<String>();
-            wlist.add(conf.getConfig().getString("DefaultClass"));
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
-            List<Integer> glist = new ArrayList<Integer>();
-            glist.add(0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".GearList", glist);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Gear", 0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Kill", 0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Paint", 0);
-            conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".EquiptClass", conf.getConfig().getString("DefaultClass"));
-    
-            if(Main.type == ServerType.LOBBY) {
-                BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
-                DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
-            }
+            setDefaultStatus(player);
+        }else if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString() + ".Money")){
+            setDefaultStatus(player);
         }
+    }
+    
+    public static void setDefaultStatus(Player player){
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
+        List<String> wlist = new ArrayList<String>();
+        wlist.add(conf.getConfig().getString("DefaultClass"));
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".WeaponClass", wlist);
+        List<Integer> glist = new ArrayList<Integer>();
+        glist.add(0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".GearList", glist);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Gear", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Kill", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Paint", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".EquiptClass", conf.getConfig().getString("DefaultClass"));
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Tutorial", 0);
     }
     
     public static void sendHologram(Player player){
@@ -151,6 +153,10 @@ public class PlayerStatusMgr {
     public static void setEquiptClass(Player player, String name){
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".EquiptClass", name);
+    }
+    
+    public static void setTutorialState(String uuid, int g){
+        conf.getPlayerStatus().set("Status." + uuid + ".Tutorial", g);
     }
     
     public static void addWeapon(Player player, String wname){
@@ -260,5 +266,9 @@ public class PlayerStatusMgr {
     public static String getEquiptClass(Player player){
         String uuid = player.getUniqueId().toString();
         return conf.getPlayerStatus().getString("Status." + uuid + ".EquiptClass");
+    }
+    
+    public static int getTutorialState(String uuid){
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Tutorial");
     }
 }

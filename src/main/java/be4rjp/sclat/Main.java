@@ -298,6 +298,12 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             Tutorial.setupTutorial(DataMgr.getMatchFromId(MatchMgr.matchcount));
             Tutorial.clearRegionRunnable();
             Tutorial.lobbyRegionRunnable();
+            Tutorial.trainLightRunnable();
+            Tutorial.weaponRemoveRunnable();
+        }else{
+            if(type == ServerType.LOBBY){
+                Tutorial.lobbySetStatusRunnable();
+            }
         }
         //-------------------------------------------------------------------
     }
