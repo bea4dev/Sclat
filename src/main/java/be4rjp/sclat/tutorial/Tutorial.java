@@ -37,6 +37,7 @@ public class Tutorial {
     
     public static BossBar bar;
     public static List<Player> clearList = new ArrayList<>();
+    public static int clearPlayerCount = 0;
     
     public static void setupTutorial(Match match){
         final int time = Main.conf.getConfig().getInt("InkResetPeriod");
@@ -50,12 +51,16 @@ public class Tutorial {
             int i = 0;
             @Override
             public void run() {
-                trainLightRunRunnable();
+                if(clearPlayerCount >= 1)
+                    trainLightRunRunnable();
                 if(i % 20 == 0){
                     for(Entity as : Main.lobby.getWorld().getEntities()){
-                        if(as instanceof ArmorStand)
-                            if(as.getCustomName() == null)
+                        if(as instanceof ArmorStand) {
+                            if (as.getCustomName() == null)
                                 as.remove();
+                            else if (as.getCustomName().equals(""))
+                                as.remove();
+                        }
                     }
                 }
                 i++;
@@ -100,13 +105,13 @@ public class Tutorial {
                 
                 as.setVelocity(vec);
                 
-                if(as.isDead() || as.isOnGround() || i == 100) {
+                if(as.isDead() || as.isOnGround() || i == 100 || clearPlayerCount ==0) {
                     as.remove();
                     cancel();
                 }
                 
                 if(as.getWorld() == to.getWorld()){
-                    if(as.getLocation().distance(to) <= 5){
+                    if(as.getLocation().distance(to) <= 3){
                         as.remove();
                         cancel();
                     }
@@ -151,13 +156,13 @@ public class Tutorial {
             
                 as.setVelocity(vec);
             
-                if(as.isDead() || as.isOnGround() || i == 100) {
+                if(as.isDead() || as.isOnGround() || i == 100 || clearPlayerCount ==0) {
                     as.remove();
                     cancel();
                 }
             
                 if(as.getWorld() == to.getWorld()){
-                    if(as.getLocation().distance(to) <= 5){
+                    if(as.getLocation().distance(to) <= 3){
                         as.remove();
                         cancel();
                     }
@@ -282,6 +287,8 @@ public class Tutorial {
     
     public static void sendPlayerRunnable(Player player){
     
+        clearPlayerCount++;
+        
         List<String> commands = new ArrayList<>();
         commands.add("tutorial " + player.getUniqueId().toString());
         commands.add("stop");
@@ -295,9 +302,11 @@ public class Tutorial {
             int i = 0;
             @Override
             public void run() {
-                if(!player.isOnline())
+                if(!player.isOnline()) {
+                    clearPlayerCount--;
                     cancel();
-                player.playSound(player.getLocation(), Sound.ENTITY_MINECART_INSIDE, 0.8F, 1F);
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_MINECART_INSIDE, 0.7F, 1F);
                 if(i == 4){
                     BungeeCordMgr.PlayerSendServer(player, "sclat");
                     DataMgr.getPlayerData(player).setServerName("Sclat");

@@ -1,5 +1,6 @@
 package be4rjp.sclat.manager;
 
+import be4rjp.sclat.Main;
 import be4rjp.sclat.data.Color;
 import be4rjp.sclat.data.DataMgr;
 import org.bukkit.ChatColor;
@@ -25,8 +26,10 @@ public class ColorMgr {
                 bh.setItemMeta(bhm);
             blue.setBougu(bh);
             blue.setChatColor(ChatColor.BLUE);
-        DataMgr.setColor("Blue", blue);
-        DataMgr.addColorList(blue);
+        if(Main.colors.size() == 0 || Main.colors.contains("Blue")) {
+            DataMgr.setColor("Blue", blue);
+            DataMgr.addColorList(blue);
+        }
             
         Color aqua = new Color("Aqua");
             aqua.setWool(Material.LIGHT_BLUE_WOOL);
@@ -40,8 +43,10 @@ public class ColorMgr {
                 ah.setItemMeta(ahm);
             aqua.setBougu(ah);
             aqua.setChatColor(ChatColor.AQUA);
-        DataMgr.setColor("Aqua", aqua);
-        DataMgr.addColorList(aqua);
+        if(Main.colors.size() == 0 || Main.colors.contains("Aqua")) {
+            DataMgr.setColor("Aqua", aqua);
+            DataMgr.addColorList(aqua);
+        }
         
         Color orange = new Color("Orange");
             orange.setWool(Material.ORANGE_WOOL);
@@ -55,8 +60,10 @@ public class ColorMgr {
                 oh.setItemMeta(ohm);
             orange.setBougu(oh);
             orange.setChatColor(ChatColor.GOLD);
-        DataMgr.setColor("Orange", orange);
-        DataMgr.addColorList(orange);
+        if(Main.colors.size() == 0 || Main.colors.contains("Orange")) {
+            DataMgr.setColor("Orange", orange);
+            DataMgr.addColorList(orange);
+        }
         
         Color lime = new Color("Lime");
             lime.setWool(Material.LIME_WOOL);
@@ -70,8 +77,10 @@ public class ColorMgr {
                 lh.setItemMeta(lhm);
             lime.setBougu(lh);
             lime.setChatColor(ChatColor.GREEN);
-        DataMgr.setColor("Lime", lime);
-        DataMgr.addColorList(lime);
+        if(Main.colors.size() == 0 || Main.colors.contains("Lime")) {
+            DataMgr.setColor("Lime", lime);
+            DataMgr.addColorList(lime);
+        }
         
         Color y = new Color("Yellow");
             y.setWool(Material.YELLOW_WOOL);
@@ -85,7 +94,9 @@ public class ColorMgr {
                 yh.setItemMeta(yhm);
             y.setBougu(yh);
             y.setChatColor(ChatColor.YELLOW);
-        DataMgr.setColor("Yellow", y);
-        DataMgr.addColorList(y);
+        if(Main.colors.size() == 0 || Main.colors.contains("Yellow")) {
+            DataMgr.setColor("Yellow", y);
+            DataMgr.addColorList(y);
+        }
     }
 }

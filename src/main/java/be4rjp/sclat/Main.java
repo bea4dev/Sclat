@@ -47,6 +47,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static List<Player> pdspList;
     
+    public static List<String> colors = new ArrayList<>();
+    
     public static boolean tutorial = false;
     
     public static ServerType type = ServerType.NORMAL;
@@ -102,6 +104,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
         if(conf.getConfig().contains("Tutorial"))
             tutorial = conf.getConfig().getBoolean("Tutorial");
+        if(conf.getConfig().contains("Colors"))
+            colors = conf.getConfig().getStringList("Colors");
         //-------------------------------------------------------------------
         
         

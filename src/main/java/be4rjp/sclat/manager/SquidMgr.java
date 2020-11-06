@@ -96,9 +96,24 @@ public class SquidMgr {
                             p.removePotionEffect(PotionEffectType.POISON);
                     }
                 }else{
-                    if(p.hasPotionEffect(PotionEffectType.POISON))
+                    if(Main.tutorial && down.getType().toString().contains("WOOL")){
+                        if(down.getType() != data.getTeam().getTeamColor().getWool()){
+                            if(data.getArmor() <= 0 && !data.getIsPoisonCoolTime()){
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
+                            }
+                        }
+                    }else if(p.hasPotionEffect(PotionEffectType.POISON))
                         p.removePotionEffect(PotionEffectType.POISON);
                 }
+                
+                /*
+                if(Main.tutorial && down.getType().toString().contains("WOOL")){
+                    if(down.getType() != data.getTeam().getTeamColor().getWool()){
+                        if(data.getArmor() <= 0 && !data.getIsPoisonCoolTime()){
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 200, 3));
+                        }
+                    }
+                }*/
                 
                 if(data.getIsPoisonCoolTime())
                     if(p.hasPotionEffect(PotionEffectType.POISON))

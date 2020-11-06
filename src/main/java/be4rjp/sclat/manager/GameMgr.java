@@ -536,6 +536,10 @@ public class GameMgr implements Listener{
                         BungeeCordMgr.PlayerSendServer(player, "sclat");
                         DataMgr.getPlayerData(player).setServerName("Sclat");
                         break;
+                    case "[ Tutorial ]":
+                        BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
+                        DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
+                        break;
                     case "[ Instructions ]":
                         player.performCommand("torisetu");
                         break;
