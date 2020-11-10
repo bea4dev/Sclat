@@ -82,6 +82,12 @@ public class ClickListener implements Listener{
                 OpenGUI.equipmentGUI(player, true);
                 break;
             case"塗りをリセット / RESET INK":
+                if(MatchMgr.canRollback) {
+                    Sclat.sendMessage("§a§lインクがリセットされました！", MessageType.ALL_PLAYER);
+                    Sclat.sendMessage("§a§l3分後に再リセットできるようになります", MessageType.ALL_PLAYER);
+                    for(Player op : Main.getPlugin().getServer().getOnlinePlayers())
+                        Sclat.playGameSound(op, SoundType.SUCCESS);
+                }
                 Match match = DataMgr.getPlayerData(player).getMatch();
                 match.getBlockUpdater().stop();
                 MatchMgr.RollBack();
@@ -91,10 +97,6 @@ public class ClickListener implements Listener{
                     bur.setMaxBlockInOneTick(conf.getConfig().getInt("BlockUpdateRate"));
                 bur.start();
                 match.setBlockUpdater(bur);
-                Sclat.sendMessage("§a§lインクがリセットされました！", MessageType.ALL_PLAYER);
-                Sclat.sendMessage("§a§l3分後に再リセットできるようになります", MessageType.ALL_PLAYER);
-                for(Player op : Main.getPlugin().getServer().getOnlinePlayers())
-                    Sclat.playGameSound(op, SoundType.SUCCESS);
                 List<Block> blocks = new ArrayList<Block>();
                 Block b0 = Main.lobby.getBlock().getRelative(BlockFace.DOWN);
                 blocks.add(b0);
@@ -387,6 +389,11 @@ public class ClickListener implements Listener{
                 SuperJumpMgr.SuperJumpCollTime(player, loc);
             }
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                if(p.getGameMode() == GameMode.SPECTATOR){
+                    Sclat.sendMessage("§c今そのプレイヤーにはジャンプできない！", MessageType.PLAYER, player);
+                    Sclat.playGameSound(player, SoundType.ERROR);
+                    continue;
+                }
                 if (p.getName().equals(name)){
                     if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))
                         SuperJumpMgr.SuperJumpCollTime(player, p.getLocation());

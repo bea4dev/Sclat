@@ -238,7 +238,7 @@ public class Shooter {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
                         if(o_player.getWorld() == inkball.getWorld())
                             if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
                 }
                 
                 if(i >= tick && !addedFallVec){

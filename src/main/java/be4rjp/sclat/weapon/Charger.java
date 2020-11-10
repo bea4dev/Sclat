@@ -53,6 +53,12 @@ public class Charger {
                 
                 data.setTick(data.getTick() + 1);
                 
+                if(data.getIsUsingMM() || data.getIsUsingJetPack() || data.getIsUsingTyakuti() || data.getIsUsingSS()){
+                    charge = 0;
+                    data.setTick(7);
+                    return;
+                }
+                
                 if(keeping == data.getWeaponClass().getMainWeapon().getChargeKeepingTime() && data.getWeaponClass().getMainWeapon().getCanChargeKeep() && data.getSettings().doChargeKeep())
                     charge = 0;
                 

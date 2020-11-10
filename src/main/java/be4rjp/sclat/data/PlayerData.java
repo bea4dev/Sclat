@@ -55,6 +55,8 @@ public class PlayerData {
     private boolean amehurashi = false;
     private boolean isUsingTyakuti = false;
     private int trapCount = 0;
+    private Location playerGroundLocation;
+    private boolean isUsingSS = false;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -147,6 +149,11 @@ public class PlayerData {
     
     public int getTrapCount(){return this.trapCount;}
     
+    public Location getPlayerGroundLocation(){return this.playerGroundLocation;}
+    
+    public boolean getIsUsingSS(){return this.isUsingSS;}
+    
+    
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
     
@@ -228,6 +235,10 @@ public class PlayerData {
     
     public void setIsUsingTyakuti(boolean is){this.isUsingTyakuti = is;}
     
+    public void setPlayerGroundLocation(Location loc){this.playerGroundLocation = loc;}
+    
+    public void setIsUsingSS(boolean is){this.isUsingSS = is;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -272,6 +283,7 @@ public class PlayerData {
         this.amehurashi = false;
         this.isUsingTyakuti = false;
         this.trapCount = 0;
+        this.isUsingSS = false;
     }
     
 }

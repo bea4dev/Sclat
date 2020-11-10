@@ -29,6 +29,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
@@ -54,7 +55,6 @@ public class JetPack {
             Location ol = player.getLocation();
             int i = 0;
             int id = 0;
-            Vector sv = player.getVelocity();
             Location btl = player.getLocation();
             ArmorStand ru;
             ArmorStand rd;
@@ -93,12 +93,13 @@ public class JetPack {
                 }
 
                 //p.setWalkSpeed(0.1F);
-                p.setFlySpeed(0.035F);
+                p.setFlySpeed(0.02F);
 
                 Vector pv = p.getEyeLocation().getDirection();
                 Vector vec1 = new Vector(pv.getX(), 0, pv.getZ()).normalize().multiply(-0.2);
                 Location pl = p.getEyeLocation().add(0, -1.3, 0);
-                Location loc1 = pl.add(vec1.getX() + sv.getX(), sv.getY() * 0.8, vec1.getZ() + sv.getZ());
+                //Location loc1 = pl.add(vec1.getX() + sv.getX(), sv.getY() * 0.8, vec1.getZ() + sv.getZ());
+                Location loc1 = pl.add(vec1.getX(), 0, vec1.getZ());
                 Location mul = loc1.clone().add(0, -0.5, 0);
                 Location mdl = loc1.clone().add(0, -0.9, 0);
 
@@ -116,6 +117,35 @@ public class JetPack {
                 PaintMgr.PaintHightestBlock(loc3, player, false, true);
 
                 //effect
+                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                Location position = loc2.clone().add(0, 0.1, 0);
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        continue;
+                    if(o_player.getWorld() == position.getWorld()){
+                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            for(int i = 0; i <= 10; i++) {
+                                double random = 0.015;
+                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                                //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
+                            }
+                        }
+                    }
+                }
+                position = loc3.clone().add(0, 0.1, 0);
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        continue;
+                    if(o_player.getWorld() == position.getWorld()){
+                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            for(int i = 0; i <= 10; i++) {
+                                double random = 0.015;
+                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                            }
+                        }
+                    }
+                }
+                /*
                 RayTrace rayTrace1 = new RayTrace(loc2.clone().add(0, -0.5, 0).toVector(), new Vector(0, -1, 0));
                 ArrayList<Vector> positions = rayTrace1.traverse(yh, 0.5);
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
@@ -126,7 +156,7 @@ public class JetPack {
                             continue;
                             if(o_player.getWorld() == position.getWorld()){
                                 if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 1, 0, 0.5, 0, 100, bd);
+                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -1, 0, 10, bd);
                                 }
                             }
                     }
@@ -141,11 +171,11 @@ public class JetPack {
                             continue;
                             if(o_player.getWorld() == position.getWorld()){
                                 if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 1, 0, 0.5, 0, 100, bd);
+                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -1, 0, 10, bd);
                                 }
                             }
                     }
-                }
+                }*/
 
 
                 if(i == 0){
@@ -212,7 +242,8 @@ public class JetPack {
                     }
                 }
 
-                mu.teleport(mul);
+                //mu.teleport(mul);
+                ((CraftArmorStand)mu).getHandle().setPositionRotation(mul.getX(), mul.getY(), mul.getZ(), (float)mul.getYaw(), 0);
                 md.teleport(mdl);
                 ru.teleport(rul);
                 rd.teleport(rdl);
@@ -224,7 +255,6 @@ public class JetPack {
                 }
 
                 Location atl = p.getLocation();
-                sv = new Vector(atl.getX() - btl.getX(), atl.getY() - btl.getY(), atl.getZ() - btl.getZ()).multiply(2.8);
                 //p.sendMessage(String.valueOf(sv.getX() + ", " + sv.getY() + ", " + sv.getZ()));
                 btl = p.getLocation();
 

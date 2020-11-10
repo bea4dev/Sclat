@@ -3,6 +3,7 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.SplashShieldData;
@@ -42,6 +43,9 @@ import org.bukkit.util.Vector;
 public class SnowballListener implements Listener {
     @EventHandler
     public void onBlockHit(ProjectileHitEvent event){
+    
+        if(Main.type == ServerType.LOBBY) return;
+        
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getEntity())){
             if(event.getEntity().getCustomName() == null){
                 DataMgr.setSnowballIsHit((Snowball)event.getEntity(), true);
@@ -167,6 +171,9 @@ public class SnowballListener implements Listener {
     
     @EventHandler
     public void onEntityHit(EntityDamageByEntityEvent event) {
+    
+        if(Main.type == ServerType.LOBBY) return;
+        
         event.setCancelled(true);
         
         if(!(event.getDamager() instanceof Projectile))

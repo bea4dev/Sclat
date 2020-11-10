@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
@@ -232,8 +233,9 @@ public class OpenGUI {
         int slotnum = 1;
         
         for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+            if(p.getGameMode() == GameMode.SPECTATOR) continue;
             if(DataMgr.getPlayerData(p).getTeam().getID() == DataMgr.getPlayerData(player).getTeam().getID() && p.getWorld() == player.getWorld() && p != player){
-                if(p.getLocation().distance(player.getLocation()) > 10 && DataMgr.getPlayerData(p).getPlayerHead() != null){
+                if(DataMgr.getPlayerData(p).getPlayerGroundLocation().distance(player.getLocation()) > 10 && DataMgr.getPlayerData(p).getPlayerHead() != null){
                     if (slotnum <= 17){
                         ItemStack head = CraftItemStack.asBukkitCopy(DataMgr.getPlayerData(p).getPlayerHead()).clone();
                         ItemMeta headM = head.getItemMeta();

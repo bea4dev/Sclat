@@ -41,6 +41,7 @@ public class SuperShot {
     
     public static void setSuperShot(Player player){
         DataMgr.getPlayerData(player).setIsUsingSP(true);
+        DataMgr.getPlayerData(player).setIsUsingSS(true);
         SPWeaponMgr.setSPCoolTimeAnimation(player, 120);
         
         BukkitRunnable it = new BukkitRunnable() {
@@ -70,6 +71,7 @@ public class SuperShot {
             public void run() {
                 if(DataMgr.getPlayerData(p).isInMatch()){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
+                    DataMgr.getPlayerData(p).setIsUsingSS(false);
                     player.getInventory().clear();
                     WeaponClassMgr.setWeaponClass(p);
                 }

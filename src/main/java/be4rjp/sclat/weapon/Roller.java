@@ -49,7 +49,7 @@ public class Roller {
                     return;
                 }
                 
-                if(data.getTick() >= 5 && data.isInMatch()){
+                if(data.getTick() >= 6 && data.isInMatch()){
                     data.setTick(7);
                     data.setIsHolding(false);
                     data.setCanPaint(false);
@@ -143,8 +143,6 @@ public class Roller {
                         }
 
                         //法線ベクトルでロール部分の取得
-
-
                         RayTrace rayTrace1 = new RayTrace(front.toVector(), vec1);
                         ArrayList<Vector> positions1 = rayTrace1.traverse(data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.5);
                         loop : for(int i = 0; i < positions1.size();i++){
@@ -293,30 +291,32 @@ public class Roller {
                     cancel();
                     return;
                 }
+                data.setCanRollerShoot(true);
                 if(!p.getGameMode().equals(GameMode.ADVENTURE) || p.getInventory().getItemInMainHand().getItemMeta().equals(Material.AIR))
                     return;
                 if(player.getExp() >= data.getWeaponClass().getMainWeapon().getNeedInk())
                     p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 1F, 1F);
                 else
                     return;
-                if(data.getCanRollerShoot()){
-                    data.setCanRollerShoot(false);
-                    Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
-                    final double random = data.getWeaponClass().getMainWeapon().getHudeRandom();
-                    vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
-                    for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
-                        if(data.getWeaponClass().getMainWeapon().getIsHude())
-                            Roller.Shoot(p, vec);
-                        else
-                            Roller.Shoot(p, null);
-                    }
-                    ShootRunnable(p);
-                    data.setCanPaint(true);
+                Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
+                final double random = data.getWeaponClass().getMainWeapon().getHudeRandom();
+                vec.add(new Vector(Math.random() * random - random/2, Math.random() * random / 4 - random/8, Math.random() * random - random/2));
+                for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
+                    if(data.getWeaponClass().getMainWeapon().getIsHude())
+                        Roller.Shoot(p, vec);
+                    else
+                        Roller.Shoot(p, null);
                 }
+                //ShootRunnable(p);
+                data.setCanPaint(true);
+                
             }
         
         };
-        task.runTaskLater(Main.getPlugin(), pdata.getWeaponClass().getMainWeapon().getShootTick());
+        if(pdata.getCanRollerShoot()) {
+            task.runTaskLater(Main.getPlugin(), pdata.getWeaponClass().getMainWeapon().getShootTick());
+            pdata.setCanRollerShoot(false);
+        }
     }
     
     

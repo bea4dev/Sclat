@@ -68,6 +68,10 @@ public class SquidMgr {
                     return;
                 }
                 
+                //プレイヤーが最後に立っていた地面を記録する
+                if(p.isOnGround())
+                    data.setPlayerGroundLocation(p.getLocation());
+                
                 //Sponge
                 Location pl = p.getLocation().add(0, 0.5, 0);
                 Block b1 = pl.getBlock();

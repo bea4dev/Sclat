@@ -256,6 +256,10 @@ public class MultiMissile {
                         PlayerConnection connection = ((CraftPlayer) o_player).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutEntityDestroy(ball.getEntityId()));
                     }
+                    if(t instanceof Player){
+                        if(DataMgr.getPlayerData((Player)t).isInMatch())
+                            tl = DataMgr.getPlayerData((Player)t).getPlayerGroundLocation();
+                    }
                     DataMgr.setSnowballIsHit(ball, false);
                 }
                 
@@ -280,8 +284,8 @@ public class MultiMissile {
                     if(((Player)t).getGameMode().equals(GameMode.SPECTATOR) || !((Player)t).isOnline())
                         reached = true;
                 
-                if(!reached)
-                    tl = t.getLocation();
+                //if(!reached)
+                    //tl = t.getLocation();
                 
                 if(!reached)
                     drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));

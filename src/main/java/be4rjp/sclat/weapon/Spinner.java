@@ -43,6 +43,12 @@ public class Spinner {
                 
                 if(keeping == data.getWeaponClass().getMainWeapon().getChargeKeepingTime() && data.getWeaponClass().getMainWeapon().getCanChargeKeep() && data.getSettings().doChargeKeep())
                     charge = 0;
+    
+                if(data.getIsUsingMM() || data.getIsUsingJetPack() || data.getIsUsingTyakuti() || data.getIsUsingSS()){
+                    charge = 0;
+                    data.setTick(7);
+                    return;
+                }
                 
                 if(data.getTick() <= 5 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
@@ -106,6 +112,10 @@ public class Spinner {
                     DataMgr.getPlayerData(p).setCanCharge(true);
                     cancel();
                 }
+                PlayerData data = DataMgr.getPlayerData(p);
+                if(data.getIsUsingMM() || data.getIsUsingJetPack() || data.getIsUsingTyakuti() || data.getIsUsingSS()){
+                    cancel();
+                }
                 Spinner.Shoot(p, (int)(charge / DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getChargeRatio()));
                 c++;
             }
@@ -155,7 +165,7 @@ public class Spinner {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
                                 if(o_player.getWorld() == inkball.getWorld())
                                     if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
                         }
                         
                         if(i >= tick && !addedFallVec){

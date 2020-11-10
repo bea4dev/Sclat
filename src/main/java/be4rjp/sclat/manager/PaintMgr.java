@@ -4,6 +4,7 @@ package be4rjp.sclat.manager;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
 import be4rjp.sclat.data.Match;
@@ -28,7 +29,10 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @author Be4rJP
  */
 public class PaintMgr {
-    public static void Paint(Location location, Player player, boolean sphere){  
+    public static void Paint(Location location, Player player, boolean sphere){
+        
+        if(Main.type == ServerType.LOBBY) return;
+        
         be4rjp.sclat.data.MainWeapon mw = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon();
         List<Block> blocks = new ArrayList<Block>();
         blocks.add(location.getBlock());

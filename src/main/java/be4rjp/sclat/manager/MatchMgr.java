@@ -116,8 +116,10 @@ public class MatchMgr {
             
             int startPlayerCount = conf.getConfig().getInt("StartPlayerCount");
             
-            if(match.getJoinedPlayerCount() < startPlayerCount)
-                Sclat.sendMessage("§a人数が足りないため試合を開始することができませんあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
+            if(match.getJoinedPlayerCount() < startPlayerCount) {
+                Sclat.sendMessage("§a人数が足りないため試合を開始することができません", MessageType.ALL_PLAYER);
+                Sclat.sendMessage("§aあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
+            }
             
             if(match.getJoinedPlayerCount() == startPlayerCount && !match.getIsStarted() && !match.isStartedCount()){
                 match.setIsStarted(true);
@@ -128,7 +130,8 @@ public class MatchMgr {
                     @Override
                     public void run(){
                         if(match.getJoinedPlayerCount() < startPlayerCount){
-                            Sclat.sendMessage("§a人数が足りないため試合を開始することができませんあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§a人数が足りないため試合を開始することができません", MessageType.ALL_PLAYER);
+                            Sclat.sendMessage("§aあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
                             match.setIsStartedCount(false);
                             match.setIsStarted(false);
                             cancel();
@@ -350,7 +353,7 @@ public class MatchMgr {
     }
     
     public static void RollBack(){
-        if(!canRollback) return;
+        if(!canRollback && conf.getConfig().getString("WorkMode").equals("Trial")) return;
         for(PaintData data : DataMgr.getBlockDataMap().values()){
             data.getBlock().setType(data.getOriginalType());
             if(data.getBlockData() != null)
