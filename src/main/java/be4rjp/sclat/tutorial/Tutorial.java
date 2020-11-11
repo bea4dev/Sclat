@@ -296,7 +296,7 @@ public class Tutorial {
                 conf.getConfig().getInt("StatusShare.Port"), commands);
         sc.startClient();
         
-        player.sendTitle("", "§7ステータスを送信中...", 10, 40, 10);
+        player.sendTitle("", "§7ロビーへ転送中...", 10, 40, 10);
         
         BukkitRunnable task = new BukkitRunnable() {
             int i = 0;

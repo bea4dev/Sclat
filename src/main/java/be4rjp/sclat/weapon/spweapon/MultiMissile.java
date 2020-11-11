@@ -2,6 +2,7 @@
 package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -306,14 +307,7 @@ public class MultiMissile {
                     s.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                     
                     //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 25);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                            for(Location loc : s_locs){
-                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                            }
-                        }
-                    }
+                    Sclat.createInkExplosionEffect(drop.getLocation(), maxDist, 25, s);
                     
                     //塗る
                     for(int i = 0; i <= maxDist; i++){

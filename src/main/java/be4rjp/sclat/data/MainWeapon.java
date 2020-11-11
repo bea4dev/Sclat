@@ -43,6 +43,7 @@ public class MainWeapon {
     private boolean hanbunCharge = false;
     private double SPRate = 1.0;
     private int maxRandomCount = 1;
+    private int level = 0;
     
     
     
@@ -118,6 +119,8 @@ public class MainWeapon {
     
     public int getMaxRandomCount(){return this.maxRandomCount;}
     
+    public int getLevel(){return this.level;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -188,5 +191,7 @@ public class MainWeapon {
     public void setSPRate(double rate){this.SPRate = rate;}
     
     public void setMaxRandomCount(int count){this.maxRandomCount = count;}
+    
+    public void setLevel(int level){this.level = level;}
     
 }

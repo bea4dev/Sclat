@@ -42,6 +42,9 @@ public class EquipmentServerManager {
                                 case "rank":
                                     PlayerStatusMgr.setRank(args[3], Integer.parseInt(args[2]));
                                     break;
+                                case "lv":
+                                    PlayerStatusMgr.setLv(args[3], Integer.parseInt(args[2]));
+                                    break;
                             }
                         }
                     }

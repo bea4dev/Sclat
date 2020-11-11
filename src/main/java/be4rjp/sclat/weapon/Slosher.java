@@ -56,6 +56,9 @@ public class Slosher {
     }
     
     public static void Shoot(Player player, Vector v){
+    
+        if(player.getGameMode() == GameMode.SPECTATOR) return;
+        
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);

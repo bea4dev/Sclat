@@ -3,6 +3,7 @@ package be4rjp.sclat.data;
 import net.minecraft.server.v1_13_R2.ItemStack;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -57,6 +58,7 @@ public class PlayerData {
     private int trapCount = 0;
     private Location playerGroundLocation;
     private boolean isUsingSS = false;
+    private Vector vehicleVector = new Vector(0, 0, 0);
 
     
     public PlayerData(Player player){this.player = player;}
@@ -153,6 +155,8 @@ public class PlayerData {
     
     public boolean getIsUsingSS(){return this.isUsingSS;}
     
+    public Vector getVehicleVector(){return this.vehicleVector;}
+    
     
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
@@ -239,6 +243,8 @@ public class PlayerData {
     
     public void setIsUsingSS(boolean is){this.isUsingSS = is;}
     
+    public void setVehicleVector(Vector vec){this.vehicleVector = vec;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -284,6 +290,7 @@ public class PlayerData {
         this.isUsingTyakuti = false;
         this.trapCount = 0;
         this.isUsingSS = false;
+        this.vehicleVector = new Vector(0, 0, 0);
     }
     
 }

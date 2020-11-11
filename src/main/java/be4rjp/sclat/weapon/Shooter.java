@@ -9,11 +9,8 @@ import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import java.util.Random;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -160,6 +157,9 @@ public class Shooter {
     }
     
     public static void Shoot(Player player, boolean slided, boolean sound, boolean maxRandom){
+        
+        if(player.getGameMode() == GameMode.SPECTATOR) return;
+        
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);

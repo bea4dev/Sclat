@@ -348,12 +348,28 @@ public class OpenGUI {
                     if (slotnum <= 52 && equals){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
-                                shooter.setItem(slotnum, item);
+                                if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getLevel() > PlayerStatusMgr.getLv(player)){
+                                    ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                                    ItemMeta gmeta = glass.getItemMeta();
+                                    gmeta.setDisplayName("§6レベル§c" + DataMgr.getWeaponClass(ClassName).getMainWeapon().getLevel() + "§6で解禁");
+                                    glass.setItemMeta(gmeta);
+                                    shooter.setItem(slotnum, glass);
+                                }else{
+                                    shooter.setItem(slotnum, item);
+                                }
                                 slotnum++;
                             }
                         }else{
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0 || conf.getConfig().getString("WorkMode").equals("Trial")){
-                                shooter.setItem(slotnum, item);
+                                if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getLevel() > PlayerStatusMgr.getLv(player)){
+                                    ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                                    ItemMeta gmeta = glass.getItemMeta();
+                                    gmeta.setDisplayName("§6レベル§c" + DataMgr.getWeaponClass(ClassName).getMainWeapon().getLevel() + "§6で解禁");
+                                    glass.setItemMeta(gmeta);
+                                    shooter.setItem(slotnum, glass);
+                                }else{
+                                    shooter.setItem(slotnum, item);
+                                }
                                 slotnum++;
                             }else if(PlayerStatusMgr.haveWeapon(player, classname) || !Main.shop){
                                 shooter.setItem(slotnum, item);
@@ -362,11 +378,13 @@ public class OpenGUI {
                         }
                     }
                 }
-                ItemStack is = new ItemStack(Material.OAK_DOOR);
-                ItemMeta ism = is.getItemMeta();
-                ism.setDisplayName("戻る");
-                is.setItemMeta(ism);
-                shooter.setItem(53, is);
+                if(!Main.tutorial) {
+                    ItemStack is = new ItemStack(Material.OAK_DOOR);
+                    ItemMeta ism = is.getItemMeta();
+                    ism.setDisplayName("戻る");
+                    is.setItemMeta(ism);
+                    shooter.setItem(53, is);
+                }
                 
                 player.openInventory(shooter);
                 break;

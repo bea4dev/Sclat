@@ -9,6 +9,7 @@ import be4rjp.sclat.Sclat;
 import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentClient;
+import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.Blaster;
@@ -171,10 +172,12 @@ public class GameMgr implements Listener{
                     SPWeaponMgr.SPWeaponRunnable(player);
                     SPWeaponMgr.ArmorRunnable(p);
                     SquidMgr.SquidShowRunnable(player);
-                    if(!Main.tutorial)
+                    if(!Main.tutorial) {
+                        EquipmentServerManager.doCommands();
                         OpenGUI.openWeaponSelect(p, "Main", "null", false);
-                    else{
+                    }else{
                         player.getInventory().clear();
+                        DataMgr.getPlayerData(player).reset();
                         DataMgr.getPlayerData(player).setIsInMatch(false);
                         DataMgr.getPlayerData(player).setIsJoined(false);
     
@@ -605,6 +608,16 @@ public class GameMgr implements Listener{
                                 conf.getConfig().getInt("EquipShare." + name + ".Port"), commands);
                         sc.startClient();
                     }
+                }
+                if(server.equals("sclattest")){
+                    List<String> commands = new ArrayList<>();
+                    commands.add("set rank " + String.valueOf(PlayerStatusMgr.getRank(player)) + " " + player.getUniqueId().toString());
+                    commands.add("set lv " + String.valueOf(PlayerStatusMgr.getLv(player)) + " " + player.getUniqueId().toString());
+                    commands.add("setting " + conf.getPlayerSettings().getString("Settings." + player.getUniqueId().toString()) + " " + player.getUniqueId().toString());
+                    commands.add("stop");
+                    EquipmentClient sc = new EquipmentClient(conf.getConfig().getString("EquipShare.Trial.Host"),
+                            conf.getConfig().getInt("EquipShare.Trial.Port"), commands);
+                    sc.startClient();
                 }
             }
         }

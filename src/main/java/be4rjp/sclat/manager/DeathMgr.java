@@ -2,6 +2,7 @@
 package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -40,9 +41,8 @@ public class DeathMgr {
         final double random = 0.4;
         drop1.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
         drop2.setVelocity(new Vector(Math.random() * random - random/2, random * 2/3, Math.random() * random - random/2));
-        
-        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(shooter).getTeam().getTeamColor().getWool().createBlockData();
-        target.getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, target.getEyeLocation(), 15, 1.5, 1.5, 1.5, 1, bd);
+    
+        Sclat.createInkExplosionEffect(target.getEyeLocation().add(0, -1, 0), 3, 30, shooter);
         
         DataMgr.getPlayerData(target).setSPGauge((int)(DataMgr.getPlayerData(target).getSPGauge() * 0.8));
         

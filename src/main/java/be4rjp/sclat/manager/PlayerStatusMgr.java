@@ -145,6 +145,10 @@ public class PlayerStatusMgr {
         conf.getPlayerStatus().set("Status." + uuid + ".Rank", rank);
     }
     
+    public static void setLv(String uuid, int lv){
+        conf.getPlayerStatus().set("Status." + uuid + ".Lv", lv);
+    }
+    
     public static void setGear(Player player, int g){
         String uuid = player.getUniqueId().toString();
         conf.getPlayerStatus().set("Status." + uuid + ".Gear", g);
@@ -236,6 +240,10 @@ public class PlayerStatusMgr {
     
     public static int getLv(Player player){
         String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Lv");
+    }
+    
+    public static int getLv(String uuid){
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Lv");
     }
     

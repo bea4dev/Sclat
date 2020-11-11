@@ -2,13 +2,15 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.Path;
 import be4rjp.sclat.data.SplashShieldData;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.Map.Entry;
 import net.minecraft.server.v1_13_R2.EnumItemSlot;
 import net.minecraft.server.v1_13_R2.PacketPlayOutEntityEquipment;
@@ -260,8 +262,10 @@ public class ArmorStandMgr {
     
     
     public static void giveDamageArmorStand(ArmorStand as, double damage, Player shooter){
-        if(as.getCustomName() == null)
-            return;
+        if(as.getCustomName() == null) return;
+    
+        if(as.getCustomName().contains("§")) return;
+        
         if(as.getCustomName().equals("SplashShield")){
             SplashShieldData ssdata = DataMgr.getSplashShieldDataFromArmorStand(as);
             if(DataMgr.getPlayerData(ssdata.getPlayer()).getTeam() != DataMgr.getPlayerData(shooter).getTeam()){
@@ -299,6 +303,7 @@ public class ArmorStandMgr {
                     as.setCustomName(String.valueOf(rh));
                     as.getLocation().getWorld().playSound(as.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 1);
                 }else{
+                    Sclat.createInkExplosionEffect(as.getEyeLocation().add(0, -1, 0), 3, 30, shooter);
                     shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 10);
                     Item drop1 = as.getWorld().dropItem(as.getEyeLocation(), new ItemStack(Material.LEATHER_HELMET));
                     Item drop2 = as.getWorld().dropItem(as.getEyeLocation(), new ItemStack(Material.LEATHER_CHESTPLATE));

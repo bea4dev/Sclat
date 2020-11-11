@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -54,6 +56,9 @@ public class Blaster {
     }
     
     public static void Shoot(Player player){
+    
+        if(player.getGameMode() == GameMode.SPECTATOR) return;
+        
         PlayerData data = DataMgr.getPlayerData(player);
         data.setCanRollerShoot(false);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
@@ -110,17 +115,7 @@ public class Blaster {
                     player.getWorld().playSound(inkball.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                     
                     //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(inkball.getLocation(), maxDist, 25);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                            if(p.getWorld() == o_player.getWorld()){
-                                for(Location loc : s_locs){
-                                    if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                }
-                            }
-                        }
-                    }
+                    Sclat.createInkExplosionEffect(inkball.getLocation(), maxDist, 25, player);
                     
                     //塗る
                     for(int i = 0; i <= maxDist - 1; i++){

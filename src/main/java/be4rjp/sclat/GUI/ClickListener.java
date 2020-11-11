@@ -240,13 +240,14 @@ public class ClickListener implements Listener{
                 }
                 return;
             }
+            if(name.contains("§6")) return;
             //試しうちモード
             if(conf.getConfig().getString("WorkMode").equals("Trial")){
                 
                 player.getInventory().clear();
+                DataMgr.getPlayerData(player).reset();
                 DataMgr.getPlayerData(player).setIsInMatch(false);
                 DataMgr.getPlayerData(player).setIsJoined(false);
-                
                 
                 for(ArmorStand as : DataMgr.getBeaconMap().values()){
                     if(DataMgr.getBeaconFromplayer(player) == as)
@@ -359,6 +360,8 @@ public class ClickListener implements Listener{
                 }
                 return;
             }
+            if(name.contains("§6")) return;
+            
             player.closeInventory();
             if(PlayerStatusMgr.getMoney(player) >= DataMgr.getWeaponClass(name).getMainWeapon().getMoney()){
                 PlayerStatusMgr.addWeapon(player, name);
@@ -396,7 +399,7 @@ public class ClickListener implements Listener{
                 }
                 if (p.getName().equals(name)){
                     if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))
-                        SuperJumpMgr.SuperJumpCollTime(player, p.getLocation());
+                        SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getPlayerData(p).getPlayerGroundLocation());
                     if(event.getCurrentItem().getType().equals(Material.IRON_TRAPDOOR))
                         SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(p).getLocation());
                 }

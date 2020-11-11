@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon.subweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -60,19 +62,7 @@ public class SplashBomb {
                         player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
 
                         //爆発エフェクト
-                        List<Location> s_locs = Sphere.getSphere(drop.getLocation(), 5, 20);
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                                for(Location loc : s_locs){
-                                    if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                            o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Sclat.createInkExplosionEffect(drop.getLocation(), 5, 15, player);
 
                         double maxDist = 4;
                         //塗る
@@ -120,8 +110,10 @@ public class SplashBomb {
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(drop.getLocation()) <= maxDist){
                                 if(as instanceof ArmorStand){
-                                    double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 12;
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
+                                    if(as.getCustomName() != null) {
+                                        double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 12;
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand) as, damage, p);
+                                    }
                                 }
                             }
                         }

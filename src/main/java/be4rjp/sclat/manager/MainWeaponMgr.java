@@ -123,6 +123,11 @@ public class MainWeaponMgr {
                 mw.setMoney(conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Money"));
             else
                 mw.setMoney(0);
+    
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".Level"))
+                mw.setLevel(conf.getWeaponConfig().getInt("MainWeapon." + weaponname + ".Level"));
+            else
+                mw.setLevel(0);
             
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".InHoldWalkSpeed"))
                 mw.setInHoldSpeed((float)conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".InHoldWalkSpeed"));

@@ -24,6 +24,7 @@ import org.bukkit.Note;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import static be4rjp.sclat.Main.conf;
 
@@ -237,6 +238,23 @@ public class Sclat {
             }
         };
         send.runTaskLater(Main.getPlugin(), 20);
+    }
+    
+    public static void createInkExplosionEffect(Location center, double radius, int accuracy, Player player){
+        List<Location> s_locs = Sphere.getSphere(center, radius - 0.5, accuracy);
+        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
+                for(Location loc : s_locs){
+                    if(o_player.getWorld() == loc.getWorld()){
+                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
+                                    loc, 0, loc.getX() - center.getX(), loc.getY() - center.getY(), loc.getZ() - center.getZ(), 1, bd);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public static boolean isNumber(String s) {

@@ -9,10 +9,13 @@ import be4rjp.sclat.commands.sclatCommandExecutor;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
 import be4rjp.sclat.manager.*;
+import be4rjp.sclat.protocollib.SclatPacketListener;
 import be4rjp.sclat.server.EquipmentServer;
 import be4rjp.sclat.server.StatusServer;
 import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.SnowballListener;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
@@ -70,6 +73,10 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     //ボム等で使用
     private static int NDNumber = 0;
     
+    
+    //for ProtocolLib
+    public static ProtocolManager protocolManager;
+    
 
     @Override
     public void onEnable() {
@@ -91,6 +98,15 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         if (!Bukkit.getPluginManager().isPluginEnabled("LunaChat")){
             getLogger().severe("*** LunaChat is not installed or not enabled. ***");
             LunaChat = false;
+        }
+    
+        //ProtocolLib
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")){
+            getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");
+            return;
+        }else {
+            protocolManager = ProtocolLibrary.getProtocolManager();
+            new SclatPacketListener();
         }
         //-------------------------------------------------------------------
         
@@ -266,7 +282,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     
         //----------------------Equip server and client----------------------
-        if(type == ServerType.MATCH){
+        if(type == ServerType.MATCH || conf.getConfig().getString("WorkMode").equals("Trial")){
             es = new EquipmentServer(conf.getConfig().getInt("EquipShare.Port"));
             es.start();
             getLogger().info("StatusServer is ready!");

@@ -47,7 +47,8 @@ public class Burst {
             public void run(){
                 c++;
                 if(c == DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerShootQuantity()){
-                    Shooter.Shoot(p, false, true, false);
+                    //Shooter.Shoot(p, false, true, false);
+                    Shooter.Shoot(p, false, false, false);
                     cancel();
                 }
                 else

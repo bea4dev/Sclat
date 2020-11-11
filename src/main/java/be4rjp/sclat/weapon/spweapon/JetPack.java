@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -44,6 +46,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import javax.xml.crypto.Data;
+
 /**
  *
  * @author Be4rJP
@@ -56,6 +60,19 @@ public class JetPack {
             int i = 0;
             int id = 0;
             Location btl = player.getLocation();
+            ArmorStand as = player.getWorld().spawn(player.getLocation(), ArmorStand.class, armorStand -> {
+                armorStand.setSmall(true);
+                armorStand.setGravity(false);
+                armorStand.setVisible(false);
+                armorStand.setBasePlate(false);
+                armorStand.setMarker(true);
+            });
+            ArmorStand leader = player.getWorld().spawn(player.getLocation(), ArmorStand.class, armorStand -> {
+                armorStand.setSmall(true);
+                armorStand.setVisible(false);
+                armorStand.setBasePlate(false);
+                armorStand.setMarker(true);
+            });
             ArmorStand ru;
             ArmorStand rd;
             ArmorStand lu;
@@ -63,6 +80,9 @@ public class JetPack {
             ArmorStand mu;
             ArmorStand md;
             List<ArmorStand> list = new ArrayList<ArmorStand>();
+            
+            Vector vehicleVector = new Vector(0, 0, 0);
+            
             @Override
             public void run(){
 
@@ -70,7 +90,7 @@ public class JetPack {
 
                 boolean onBlock = false;
                 int yh = 1;
-                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 7; y--){
+                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 8; y--){
                     Location bl = new Location(p.getLocation().getWorld(), p.getLocation().getX(), y, p.getLocation().getZ());
                     if(bl.getBlock().getType() != Material.AIR && bl.getBlock().getType() != Material.WATER){
                         onBlock = true;
@@ -79,25 +99,39 @@ public class JetPack {
                     yh++;
                 }
                 Vector ev = p.getEyeLocation().getDirection().multiply(0.15);
-
-                if(onBlock){
-                    p.setAllowFlight(true);
-                    p.setFlying(true);
-                    if(i <= 30)
-                        p.setVelocity(new Vector(ev.getX(), 0.2, ev.getZ()));
-                }else{
-                    //p.setAllowFlight(false);
-                    //p.setFlying(false);
-                    double y = p.getVelocity().getY();
-                    p.setVelocity(new Vector(ev.getX(), y <= -0.3 ? -0.3 : y - 0.1, ev.getZ()));
+                
+                p.setAllowFlight(true);
+                p.setFlying(true);
+                
+                Vector vec = DataMgr.getPlayerData(p).getVehicleVector().clone().multiply(0.5);
+                Vector pvec = p.getEyeLocation().getDirection();
+                Vector w_WASDVector = (new Vector(pvec.getX(), 0, pvec.getZ())).multiply(vec.getX());
+                Vector d_WASDVector = (new Vector(pvec.getZ(), 0, pvec.getX() * -1)).multiply(vec.getZ());
+                Vector xzVector = w_WASDVector.add(d_WASDVector);
+                Vector moveVector = new Vector(xzVector.getX(), onBlock ? (i >= 30 ? vec.getY() + 0.1 : 0.7) : -0.5, xzVector.getZ()).multiply(0.3);
+                if((vehicleVector.clone().add(moveVector)).lengthSquared() <= 0.2){
+                    vehicleVector.add(moveVector);
+                    vehicleVector = vehicleVector.multiply(0.9);
+                }
+                leader.setVelocity(vehicleVector);
+                //as.teleport(as.getLocation().add(vehicleVector));
+                
+                if(i == 0){
+                    as.addPassenger(p);
                 }
 
                 //p.setWalkSpeed(0.1F);
-                p.setFlySpeed(0.02F);
+                //p.setFlySpeed(0.02F);
+    
+                Location leaderEyeLoc = leader.getEyeLocation();
+                Location leaderLoc = leader.getLocation().add(0, -0.3, 0);
+                leaderEyeLoc.setYaw(p.getEyeLocation().getYaw());
+                //as.teleport(leaderLoc);
+                ((CraftArmorStand)as).getHandle().setPositionRotation(leaderLoc.getX(), leaderLoc.getY(), leaderLoc.getZ(), leaderLoc.getYaw(), 0);
 
                 Vector pv = p.getEyeLocation().getDirection();
                 Vector vec1 = new Vector(pv.getX(), 0, pv.getZ()).normalize().multiply(-0.2);
-                Location pl = p.getEyeLocation().add(0, -1.3, 0);
+                Location pl = leaderEyeLoc.clone();
                 //Location loc1 = pl.add(vec1.getX() + sv.getX(), sv.getY() * 0.8, vec1.getZ() + sv.getZ());
                 Location loc1 = pl.add(vec1.getX(), 0, vec1.getZ());
                 Location mul = loc1.clone().add(0, -0.5, 0);
@@ -115,36 +149,6 @@ public class JetPack {
                 
                 PaintMgr.PaintHightestBlock(loc2, player, false, true);
                 PaintMgr.PaintHightestBlock(loc3, player, false, true);
-
-                //effect
-                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                Location position = loc2.clone().add(0, 0.1, 0);
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                        continue;
-                    if(o_player.getWorld() == position.getWorld()){
-                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                            for(int i = 0; i <= 10; i++) {
-                                double random = 0.015;
-                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
-                                //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
-                            }
-                        }
-                    }
-                }
-                position = loc3.clone().add(0, 0.1, 0);
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                        continue;
-                    if(o_player.getWorld() == position.getWorld()){
-                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                            for(int i = 0; i <= 10; i++) {
-                                double random = 0.015;
-                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
-                            }
-                        }
-                    }
-                }
                 /*
                 RayTrace rayTrace1 = new RayTrace(loc2.clone().add(0, -0.5, 0).toVector(), new Vector(0, -1, 0));
                 ArrayList<Vector> positions = rayTrace1.traverse(yh, 0.5);
@@ -241,9 +245,38 @@ public class JetPack {
                         }
                     }
                 }
+    
+                //effect
+                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                Location position = ru.getLocation().clone().add(0, 0.2, 0);
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        continue;
+                    if(o_player.getWorld() == position.getWorld()){
+                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            for(int i = 0; i <= 10; i++) {
+                                double random = 0.015;
+                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                                //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
+                            }
+                        }
+                    }
+                }
+                position = lu.getLocation().clone().add(0, 0.2, 0);
+                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        continue;
+                    if(o_player.getWorld() == position.getWorld()){
+                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            for(int i = 0; i <= 10; i++) {
+                                double random = 0.015;
+                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                            }
+                        }
+                    }
+                }
 
-                //mu.teleport(mul);
-                ((CraftArmorStand)mu).getHandle().setPositionRotation(mul.getX(), mul.getY(), mul.getZ(), (float)mul.getYaw(), 0);
+                mu.teleport(mul);
                 md.teleport(mdl);
                 ru.teleport(rul);
                 rd.teleport(rdl);
@@ -259,6 +292,12 @@ public class JetPack {
                 btl = p.getLocation();
 
                 if(i == 170 || p.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(p).isInMatch()){
+                    if(as.getPassengers().contains(p))
+                        as.removePassenger(p);
+                    as.remove();
+                    leader.remove();
+                    ((CraftPlayer)p).getHandle().stopRiding();
+                    
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(p.getWorld() == target.getWorld()){
                             ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(id));
@@ -271,8 +310,8 @@ public class JetPack {
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
                         }else{
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
-                            Vector vec = new Vector(0, 1, 0);
-                            p.setVelocity(vec);
+                            Vector v = new Vector(0, 1, 0);
+                            p.setVelocity(v);
                             p.getInventory().clear();
                             WeaponClassMgr.setWeaponClass(p);
                         }
@@ -349,25 +388,13 @@ public class JetPack {
                     if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
 
                         //半径
-                        double maxDist = 3;
+                        double maxDist = 4;
 
                         //爆発音
                         player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
 
                         //爆発エフェクト
-                        List<Location> s_locs = Sphere.getSphere(drop.getLocation(), maxDist, 25);
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                                for(Location loc : s_locs){
-                                    if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                            o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Sclat.createInkExplosionEffect(drop.getLocation(), 3.5, 25, player);
 
                         //塗る
                         for(int i = 0; i <= maxDist; i++){
@@ -385,7 +412,7 @@ public class JetPack {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 10;
+                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
                                         DamageMgr.SclatGiveDamage(target, damage);

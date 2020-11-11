@@ -1,6 +1,7 @@
 package be4rjp.sclat.data;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
@@ -124,22 +125,10 @@ public class TrapData {
                     player.getWorld().playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
     
                     //爆発エフェクト
-                    List<Location> s_locs = Sphere.getSphere(location, maxDist, 25);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()) {
-                            for (Location loc : s_locs) {
-                                if (o_player.getWorld() == loc.getWorld()) {
-                                    if (o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")) {
-                                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Sclat.createInkExplosionEffect(location, maxDist, 15, player);
                     
                     //センサーエフェクト
-                    s_locs = Sphere.getSphere(location, maxDist + 1, 25);
+                    List<Location> s_locs = Sphere.getSphere(location, maxDist + 1, 25);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                             for(Location loc : s_locs){

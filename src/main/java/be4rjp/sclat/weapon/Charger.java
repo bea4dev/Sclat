@@ -153,6 +153,8 @@ public class Charger {
     }
     
     public static void Shoot(Player player, int reach, double damage){
+    
+        if(player.getGameMode() == GameMode.SPECTATOR) return;
         //player.sendMessage(String.valueOf(reach));
         
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 5);

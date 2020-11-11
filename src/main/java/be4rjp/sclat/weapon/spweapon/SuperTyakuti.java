@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -120,19 +122,7 @@ public class SuperTyakuti {
                         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, 1.1F, 0.9F);
 
                         //爆発エフェクト
-                        List<Location> s_locs = Sphere.getSphere(player.getLocation(), 7, 13);
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                                for(Location loc : s_locs){
-                                    if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                                            o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Sclat.createInkExplosionEffect(player.getLocation(), 7, 10, player);
 
                         double maxDist = 8;
                         //塗る
@@ -178,8 +168,10 @@ public class SuperTyakuti {
                         for(Entity as : player.getWorld().getEntities()){
                             if (as.getLocation().distance(player.getLocation()) <= maxDist){
                                 if(as instanceof ArmorStand){
-                                    double damage = (maxDist - as.getLocation().distance(player.getLocation())) * 15;
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                    if(as.getCustomName() != null) {
+                                        double damage = (maxDist - as.getLocation().distance(player.getLocation())) * 15;
+                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand) as, damage, player);
+                                    }
                                 }        
                             }
                         }
