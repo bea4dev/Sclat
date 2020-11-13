@@ -33,6 +33,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
++import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
@@ -41,6 +42,8 @@ import org.bukkit.entity.Player;
 public class PlayerStatusMgr {
     
     public static Map<Player, EntityArmorStand> list = new HashMap<>();
+    public static Map<Player, EntityArmorStand> list1 = new HashMap<>();
+    public static Map<Player, EntityArmorStand> list2 = new HashMap<>();
     
     public static void setupPlayerStatus(Player player){
         if(!conf.getPlayerStatus().contains("Status." + player.getUniqueId().toString())){
@@ -105,6 +108,8 @@ public class PlayerStatusMgr {
         as1.setCustomNameVisible(true);
         as1.setNoGravity(true);
         as1.setCustomName(CraftChatMessage.fromStringOrNull("§6Rank : §r" + String.valueOf(getRank(player)) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]"));
+        
+        list1.put(player, as1);
     
         EntityArmorStand as2 = new EntityArmorStand(nmsWorld);
         as2.setLocation(location.getX(), location.getY() + 0.4D, location.getZ(), location.getYaw(), 0);
@@ -113,9 +118,32 @@ public class PlayerStatusMgr {
         as2.setNoGravity(true);
         as2.setCustomName(CraftChatMessage.fromStringOrNull("§aPaints : §r" + String.valueOf(getPaint(player)) + "  §aKills : §r" + String.valueOf(getKill(player))));
         
+        list2.put(player, as2);
+        
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as1));
         connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as2));
+    }
+    
+    public static void HologramUpdateRunnable(Player player){
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                EntityArmorStand as1 = list1.get(player);
+                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+                connection.sendPacket(new PacketPlayOutEntityDestroy(as1.getBukkitEntity().getEntityId()));
+                as1.setCustomName(CraftChatMessage.fromStringOrNull("§6Rank : §r" + String.valueOf(getRank(player)) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]"));
+                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as1));
+    
+                EntityArmorStand as2 = list1.get(player);
+                connection.sendPacket(new PacketPlayOutEntityDestroy(as2.getBukkitEntity().getEntityId()));
+                as2.setCustomName(CraftChatMessage.fromStringOrNull("§aPaints : §r" + String.valueOf(getPaint(player)) + "  §aKills : §r" + String.valueOf(getKill(player))));
+                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as2));
+                if(!player.isOnline())
+                    cancel();
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, conf.getConfig().getInt("HologramUpdatePeriod"));
     }
     
     public static void sendHologramUpdate(Player player){

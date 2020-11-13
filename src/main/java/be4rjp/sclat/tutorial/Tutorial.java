@@ -307,7 +307,7 @@ public class Tutorial {
                     cancel();
                 }
                 player.playSound(player.getLocation(), Sound.ENTITY_MINECART_INSIDE, 0.7F, 1F);
-                if(i == 4){
+                if(i == 2){
                     BungeeCordMgr.PlayerSendServer(player, "sclat");
                     DataMgr.getPlayerData(player).setServerName("Sclat");
                 }

@@ -149,38 +149,38 @@ public class JetPack {
                 
                 PaintMgr.PaintHightestBlock(loc2, player, false, true);
                 PaintMgr.PaintHightestBlock(loc3, player, false, true);
-                /*
-                RayTrace rayTrace1 = new RayTrace(loc2.clone().add(0, -0.5, 0).toVector(), new Vector(0, -1, 0));
-                ArrayList<Vector> positions = rayTrace1.traverse(yh, 0.5);
-                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                ray : for(int i = 0; i < positions.size();i++){
-                    Location position = positions.get(i).toLocation(p.getLocation().getWorld());
+                
+                if(i != 0){
+                    //effect
+                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                    Location position = ru.getLocation().clone().add(0, 0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
                             continue;
-                            if(o_player.getWorld() == position.getWorld()){
-                                if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -1, 0, 10, bd);
+                        if(o_player.getWorld() == position.getWorld()){
+                            if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                for(int i = 0; i <= 10; i++) {
+                                    double random = 0.015;
+                                    o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                                    //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
                                 }
                             }
+                        }
+                    }
+                    position = lu.getLocation().clone().add(0, 0.2, 0);
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                            continue;
+                        if(o_player.getWorld() == position.getWorld()){
+                            if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                for(int i = 0; i <= 10; i++) {
+                                    double random = 0.015;
+                                    o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                                }
+                            }
+                        }
                     }
                 }
-
-                RayTrace rayTrace2 = new RayTrace(loc3.clone().add(0, -0.5, 0).toVector(), new Vector(0, -1, 0));
-                ArrayList<Vector> positions2 = rayTrace2.traverse(yh, 0.5);
-                ray : for(int i = 0; i < positions2.size();i++){
-                    Location position = positions2.get(i).toLocation(p.getLocation().getWorld());
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                            continue;
-                            if(o_player.getWorld() == position.getWorld()){
-                                if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -1, 0, 10, bd);
-                                }
-                            }
-                    }
-                }*/
-
 
                 if(i == 0){
                     DataMgr.getPlayerData(p).setIsUsingSP(true);
@@ -245,37 +245,13 @@ public class JetPack {
                         }
                     }
                 }
-    
-                //effect
-                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                Location position = ru.getLocation().clone().add(0, 0.2, 0);
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                        continue;
-                    if(o_player.getWorld() == position.getWorld()){
-                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                            for(int i = 0; i <= 10; i++) {
-                                double random = 0.015;
-                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
-                                //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
-                            }
-                        }
-                    }
-                }
-                position = lu.getLocation().clone().add(0, 0.2, 0);
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                        continue;
-                    if(o_player.getWorld() == position.getWorld()){
-                        if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                            for(int i = 0; i <= 10; i++) {
-                                double random = 0.015;
-                                o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
-                            }
-                        }
-                    }
-                }
-
+                
+                //((CraftArmorStand)mu).getHandle().setPositionRotation(mul.getX(), mul.getY(), mul.getZ(), mul.getYaw(), 0);
+                //((CraftArmorStand)md).getHandle().setPositionRotation(mdl.getX(), mdl.getY(), mdl.getZ(), mdl.getYaw(), 0);
+                //((CraftArmorStand)ru).getHandle().setPositionRotation(rul.getX(), rul.getY(), rul.getZ(), rul.getYaw(), 0);
+                //((CraftArmorStand)rd).getHandle().setPositionRotation(rdl.getX(), rdl.getY(), rdl.getZ(), rdl.getYaw(), 0);
+                //((CraftArmorStand)lu).getHandle().setPositionRotation(lul.getX(), lul.getY(), lul.getZ(), lul.getYaw(), 0);
+                //((CraftArmorStand)ld).getHandle().setPositionRotation(ldl.getX(), ldl.getY(), ldl.getZ(), ldl.getYaw(), 0);
                 mu.teleport(mul);
                 md.teleport(mdl);
                 ru.teleport(rul);

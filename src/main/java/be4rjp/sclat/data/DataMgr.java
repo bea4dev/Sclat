@@ -42,6 +42,7 @@ public class DataMgr {
     private static Map<ArmorStand, SplashShieldData> ssam = new HashMap<>();
     private static Map<Player, KasaData> kpm = new HashMap<>();
     private static Map<ArmorStand, KasaData> kam = new HashMap<>();
+    private static Map<Player, RankingHolograms> rankingHologramsMap = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
     public static List<Block> rblist = new ArrayList<>();
@@ -76,6 +77,7 @@ public class DataMgr {
     public static KasaData getKasaDataFromPlayer(Player player){return kpm.get(player);}
     public static KasaData getKasaDataFromArmorStand(ArmorStand as){return kam.get(as);}
     public static int getSnowballHitCount(String name){return msbn.get(name);}
+    public static RankingHolograms getRankingHolograms(Player player){return rankingHologramsMap.get(player);}
     //public static PaintData getPaintDataFromMatch(Match match){return paintdata.get(match);}
     
     
@@ -101,6 +103,7 @@ public class DataMgr {
     public static void setKasaDataWithPlayer(Player player, KasaData data){kpm.put(player, data);}
     public static void setKasaDataWithARmorStand(ArmorStand as, KasaData data){kam.put(as, data);}
     public static void setSnowballHitCount(String name, int coount){msbn.putIfAbsent(name, coount);}
+    public static void setRankingHolograms(Player player, RankingHolograms rankingHolograms){rankingHologramsMap.put(player, rankingHolograms);}
     
     
     public static void addColorList(Color color){list.add(color);}

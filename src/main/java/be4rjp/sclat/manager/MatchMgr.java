@@ -180,6 +180,8 @@ public class MatchMgr {
                                     for (Integer key : treeMap.keySet())
                                         sortedMember.add(treeMap.get(key));
                                 }
+                            }else{
+                                sortedMember = DataMgr.joinedList;
                             }
                             
                             int i = 0;

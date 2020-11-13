@@ -89,6 +89,13 @@ public class GameMgr implements Listener{
         //((LivingEntity)player).setCollidable(false);
 
         PlayerStatusMgr.setupPlayerStatus(player);
+        
+        conf.getUUIDCash().set(player.getUniqueId().toString(), player.getName());
+        if(Main.type == ServerType.LOBBY) {
+            RankingHolograms rankingHolograms = new RankingHolograms(player);
+            DataMgr.setRankingHolograms(player, rankingHolograms);
+            PlayerStatusMgr.HologramUpdateRunnable(player);
+        }
 
         if(Main.type != ServerType.MATCH){
             data.setGearNumber(PlayerStatusMgr.getGear(player));

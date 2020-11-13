@@ -326,6 +326,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             }
         }
         //-------------------------------------------------------------------
+        
+        
+        //-----------------------Ranking Holograms---------------------------
+        if(type == ServerType.LOBBY){
+            RankMgr.makeRankingTask();
+        }
+        //-------------------------------------------------------------------
     }
     
     @Override
