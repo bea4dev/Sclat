@@ -22,6 +22,8 @@ public class RankMgr {
                                         "B+", "A-", "A", "A+", "S", "S+"};
     
     public static List<String> ranking = new ArrayList<>();
+    public static List<String> killRanking = new ArrayList<>();
+    public static List<String> paintRanking = new ArrayList<>();
 
     //レートを500単位で区切ってランク付けする
     public static String toABCRank(int ir){
@@ -53,11 +55,61 @@ public class RankMgr {
         async.runTaskAsynchronously(Main.getPlugin());
     }
     
+    public static void makeKillRankingAsync(){
+        BukkitRunnable async = new BukkitRunnable() {
+            @Override
+            public void run() {
+                //かぶらないようにマッピング
+                Map<Integer, String> playerMap = new HashMap<>();
+                for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)){
+                    int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
+                    while (playerMap.containsKey(rate)){
+                        rate++;
+                    }
+                    playerMap.put(rate, uuid);
+                }
+                
+                Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
+                treeMap.putAll(playerMap);
+                killRanking = new ArrayList<>();
+                for (Integer key : treeMap.keySet())
+                    killRanking.add(treeMap.get(key));
+            }
+        };
+        async.runTaskAsynchronously(Main.getPlugin());
+    }
+    
+    public static void makePaintRankingAsync(){
+        BukkitRunnable async = new BukkitRunnable() {
+            @Override
+            public void run() {
+                //かぶらないようにマッピング
+                Map<Integer, String> playerMap = new HashMap<>();
+                for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)){
+                    int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
+                    while (playerMap.containsKey(rate)){
+                        rate++;
+                    }
+                    playerMap.put(rate, uuid);
+                }
+                
+                Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
+                treeMap.putAll(playerMap);
+                paintRanking = new ArrayList<>();
+                for (Integer key : treeMap.keySet())
+                    paintRanking.add(treeMap.get(key));
+            }
+        };
+        async.runTaskAsynchronously(Main.getPlugin());
+    }
+    
     public static void makeRankingTask(){
         BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
                 makeRankingAsync();
+                makeKillRankingAsync();
+                makePaintRankingAsync();
                 for(Player player : Main.getPlugin().getServer().getOnlinePlayers()){
                     try {
                         DataMgr.getRankingHolograms(player).refreshRankingAsync();

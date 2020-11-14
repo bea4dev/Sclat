@@ -1,12 +1,10 @@
 package be4rjp.sclat.manager;
 
+import be4rjp.sclat.*;
 import be4rjp.sclat.GUI.OpenGUI;
-import be4rjp.sclat.Main;
+
 import static be4rjp.sclat.Main.conf;
 
-import be4rjp.sclat.MessageType;
-import be4rjp.sclat.Sclat;
-import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.EquipmentServerManager;
@@ -502,6 +500,37 @@ public class GameMgr implements Listener{
         if(e.getClickedBlock() != null){
             if(e.getClickedBlock().getType() == Material.WALL_SIGN || e.getClickedBlock().getType() == Material.SIGN){
                 Sign sign = (Sign) e.getClickedBlock().getState();
+                
+                if(Main.type == ServerType.LOBBY){
+                    for (ServerStatus ss : ServerStatusManager.serverList){
+                        if(ss.getSign().equals(e.getClickedBlock())){
+                            if(ss.getRestartingServer()){
+                                Sclat.sendMessage("§c§nこのサーバーは再起動中のため参加できません", MessageType.PLAYER, player);
+                                Sclat.playGameSound(player, SoundType.ERROR);
+                                return;
+                            }
+                            if(ss.isOnline()) {
+                                if(ss.getPlayerCount() < ss.getMaxPlayer()) {
+                                    if(ss.getRunningMatch()) {
+                                        Sclat.sendMessage("§c§nこのサーバーは試合中のため参加できません", MessageType.PLAYER, player);
+                                        Sclat.playGameSound(player, SoundType.ERROR);
+                                        return;
+                                    }
+                                    BungeeCordMgr.PlayerSendServer(player, ss.getServerName());
+                                    DataMgr.getPlayerData(player).setServerName(ss.getDisplayName());
+                                }else{
+                                    Sclat.sendMessage("§c§nこのサーバーは満員のため参加できません", MessageType.PLAYER, player);
+                                    Sclat.playGameSound(player, SoundType.ERROR);
+                                }
+                            }else{
+                                Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
+                                Sclat.playGameSound(player, SoundType.ERROR);
+                            }
+                            return;
+                        }
+                    }
+                }
+                
                 String line = sign.getLine(2);
                 switch(line){
                     case "[ Join ]":

@@ -2,8 +2,7 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.data.ServerStatus;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -30,8 +29,15 @@ public class ServerStatusManager {
             String host = conf.getServers().getString("Servers." + server + ".Host");
             int port = conf.getServers().getInt("Servers." + server + ".Port");
             int period = conf.getServers().getInt("Servers." + server + ".Period");
+    
+            String WorldName = conf.getServers().getString("Servers." + server + ".Sign.WorldName");
+            World w = Bukkit.getWorld(WorldName);
+            int ix = conf.getServers().getInt("Servers." + server + ".Sign.X");
+            int iy = conf.getServers().getInt("Servers." + server + ".Sign.Y");
+            int iz = conf.getServers().getInt("Servers." + server + ".Sign.Z");
+            Location loc = new Location(w, ix, iy, iz);
             
-            ServerStatus ss = new ServerStatus(serverName, displayName, host, port, maxPlayer, period);
+            ServerStatus ss = new ServerStatus(serverName, displayName, host, port, maxPlayer, period, loc.getBlock());
             serverList.add(ss);
         }
         
@@ -39,6 +45,22 @@ public class ServerStatusManager {
             @Override
             public void run() {
                 inv.clear();
+    
+                for (int i = 0; i <= 8; ) {
+                    ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+                    ItemMeta ism = is.getItemMeta();
+                    ism.setDisplayName(".");
+                    is.setItemMeta(ism);
+                    inv.setItem(i, is);
+                    i++;
+                }
+    
+                ItemStack ism = new ItemStack(Material.OAK_DOOR);
+                ItemMeta ismm = ism.getItemMeta();
+                ismm.setDisplayName("戻る");
+                ism.setItemMeta(ismm);
+                inv.setItem(8, ism);
+                
                 int i = 0;
                 for(ServerStatus ss : serverList){
                     Material mt = Material.LIME_STAINED_GLASS;

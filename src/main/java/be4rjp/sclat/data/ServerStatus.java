@@ -2,6 +2,9 @@ package be4rjp.sclat.data;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.MineStat;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ServerStatus {
@@ -13,6 +16,8 @@ public class ServerStatus {
     private final int period;
     private final BukkitRunnable task;
     private final int maxPlayer;
+    private final BukkitRunnable task2;
+    private final Block sign;
     
     private int playerCount = 0;
     private boolean online = false;
@@ -20,13 +25,14 @@ public class ServerStatus {
     private boolean restartingServer = false;
     private String mapName = "";
     
-    public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period){
+    public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign){
         this.serverName = serverName;
         this.displayName = displayName;
         this.host = host;
         this.port = port;
         this.period = period;
         this.maxPlayer = maxPlayer;
+        this.sign = sign;
         
         this.task = new BukkitRunnable() {
             @Override
@@ -45,6 +51,32 @@ public class ServerStatus {
             }
         };
         task.runTaskTimerAsynchronously(Main.getPlugin(), 0, this.period);
+        
+        this.task2 = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try{
+                    if(sign.getType().toString().contains("SIGN")){
+                        Sign signState = (Sign) sign.getState();
+                        signState.setLine(0, displayName);
+                        if(online){
+                            signState.setLine(1, "§a" + playerCount + " / " + maxPlayer);
+                            if(runningMatch)
+                                signState.setLine(2, "§cIN MATCH");
+                            else
+                                signState.setLine(2, "§aINACTIVE");
+                            signState.setLine(3, "§b" + mapName);
+                        }else{
+                            signState.setLine(1, "§cOFFLINE");
+                            signState.setLine(2, "");
+                            signState.setLine(3, "");
+                        }
+                        signState.update();
+                    }
+                }catch (Exception e){}
+            }
+        };
+        task2.runTaskTimer(Main.getPlugin(), 5, this.period);
     }
     
     public int getPlayerCount(){return this.playerCount;}
@@ -60,6 +92,8 @@ public class ServerStatus {
     public boolean getRestartingServer(){return this.restartingServer;}
     
     public String getMapName(){return this.mapName;}
+    
+    public Block getSign(){return this.sign;}
     
     public boolean isOnline(){return this.online;}
     

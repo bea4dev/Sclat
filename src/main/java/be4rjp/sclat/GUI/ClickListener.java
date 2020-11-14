@@ -44,14 +44,18 @@ public class ClickListener implements Listener{
         
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         Player player = (Player)event.getWhoClicked();
+    
+        if(name.equals(".")) {
+            event.setCancelled(true);
+            return;
+        }
+        
         if(name.equals(""))
             return;
         else
             player.closeInventory();
         //player.sendMessage(name);
         
-        if(name.equals("."))
-            return;
         
         switch(name){
             case"試合に参加 / JOIN THE MATCH":
@@ -120,12 +124,17 @@ public class ClickListener implements Listener{
                 }
                 break;
             case"ロビーへ戻る / RETURN TO LOBBY":
-                BungeeCordMgr.PlayerSendServer(player, "sclat");
-                DataMgr.getPlayerData(player).setServerName("Sclat");
+                if(Main.type != ServerType.LOBBY) {
+                    BungeeCordMgr.PlayerSendServer(player, "sclat");
+                    DataMgr.getPlayerData(player).setServerName("Sclat");
+                }else{
+                    BungeeCordMgr.PlayerSendServer(player, "lobby");
+                    DataMgr.getPlayerData(player).setServerName("Lobby");
+                }
                 break;
             case"試し打ちサーバーへ接続 / TRAINING FIELD":
-                BungeeCordMgr.PlayerSendServer(player, "trial");
-                DataMgr.getPlayerData(player).setServerName("Trial");
+                BungeeCordMgr.PlayerSendServer(player, "sclattest");
+                DataMgr.getPlayerData(player).setServerName("sclattest");
                 break;
             case"チームデスマッチサーバーへ接続 / CONNECT TO TDM SERVER":
                 BungeeCordMgr.PlayerSendServer(player, "tdm");
@@ -142,6 +151,10 @@ public class ClickListener implements Listener{
             case"ガチエリア":
                 Match m2 = DataMgr.getMatchFromId(MatchMgr.matchcount);
                 m2.addGatiArea_T_Count();
+                break;
+            case"戻る":
+                if(!name.equals("武器選択") || !name.equals("Shop"))
+                    OpenGUI.openMenu(player);
                 break;
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
@@ -205,7 +218,7 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
+            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
                 switch(name){
                     case"シューター":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", false);
@@ -236,6 +249,9 @@ public class ClickListener implements Listener{
                         break;
                     case"戻る":
                         OpenGUI.openWeaponSelect(player, "Main", "null", false);
+                        break;
+                    case"装備選択へ戻る":
+                        OpenGUI.equipmentGUI(player, false);
                         break;
                 }
                 return;
@@ -325,7 +341,7 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("Shop")){
-            if(name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
+            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
                 switch(name){
                     case"シューター":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", true);
@@ -356,6 +372,9 @@ public class ClickListener implements Listener{
                         break;
                     case"戻る":
                         OpenGUI.openWeaponSelect(player, "Main", "null", true);
+                        break;
+                    case"装備選択へ戻る":
+                        OpenGUI.equipmentGUI(player, true);
                         break;
                 }
                 return;

@@ -3,10 +3,14 @@ package be4rjp.sclat.GUI;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.Match;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.manager.PlayerStatusMgr;
+import be4rjp.sclat.manager.RankMgr;
 import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
@@ -32,68 +36,101 @@ public class OpenGUI {
     
     
     public static void openMenu(Player player){
-        Inventory inv = Bukkit.createInventory(null, 9, "メインメニュー");
+        Inventory inv = Bukkit.createInventory(null, 45, "メインメニュー");
+    
+        for (int i = 0; i <= 44; ) {
+            ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+            ItemMeta ism = is.getItemMeta();
+            ism.setDisplayName(".");
+            is.setItemMeta(ism);
+            inv.setItem(i, is);
+            i++;
+        }
         
         ItemStack join = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta joinmeta = join.getItemMeta();
         joinmeta.setDisplayName("試合に参加 / JOIN THE MATCH");
         join.setItemMeta(joinmeta);
         if(!conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(2, join);
+            inv.setItem(10, join);
         
         ItemStack setting = new ItemStack(Material.COMPARATOR);
         ItemMeta setting_m = setting.getItemMeta();
         setting_m.setDisplayName("設定 / SETTINGS");
         setting.setItemMeta(setting_m);
-        inv.setItem(6, setting);
+        inv.setItem(14, setting);
         
         ItemStack w = new ItemStack(Material.LEATHER_CHESTPLATE);
         ItemMeta wmeta = w.getItemMeta();
         wmeta.setDisplayName("装備変更 / EQUIPMENT");
         w.setItemMeta(wmeta);
-        inv.setItem(4, w);
+        inv.setItem(12, w);
         player.openInventory(inv);
         
         ItemStack t = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta tmeta = t.getItemMeta();
         tmeta.setDisplayName("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK");
         t.setItemMeta(tmeta);
-        inv.setItem(0, t);
+        inv.setItem(28, t);
         
         ItemStack r = new ItemStack(Material.MILK_BUCKET);
         ItemMeta rmeta = r.getItemMeta();
         rmeta.setDisplayName("塗りをリセット / RESET INK");
         r.setItemMeta(rmeta);
         if(conf.getConfig().getString("WorkMode").equals("Trial"))
-            inv.setItem(2, r);
+            inv.setItem(10, r);
         
         if(conf.getConfig().getString("WorkMode").equals("Trial")){
             ItemStack b = new ItemStack(Material.OAK_DOOR);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
             b.setItemMeta(bmeta);
-            inv.setItem(8, b);
+            inv.setItem(16, b);
         }else{
-            /*
-            ItemStack b = new ItemStack(Material.ARMOR_STAND);
-            ItemMeta bmeta = b.getItemMeta();
-            bmeta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
-            b.setItemMeta(bmeta);
-            inv.setItem(8, b);
-            */
-            ItemStack b = new ItemStack(Material.PAPER);
+            
+            ItemStack ta = new ItemStack(Material.ARMOR_STAND);
+            ItemMeta tameta = ta.getItemMeta();
+            tameta.setDisplayName("試し打ちサーバーへ接続 / TRAINING FIELD");
+            ta.setItemMeta(tameta);
+            inv.setItem(30, ta);
+            
+            ItemStack b = new ItemStack(Material.CHEST);
             ItemMeta bmeta = b.getItemMeta();
             bmeta.setDisplayName("ショップを開く / OPEN SHOP");
             b.setItemMeta(bmeta);
-            inv.setItem(8, b);
+            inv.setItem(16, b);
+            
+            PlayerData data = DataMgr.getPlayerData(player);
+            ItemStack status = new ItemStack(Material.PLAYER_HEAD);
+            if(data.getPlayerHead() != null)
+                status = CraftItemStack.asBukkitCopy(data.getPlayerHead()).clone();
+            ItemMeta statusMeta = status.getItemMeta();
+            statusMeta.setDisplayName("§r§e" + player.getName() + " のステータス");
+            List lores = new ArrayList();
+            lores.add("§r§6Rank : §r" + PlayerStatusMgr.getRank(player) + " [ §b" + RankMgr.toABCRank(PlayerStatusMgr.getRank(player)) + " §r]");
+            lores.add("§r§6Lv : §r" + PlayerStatusMgr.getLv(player));
+            lores.add("§r§bKill(s) : §r" + PlayerStatusMgr.getKill(player));
+            lores.add("§r§bPaint(s) : §r" + PlayerStatusMgr.getPaint(player));
+            lores.add("§r§aMoney : §r" + PlayerStatusMgr.getMoney(player));
+            statusMeta.setLore(lores);
+            status.setItemMeta(statusMeta);
+            inv.setItem(32, status);
         }
-        /*
-        ItemStack b = new ItemStack(Material.PAPER);
+        
+        if(Main.type == ServerType.LOBBY){
+            ItemStack b = new ItemStack(Material.OAK_DOOR);
+            ItemMeta bmeta = b.getItemMeta();
+            bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
+            b.setItemMeta(bmeta);
+            inv.setItem(34, b);
+        }
+    
+        ItemStack b = new ItemStack(Material.BARRIER);
         ItemMeta bmeta = b.getItemMeta();
-        bmeta.setDisplayName("ショップを開く / OPEN SHOP");
+        bmeta.setDisplayName("閉じる");
         b.setItemMeta(bmeta);
-        inv.setItem(8, b);
-        */
+        inv.setItem(44, b);
+        
         
         player.openInventory(inv);
     }
@@ -174,6 +211,12 @@ public class OpenGUI {
         tmeta.setDisplayName(shop ? "§6武器購入 / WEAPON" : "§6武器変更 / WEAPON");
         t.setItemMeta(tmeta);
         inv.setItem(11, t);
+    
+        ItemStack is = new ItemStack(Material.OAK_DOOR);
+        ItemMeta ism = is.getItemMeta();
+        ism.setDisplayName("戻る");
+        is.setItemMeta(ism);
+        inv.setItem(26, is);
         
         
         player.openInventory(inv);
@@ -389,9 +432,9 @@ public class OpenGUI {
                 player.openInventory(shooter);
                 break;
             case"Main":
-                Inventory wm = Bukkit.createInventory(null, 9, "武器選択");
+                Inventory wm = Bukkit.createInventory(null, 18, "武器選択");
                 if(shop)
-                    wm = Bukkit.createInventory(null, 9, "Shop");
+                    wm = Bukkit.createInventory(null, 18, "Shop");
                 
                 ItemStack s = new ItemStack(Material.WOODEN_HOE);
                 ItemMeta sm = s.getItemMeta();
@@ -448,6 +491,13 @@ public class OpenGUI {
                 wm.setItem(7, c);
                 wm.setItem(8, sp);
                 player.openInventory(wm);
+    
+                ItemStack is = new ItemStack(Material.OAK_DOOR);
+                ItemMeta ism = is.getItemMeta();
+                ism.setDisplayName("装備選択へ戻る");
+                is.setItemMeta(ism);
+                wm.setItem(17, is);
+                
                 break;
         }
     }

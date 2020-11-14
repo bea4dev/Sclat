@@ -129,13 +129,18 @@ public class PlayerStatusMgr {
         BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
-                EntityArmorStand as1 = list1.get(player);
+                EntityArmorStand as = list.get(player);
                 PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
+                connection.sendPacket(new PacketPlayOutEntityDestroy(as.getBukkitEntity().getEntityId()));
+                as.setCustomName(CraftChatMessage.fromStringOrNull("§aMoney : §r" + String.valueOf(getMoney(player)) + "  §aLv : §r" + String.valueOf(getLv(player))));
+                connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as));
+                
+                EntityArmorStand as1 = list1.get(player);
                 connection.sendPacket(new PacketPlayOutEntityDestroy(as1.getBukkitEntity().getEntityId()));
                 as1.setCustomName(CraftChatMessage.fromStringOrNull("§6Rank : §r" + String.valueOf(getRank(player)) + "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]"));
                 connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as1));
     
-                EntityArmorStand as2 = list1.get(player);
+                EntityArmorStand as2 = list2.get(player);
                 connection.sendPacket(new PacketPlayOutEntityDestroy(as2.getBukkitEntity().getEntityId()));
                 as2.setCustomName(CraftChatMessage.fromStringOrNull("§aPaints : §r" + String.valueOf(getPaint(player)) + "  §aKills : §r" + String.valueOf(getKill(player))));
                 connection.sendPacket(new PacketPlayOutSpawnEntityLiving(as2));
@@ -294,8 +299,16 @@ public class PlayerStatusMgr {
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
     }
     
+    public static int getKill(String uuid){
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
+    }
+    
     public static int getPaint(Player player){
         String uuid = player.getUniqueId().toString();
+        return conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
+    }
+    
+    public static int getPaint(String uuid){
         return conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
     }
     
