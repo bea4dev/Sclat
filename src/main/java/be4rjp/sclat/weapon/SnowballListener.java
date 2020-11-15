@@ -7,11 +7,8 @@ import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.SplashShieldData;
-import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
-import be4rjp.sclat.manager.PaintMgr;
-import be4rjp.sclat.manager.SPWeaponMgr;
+import be4rjp.sclat.manager.*;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -172,7 +169,15 @@ public class SnowballListener implements Listener {
     @EventHandler
     public void onEntityHit(EntityDamageByEntityEvent event) {
     
-        if(Main.type == ServerType.LOBBY) return;
+        if(Main.type == ServerType.LOBBY){
+            if(event.getEntity() instanceof Player) event.setCancelled(true);
+            if(event.getEntity() instanceof ArmorStand){
+                if(event.getDamager() instanceof Player){
+                    if(((Player)event.getDamager()).hasPermission("sclat.lobbyfly")) event.setCancelled(true);
+                }
+            }
+            return;
+        }
         
         event.setCancelled(true);
         

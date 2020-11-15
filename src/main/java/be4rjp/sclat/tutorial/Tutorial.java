@@ -276,6 +276,9 @@ public class Tutorial {
                             player.getInventory().setItem(0, join);
                             
                             Sclat.sendMessage("§6Sclatへようこそ！", MessageType.PLAYER, player);
+                            player.sendMessage("§aチェストをもって右クリックするとメインメニューを開くことができます。");
+                            player.sendMessage("§a初期から使える武器がいくつかあります。");
+                            player.sendMessage("§aメインメニューの装備変更から武器を選んで、試合に参加してみましょう！");
                             Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
                         }
                     }
