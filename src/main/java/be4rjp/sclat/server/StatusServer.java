@@ -183,7 +183,7 @@ class EchoThread extends Thread {
                             break;
                         }
                     }
-                }
+                }else{break;}
             }
         } catch (IOException e) {
             e.printStackTrace();

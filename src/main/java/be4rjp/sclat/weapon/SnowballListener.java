@@ -171,11 +171,12 @@ public class SnowballListener implements Listener {
     
         if(Main.type == ServerType.LOBBY){
             if(event.getEntity() instanceof Player) event.setCancelled(true);
+            /*
             if(event.getEntity() instanceof ArmorStand){
                 if(event.getDamager() instanceof Player){
-                    if(((Player)event.getDamager()).hasPermission("sclat.lobbyfly")) event.setCancelled(true);
+                    if(!((Player)event.getDamager()).hasPermission("sclat.admin")) event.setCancelled(true);
                 }
-            }
+            }*/
             return;
         }
         

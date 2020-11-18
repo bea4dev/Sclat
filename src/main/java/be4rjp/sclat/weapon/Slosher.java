@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
@@ -123,15 +125,7 @@ public class Slosher {
                         player.getWorld().playSound(inkball.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.7F, 1);
 
                         //爆発エフェクト
-                        List<Location> s_locs = Sphere.getSphere(inkball.getLocation(), maxDist, 25);
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
-                                for(Location loc : s_locs){
-                                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
-                                }
-                            }
-                        }
+                        Sclat.createInkExplosionEffect(inkball.getLocation(), maxDist, 25, player);
 
                         //塗る
                         for(int i = 0; i <= maxDist; i++){

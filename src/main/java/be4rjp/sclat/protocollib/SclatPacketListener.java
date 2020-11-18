@@ -1,6 +1,7 @@
 package be4rjp.sclat.protocollib;
 
 import be4rjp.sclat.Main;
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.SoundType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.RankingHolograms;
@@ -33,7 +34,8 @@ public class SclatPacketListener {
                         try {
                             if (event.getPacket().getBooleans().readSafely(1)) {
                                 y = -1F;
-                                event.setCancelled(true);
+                                if(DataMgr.getPlayerData(player).isInMatch())
+                                    event.setCancelled(true);
                             }
                             if (event.getPacket().getBooleans().readSafely(0)) {
                                 y = 1F;
