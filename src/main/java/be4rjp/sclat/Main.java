@@ -116,8 +116,12 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         getLogger().info("Loading config files...");
         conf = new Config();
         conf.LoadConfig();
-        for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false))
-            Bukkit.createWorld(new WorldCreator(conf.getMapConfig().getString("Maps." + mapname + ".WorldName")));
+        for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false)) {
+            String worldName = conf.getMapConfig().getString("Maps." + mapname + ".WorldName");
+            Bukkit.createWorld(new WorldCreator(worldName));
+            World world = Bukkit.getWorld(worldName);
+            world.setAutoSave(false);
+        }
         if(conf.getConfig().contains("Tutorial"))
             tutorial = conf.getConfig().getBoolean("Tutorial");
         if(conf.getConfig().contains("Colors"))
@@ -350,7 +354,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     @Override
     public void onDisable() {
-        
+
         //Wiremeshの停止
         try {
             for(MapData mData : DataMgr.maplist)
@@ -378,7 +382,14 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         for(ArmorStand as : DataMgr.al)
             as.remove();
-    
+
+        //Worldが保存される前にアンロードして塗られた状態で保存されるのを防ぐ
+        if(Main.type == ServerType.LOBBY) {
+            for (String mapname : conf.getMapConfig().getConfigurationSection("Maps").getKeys(false)) {
+                String worldName = conf.getMapConfig().getString("Maps." + mapname + ".WorldName");
+                Bukkit.unloadWorld(worldName, false);
+            }
+        }
     
         if(type == ServerType.LOBBY){
             ServerStatusManager.stopTask();

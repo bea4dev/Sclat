@@ -241,11 +241,6 @@ public class GameMgr implements Listener{
                                     WeaponClassMgr.setWeaponClass(p);
                                 }
                                 WeaponClassMgr.setWeaponClass(p);
-                                ItemStack join = new ItemStack(Material.CHEST);
-                                ItemMeta joinmeta = join.getItemMeta();
-                                joinmeta.setDisplayName("メインメニュー");
-                                join.setItemMeta(joinmeta);
-                                player.getInventory().setItem(7, join);
                                 player.setExp(0.99F);
                                 
                                 SPWeaponMgr.SPWeaponRunnable(player);

@@ -6,6 +6,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.WeaponClass;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +58,7 @@ public class WeaponClassMgr {
         if(conf.getConfig().getString("WorkMode").equals("Trial") && !Main.tutorial){
             ItemStack join = new ItemStack(Material.CHEST);
             ItemMeta joinmeta = join.getItemMeta();
-            joinmeta.setDisplayName("メインメニュー");
+            joinmeta.setDisplayName(ChatColor.GOLD + "右クリックでメインメニューを開く");
             join.setItemMeta(joinmeta);
             player.getInventory().setItem(7, join);
         }
