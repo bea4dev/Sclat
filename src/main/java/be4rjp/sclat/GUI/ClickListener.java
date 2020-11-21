@@ -256,7 +256,11 @@ public class ClickListener implements Listener{
                 }
                 return;
             }
-            if(name.contains("§6")) return;
+            if(name.contains("§6レベル")){
+                Sclat.sendMessage("§cレベルが足りないため、まだ選択できません", MessageType.PLAYER, player);
+                Sclat.playGameSound(player, SoundType.ERROR);
+                return;
+            }
             //試しうちモード
             if(conf.getConfig().getString("WorkMode").equals("Trial")){
                 
@@ -374,7 +378,11 @@ public class ClickListener implements Listener{
                 }
                 return;
             }
-            if(name.contains("§6")) return;
+            if(name.contains("§6レベル")){
+                Sclat.sendMessage("§cレベルが足りないため、まだ購入できません", MessageType.PLAYER, player);
+                Sclat.playGameSound(player, SoundType.ERROR);
+                return;
+            }
             
             player.closeInventory();
             if(PlayerStatusMgr.getMoney(player) >= DataMgr.getWeaponClass(name).getMainWeapon().getMoney()){

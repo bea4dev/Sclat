@@ -320,21 +320,20 @@ public class OpenGUI {
     public static void openShop(Player player){
         int slotnum = 0;
         Inventory shooter = Bukkit.createInventory(null, 54, "武器選択");
-        for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-            String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
+        for (String ClassName : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
             ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
             ItemMeta itemm = item.getItemMeta();
             itemm.setDisplayName(ClassName);
             List lores = new ArrayList();
-            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
+            lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + ClassName + ".SubWeaponName"));
+            lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + ClassName + ".SPWeaponName"));
             itemm.setLore(lores);
             item.setItemMeta(itemm);
             if (slotnum <= 44 && (DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Burst") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Blaster") || DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Spinner"))){
                 if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() == 0){
                     shooter.setItem(slotnum, item);
                     slotnum++;
-                }else if(PlayerStatusMgr.haveWeapon(player, classname)){
+                }else if(PlayerStatusMgr.haveWeapon(player, ClassName)){
                     shooter.setItem(slotnum, item);
                     slotnum++;
                 }
@@ -349,14 +348,13 @@ public class OpenGUI {
                 Inventory shooter = Bukkit.createInventory(null, 54, "武器選択");
                 if(shop)
                     shooter = Bukkit.createInventory(null, 54, "Shop");
-                for (String classname : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
-                    String ClassName = conf.getClassConfig().getString("WeaponClass." + classname + ".MainWeaponName");
+                for (String ClassName : conf.getClassConfig().getConfigurationSection("WeaponClass").getKeys(false)){
                     ItemStack item = new ItemStack(DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponIteamStack());
                     ItemMeta itemm = item.getItemMeta();
                     itemm.setDisplayName(ClassName);
                     List lores = new ArrayList();
-                    lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SubWeaponName"));
-                    lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + classname + ".SPWeaponName"));
+                    lores.add("§r§6SubWeapon : " + conf.getClassConfig().getString("WeaponClass." + ClassName + ".SubWeaponName"));
+                    lores.add("§r§6SPWeapon  : " + conf.getClassConfig().getString("WeaponClass." + ClassName + ".SPWeaponName"));
                     if(shop){
                         lores.add("");
                         lores.add("§r§bMoney : " + String.valueOf(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney()));
@@ -390,7 +388,7 @@ public class OpenGUI {
                     
                     if (slotnum <= 52 && equals){
                         if(shop){
-                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, classname)){
+                            if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, ClassName)){
                                 if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getLevel() > PlayerStatusMgr.getLv(player)){
                                     ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
                                     ItemMeta gmeta = glass.getItemMeta();
@@ -414,7 +412,7 @@ public class OpenGUI {
                                     shooter.setItem(slotnum, item);
                                 }
                                 slotnum++;
-                            }else if(PlayerStatusMgr.haveWeapon(player, classname) || !Main.shop){
+                            }else if(PlayerStatusMgr.haveWeapon(player, ClassName) || !Main.shop){
                                 shooter.setItem(slotnum, item);
                                 slotnum++;
                             }
