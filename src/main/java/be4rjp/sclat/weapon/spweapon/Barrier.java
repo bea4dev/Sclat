@@ -7,12 +7,20 @@ import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.SPWeaponMgr;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.server.v1_13_R2.EntityArmorStand;
+import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_13_R2.WorldServer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,6 +38,7 @@ public class Barrier {
         //エフェクトとアーマー解除
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
+            List<EntityArmorStand> list = new ArrayList<>();
             int c = 0;
             @Override
             public void run(){
@@ -41,15 +50,17 @@ public class Barrier {
                 if(c == 0)
                     data.setArmor(Double.MAX_VALUE);
                 Location loc = p.getLocation().add(0, 0.5, 0);
-                List<Location> s_locs = Sphere.getSphere(loc, 2, 25);
+                
+                
+                List<Location> s_locs = Sphere.getSphere(loc, 2, 23);
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx() && !o_player.equals(player)){
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()/* && !o_player.equals(player)*/){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for(Location e_loc : s_locs)
                             if(o_player.getWorld() == e_loc.getWorld())
                                 if(o_player.getLocation().distance(e_loc) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                    o_player.spawnParticle(Particle.REDSTONE, e_loc, 1, 0, 0, 0, 70, dustOptions);
+                                    o_player.spawnParticle(Particle.REDSTONE, e_loc, 0, 0, 0, 0, 70, dustOptions);
                     }
                 }
                 if(c == 25){
