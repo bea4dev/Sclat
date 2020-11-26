@@ -1,6 +1,7 @@
 
 package be4rjp.sclat.weapon.spweapon;
 
+import be4rjp.sclat.GlowingAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.server.v1_13_R2.EntityArmorStand;
 import net.minecraft.server.v1_13_R2.EntitySquid;
 import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
@@ -82,7 +84,6 @@ public class MultiMissile {
                                 es.setInvisible(true);
                                 es.setNoGravity(true);
                                 es.setNoAI(true);
-                                //es.setFlag(6, true);
                                 ps.put(op, es);
                                 ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
                             }
@@ -93,6 +94,8 @@ public class MultiMissile {
                                 if(as.getCustomName() == null) continue;
                                 if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
                                     EntityArmorStand eas = new EntityArmorStand(nmsWorld);
+                                    Location loc = as.getLocation();
+                                    eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                                     eas.setInvisible(true);
                                     eas.setSmall(as.isSmall());
                                     eas.setBasePlate(as.hasBasePlate());
@@ -110,12 +113,10 @@ public class MultiMissile {
                                 Location loc = op.getLocation();
                                 es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                                 if(MMCheckCanLock(p, op))
-                                    es.setFlag(6, true);
+                                    GlowingAPI.setGlowing(es.getBukkitEntity(), p, true);
                                 else
-                                    es.setFlag(6, false);
-                                //((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(es));
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
+                                    GlowingAPI.setGlowing(es.getBukkitEntity(), p, false);
+                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(es));
                             }
                         }
                         for(Entity e : p.getWorld().getEntities()){
@@ -127,12 +128,10 @@ public class MultiMissile {
                                     Location loc = as.getLocation();
                                     eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                                     if(MMCheckCanLock(p, as))
-                                        eas.setFlag(6, true);
+                                        GlowingAPI.setGlowing(eas.getBukkitEntity(), p, true);
                                     else
-                                        eas.setFlag(6, false);
-
-                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(eas.getBukkitEntity().getEntityId()));
-                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(eas));
+                                        GlowingAPI.setGlowing(eas.getBukkitEntity(), p, false);
+                                    ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(eas));
                                 }
                             }
                         }
@@ -194,7 +193,7 @@ public class MultiMissile {
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
-    
+
     public static void FireworksRunnable(Player player){
         BukkitRunnable task = new BukkitRunnable() {
             Player p = player;
@@ -213,7 +212,7 @@ public class MultiMissile {
         };
         task.runTaskTimer(Main.getPlugin(), 0, 2);
     }
-    
+
     public static void MMShootRunnable(Player shooter, Entity target, int i){
         BukkitRunnable task = new BukkitRunnable(){
             Player s = shooter;
@@ -234,7 +233,7 @@ public class MultiMissile {
         };
         task.runTaskTimer(Main.getPlugin(), 0, 10);
     }
-    
+
     public static void MMRunnable(Player shooter, Entity target){
         BukkitRunnable task = new BukkitRunnable(){
             Player s = shooter;
@@ -263,52 +262,52 @@ public class MultiMissile {
                     }
                     DataMgr.setSnowballIsHit(ball, false);
                 }
-                
+
                 if(!DataMgr.getPlayerData(s).isInMatch() || !s.isOnline() || drop.isDead()){
                     drop.remove();
                     ball.remove();
                     cancel();
                 }
-                
+
                 Location dl = drop.getLocation();
-                
+
                 if(!drop.isOnGround()){
                     ball.teleport(drop.getLocation());
-                    ball.setVelocity(drop.getVelocity());  
+                    ball.setVelocity(drop.getVelocity());
                 }
-                
+
                 if(dl.distance(tl) < 10){
                     reached = true;
                 }
-                
+
                 if(t instanceof Player)
                     if(((Player)t).getGameMode().equals(GameMode.SPECTATOR) || !((Player)t).isOnline())
                         reached = true;
-                
+
                 //if(!reached)
-                    //tl = t.getLocation();
-                
+                //tl = t.getLocation();
+
                 if(!reached)
                     drop.setVelocity((new Vector(tl.getX() - dl.getX(), tl.getY() - dl.getY(), tl.getZ() - dl.getZ())).normalize().multiply(0.8));
                 else
-                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));  
-                
+                    drop.setVelocity(drop.getVelocity().add(new Vector(0, -0.1, 0)));
+
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
-                
+
                 if(DataMgr.getSnowballIsHit(ball)){
                     //半径
                     double maxDist = 3;
-                    
+
                     //爆発音
                     s.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
-                    
+
                     //爆発エフェクト
                     Sclat.createInkExplosionEffect(drop.getLocation(), maxDist, 25, s);
-                    
+
                     //塗る
                     for(int i = 0; i <= maxDist; i++){
                         List<Location> p_locs = Sphere.getSphere(drop.getLocation(), i, 20);
@@ -316,7 +315,7 @@ public class MultiMissile {
                             PaintMgr.Paint(loc, s, false);
                         }
                     }
-                    
+
                     //攻撃判定の処理
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != s.getWorld())
@@ -342,12 +341,12 @@ public class MultiMissile {
                                     }
                                 };
                                 task.runTaskLater(Main.getPlugin(), 1);
-                                
-                                
+
+
                             }
                         }
                     }
-                    
+
                     for(Entity as : s.getWorld().getEntities()){
                         if (as.getLocation().distance(drop.getLocation()) <= maxDist){
                             if(as instanceof ArmorStand){
@@ -356,17 +355,17 @@ public class MultiMissile {
                             }
                         }
                     }
-                    
+
                     drop.remove();
                     cancel();
                 }
-                
+
                 c++;
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
     }
-    
+
     public static void MMSquidRunnable(Player shooter, Player target){
         WorldServer nmsWorld = ((CraftWorld) target.getWorld()).getHandle();
         Location loc = target.getLocation();
@@ -378,7 +377,7 @@ public class MultiMissile {
         es.setFlag(6, true);
         ((CraftPlayer)shooter).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(es));
     }
-    
+
     public static boolean MMCheckCanLock(Player sp, Entity target){
         Vector sv = sp.getEyeLocation().getDirection().normalize();
         Location tl = target.getLocation();
