@@ -103,7 +103,10 @@ public class JetPack {
                 p.setAllowFlight(true);
                 p.setFlying(true);
                 
-                Vector vec = DataMgr.getPlayerData(p).getVehicleVector().clone().multiply(0.5);
+                
+                Vector vec = new Vector(0, 0, 0);
+                if(i % 2 == 0)
+                    vec = DataMgr.getPlayerData(p).getVehicleVector().clone().multiply(0.8);
                 Vector pvec = p.getEyeLocation().getDirection();
                 Vector w_WASDVector = (new Vector(pvec.getX(), 0, pvec.getZ())).multiply(vec.getX());
                 Vector d_WASDVector = (new Vector(pvec.getZ(), 0, pvec.getX() * -1)).multiply(vec.getZ());

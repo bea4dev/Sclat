@@ -732,7 +732,7 @@ public class OpenGUI {
         inv.setItem(23, bomb_p);
         
         
-        ItemStack bombEx = new ItemStack(Material.WHITE_CONCRETE);
+        ItemStack bombEx = new ItemStack(Material.TNT);
         ItemMeta bombEx_m = bombEx.getItemMeta();
         bombEx_m.setDisplayName("爆発エフェクト");
         ArrayList<String> bombEx_r = new ArrayList<String>();
