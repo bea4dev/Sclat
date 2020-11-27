@@ -169,8 +169,12 @@ public class KBomb {
                     //ボムの視認用エフェクト
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                            if(o_player.getWorld() == drop.getLocation().getWorld()) {
+                                if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                    o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                                }
+                            }
                         }
                     }
 

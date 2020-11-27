@@ -11,11 +11,11 @@ public class PlayerSettings {
     
     private Player player;
     
-    private boolean ShowEffect_Shooter = true;
+    private boolean ShowEffect_MainWeaponInk = true;
     private boolean ShowEffect_ChargerLine = true;
-    private boolean ShowEffect_ChargerShot = true;
-    private boolean ShowEffect_RollerRoll = true;
-    private boolean ShowEffect_RollerShot = true;
+    private boolean ShowEffect_SPWeapon = true;
+    private boolean ShowEffect_SPWeaponRegion = true;
+    private boolean ShowAreaRegion = true;
     private boolean ShowEffect_Squid = true;
     private boolean ShowEffect_BombEx = true;
     private boolean ShowEffect_Bomb = true;
@@ -26,22 +26,22 @@ public class PlayerSettings {
     
     public Player getPlayer(){return this.player;}
     
-    public boolean ShowEffect_Shooter(){return this.ShowEffect_Shooter;}
+    public boolean ShowEffect_MainWeaponInk(){return this.ShowEffect_MainWeaponInk;}
     public boolean ShowEffect_ChargerLine(){return this.ShowEffect_ChargerLine;}
-    public boolean ShowEffect_ChargerShot(){return this.ShowEffect_ChargerShot;}
-    public boolean ShowEffect_RollerRoll(){return this.ShowEffect_RollerRoll;}
-    public boolean ShowEffect_RollerShot(){return this.ShowEffect_RollerShot;}
+    public boolean ShowEffect_SPWeapon(){return this.ShowEffect_SPWeapon;}
+    public boolean ShowEffect_SPWeaponRegion(){return this.ShowEffect_SPWeaponRegion;}
+    public boolean ShowAreaRegion(){return this.ShowAreaRegion;}
     public boolean ShowEffect_Squid(){return this.ShowEffect_Squid;}
     public boolean ShowEffect_BombEx(){return this.ShowEffect_BombEx;}
     public boolean ShowEffect_Bomb(){return this.ShowEffect_Bomb;}
     public boolean PlayBGM(){return this.PlayBGM;}
     public boolean doChargeKeep(){return this.doChargeKeep;}
     
-    public void S_ShowEffect_Shooter(){this.ShowEffect_Shooter = !ShowEffect_Shooter;}
+    public void S_ShowEffect_MainWeaponInk(){this.ShowEffect_MainWeaponInk = !ShowEffect_MainWeaponInk;}
     public void S_ShowEffect_ChargerLine(){this.ShowEffect_ChargerLine = !ShowEffect_ChargerLine;}
-    public void S_ShowEffect_ChargerShot(){this.ShowEffect_ChargerShot = !ShowEffect_ChargerShot;}
-    public void S_ShowEffect_RollerRoll(){this.ShowEffect_RollerRoll = !ShowEffect_RollerRoll;}
-    public void S_ShowEffect_RollerShot(){this.ShowEffect_RollerShot = !ShowEffect_RollerShot;}
+    public void S_ShowEffect_SPWeapon(){this.ShowEffect_SPWeapon = !ShowEffect_SPWeapon;}
+    public void S_ShowEffect_SPWeaponRegion(){this.ShowEffect_SPWeaponRegion = !ShowEffect_SPWeaponRegion;}
+    public void S_ShowAreaRegion(){this.ShowAreaRegion = !ShowAreaRegion;}
     public void S_ShowEffect_Squid(){this.ShowEffect_Squid = !ShowEffect_Squid;}
     public void S_ShowEffect_BombEx(){this.ShowEffect_BombEx = !ShowEffect_BombEx;}
     public void S_ShowEffect_Bomb(){this.ShowEffect_Bomb = !ShowEffect_Bomb;}

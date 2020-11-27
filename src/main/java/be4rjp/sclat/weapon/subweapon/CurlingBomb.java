@@ -113,14 +113,14 @@ public class CurlingBomb {
                     if(i % 2 == 0){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Bomb())
                                 if(target.getWorld() == player.getWorld())
                                     if(target.getLocation().distance(as1l) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, as1l, 2, 0, 0, 0, 1, bd);
                         }
                         //攻撃判定
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll()){
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Bomb()){
                                 if(target.getWorld() == player.getWorld()){
                                     if(target.getLocation().distance(as1l) <= 1.2){
                                         double damage = 2;

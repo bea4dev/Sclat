@@ -176,7 +176,7 @@ public class Charger {
             PaintMgr.PaintHightestBlock(position, player, false, true);
             
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerShot())
+                if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                     continue;
                 if(target.getWorld() == position.getWorld()){
                     if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){

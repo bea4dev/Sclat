@@ -153,7 +153,7 @@ public class SuperShot {
                     if(new Random().nextInt(20) == 0){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                                 if(o_player.getWorld() == ball.getWorld())
                                     if(o_player.getLocation().distance(ball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);

@@ -89,7 +89,7 @@ public class MegaLaser {
                         if(p.getWorld() != target.getWorld())
                             continue;
                         if(el.distance(target.getLocation()) < 32){
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeapon()){
                                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                                 target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, el, 7, 0.5, 0.5, 0.5, 1, bd);
                             }
@@ -187,7 +187,7 @@ public class MegaLaser {
                                 if(p.getWorld() != target.getWorld())
                                     continue;
                                 if(eloc.distance(target.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                    if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                                    if(DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                         target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
                                     }
@@ -248,7 +248,7 @@ public class MegaLaser {
                                     if(p.getWorld() != target.getWorld())
                                         continue;
                                     if(eloc.distance(target.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                        if(DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine()){
+                                        if(DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()){
                                             Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                             target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
                                         }

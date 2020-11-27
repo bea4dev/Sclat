@@ -414,14 +414,15 @@ public class ClickListener implements Listener{
                 SuperJumpMgr.SuperJumpCollTime(player, loc);
             }
             for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                if(p.getGameMode() == GameMode.SPECTATOR){
-                    Sclat.sendMessage("§c今そのプレイヤーにはジャンプできない！", MessageType.PLAYER, player);
-                    Sclat.playGameSound(player, SoundType.ERROR);
-                    continue;
-                }
                 if (p.getName().equals(name)){
-                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD))
+                    if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+                        if(p.getGameMode() == GameMode.SPECTATOR){
+                            Sclat.sendMessage("§c今そのプレイヤーにはジャンプできない！", MessageType.PLAYER, player);
+                            Sclat.playGameSound(player, SoundType.ERROR);
+                            break;
+                        }
                         SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getPlayerData(p).getPlayerGroundLocation());
+                    }
                     if(event.getCurrentItem().getType().equals(Material.IRON_TRAPDOOR))
                         SuperJumpMgr.SuperJumpCollTime(player, DataMgr.getBeaconFromplayer(p).getLocation());
                 }
@@ -436,25 +437,25 @@ public class ClickListener implements Listener{
             }
             
             switch (name){
-                case "シューターのパーティクル":
-                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Shooter();
+                case "メインウエポンのインクエフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_MainWeaponInk();
                     break;
                 case "チャージャーのレーザー":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerLine();
                     break;
-                case "チャージャーの射撃エフェクト":
-                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_ChargerShot();
+                case "スペシャルウエポンのエフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_SPWeapon();
                     break;
-                case "ローラーのロール":
-                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_RollerRoll();
+                case "スペシャルウエポンの範囲エフェクト":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_SPWeaponRegion();
                     break;
-                case "ローラーのしぶき":
-                    DataMgr.getPlayerData(player).getSettings().S_ShowEffect_RollerShot();
+                case "エリアの発光表示":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowAreaRegion();
                     break;
                 case "BGM":
                     DataMgr.getPlayerData(player).getSettings().S_PlayBGM();
                     break;
-                case "ボムの視認用エフェクト":
+                case "投擲武器の視認用エフェクト":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_Bomb();
                     break;
                 case "爆発エフェクト":
@@ -470,11 +471,11 @@ public class ClickListener implements Listener{
             player.playNote(player.getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.C));
             
             String B = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
-            String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_Shooter() ? "1" : "0";
+            String E_S = DataMgr.getPlayerData(player).getSettings().ShowEffect_MainWeaponInk() ? "1" : "0";
             String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";
-            String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerShot() ? "1" : "0";
-            String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerRoll() ? "1" : "0";
-            String E_RS = DataMgr.getPlayerData(player).getSettings().ShowEffect_RollerShot() ? "1" : "0";
+            String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_SPWeapon() ? "1" : "0";
+            String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_SPWeaponRegion() ? "1" : "0";
+            String E_RS = DataMgr.getPlayerData(player).getSettings().ShowAreaRegion() ? "1" : "0";
             //String E_BGM = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
             String E_B = DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb() ? "1" : "0";
             String E_BEx = DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx() ? "1" : "0";

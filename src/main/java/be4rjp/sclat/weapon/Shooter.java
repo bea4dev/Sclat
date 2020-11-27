@@ -235,7 +235,7 @@ public class Shooter {
                 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
                         if(o_player.getWorld() == inkball.getWorld())
                             if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);

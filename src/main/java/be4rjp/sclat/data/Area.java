@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.v1_13_R2.EntityShulker;
 //import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,13 +64,15 @@ public class Area {
                     esl.setFlag(5, true);
                     esl.setFlag(6, true);
                     this.slist.add(sl);
-                    
-                    /*
+
+
                     for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                            ((CraftPlayer)oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
+                        if(!DataMgr.getPlayerData(oplayer).getSettings().ShowAreaRegion()) {
+                            if (DataMgr.getPlayerData(oplayer).isInMatch()) {
+                                ((CraftPlayer) oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
+                            }
                         }
-                    }*/
+                    }
                 }
                 for(Shulker sl : this.slist){
                     Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);

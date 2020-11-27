@@ -13,15 +13,15 @@ public class SettingMgr {
         String def = "011111111";
         if(conf.getPlayerSettings().contains("Settings." + uuid)){
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(1,2).equals("0"))
-                settings.S_ShowEffect_Shooter();
+                settings.S_ShowEffect_MainWeaponInk();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(2,3).equals("0"))
                 settings.S_ShowEffect_ChargerLine();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(3,4).equals("0"))
-                settings.S_ShowEffect_ChargerShot();
+                settings.S_ShowEffect_SPWeapon();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
-                settings.S_ShowEffect_RollerRoll();
+                settings.S_ShowEffect_SPWeaponRegion();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
-                settings.S_ShowEffect_RollerShot();
+                settings.S_ShowAreaRegion();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
                 settings.S_PlayBGM();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))

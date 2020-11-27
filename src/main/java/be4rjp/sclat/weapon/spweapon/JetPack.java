@@ -155,7 +155,7 @@ public class JetPack {
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                     Location position = ru.getLocation().clone().add(0, 0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
                         if(o_player.getWorld() == position.getWorld()){
                             if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
@@ -169,7 +169,7 @@ public class JetPack {
                     }
                     position = lu.getLocation().clone().add(0, 0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
                         if(o_player.getWorld() == position.getWorld()){
                             if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
@@ -351,7 +351,7 @@ public class JetPack {
                         ball.setVelocity(drop.getVelocity());  
                     
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_Shooter())
+                        if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeapon())
                             continue;
                             if(target.getWorld() == ball.getWorld()){
                                 if(target.getLocation().distance(ball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
@@ -429,9 +429,13 @@ public class JetPack {
 
                     //ボムの視認用エフェクト
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
-                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
-                            o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon()){
+                            if(o_player.getWorld() == drop.getLocation().getWorld()) {
+                                if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                    o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                                }
+                            }
                         }
                     }
 

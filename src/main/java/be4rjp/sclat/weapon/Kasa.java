@@ -116,7 +116,7 @@ public class Kasa {
                     }
                     
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
+                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                         continue;
                     if(target.getWorld() == inkball.getWorld()){
                         if(target.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
@@ -511,7 +511,7 @@ public class Kasa {
                             Location asl = as4.getLocation();
                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
                                         if(target.getLocation().distance(asl) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, asl, 1, 0, 0, 0, 1, bd);

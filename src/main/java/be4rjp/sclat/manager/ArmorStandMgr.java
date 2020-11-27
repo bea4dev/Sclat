@@ -35,6 +35,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -139,8 +141,29 @@ public class ArmorStandMgr {
                                 ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_TRAPDOOR))));
                             }
                         }
+
+                        //索敵機能
+                        double distance = 6;
+
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
+                                continue;
+                            if (target.getLocation().distance(as.getLocation()) <= distance) {
+                                if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
+                                    target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20, 1));
+                                }
+                            }
+                        }
                     }
                     c++;
+                }else{
+                    if(c % 10 == 0){
+                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(as.getWorld() == player.getWorld()){
+                                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                            }
+                        }
+                    }
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();
@@ -197,6 +220,14 @@ public class ArmorStandMgr {
                         }
                     }
                     c++;
+                }else{
+                    if(c % 10 == 0){
+                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(as.getWorld() == player.getWorld()){
+                                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                            }
+                        }
+                    }
                 }
                 if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline())
                     cancel();

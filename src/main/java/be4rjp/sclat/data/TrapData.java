@@ -186,7 +186,7 @@ public class TrapData {
                         if (!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != player.getWorld())
                             continue;
                         if (target.getLocation().distance(location) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(location)) * 2.5 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
+                            double damage = (maxDist - target.getLocation().distance(location)) * 3.0 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                             if (DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
                                 if (target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage) {
                                     DamageMgr.SclatGiveDamage(target, damage);

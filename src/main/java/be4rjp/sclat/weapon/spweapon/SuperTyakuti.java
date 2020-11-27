@@ -77,7 +77,7 @@ public class SuperTyakuti {
                     
                     if(i >= 5 && i <= 23){
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter() && !o_player.equals(player)){
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon() && !o_player.equals(player)){
                                 if(o_player.getWorld() == player.getWorld()){
                                     if(o_player.getLocation().distance(player.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor(), 1);
@@ -103,7 +103,7 @@ public class SuperTyakuti {
                         }
                         List<Location> s_locs = Sphere.getXZCircle(bloc.add(0, 1, 0), 7, 3, 40);
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeaponRegion()){
                                 for(Location loc : s_locs){
                                     if(o_player.getWorld() == loc.getWorld()){
                                         if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){

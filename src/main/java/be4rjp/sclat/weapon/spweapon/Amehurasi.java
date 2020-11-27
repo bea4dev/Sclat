@@ -131,7 +131,7 @@ public class Amehurasi {
                     //雲エフェクト
                     if(c % 2 == 0){
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
+                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon()){
                                 for(Location loc : locList){
                                     if(new Random().nextInt(3) == 1){
                                         if(o_player.getWorld() == loc.getWorld()){
@@ -229,7 +229,7 @@ public class Amehurasi {
                 if(i % 2 == 0){
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
+                        if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             if(o_player.getWorld() == inkball.getWorld())
                                 if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                     o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);

@@ -48,6 +48,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import static be4rjp.sclat.Main.conf;
+
 /**
  *
  * @author Be4rJP
@@ -294,8 +296,12 @@ public class MultiMissile {
 
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Shooter())
-                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
+                    if(o_player.getWorld() == drop.getLocation().getWorld()) {
+                        if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                            if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
+                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
+                        }
+                    }
                 }
 
                 if(DataMgr.getSnowballIsHit(ball)){

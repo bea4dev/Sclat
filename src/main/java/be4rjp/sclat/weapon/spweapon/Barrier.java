@@ -54,7 +54,7 @@ public class Barrier {
                 
                 List<Location> s_locs = Sphere.getSphere(loc, 2, 23);
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx() && !o_player.equals(player)){
+                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon() && !o_player.equals(player)){
                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for(Location e_loc : s_locs)

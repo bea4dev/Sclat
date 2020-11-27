@@ -86,7 +86,7 @@ public class Roller {
                             front = eloc.add(vec.getX() * 1.5, -0.9, vec.getZ() * 1.5);
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                            if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                 if(target.getWorld() == p.getWorld())
                                     if(target.getLocation().distance(front) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
@@ -101,7 +101,7 @@ public class Roller {
                             p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
 
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
                                         if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
@@ -156,7 +156,7 @@ public class Roller {
                             p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
 
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
                                         if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
@@ -220,7 +220,7 @@ public class Roller {
                                 break loop;
                             PaintMgr.PaintHightestBlock(position, p, false, true);
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerRoll())
+                                if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
                                         if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance"))
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
@@ -387,7 +387,7 @@ public class Roller {
                         DataMgr.setSnowballHitCount(name, 0);
                     }
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
+                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                         continue;
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                     target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);

@@ -87,7 +87,7 @@ public class Bucket {
                     }
                     
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_RollerShot())
+                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                         continue;
                     if(target.getWorld() == inkball.getWorld()){
                         if(target.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
