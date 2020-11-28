@@ -51,6 +51,26 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
             }
         }
         //-------------------------------------------------------------------------
+    
+        //----------------------------/sclat fly-----------------------------------
+        if(args[0].equalsIgnoreCase("fly")) {
+            if(args.length != 2) return false;
+        
+            if(type == CommanderType.MEMBER){
+                sender.sendMessage(ChatColor.RED + "You don't have permission.");
+                Sclat.playGameSound((Player)sender, SoundType.ERROR);
+                return false;
+            }
+        
+            String playerName = args[1];
+            for(Player player : Main.getPlugin().getServer().getOnlinePlayers()){
+                if(playerName.equals(player.getName())){
+                    Main.flyList.add(playerName);
+                    return true;
+                }
+            }
+        }
+        //-------------------------------------------------------------------------
         return false;
     }
 
@@ -76,6 +96,7 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
             if(type != CommanderType.MEMBER) {
                 list.add("setUpdateRate");
                 list.add("sur");
+                list.add("fly");
             }
 
             return list;

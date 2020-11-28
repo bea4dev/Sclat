@@ -1,6 +1,7 @@
 
 package be4rjp.sclat.data;
 
+import be4rjp.sclat.GlowingAPI;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.MessageType;
 import be4rjp.sclat.Sclat;
@@ -57,22 +58,22 @@ public class Area {
                     Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc, EntityType.SHULKER);
                     sl.setAI(false);
                     sl.setGravity(false);
-                    sl.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 4000, 1));
-                    sl.setGlowing(true);
                     sl.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4000, 1));
                     EntityShulker esl = ((CraftShulker)sl).getHandle();
                     esl.setFlag(5, true);
-                    esl.setFlag(6, true);
                     this.slist.add(sl);
 
-
-                    for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                        if(!DataMgr.getPlayerData(oplayer).getSettings().ShowAreaRegion()) {
-                            if (DataMgr.getPlayerData(oplayer).isInMatch()) {
-                                ((CraftPlayer) oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
+                    BukkitRunnable task = new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                if(!DataMgr.getPlayerData(oplayer).getSettings().ShowAreaRegion()) {
+                                    ((CraftPlayer) oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
+                                }
                             }
                         }
-                    }
+                    };
+                    task.runTaskLater(Main.getPlugin(), 40);
                 }
                 for(Shulker sl : this.slist){
                     Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
@@ -80,7 +81,7 @@ public class Area {
                         match.getBlockUpdater().setBlock(b, Material.WHITE_CARPET);
                         DataMgr.rblist.add(b);
                     }
-                    sl.remove();
+                    //sl.remove();
                 }
             }
         }
@@ -88,6 +89,16 @@ public class Area {
         task = new BukkitRunnable(){
             @Override
             public void run(){
+                //エリアの発光表示
+                for(Shulker sl : slist) {
+                    for (Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()) {
+                        if (DataMgr.getPlayerData(oplayer).getSettings().ShowAreaRegion()) {
+                            GlowingAPI.setGlowing(sl, oplayer, true);
+                        }
+                    }
+                }
+                
+                //エリア処理
                 int t0c = 0;
                 int t1c = 0;
                 for(Block block : blist){

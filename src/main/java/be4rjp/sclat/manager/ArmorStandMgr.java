@@ -143,14 +143,25 @@ public class ArmorStandMgr {
                         }
 
                         //索敵機能
-                        double distance = 6;
+                        double distance = 8;
 
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distance(as.getLocation()) <= distance) {
                                 if(DataMgr.getPlayerData(player).getTeam().getID() != DataMgr.getPlayerData(target).getTeam().getID()){
-                                    target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 20, 1));
+                                    target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
+                                }
+                            }
+                        }
+    
+                        for(Entity as1 : player.getWorld().getEntities()){
+                            if (as1.getLocation().distance(as.getLocation()) <= distance){
+                                if(as1.getCustomName() != null){
+                                    if(as1.getCustomName() == null) continue;
+                                    if(as1 instanceof ArmorStand && !as1.getCustomName().equals("Path") && !as1.getCustomName().equals("21") && !as1.getCustomName().equals("100")&& !as1.getCustomName().equals("SplashShield") && !as1.getCustomName().equals("Kasa")){
+                                        ((ArmorStand)as1).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
+                                    }
                                 }
                             }
                         }

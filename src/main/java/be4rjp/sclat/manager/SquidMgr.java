@@ -60,11 +60,11 @@ public class SquidMgr {
                     p.setWalkSpeed(0.2F);
                     p.setExp(0);
                     p.setMaxHealth(20);
-                    if(!p.hasPermission("sclat.lobbyfly")){
+                    if(p.hasPermission("sclat.lobbyfly") || Main.flyList.contains(p.getName())){
+                        p.setAllowFlight(true);
+                    }else{
                         p.setAllowFlight(false);
                         p.setFlying(false);
-                    }else{
-                        p.setAllowFlight(true);
                     }
                     return;
                 }

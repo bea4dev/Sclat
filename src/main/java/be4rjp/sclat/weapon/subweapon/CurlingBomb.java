@@ -190,7 +190,7 @@ public class CurlingBomb {
                                 if(as instanceof ArmorStand){
                                     if(as.getCustomName() != null){
                                         if(as.getCustomName().equals("Kasa")){
-                                            return;
+                                            cancel();
                                         }
                                     }
                                 }

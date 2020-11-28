@@ -77,6 +77,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     //for ProtocolLib
     public static ProtocolManager protocolManager;
     
+    
+    public static List<String> flyList = new ArrayList<>();
+    
 
     @Override
     public void onEnable() {
