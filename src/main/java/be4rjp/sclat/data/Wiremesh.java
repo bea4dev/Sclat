@@ -5,10 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -35,11 +32,12 @@ public class Wiremesh {
         block.setType(Material.AIR);
         
         Location loc = block.getLocation().clone().add(0.5, 0, 0.5);
-        fb = block.getWorld().spawnFallingBlock(loc, blockData);
+        fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, -0.1, 0), blockData);
         fb.setDropItem(false);
         fb.setHurtEntities(false);
         fb.setGravity(false);
         fb.setTicksLived(1);
+        ((LivingEntity)fb).setCollidable(false);
         
         
         as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {
@@ -81,11 +79,12 @@ public class Wiremesh {
                     //一人でも近いプレイヤーがいればFallingBlockをスポーンさせる
                     if(near){
                         if(spawn){
-                            fb = block.getWorld().spawnFallingBlock(loc, blockData);
+                            fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, -0.1, 0), blockData);
                             fb.setDropItem(false);
                             fb.setHurtEntities(false);
                             fb.setGravity(false);
                             fb.setTicksLived(1);
+                            ((LivingEntity)fb).setCollidable(false);
 
                             
                             as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {

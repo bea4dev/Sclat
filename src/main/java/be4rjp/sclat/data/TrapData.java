@@ -173,12 +173,20 @@ public class TrapData {
                     }
     
                     //攻撃判定の処理
-                    for (Entity as : player.getWorld().getEntities())
-                        if (as.getLocation().distance(location) <= maxDist)
-                            if (as instanceof ArmorStand)
-                                if (as.getCustomName() != null)
-                                    if (as.getCustomName().equals("Kasa"))
-                                        cancel();
+                    for (Entity as : player.getWorld().getEntities()) {
+                        if (as.getLocation().distance(location) <= maxDist) {
+                            if (as instanceof ArmorStand) {
+                                if (as.getCustomName() != null) {
+                                    if (as.getCustomName().equals("Kasa")) {
+                                        KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                        if(DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                                            cancel();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
     
     
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {

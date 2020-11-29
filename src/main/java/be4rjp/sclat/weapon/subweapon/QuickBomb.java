@@ -7,6 +7,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
@@ -98,20 +99,19 @@ public class QuickBomb {
                         }
 
 
-
-                        //攻撃判定の処理
                         
-                        for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(drop.getLocation()) <= maxDist){
-                                if(as instanceof ArmorStand){
-                                    if(as.getCustomName() != null){
-                                        if(as.getCustomName().equals("Kasa")){
-                                            drop.remove();
-                                            cancel();
-                                            return;
+                        //攻撃判定の処理
+                        for (Entity as : player.getWorld().getEntities()) {
+                            if (as.getLocation().distance(drop.getLocation()) <= maxDist) {
+                                if (as instanceof ArmorStand) {
+                                    if (as.getCustomName() != null) {
+                                        if (as.getCustomName().equals("Kasa")) {
+                                            KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                            if(DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
+                                                cancel();
+                                            }
                                         }
                                     }
-                                            
                                 }
                             }
                         }

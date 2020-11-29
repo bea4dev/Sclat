@@ -58,12 +58,15 @@ public class AirStrike {
         
         Vector vec = MapKitMgr.getMapLocationVector(player);
         //int y = player.getWorld().getHighestBlockYAt(vec.getBlockX(), vec.getBlockZ());
+        
         int c = 0;
-        for (int i = 256; i > 0; i--){
+        for (int i = 254; i > 0; i--){
             Location locc = new Location(player.getWorld(), player.getLocation().getBlockX() + vec.getBlockX(), i, player.getLocation().getBlockZ() + vec.getBlockZ());
             Block block = player.getWorld().getBlockAt(locc);
-            if(!block.getType().equals(Material.AIR))
+            if(!block.getType().equals(Material.AIR)) {
                 c = i;
+                break;
+            }
         }
         int y = c;
         Location ploc = player.getLocation();
