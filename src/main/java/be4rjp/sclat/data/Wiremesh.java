@@ -32,12 +32,12 @@ public class Wiremesh {
         block.setType(Material.AIR);
         
         Location loc = block.getLocation().clone().add(0.5, 0, 0.5);
-        fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, -0.1, 0), blockData);
+        fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, 0, 0), blockData);
         fb.setDropItem(false);
         fb.setHurtEntities(false);
         fb.setGravity(false);
         fb.setTicksLived(1);
-        ((LivingEntity)fb).setCollidable(false);
+        //((LivingEntity)fb).setCollidable(false);
         
         
         as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {
@@ -79,12 +79,12 @@ public class Wiremesh {
                     //一人でも近いプレイヤーがいればFallingBlockをスポーンさせる
                     if(near){
                         if(spawn){
-                            fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, -0.1, 0), blockData);
+                            fb = block.getWorld().spawnFallingBlock(loc.clone().add(0, 0, 0), blockData);
                             fb.setDropItem(false);
                             fb.setHurtEntities(false);
                             fb.setGravity(false);
                             fb.setTicksLived(1);
-                            ((LivingEntity)fb).setCollidable(false);
+                            //((LivingEntity)fb).setCollidable(false);
 
                             
                             as = block.getWorld().spawn(loc, ArmorStand.class, armorStand -> {
