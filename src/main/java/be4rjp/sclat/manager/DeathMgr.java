@@ -292,15 +292,15 @@ public class DeathMgr {
 
 
                         if(i == 0)
-                            t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", "奈落に落ちてしまった！", 0, 21, 0);
+                            t.sendTitle(ChatColor.GREEN + "復活まであと: 5秒", "マップの外に落ちてしまった！", 0, 21, 0);
                         if(i == 20)
-                            t.sendTitle(ChatColor.GREEN + "復活まであと: 4秒", "奈落に落ちてしまった！", 0, 21, 0);
+                            t.sendTitle(ChatColor.GREEN + "復活まであと: 4秒", "マップの外に落ちてしまった！", 0, 21, 0);
                         if(i == 40)
-                            t.sendTitle(ChatColor.GREEN + "復活まであと: 3秒", "奈落に落ちてしまった！", 0, 21, 0);
+                            t.sendTitle(ChatColor.GREEN + "復活まであと: 3秒", "マップの外に落ちてしまった！", 0, 21, 0);
                         if(i == 60)
-                            t.sendTitle(ChatColor.GREEN + "復活まであと: 2秒", "奈落に落ちてしまった！", 0, 21, 0);
+                            t.sendTitle(ChatColor.GREEN + "復活まであと: 2秒", "マップの外に落ちてしまった！", 0, 21, 0);
                         if(i == 80)
-                            t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "奈落に落ちてしまった！", 0, 18, 2);
+                            t.sendTitle(ChatColor.GREEN + "復活まであと: 1秒", "マップの外に落ちてしまった！", 0, 18, 2);
                         if(i == 100){
                             DataMgr.getPlayerData(target).setIsDead(false);
                             Location loc1 = DataMgr.getPlayerData(t).getMatchLocation();

@@ -153,6 +153,10 @@ public class MapDataMgr {
                 wmListTask.startTask();
                 map.setWiremeshListTask(wmListTask);
             }
+    
+            if(conf.getMapConfig().contains("Maps." + mapname + ".VoidY")){
+                map.setVoidY(conf.getMapConfig().getInt("Maps." + mapname + ".VoidY"));
+            }
             
             
             map.setIntro(il);

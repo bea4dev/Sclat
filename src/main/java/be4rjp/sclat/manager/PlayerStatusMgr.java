@@ -54,7 +54,7 @@ public class PlayerStatusMgr {
     }
     
     public static void setDefaultStatus(Player player){
-        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 0);
+        conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Money", 10000);
         conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Lv", 0);
         conf.getPlayerStatus().set("Status." + player.getUniqueId().toString() + ".Rank", 0);
         List<String> wlist = new ArrayList<String>();

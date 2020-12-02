@@ -41,6 +41,12 @@ public class SquidListenerMgr {
         if(playerblock.getType() == Material.WATER && player.getGameMode().equals(GameMode.ADVENTURE))
             DeathMgr.PlayerDeathRunnable(player, player, "water");
         
+        try{
+            if(player.getLocation().getY() <= data.getMatch().getMapData().getVoidY()){
+                DeathMgr.PlayerDeathRunnable(player, player, "fall");
+            }
+        }catch (Exception e){}
+        
         //if(!DataMgr.getBlockDataMap().containsKey(b2) || !DataMgr.getBlockDataMap().containsKey(b3) || !DataMgr.getBlockDataMap().containsKey(b4) || !DataMgr.getBlockDataMap().containsKey(b5) || !DataMgr.getBlockDataMap().containsKey(b1))
             //return;
         

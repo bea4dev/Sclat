@@ -136,7 +136,7 @@ public class Amehurasi {
                                     if(new Random().nextInt(3) == 1){
                                         if(o_player.getWorld() == loc.getWorld()){
                                             if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                                                Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                                Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 3);
                                                 o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
                                             }
                                         }
@@ -198,7 +198,7 @@ public class Amehurasi {
                     }
                     
                     for(Location loc : locList){
-                        if(new Random().nextInt(350) == 1)
+                        if(new Random().nextInt(200) == 1)
                             SnowballAmehurasiRunnable(p, loc);
                     }
                     if(c == 260 || !DataMgr.getPlayerData(p).isInMatch()){

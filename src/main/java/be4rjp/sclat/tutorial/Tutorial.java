@@ -279,6 +279,7 @@ public class Tutorial {
                             player.sendMessage("§aチェストをもって右クリックするとメインメニューを開くことができます。");
                             player.sendMessage("§a初期から使える武器がいくつかあります。");
                             player.sendMessage("§aメインメニューの装備変更から武器を選んで、試合に参加してみましょう！");
+                            Sclat.sendMessage("§6初回ログインボーナスを受け取りました！ §aMoney +10000", MessageType.PLAYER, player);
                             Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
                         }
                     }

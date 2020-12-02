@@ -47,6 +47,8 @@ public class MapData {
     
     private WiremeshListTask wmlTask;
     
+    private int VoidY = 0;
+    
     
     
     public MapData(String mapname){this.mapname = mapname;}
@@ -89,6 +91,8 @@ public class MapData {
     
     public WiremeshListTask getWiremeshListTask(){return this.wmlTask;}
     
+    public int getVoidY(){return this.VoidY;}
+    
     
     
     public void setIntro(Location l){this.Intro = l;}
@@ -122,6 +126,8 @@ public class MapData {
     public void setCanAreaBattle(boolean is ){this.canAreaBattle = is;}
     
     public void setWiremeshListTask(WiremeshListTask wmlListTask){this.wmlTask = wmlListTask;}
+    
+    public void setVoidY(int y){this.VoidY = y;}
     
     
     public void addPath(Path path){this.path.add(path);}

@@ -249,7 +249,7 @@ public class MegaLaser {
                                         continue;
                                     if(eloc.distance(target.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
                                         if(DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()){
-                                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                            Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 2);
                                             target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 50, dustOptions);
                                         }
                                     }

@@ -116,12 +116,13 @@ public class SuperJumpMgr {
                     p.getInventory().setHeldItemSlot(0);
                 }
                 
-                if (t > 200) {//スタック回避
+                if (t > 200 || (p.isOnGround() && t >= 20)) {//スタック回避
                     p.setGameMode(GameMode.ADVENTURE);
                     WeaponClassMgr.setWeaponClass(p);
                     p.closeInventory();
                     p.getInventory().setHeldItemSlot(0);
                     p.teleport(toloc.clone().add(0, 5, 0));
+                    cancel();
                 }
                 
                 if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline() || DataMgr.getPlayerData(p).getIsUsingTyakuti()){

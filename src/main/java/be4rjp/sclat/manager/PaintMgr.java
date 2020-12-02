@@ -45,6 +45,12 @@ public class PaintMgr {
             if(block.getType() == DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())
                 continue;
             
+            try {
+                if (block.getY() <= DataMgr.getPlayerData(player).getMatch().getMapData().getVoidY()) {
+                    continue;
+                }
+            }catch (Exception e){}
+            
             if(block.getType().equals(Material.WET_SPONGE) || block.getType().toString().contains("POWDER")){
                 if(DataMgr.getSpongeMap().containsKey(block)){
                     Sponge sponge = DataMgr.getSpongeFromBlock(block);
