@@ -24,6 +24,7 @@ public class ServerStatus {
     private boolean runningMatch = false;
     private boolean restartingServer = false;
     private String mapName = "";
+    private boolean maintenance = false;
     
     public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign){
         this.serverName = serverName;
@@ -37,16 +38,20 @@ public class ServerStatus {
         this.task = new BukkitRunnable() {
             @Override
             public void run() {
-                try {
-                    MineStat ms = new MineStat(host, port);
-                    playerCount = Integer.parseInt(ms.getCurrentPlayers());
-                    online = ms.isServerUp();
-                    if(!online) {
+                if(maintenance){
+                    online = false;
+                }else {
+                    try {
+                        MineStat ms = new MineStat(host, port);
+                        playerCount = Integer.parseInt(ms.getCurrentPlayers());
+                        online = ms.isServerUp();
+                        if (!online) {
+                            runningMatch = false;
+                        }
+                    } catch (Exception e) {
+                        online = false;
                         runningMatch = false;
                     }
-                }catch (Exception e){
-                    online = false;
-                    runningMatch = false;
                 }
             }
         };
@@ -67,7 +72,7 @@ public class ServerStatus {
                                 signState.setLine(2, "§aINACTIVE");
                             signState.setLine(3, "§b" + mapName);
                         }else{
-                            signState.setLine(1, "§cOFFLINE");
+                            signState.setLine(1, maintenance ? "§cMAINTENANCE" : "§cOFFLINE");
                             signState.setLine(2, "");
                             signState.setLine(3, "");
                         }
@@ -95,6 +100,8 @@ public class ServerStatus {
     
     public Block getSign(){return this.sign;}
     
+    public boolean isMaintenance(){return this.maintenance;}
+    
     public boolean isOnline(){return this.online;}
     
     public void setRunningMatch(boolean is){this.runningMatch = is;}
@@ -102,6 +109,8 @@ public class ServerStatus {
     public void setRestartingServer(boolean is){this.restartingServer = is;}
     
     public void setMapName(String name){this.mapName = name;}
+    
+    public void setMaintenance(boolean is){this.maintenance = is;}
     
     public void stopTask(){this.task.cancel();}
     

@@ -55,6 +55,8 @@ public class PlayerData {
     private boolean MItemGlow = false;
     private boolean amehurashi = false;
     private boolean isUsingTyakuti = false;
+    private boolean isJumping = false;
+    private boolean isCanFly = false;
     private int trapCount = 0;
     private Location playerGroundLocation;
     private boolean isUsingSS = false;
@@ -157,6 +159,10 @@ public class PlayerData {
     
     public Vector getVehicleVector(){return this.vehicleVector;}
     
+    public boolean getIsJumping(){return this.isJumping;}
+    
+    public boolean getCanFly(){return this.isCanFly;}
+    
     
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
@@ -245,6 +251,10 @@ public class PlayerData {
     
     public void setVehicleVector(Vector vec){this.vehicleVector = vec;}
     
+    public void setIsJumping(boolean is){this.isJumping = is;}
+    
+    public void setCanFly(boolean is){this.isCanFly = is;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -291,6 +301,8 @@ public class PlayerData {
         this.trapCount = 0;
         this.isUsingSS = false;
         this.vehicleVector = new Vector(0, 0, 0);
+        this.isJumping = false;
+        this.isCanFly = false;
     }
     
 }

@@ -16,10 +16,8 @@ import be4rjp.sclat.weapon.Kasa;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
 import be4rjp.sclat.weapon.Spinner;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import java.util.*;
 
 import org.bukkit.*;
 
@@ -364,7 +362,8 @@ public class GameMgr implements Listener{
                 BukkitRunnable run = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
+                        List<String> list = Main.tutorialServers.getConfig().getStringList("server-list");
+                        BungeeCordMgr.PlayerSendServer(player, list.get(new Random().nextInt(list.size())));
                         DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
                     }
                 };

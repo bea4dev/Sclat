@@ -75,12 +75,13 @@ public class SuperJumpMgr {
         if(player.getLocation().distance(toloc) <= 3){
             player.setVelocity(new Vector(0, 2, 0));
             return;
-        }  
+        }
         
         Location from = player.getLocation().clone();
         Location to = toloc;
         Vector vec = new Vector(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ()).normalize();
         player.setGameMode(GameMode.SPECTATOR);
+        DataMgr.getPlayerData(player).setIsJumping(true);
         RayTrace rayTrace1 = new RayTrace(from.toVector(), vec);
         ArrayList<Vector> positions = rayTrace1.traverse(from.distance(to), 1);
 
@@ -122,10 +123,12 @@ public class SuperJumpMgr {
                     p.closeInventory();
                     p.getInventory().setHeldItemSlot(0);
                     p.teleport(toloc.clone().add(0, 5, 0));
+                    DataMgr.getPlayerData(player).setIsJumping(false);
                     cancel();
                 }
                 
                 if(i == positions.size() || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline() || DataMgr.getPlayerData(p).getIsUsingTyakuti()){
+                    DataMgr.getPlayerData(player).setIsJumping(false);
                     cancel();
                 }
                 

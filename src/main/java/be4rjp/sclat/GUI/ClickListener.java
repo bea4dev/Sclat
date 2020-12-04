@@ -209,7 +209,10 @@ public class ClickListener implements Listener{
                             Sclat.playGameSound(player, SoundType.ERROR);
                         }
                     }else{
-                        Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
+                        if(ss.isMaintenance())
+                            Sclat.sendMessage("§c§nこのサーバーは現在メンテナンス中のため参加できません", MessageType.PLAYER, player);
+                        else
+                            Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
                         Sclat.playGameSound(player, SoundType.ERROR);
                     }
                     return;

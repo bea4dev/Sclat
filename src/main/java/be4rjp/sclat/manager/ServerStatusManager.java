@@ -38,6 +38,10 @@ public class ServerStatusManager {
             Location loc = new Location(w, ix, iy, iz);
             
             ServerStatus ss = new ServerStatus(serverName, displayName, host, port, maxPlayer, period, loc.getBlock());
+    
+            if(conf.getServers().contains("Servers." + server + ".maintenance"))
+                ss.setMaintenance(conf.getServers().getBoolean("Servers." + server + ".maintenance"));
+            
             serverList.add(ss);
         }
         
@@ -74,11 +78,11 @@ public class ServerStatusManager {
                     List<String> role = new ArrayList<>();
                     if(ss.getRestartingServer()){
                         role.add("");
-                        role.add("§r§7[Status]   §eRESTARTING...");
+                        role.add("§r§7[Status]  §eRESTARTING...");
                     }else {
                         if (ss.isOnline()) {
                             role.add("");
-                            role.add("§r§7[Players]  §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
+                            role.add("§r§7[Player]  §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
                             role.add("");
                             role.add("§r§7[Status]  §aONLINE");
                             role.add("");
@@ -89,7 +93,7 @@ public class ServerStatusManager {
                             }
                         } else {
                             role.add("");
-                            role.add("§r§7[Status]   §cOFFLINE");
+                            role.add(ss.isMaintenance() ? "§r§7[Status]  §cMAINTENANCE" : "§r§7[Status]  §cOFFLINE");
                         }
                     }
                     itemMeta.setLore(role);

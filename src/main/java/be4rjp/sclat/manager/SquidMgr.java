@@ -60,11 +60,16 @@ public class SquidMgr {
                     p.setWalkSpeed(0.2F);
                     p.setExp(0);
                     p.setMaxHealth(20);
-                    if(p.hasPermission("sclat.lobbyfly") || Main.flyList.contains(p.getName())){
+                    if(data.getCanFly()){
                         p.setAllowFlight(true);
-                    }else{
-                        p.setAllowFlight(false);
-                        p.setFlying(false);
+                        p.setFlying(true);
+                    }else {
+                        if (p.hasPermission("sclat.lobbyfly") || Main.flyList.contains(p.getName())) {
+                            p.setAllowFlight(true);
+                        } else {
+                            p.setAllowFlight(false);
+                            p.setFlying(false);
+                        }
                     }
                     return;
                 }
@@ -131,6 +136,7 @@ public class SquidMgr {
                 }else{
                     data.setIsSquid(false);
                 }
+                
             
                 if((data.getIsOnInk() && data.getIsSquid()) || data.getIsOnPath()){
                     is2 = false;

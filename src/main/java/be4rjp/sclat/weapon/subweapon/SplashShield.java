@@ -303,7 +303,7 @@ public class SplashShield {
                         p.getWorld().playSound(loc, Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
                     }
                     
-                    if(c == 30){
+                    if(c == 20){
                         for(ArmorStand a : list){
                             a.setMarker(false);
                         }

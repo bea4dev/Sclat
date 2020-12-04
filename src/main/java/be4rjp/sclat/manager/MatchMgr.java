@@ -6,21 +6,11 @@ import be4rjp.sclat.GUI.OpenGUI;
 
 import static be4rjp.sclat.Main.conf;
 
-import be4rjp.sclat.data.Area;
-import be4rjp.sclat.data.BlockUpdater;
-import be4rjp.sclat.data.Color;
+import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
 import org.bukkit.entity.Player;
-import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.data.MapData;
-import be4rjp.sclat.data.Match;
-import be4rjp.sclat.data.NoteBlockSong;
-import be4rjp.sclat.data.PaintData;
-import be4rjp.sclat.data.Path;
-import be4rjp.sclat.data.PlayerData;
 
-import be4rjp.sclat.data.WeaponClass;
 import be4rjp.sclat.weapon.Charger;
 import be4rjp.sclat.weapon.Roller;
 import be4rjp.sclat.weapon.Shooter;
@@ -39,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import static be4rjp.sclat.manager.PlayerStatusMgr.setupPlayerStatus;
 import static org.bukkit.Bukkit.getServer;
 import org.bukkit.Material;
-import be4rjp.sclat.data.Team;
+
 import static be4rjp.sclat.manager.PlayerStatusMgr.getRank;
 import be4rjp.sclat.raytrace.RayTrace;
 import be4rjp.sclat.weapon.Gear;
@@ -203,6 +193,14 @@ public class MatchMgr {
                                     jp.setDisplayName(data.getTeam().getTeamColor().getColorCode() + jp.getName());
                                 }
                                 playerNumber++;
+                            }
+                            
+                            //Settings
+                            if(Main.type == ServerType.MATCH){
+                                for(Player op : Main.getPlugin().getServer().getOnlinePlayers()){
+                                    PlayerSettings playerSettings = new PlayerSettings(op);
+                                    SettingMgr.setSettings(playerSettings, op);
+                                }
                             }
                             
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
@@ -425,6 +423,9 @@ public class MatchMgr {
                 try{
 
                 if(s == 0){
+                    
+                    DataMgr.getPlayerData(p).setCanFly(true);
+                    
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         PaintMgr.PaintGlass(match);
                         if(conf.getConfig().getString("WorkMode").equals("Area")){
@@ -589,6 +590,8 @@ public class MatchMgr {
                 
 
                 if(s == 281){
+                    DataMgr.getPlayerData(p).setCanFly(false);
+                    
                     //playerclass
                     if(DataMgr.getPlayerData(p).getWeaponClass().getSubWeaponName().equals("ビーコン"))
                         ArmorStandMgr.BeaconArmorStandSetup(p);
@@ -1025,6 +1028,7 @@ public class MatchMgr {
                     
                 }
                 if(i == 2){
+                    DataMgr.getPlayerData(p).setCanFly(true);
                     p.resetTitle();
                     p.sendTitle(ChatColor.YELLOW + "=========================== Finish! ===========================", "", 3, 30, 10);
                 }
@@ -1185,7 +1189,7 @@ public class MatchMgr {
                     
                     //int kill = data.getKillCount();
                     //int paint = data.getPaintCount();
-                    
+                    data.setCanFly(false);
                     
                     Sclat.sendMessage("§a----------<< Match result >>----------", MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);

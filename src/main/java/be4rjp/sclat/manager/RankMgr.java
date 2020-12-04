@@ -35,21 +35,23 @@ public class RankMgr {
         BukkitRunnable async = new BukkitRunnable() {
             @Override
             public void run() {
-                //かぶらないようにマッピング
-                Map<Integer, String> playerMap = new HashMap<>();
-                for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)){
-                    int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Rank");
-                    while (playerMap.containsKey(rate)){
-                        rate++;
+                try {
+                    //かぶらないようにマッピング
+                    Map<Integer, String> playerMap = new HashMap<>();
+                    for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
+                        int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Rank");
+                        while (playerMap.containsKey(rate)) {
+                            rate++;
+                        }
+                        playerMap.put(rate, uuid);
                     }
-                    playerMap.put(rate, uuid);
-                }
     
-                Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
-                treeMap.putAll(playerMap);
-                ranking = new ArrayList<>();
-                for (Integer key : treeMap.keySet())
-                    ranking.add(treeMap.get(key));
+                    Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
+                    treeMap.putAll(playerMap);
+                    ranking = new ArrayList<>();
+                    for (Integer key : treeMap.keySet())
+                        ranking.add(treeMap.get(key));
+                }catch (Exception e){}
             }
         };
         async.runTaskAsynchronously(Main.getPlugin());
@@ -59,21 +61,23 @@ public class RankMgr {
         BukkitRunnable async = new BukkitRunnable() {
             @Override
             public void run() {
-                //かぶらないようにマッピング
-                Map<Integer, String> playerMap = new HashMap<>();
-                for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)){
-                    int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
-                    while (playerMap.containsKey(rate)){
-                        rate++;
+                try {
+                    //かぶらないようにマッピング
+                    Map<Integer, String> playerMap = new HashMap<>();
+                    for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
+                        int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
+                        while (playerMap.containsKey(rate)) {
+                            rate++;
+                        }
+                        playerMap.put(rate, uuid);
                     }
-                    playerMap.put(rate, uuid);
-                }
-                
-                Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
-                treeMap.putAll(playerMap);
-                killRanking = new ArrayList<>();
-                for (Integer key : treeMap.keySet())
-                    killRanking.add(treeMap.get(key));
+    
+                    Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
+                    treeMap.putAll(playerMap);
+                    killRanking = new ArrayList<>();
+                    for (Integer key : treeMap.keySet())
+                        killRanking.add(treeMap.get(key));
+                }catch (Exception e){}
             }
         };
         async.runTaskAsynchronously(Main.getPlugin());
@@ -83,21 +87,23 @@ public class RankMgr {
         BukkitRunnable async = new BukkitRunnable() {
             @Override
             public void run() {
-                //かぶらないようにマッピング
-                Map<Integer, String> playerMap = new HashMap<>();
-                for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)){
-                    int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
-                    while (playerMap.containsKey(rate)){
-                        rate++;
+                try {
+                    //かぶらないようにマッピング
+                    Map<Integer, String> playerMap = new HashMap<>();
+                    for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
+                        int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
+                        while (playerMap.containsKey(rate)) {
+                            rate++;
+                        }
+                        playerMap.put(rate, uuid);
                     }
-                    playerMap.put(rate, uuid);
-                }
-                
-                Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
-                treeMap.putAll(playerMap);
-                paintRanking = new ArrayList<>();
-                for (Integer key : treeMap.keySet())
-                    paintRanking.add(treeMap.get(key));
+    
+                    Map<Integer, String> treeMap = new TreeMap<>(Comparator.reverseOrder());
+                    treeMap.putAll(playerMap);
+                    paintRanking = new ArrayList<>();
+                    for (Integer key : treeMap.keySet())
+                        paintRanking.add(treeMap.get(key));
+                }catch (Exception e){}
             }
         };
         async.runTaskAsynchronously(Main.getPlugin());

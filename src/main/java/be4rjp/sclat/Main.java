@@ -57,6 +57,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     public static ServerType type = ServerType.NORMAL;
     
     public static boolean shop = true;
+    
+    public static CustomConfig tutorialServers;
 
 
     //StatusShare
@@ -340,6 +342,15 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             RankMgr.makeRankingTask();
         }
         //-------------------------------------------------------------------
+        
+        
+        //-----------------------Tutorial server list------------------------
+        if(type == ServerType.LOBBY){
+            tutorialServers = new CustomConfig(this, "tutorial.yml");
+            tutorialServers.saveDefaultConfig();
+            tutorialServers.getConfig();
+        }
+        //-------------------------------------------------------------------
     }
     
     @Override
@@ -357,6 +368,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     @Override
     public void onDisable() {
+    
+        //-----------------------Tutorial server list------------------------
+        if(type == ServerType.LOBBY){
+            tutorialServers = new CustomConfig(this, "tutorial.yml");
+            tutorialServers.saveConfig();
+        }
+        //-------------------------------------------------------------------
 
         //Wiremeshの停止
         try {

@@ -305,7 +305,7 @@ public class Kasa {
 
             @Override
             public void run() {
-                if(p.isSneaking() && is){
+                if(p.isSneaking() && is && p.getGameMode() != GameMode.SPECTATOR && !DataMgr.getPlayerData(p).getIsUsingTyakuti()){
                     is = false;
                     Camping(p);
                     DataMgr.getPlayerData(p).setMainItemGlow(false);
@@ -314,7 +314,7 @@ public class Kasa {
                 }
                 if(!is){
                     c++;
-                    if(c == 400){
+                    if(c == 180){
                         is = true;
                         c = 0;
                         DataMgr.getPlayerData(p).setMainItemGlow(true);

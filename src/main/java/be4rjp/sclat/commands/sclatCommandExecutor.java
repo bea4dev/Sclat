@@ -2,7 +2,10 @@ package be4rjp.sclat.commands;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.SoundType;
+import be4rjp.sclat.data.ServerStatus;
+import be4rjp.sclat.manager.ServerStatusManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,7 +40,7 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
             if(type == CommanderType.MEMBER){
                 sender.sendMessage(ChatColor.RED + "You don't have permission.");
                 Sclat.playGameSound((Player)sender, SoundType.ERROR);
-                return false;
+                return true;
             }
 
             String num = args[1];
@@ -59,7 +62,7 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
             if(type == CommanderType.MEMBER){
                 sender.sendMessage(ChatColor.RED + "You don't have permission.");
                 Sclat.playGameSound((Player)sender, SoundType.ERROR);
-                return false;
+                return true;
             }
         
             String playerName = args[1];
@@ -68,6 +71,61 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
                     Main.flyList.add(playerName);
                     return true;
                 }
+            }
+        }
+        //-------------------------------------------------------------------------
+    
+        //------------------/sclat ss <status> <server> <flag>---------------------
+        if(args[0].equalsIgnoreCase("ss")) {
+            if(args.length < 4 || Main.type != ServerType.LOBBY) return false;
+        
+            if(type == CommanderType.MEMBER){
+                sender.sendMessage(ChatColor.RED + "You don't have permission.");
+                Sclat.playGameSound((Player)sender, SoundType.ERROR);
+                return true;
+            }
+        
+            if(args[1].equals("mt")) {
+                String server = args[2];
+                for (ServerStatus ss : ServerStatusManager.serverList) {
+                    if (ss.getServerName().equals(server)) {
+                        ss.setMaintenance(args[3].equals("true"));
+                        sender.sendMessage("Switched " + ss.getDisplayName() + "§rto " + (args[3].equals("true") ? "§cMAINTENANCE" : "§6NORMAL"));
+                        return true;
+                    }
+                }
+            }
+        }
+        //-------------------------------------------------------------------------
+        
+        //---------------------/sclat tutorial <option> <server>-------------------
+        if(args[0].equalsIgnoreCase("tutorial")) {
+            if(args.length < 2 || Main.type != ServerType.LOBBY) return false;
+        
+            if(type == CommanderType.MEMBER){
+                sender.sendMessage(ChatColor.RED + "You don't have permission.");
+                Sclat.playGameSound((Player)sender, SoundType.ERROR);
+                return true;
+            }
+        
+            if(args[1].equals("add")) {
+                if(args.length < 3) return false;
+                String server = args[2];
+                List<String> list = Main.tutorialServers.getConfig().getStringList("server-list");
+                if(!list.contains(server)){
+                    list.add(server);
+                    Main.tutorialServers.getConfig().set("server-list", list);
+                }else{
+                    sender.sendMessage(ChatColor.RED + "This server is already exist.");
+                }
+                return true;
+            }else if(args[1].equals("list")) {
+                List<String> list = Main.tutorialServers.getConfig().getStringList("server-list");
+                sender.sendMessage(list.toString());
+                return true;
+            }else if(args[1].equals("reload")) {
+                Main.tutorialServers.reloadConfig();
+                return true;
             }
         }
         //-------------------------------------------------------------------------
@@ -97,6 +155,8 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
                 list.add("setUpdateRate");
                 list.add("sur");
                 list.add("fly");
+                list.add("ss");
+                list.add("tutorial");
             }
 
             return list;
