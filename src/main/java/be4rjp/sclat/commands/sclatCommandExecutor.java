@@ -90,7 +90,7 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
                 for (ServerStatus ss : ServerStatusManager.serverList) {
                     if (ss.getServerName().equals(server)) {
                         ss.setMaintenance(args[3].equals("true"));
-                        sender.sendMessage("Switched " + ss.getDisplayName() + "§rto " + (args[3].equals("true") ? "§cMAINTENANCE" : "§6NORMAL"));
+                        sender.sendMessage("Switched " + ss.getDisplayName() + " §rto " + (args[3].equals("true") ? "§cMAINTENANCE" : "§6NORMAL"));
                         return true;
                     }
                 }

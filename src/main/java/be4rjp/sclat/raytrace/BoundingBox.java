@@ -19,8 +19,8 @@ public class BoundingBox {
     
     public BoundingBox(Entity entity){
         AxisAlignedBB bb = ((CraftEntity) entity).getHandle().getBoundingBox();
-        min = new Vector(bb.minX - 0.25, bb.minY, bb.minZ - 0.25);
-        max = new Vector(bb.maxX + 0.25, bb.maxY, bb.maxZ + 0.25);
+        min = new Vector(bb.minX - 0.15, bb.minY, bb.minZ - 0.15);
+        max = new Vector(bb.maxX + 0.15, bb.maxY, bb.maxZ + 0.15);
     }
 
     public BoundingBox (AxisAlignedBB bb){

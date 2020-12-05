@@ -203,6 +203,10 @@ public class SquidMgr {
                     }
                     
                 }
+                
+                if(!p.isOnline()){
+                    cancel();
+                }
             } 
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);

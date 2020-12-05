@@ -434,6 +434,21 @@ public class MatchMgr {
                             }
                         }
                     }
+    
+                    switch(conf.getConfig().getString("WorkMode")) {
+                        case "Normal":
+                            Sclat.sendMessage("§6ゲームモード : §b§lナワバリバトル", MessageType.PLAYER, p);
+                            Sclat.sendMessage("§f§l敵よりもたくさんナワバリを確保しろ！", MessageType.PLAYER, p);
+                            break;
+                        case "TDM":
+                            Sclat.sendMessage("§6ゲームモード : §b§lチームデスマッチ", MessageType.PLAYER, p);
+                            Sclat.sendMessage("§f§l敵よりもキルをしろ！", MessageType.PLAYER, p);
+                            break;
+                        case "Area":
+                            Sclat.sendMessage("§6ゲームモード : §b§lガチエリア", MessageType.PLAYER, p);
+                            Sclat.sendMessage("§f§lエリアを確保して守り抜け！", MessageType.PLAYER, p);
+                            break;
+                    }
                     
                     if(DataMgr.getPlayerData(p).getTeam() == match.getTeam0()){
                         Location l = DataMgr.getPlayerData(p).getMatch().getMapData().getTeam0Loc();
@@ -1232,10 +1247,10 @@ public class MatchMgr {
                     int pLv = 1;
                     if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
                         pLv = 2;
-                    int pRank = -100 + (int)((double)data.getKillCount() * 2.5D + (double)data.getPaintCount() / 700D);
+                    int pRank = -50 + (int)((double)data.getKillCount() * 2.7D + (double)data.getPaintCount() / 700D);
                     if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
-                        pRank = 80 + (int)((double)data.getKillCount() * 2D + (double)data.getPaintCount() / 500D);
-                    if(data.getMatch().getJoinedPlayerCount() == 1)
+                        pRank = 80 + (int)((double)data.getKillCount() * 2.4D + (double)data.getPaintCount() / 700D);
+                    if(data.getMatch().getJoinedPlayerCount() == 1 || !conf.getConfig().getBoolean("RateMatch"))
                         pRank = 0;
                     
                     PlayerStatusMgr.addRank(p, pRank);
