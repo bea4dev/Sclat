@@ -60,6 +60,8 @@ public class EquipmentClient {
                             //System.out.println("result：" + reader.readLine());
                             
                             commands.remove(0);
+                        }else{
+                            break;
                         }
                     }
                 } catch (Exception e) {

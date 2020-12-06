@@ -68,7 +68,7 @@ public class GameMgr implements Listener{
         player.getInventory().setHeldItemSlot(0);
     
         ((LivingEntity)player).setCollidable(false);
-        player.setDisplayName(player.getName());
+        //player.setDisplayName(player.getName());
         
         if(PlayerReturnManager.isReturned(player.getUniqueId().toString()))
             e.setJoinMessage(ChatColor.GOLD + player.getName() + " returned from a match.");
@@ -403,6 +403,7 @@ public class GameMgr implements Listener{
             };
             task.runTaskLater(Main.getPlugin(), 1);
 
+            /*
             Timer timer = new Timer(false);
             TimerTask t = new TimerTask(){
                 Player p = target;
@@ -416,7 +417,7 @@ public class GameMgr implements Listener{
                     }
                 }
             };
-            timer.schedule(t, 25);
+            timer.schedule(t, 25);*/
         }
     }
     
@@ -517,7 +518,10 @@ public class GameMgr implements Listener{
                                     Sclat.playGameSound(player, SoundType.ERROR);
                                 }
                             }else{
-                                Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
+                                if(ss.isMaintenance())
+                                    Sclat.sendMessage("§c§nこのサーバーは現在メンテナンス中のため参加できません", MessageType.PLAYER, player);
+                                else
+                                    Sclat.sendMessage("§c§nこのサーバーは現在オフラインのため参加できません", MessageType.PLAYER, player);
                                 Sclat.playGameSound(player, SoundType.ERROR);
                             }
                             return;
@@ -570,7 +574,8 @@ public class GameMgr implements Listener{
                         DataMgr.getPlayerData(player).setServerName("Sclat");
                         break;
                     case "[ Tutorial ]":
-                        BungeeCordMgr.PlayerSendServer(player, conf.getServers().getString("Tutorial.Server"));
+                        List<String> list = Main.tutorialServers.getConfig().getStringList("server-list");
+                        BungeeCordMgr.PlayerSendServer(player, list.get(new Random().nextInt(list.size())));
                         DataMgr.getPlayerData(player).setServerName(conf.getServers().getString("Tutorial.DisplayName"));
                         break;
                     case "[ Instructions ]":

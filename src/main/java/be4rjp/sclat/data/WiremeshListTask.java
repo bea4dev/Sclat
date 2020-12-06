@@ -54,6 +54,8 @@ public class WiremeshListTask {
         };
     }
     
+    public List<Wiremesh> getWiremeshsList(){return this.wiremeshsList;}
+    
     public void startTask(){this.task.runTaskLater(Main.getPlugin(), 0);}
     
     public void stopTask(){wiremeshsList.forEach((wm) -> {wm.stopTask();});}

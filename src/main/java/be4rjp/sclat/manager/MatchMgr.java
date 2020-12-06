@@ -190,7 +190,7 @@ public class MatchMgr {
                                 if(jp.isOnline()){
                                     data.setPlayerNumber(playerNumber);
                                     data.getTeam().addRateTotal(PlayerStatusMgr.getRank(jp));
-                                    jp.setDisplayName(data.getTeam().getTeamColor().getColorCode() + jp.getName());
+                                    //jp.setDisplayName(data.getTeam().getTeamColor().getColorCode() + jp.getName());
                                 }
                                 playerNumber++;
                             }
@@ -202,6 +202,12 @@ public class MatchMgr {
                                     SettingMgr.setSettings(playerSettings, op);
                                 }
                             }
+                            
+                            try {
+                                for (Wiremesh wiremesh : match.getMapData().getWiremeshListTask().getWiremeshsList()) {
+                                    wiremesh.startTask();
+                                }
+                            }catch (Exception e){}
                             
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
                             if(conf.getConfig().getBoolean("RateMatch")){
@@ -1013,6 +1019,12 @@ public class MatchMgr {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
                             Sclat.sendWorldBorderWarningClearPacket(target);
                         }
+    
+                        try {
+                            for (Wiremesh wiremesh : DataMgr.getPlayerData(p).getMatch().getMapData().getWiremeshListTask().getWiremeshsList()) {
+                                wiremesh.startTask();
+                            }
+                        }catch (Exception e){}
                     }
                     for(ArmorStand as : DataMgr.getBeaconMap().values())
                         as.remove();
@@ -1247,9 +1259,9 @@ public class MatchMgr {
                     int pLv = 1;
                     if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
                         pLv = 2;
-                    int pRank = -50 + (int)((double)data.getKillCount() * 2.7D + (double)data.getPaintCount() / 700D);
+                    int pRank = -60 + (int)((double)data.getKillCount() * 2.7D + (double)data.getPaintCount() / 700D);
                     if(data.getTeam() == data.getMatch().getWinTeam() || data.getMatch().getIsHikiwake())
-                        pRank = 80 + (int)((double)data.getKillCount() * 2.4D + (double)data.getPaintCount() / 700D);
+                        pRank = 80 + (int)((double)data.getKillCount() * 2.2D + (double)data.getPaintCount() / 700D);
                     if(data.getMatch().getJoinedPlayerCount() == 1 || !conf.getConfig().getBoolean("RateMatch"))
                         pRank = 0;
                     
@@ -1341,7 +1353,7 @@ public class MatchMgr {
                         
                     }
     
-                    player.setDisplayName(player.getName());
+                    //player.setDisplayName(player.getName());
                     
                     DataMgr.getPlayerData(p).reset();
                     DataMgr.getPlayerData(p).setWeaponClass(wc);
@@ -1360,8 +1372,10 @@ public class MatchMgr {
                     }
                     
                     if(Main.type == ServerType.MATCH){
-                        BungeeCordMgr.PlayerSendServer(p, "sclat");
-                        DataMgr.getPlayerData(p).setServerName("Sclat");
+                        try {
+                            BungeeCordMgr.PlayerSendServer(p, "sclat");
+                            DataMgr.getPlayerData(p).setServerName("Sclat");
+                        }catch (Exception e){}
                     }
                     
                     cancel();

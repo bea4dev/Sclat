@@ -15,7 +15,7 @@ import java.util.List;
 import static be4rjp.sclat.Main.conf;
 
 public class ServerStatusManager {
-    public static Inventory inv = Bukkit.createInventory(null, 9, "Server List");
+    public static Inventory inv = Bukkit.createInventory(null, 18, "Server List");
     
     public static List<ServerStatus> serverList = new ArrayList<>();
     
@@ -50,7 +50,7 @@ public class ServerStatusManager {
             public void run() {
                 inv.clear();
     
-                for (int i = 0; i <= 8; ) {
+                for (int i = 0; i <= 17; ) {
                     ItemStack is = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
                     ItemMeta ism = is.getItemMeta();
                     ism.setDisplayName(".");
@@ -63,7 +63,7 @@ public class ServerStatusManager {
                 ItemMeta ismm = ism.getItemMeta();
                 ismm.setDisplayName("戻る");
                 ism.setItemMeta(ismm);
-                inv.setItem(8, ism);
+                inv.setItem(17, ism);
                 
                 int i = 0;
                 for(ServerStatus ss : serverList){
@@ -104,7 +104,7 @@ public class ServerStatusManager {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 40);
+        task.runTaskTimer(Main.getPlugin(), 0, 60);
     }
     
     public static void openServerList(Player player){player.openInventory(inv);}

@@ -39,6 +39,12 @@ public class StatusServer extends Thread {
             while (true) {
                 Socket socket = sSocket.accept();
                 new EchoThread(socket).start();
+    
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -82,7 +88,7 @@ class EchoThread extends Thread {
                     if(cmd.equals("stop")){
                         socket.close();
                         System.out.println("Socket closed.");
-                        return;
+                        break;
                     }
                     
                     System.out.println(cmd);

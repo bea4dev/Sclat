@@ -38,6 +38,11 @@ public class EquipmentServer extends Thread {
             while (true) {
                 Socket socket = sSocket.accept();
                 new EquipEchoThread(socket).start();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -81,7 +86,7 @@ class EquipEchoThread extends Thread {
                     if(cmd.equals("stop")){
                         socket.close();
                         System.out.println("Socket closed.");
-                        return;
+                        break;
                     }
                     
                     System.out.println(cmd);
@@ -97,6 +102,8 @@ class EquipEchoThread extends Thread {
                         }
                         break;
                     }
+                }else{
+                    break;
                 }
             }
         } catch (IOException e) {

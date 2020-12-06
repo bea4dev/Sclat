@@ -167,7 +167,7 @@ public class Roller {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist) {
-                                    if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                    if(/*rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)*/true){
                                         if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
 
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
@@ -231,7 +231,7 @@ public class Roller {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist) {
-                                    if(rayTrace2.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
+                                    if(/*rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)*/true){
                                         if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
 
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();

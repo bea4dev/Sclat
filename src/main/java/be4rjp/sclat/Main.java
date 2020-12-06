@@ -1,10 +1,7 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.GUI.ClickListener;
-import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.data.MapData;
-import be4rjp.sclat.data.Match;
-import be4rjp.sclat.data.PaintData;
+import be4rjp.sclat.data.*;
 import be4rjp.sclat.commands.sclatCommandExecutor;
 import be4rjp.sclat.listener.SquidListener;
 import be4rjp.sclat.lunachat.LunaChatListener;
@@ -350,6 +347,18 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             tutorialServers.saveDefaultConfig();
             tutorialServers.getConfig();
         }
+        //-------------------------------------------------------------------
+        
+        
+        //------------------------Tutorial wire mesh-------------------------
+        /*
+        if(Main.tutorial){
+            for(MapData mData : DataMgr.maplist) {
+                for(Wiremesh wiremesh : mData.getWiremeshListTask().getWiremeshsList()){
+                    wiremesh.startTask();
+                }
+            }
+        }*/
         //-------------------------------------------------------------------
     }
     

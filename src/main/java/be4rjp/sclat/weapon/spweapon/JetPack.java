@@ -119,7 +119,7 @@ public class JetPack {
                 leader.setVelocity(vehicleVector);
                 //as.teleport(as.getLocation().add(vehicleVector));
                 
-                if(i == 0){
+                if(!as.getPassengers().contains(p)){
                     as.addPassenger(p);
                 }
 

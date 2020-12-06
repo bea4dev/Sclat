@@ -101,8 +101,10 @@ public class Wiremesh {
                         }
                     }else{
                         if(despawn){
-                            fb.remove();
-                            as.remove();
+                            try {
+                                fb.remove();
+                                as.remove();
+                            }catch (Exception e){}
                             despawn = false;
                             spawn = true;
                         }
@@ -115,10 +117,10 @@ public class Wiremesh {
             }
         };
         
-        startTask();
+        //startTask();
     }
     
-    private void startTask(){this.task.runTaskTimer(Main.getPlugin(), 0, 1);}
+    public void startTask(){this.task.runTaskTimer(Main.getPlugin(), 0, 20);}
     
     public void stopTask(){
         this.task.cancel();

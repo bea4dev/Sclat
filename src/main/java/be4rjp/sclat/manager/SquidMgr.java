@@ -209,7 +209,8 @@ public class SquidMgr {
                 }
             } 
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 1);
+        task.runTaskTimer(Main.getPlugin(), 0, 2);
+        
     }
     
     public static void SquidShowRunnable(Player player){
@@ -381,7 +382,7 @@ public class SquidMgr {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 1);
+        task.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
     
