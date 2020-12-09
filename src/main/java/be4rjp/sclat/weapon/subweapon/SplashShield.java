@@ -51,11 +51,12 @@ public class SplashShield {
             public void run(){
                 try{
                     if(i == 0){
-                        p.setExp(p.getExp() - 0.649F);
+                        p.setExp(p.getExp() - 0.59F);
                         drop = p.getWorld().dropItem(p.getEyeLocation(), new ItemStack(Material.ACACIA_FENCE));
                         drop.setVelocity(p.getEyeLocation().getDirection().multiply(0.7));
                         yaw = p.getEyeLocation().getYaw();
-                        vec = p.getEyeLocation().getDirection().normalize();
+                        Vector v = p.getEyeLocation().getDirection().normalize();
+                        vec = (new Vector(v.getX(), 0, v.getZ())).normalize();
                     }
 
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -106,7 +107,7 @@ public class SplashShield {
                 }
             }
         };
-        if(player.getExp() > 0.65F)
+        if(player.getExp() > 0.6F)
             task.runTaskTimer(Main.getPlugin(), 0, 1);
         else
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
@@ -133,8 +134,8 @@ public class SplashShield {
                         p.getWorld().playSound(loc, Sound.ENTITY_ARMOR_STAND_FALL, 1F, 1F);
                         Vector pv2 = pv.clone().multiply(-0.25);
                         float yaw = loc.getYaw();
-                        Vector vec1 = new Vector(pv.getZ() * -1, 0, pv.getX()).normalize();
-                        Vector vec2 = new Vector(pv.getZ(), 0, pv.getX() * -1).normalize();
+                        Vector vec1 = new Vector(pv.clone().getZ() * -1, 0, pv.clone().getX()).normalize();
+                        Vector vec2 = new Vector(pv.clone().getZ(), 0, pv.clone().getX() * -1).normalize();
 
                         RayTrace rayTrace1 = new RayTrace(loc.clone().add(0, 0.8, 0).toVector(), vec1);
                         ArrayList<Vector> positions1 = rayTrace1.traverse(3, 0.2);
@@ -310,8 +311,8 @@ public class SplashShield {
                     }
 
                     if(c >= 15 && c % 2 == 0){
-                        Vector vec1 = new Vector(pv.getZ() * -1, 0, pv.getX()).normalize();
-                        Vector vec2 = new Vector(pv.getZ(), 0, pv.getX() * -1).normalize();
+                        Vector vec1 = new Vector(pv.clone().getZ() * -1, 0, pv.clone().getX()).normalize();
+                        Vector vec2 = new Vector(pv.clone().getZ(), 0, pv.clone().getX() * -1).normalize();
 
                         RayTrace rayTrace1 = new RayTrace(loc.clone().add(0, 2.7, 0).toVector(), vec1);
                         ArrayList<Vector> positions1 = rayTrace1.traverse(3, 0.38);

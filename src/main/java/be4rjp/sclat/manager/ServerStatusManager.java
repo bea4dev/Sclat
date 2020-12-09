@@ -37,7 +37,11 @@ public class ServerStatusManager {
             int iz = conf.getServers().getInt("Servers." + server + ".Sign.Z");
             Location loc = new Location(w, ix, iy, iz);
             
-            ServerStatus ss = new ServerStatus(serverName, displayName, host, port, maxPlayer, period, loc.getBlock());
+            String info = "";
+            if(conf.getServers().contains("Servers." + server + ".Info"))
+                info = conf.getServers().getString("Servers." + server + ".Info");
+            
+            ServerStatus ss = new ServerStatus(serverName, displayName, host, port, maxPlayer, period, loc.getBlock(), info);
     
             if(conf.getServers().contains("Servers." + server + ".maintenance"))
                 ss.setMaintenance(conf.getServers().getBoolean("Servers." + server + ".maintenance"));
@@ -87,9 +91,13 @@ public class ServerStatusManager {
                             role.add("§r§7[Status]  §aONLINE");
                             role.add("");
                             role.add("§r§7[Match]  " + (ss.getRunningMatch() ? "§cACTIVE" : "§aINACTIVE"));
-                            if(ss.getMapName() != ""){
+                            if(!ss.getMapName().equals("")){
                                 role.add("");
                                 role.add("§r§7[Map]  §f§l" + ss.getMapName());
+                            }
+                            if(!ss.getInfo().equals("")){
+                                role.add("");
+                                role.add("§r§7[Info]  §f§l" + ss.getInfo());
                             }
                         } else {
                             role.add("");

@@ -652,7 +652,7 @@ public class MatchMgr {
                         DataMgr.getPlayerData(p).setMainItemGlow(true);
                         WeaponClassMgr.setWeaponClass(p);
                     }
-                    
+    
                     SquidMgr.SquidShowRunnable(p);
 
                     p.getEquipment().setHelmet(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBougu());

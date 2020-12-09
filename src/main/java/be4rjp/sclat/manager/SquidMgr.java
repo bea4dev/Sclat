@@ -294,11 +294,13 @@ public class SquidMgr {
                         //data.getTeam().getTeam().addEntry(player.getName());
                         
                         //data.getTeam().getTeam().addEntry(es.getBukkitEntity().getUniqueId().toString());
-                    }else
+                    }else {
                         data.getTeam().getTeam().addEntry(es.getBukkitEntity().getUniqueId().toString());
+                    }
                 }
                 
                 try {
+                    
                     Location loc = player.getLocation();
                     es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0);
 
@@ -333,6 +335,7 @@ public class SquidMgr {
                             }
                         }
                     }
+                    
                 }catch(Exception e){}
                 
                 if(Bslot){
@@ -356,7 +359,7 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                 }
                 
-                if(p.getGameMode().equals(GameMode.SPECTATOR)){
+                if(p.getGameMode().equals(GameMode.SPECTATOR) && !data.getIsJumping()){
                     try {
                         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId());
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
@@ -382,7 +385,7 @@ public class SquidMgr {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 2);
+        task.runTaskTimer(Main.getPlugin(), 30, 3);
     }
     
     

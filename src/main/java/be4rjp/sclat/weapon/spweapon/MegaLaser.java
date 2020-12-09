@@ -57,15 +57,15 @@ public class MegaLaser {
                     DataMgr.getPlayerData(p).setIsUsingSP(true);
                     SPWeaponMgr.setSPCoolTimeAnimation(player, 180);
                     as9 = (ArmorStand)p.getWorld().spawnEntity(p.getLocation().add(0, -1.6, 0), EntityType.ARMOR_STAND);
-                    as9.addPassenger(p);
+                    //as9.addPassenger(p);
                     list.add(as9);
                     ol = p.getLocation();
                     Vector pv = p.getEyeLocation().getDirection();
                     v = new Vector(pv.getX(), 0, pv.getZ());
                 }
                 
-                if(!as9.getPassengers().contains(p) && c < 9)
-                    as9.addPassenger(p);
+                //if(!as9.getPassengers().contains(p) && c < 9)
+                    //as9.addPassenger(p);
 
                 Vector vec = new Vector(v.getX(), 0 ,v.getZ()).normalize().multiply(1.5);
                 Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX()).normalize().multiply(0.605);
@@ -361,10 +361,11 @@ public class MegaLaser {
                 }
 
                 if(c == 10){
+                    /*
                     if(as9.getPassengers().contains(p)){
                         as9.removePassenger(p);
                         ((CraftPlayer)p).getHandle().stopRiding();
-                    }
+                    }*/
                     WeaponClassMgr.setWeaponClass(p);
                 }
                 c++;

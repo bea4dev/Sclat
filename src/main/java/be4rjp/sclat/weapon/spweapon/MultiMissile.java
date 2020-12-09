@@ -179,6 +179,7 @@ public class MultiMissile {
                         p.getInventory().clear();
                         WeaponClassMgr.setWeaponClass(p);
                         DataMgr.getPlayerData(p).setIsUsingSP(true);
+                        DataMgr.getPlayerData(p).setIsUsingMM(false);
                         FireworksRunnable(p);
                         SPWeaponMgr.setSPCoolTimeAnimation(p, 100);
                         cancel();

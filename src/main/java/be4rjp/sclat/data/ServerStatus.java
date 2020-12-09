@@ -18,6 +18,7 @@ public class ServerStatus {
     private final int maxPlayer;
     private final BukkitRunnable task2;
     private final Block sign;
+    private final String info;
     
     private int playerCount = 0;
     private boolean online = false;
@@ -26,7 +27,7 @@ public class ServerStatus {
     private String mapName = "";
     private boolean maintenance = false;
     
-    public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign){
+    public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign, String info){
         this.serverName = serverName;
         this.displayName = displayName;
         this.host = host;
@@ -34,6 +35,7 @@ public class ServerStatus {
         this.period = period;
         this.maxPlayer = maxPlayer;
         this.sign = sign;
+        this.info = info;
         
         this.task = new BukkitRunnable() {
             @Override
@@ -99,6 +101,8 @@ public class ServerStatus {
     public String getMapName(){return this.mapName;}
     
     public Block getSign(){return this.sign;}
+    
+    public String getInfo(){return this.info;}
     
     public boolean isMaintenance(){return this.maintenance;}
     

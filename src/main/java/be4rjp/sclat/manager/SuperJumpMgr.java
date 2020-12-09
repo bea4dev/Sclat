@@ -102,6 +102,9 @@ public class SuperJumpMgr {
             int t = 0;
             @Override
             public void run(){
+                if(DataMgr.getPlayerData(p).getIsDead())
+                    cancel();
+                
                 Location position = positions.get(i).toLocation(p.getLocation().getWorld());
                 double py = (Math.pow(Math.abs((positions.size() / 2) - i), 2) * -1 * coef) + (Math.pow(positions.size() / 2, 2) * coef);
                 double y = py > 100 ? 100 + py / 2.8 : py;
