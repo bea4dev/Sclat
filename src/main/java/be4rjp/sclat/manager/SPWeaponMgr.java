@@ -56,6 +56,39 @@ public class SPWeaponMgr {
         return GaugeAPI.toGauge(data.getSPGauge() / 5, 20, "§a", "§7");
     }
     
+    public static void SPWeaponHuriRunnable(Player player){
+        PlayerData data = DataMgr.getPlayerData(player);
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(!player.isOnline() || !data.isInMatch())
+                    cancel();
+                try {
+                    int myTeam = 0;
+                    int enemyTeam = 0;
+                    for (Player op : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        PlayerData opdata = DataMgr.getPlayerData(op);
+                        if (data.getMatch() == opdata.getMatch()) {
+                            if (data.getTeam() == opdata.getTeam()) {
+                                if (!opdata.getIsDead())
+                                    myTeam++;
+                            } else {
+                                if (!opdata.getIsDead())
+                                    enemyTeam++;
+                            }
+                        }
+                    }
+    
+                    if (myTeam < enemyTeam) {
+                        addSPCharge(player);
+                        addSPCharge(player);
+                    }
+                }catch (Exception e){cancel();}
+            }
+        };
+        task.runTaskTimer(Main.getPlugin(), 0, 20);
+    }
+    
     public static void SPWeaponRunnable(Player player){
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;

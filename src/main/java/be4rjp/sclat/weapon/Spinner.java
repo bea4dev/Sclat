@@ -46,11 +46,11 @@ public class Spinner {
     
                 if(data.getIsUsingMM() || data.getIsUsingJetPack() || data.getIsUsingTyakuti() || data.getIsUsingSS()){
                     charge = 0;
-                    data.setTick(7);
+                    data.setTick(8);
                     return;
                 }
                 
-                if(data.getTick() <= 5 && data.isInMatch()){
+                if(data.getTick() <= 6 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
                     ItemMeta wm = w.getItemMeta();
                     
@@ -77,7 +77,7 @@ public class Spinner {
                 else
                     keeping = 0;
                 
-                if(data.getTick() == 6 && data.isInMatch()){
+                if(data.getTick() == 7 && data.isInMatch()){
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         SpinnerShootRunnable((int)(charge * data.getWeaponClass().getMainWeapon().getChargeRatio()), p);
                     }else{
@@ -89,7 +89,7 @@ public class Spinner {
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                    data.setTick(7);
+                    data.setTick(8);
                     data.setIsHolding(false);
                 }
                 

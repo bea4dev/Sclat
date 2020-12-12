@@ -85,6 +85,10 @@ public class ServerStatusManager {
                         role.add("§r§7[Status]  §eRESTARTING...");
                     }else {
                         if (ss.isOnline()) {
+                            int amount = 1;
+                            if(0 < ss.getPlayerCount() && ss.getPlayerCount() <= 64)
+                                amount = ss.getPlayerCount();
+                            is.setAmount(amount);
                             role.add("");
                             role.add("§r§7[Player]  §r§a" + ss.getPlayerCount() + "§r§7 / " + ss.getMaxPlayer());
                             role.add("");

@@ -5,7 +5,9 @@ import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
@@ -163,6 +165,29 @@ public class Roller {
                             }
 
                             double maxDist = 2;
+    
+                            for (Entity as : p.getWorld().getEntities()) {
+                                if (as.getLocation().distance(position) <= maxDist) {
+                                    if (as instanceof ArmorStand) {
+                                        if (as.getCustomName() != null) {
+                                            try {
+                                                if (as.getCustomName().equals("Kasa")) {
+                                                    KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                                    if (DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(p).getTeam()) {
+                                                        break loop;
+                                                    }
+                                                } else if (as.getCustomName().equals("SplashShield")) {
+                                                    SplashShieldData splashShieldData = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand) as);
+                                                    if (DataMgr.getPlayerData(splashShieldData.getPlayer()).getTeam() != DataMgr.getPlayerData(p).getTeam()) {
+                                                        break loop;
+                                                    }
+                                                }
+                                            }catch (Exception e){}
+                                        }
+                                    }
+                                }
+                            }
+                            
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
@@ -227,6 +252,29 @@ public class Roller {
                             }
 
                             double maxDist = 2;
+    
+                            for (Entity as : p.getWorld().getEntities()) {
+                                if (as.getLocation().distance(position) <= maxDist) {
+                                    if (as instanceof ArmorStand) {
+                                        if (as.getCustomName() != null) {
+                                            try {
+                                                if (as.getCustomName().equals("Kasa")) {
+                                                    KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                                    if (DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(p).getTeam()) {
+                                                        break loop;
+                                                    }
+                                                } else if (as.getCustomName().equals("SplashShield")) {
+                                                    SplashShieldData splashShieldData = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand) as);
+                                                    if (DataMgr.getPlayerData(splashShieldData.getPlayer()).getTeam() != DataMgr.getPlayerData(p).getTeam()) {
+                                                        break loop;
+                                                    }
+                                                }
+                                            }catch (Exception e){}
+                                        }
+                                    }
+                                }
+                            }
+                            
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;

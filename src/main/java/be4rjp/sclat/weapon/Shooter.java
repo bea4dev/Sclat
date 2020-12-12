@@ -50,7 +50,7 @@ public class Shooter {
                         }
                     }else{
                         if(data.getWeaponClass().getMainWeapon().getMaxRandom() != 0 && maxRandomCount >= 0)
-                            maxRandomCount--;
+                            maxRandomCount-=2;
                     }
                 }
             }
@@ -196,6 +196,8 @@ public class Shooter {
         }else{
             if(!player.isOnGround()) maxRandom = true;
         }
+    
+        PaintMgr.PaintHightestBlock(player.getLocation(), player, true, true);
                     
         Snowball ball = player.launchProjectile(Snowball.class);
         player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);

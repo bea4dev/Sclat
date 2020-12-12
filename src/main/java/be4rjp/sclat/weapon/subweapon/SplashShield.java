@@ -355,7 +355,7 @@ public class SplashShield {
 
 
                             for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                o_player.spawnParticle(Particle.FALLING_DUST, position.clone().add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
                             }
                         }
 
@@ -390,9 +390,9 @@ public class SplashShield {
                             }
                             for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(i == 0 || i == 1 || i == 2)
-                                    o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), -0.2, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                    o_player.spawnParticle(Particle.FALLING_DUST, position.clone().add(sv.getX(), -0.2, sv.getZ()), 1, 0, 0, 0, 200, bd);
                                 else
-                                    o_player.spawnParticle(Particle.FALLING_DUST, position.add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
+                                    o_player.spawnParticle(Particle.FALLING_DUST, position.clone().add(sv.getX(), 0, sv.getZ()), 1, 0, 0, 0, 200, bd);
                             }
                         }
                     }

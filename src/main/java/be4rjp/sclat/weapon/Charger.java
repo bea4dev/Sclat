@@ -55,14 +55,14 @@ public class Charger {
                 
                 if(data.getIsUsingMM() || data.getIsUsingJetPack() || data.getIsUsingTyakuti() || data.getIsUsingSS()){
                     charge = 0;
-                    data.setTick(7);
+                    data.setTick(8);
                     return;
                 }
                 
                 if(keeping == data.getWeaponClass().getMainWeapon().getChargeKeepingTime() && data.getWeaponClass().getMainWeapon().getCanChargeKeep() && data.getSettings().doChargeKeep())
                     charge = 0;
                 
-                if(data.getTick() <= 5 && data.isInMatch()){
+                if(data.getTick() <= 6 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
                     ItemMeta wm = w.getItemMeta();
                     
@@ -123,7 +123,7 @@ public class Charger {
                 
                 
                 
-                if(data.getTick() == 6 && data.isInMatch()){
+                if(data.getTick() == 7 && data.isInMatch()){
                     if(player.hasPotionEffect(PotionEffectType.SLOW))
                         player.removePotionEffect(PotionEffectType.SLOW);
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
@@ -140,7 +140,7 @@ public class Charger {
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
-                    data.setTick(7);
+                    data.setTick(8);
                     data.setIsHolding(false);
                 }
                 

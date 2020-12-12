@@ -6,6 +6,8 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.KasaData;
+import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.DamageMgr;
 import be4rjp.sclat.manager.DeathMgr;
@@ -189,9 +191,27 @@ public class CurlingBomb {
                             if (as.getLocation().distance(as1l) <= maxDist){
                                 if(as instanceof ArmorStand){
                                     if(as.getCustomName() != null){
-                                        if(as.getCustomName().equals("Kasa")){
-                                            cancel();
-                                        }
+                                        try {
+                                            if (as.getCustomName().equals("Kasa")) {
+                                                KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                                if (DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()) {
+                                                    as1.remove();
+                                                    as2.remove();
+                                                    as3.remove();
+                                                    fb.remove();
+                                                    cancel();
+                                                }
+                                            } else if (as.getCustomName().equals("SplashShield")) {
+                                                SplashShieldData splashShieldData = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand) as);
+                                                if (DataMgr.getPlayerData(splashShieldData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()) {
+                                                    as1.remove();
+                                                    as2.remove();
+                                                    as3.remove();
+                                                    fb.remove();
+                                                    cancel();
+                                                }
+                                            }
+                                        }catch (Exception e){}
                                     }
                                 }
                             }

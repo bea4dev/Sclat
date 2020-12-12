@@ -134,7 +134,7 @@ public class DeathMgr {
                             t.setExp(0.99F);
                             t.setHealth(20);
                             WeaponClassMgr.setWeaponClass(t);
-                            SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                            SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                             if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                                 SPWeaponMgr.setSPWeapon(t);
                             cancel();
@@ -182,7 +182,7 @@ public class DeathMgr {
                             t.setExp(0.99F);
                             t.setHealth(20);
                             WeaponClassMgr.setWeaponClass(t);
-                            SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                            SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                             if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                                 SPWeaponMgr.setSPWeapon(t);
                             cancel();
@@ -230,7 +230,7 @@ public class DeathMgr {
                             t.setExp(0.99F);
                             t.setHealth(20);
                             WeaponClassMgr.setWeaponClass(t);
-                            SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                            SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                             if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                                 SPWeaponMgr.setSPWeapon(t);
                             cancel();
@@ -271,7 +271,7 @@ public class DeathMgr {
                             t.setExp(0.99F);
                             t.setHealth(20);
                             WeaponClassMgr.setWeaponClass(t);
-                            SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                            SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                             if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                                 SPWeaponMgr.setSPWeapon(t);
                             cancel();
@@ -311,7 +311,7 @@ public class DeathMgr {
                             t.setExp(0.99F);
                             t.setHealth(20);
                             WeaponClassMgr.setWeaponClass(t);
-                            SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                            SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                             if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                                 SPWeaponMgr.setSPWeapon(t);
                             cancel();
@@ -332,7 +332,7 @@ public class DeathMgr {
                     t.setExp(0.99F);
                     t.setHealth(20);
                     WeaponClassMgr.setWeaponClass(t);
-                    SuperArmor.setArmor(t, Double.MAX_VALUE, 100, false);
+                    SuperArmor.setArmor(t, Double.MAX_VALUE, 160, false);
                     if(DataMgr.getPlayerData(t).getSPGauge() == 100)
                         SPWeaponMgr.setSPWeapon(t);
                     cancel();

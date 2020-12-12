@@ -177,12 +177,19 @@ public class TrapData {
                         if (as.getLocation().distance(location) <= maxDist) {
                             if (as instanceof ArmorStand) {
                                 if (as.getCustomName() != null) {
-                                    if (as.getCustomName().equals("Kasa")) {
-                                        KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
-                                        if(DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()){
-                                            cancel();
+                                    try {
+                                        if (as.getCustomName().equals("Kasa")) {
+                                            KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
+                                            if (DataMgr.getPlayerData(kasaData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()) {
+                                                cancel();
+                                            }
+                                        } else if (as.getCustomName().equals("SplashShield")) {
+                                            SplashShieldData splashShieldData = DataMgr.getSplashShieldDataFromArmorStand((ArmorStand) as);
+                                            if (DataMgr.getPlayerData(splashShieldData.getPlayer()).getTeam() != DataMgr.getPlayerData(player).getTeam()) {
+                                                cancel();
+                                            }
                                         }
-                                    }
+                                    }catch (Exception e){}
                                 }
                             }
                         }

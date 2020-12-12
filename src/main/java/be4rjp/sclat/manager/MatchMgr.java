@@ -159,6 +159,7 @@ public class MatchMgr {
                             List<Player> sortedMember = new ArrayList<>();
                             if(conf.getConfig().getBoolean("RateMatch")) {
                                 Map<Integer, Player> treeMap = new TreeMap<Integer, Player>(playerMap);
+                                /*
                                 if(match.getJoinedPlayerCount() == 3){
                                     List<Player> list = new ArrayList<>();
                                     for (Integer key : treeMap.keySet())
@@ -166,10 +167,16 @@ public class MatchMgr {
                                     sortedMember.add(list.get(0));
                                     sortedMember.add(list.get(2));
                                     sortedMember.add(list.get(1));
-                                }else{
-                                    for (Integer key : treeMap.keySet())
+                                }else{*/
+                                int index = 0;
+                                    for (Integer key : treeMap.keySet()) {
                                         sortedMember.add(treeMap.get(key));
-                                }
+                                        if(index == 4){
+                                            Collections.shuffle(sortedMember);
+                                        }
+                                        index++;
+                                    }
+                                //}
                             }else{
                                 sortedMember = DataMgr.joinedList;
                             }
@@ -212,8 +219,7 @@ public class MatchMgr {
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
                             if(conf.getConfig().getBoolean("RateMatch")){
                                 Sclat.sendMessage("", MessageType.ALL_PLAYER);
-                                Sclat.sendMessage(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + " §rTeam's rating : §b" + match.getTeam0().getRateTotal(), MessageType.ALL_PLAYER);
-                                Sclat.sendMessage(match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + " §rTeam's rating : §b" + match.getTeam1().getRateTotal(), MessageType.ALL_PLAYER);
+                                Sclat.sendMessage("§b試合の総合レート : §r" + (match.getTeam0().getRateTotal() + match.getTeam1().getRateTotal()), MessageType.ALL_PLAYER);
                             }
                             EquipmentServerManager.doCommands();
                             if(conf.getConfig().getBoolean("CanVoting")){
@@ -676,6 +682,8 @@ public class MatchMgr {
                     }else{
                         p.setMaxHealth(20);
                     }
+                    
+                    SPWeaponMgr.SPWeaponHuriRunnable(p);
 
                     //p.setPlayerListName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getDisplayName());
                     
@@ -776,7 +784,7 @@ public class MatchMgr {
         match.getTeam1().setTeam(bteam1);
         
 
-        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+        for(Player oplayer : Main.getPlugin().getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(oplayer).getIsJoined()){
                 if(match.getTeam0() == DataMgr.getPlayerData(oplayer).getTeam())
                     bteam0.addPlayer(oplayer);
