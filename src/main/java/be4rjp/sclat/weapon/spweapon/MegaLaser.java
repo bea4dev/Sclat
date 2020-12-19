@@ -273,14 +273,7 @@ public class MegaLaser {
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist) {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                            //PaintMgr.Paint(target.getLocation(), p, true);
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, p, "spWeapon");
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-                                        }
+                                        Sclat.giveDamage(p, target, damage, "spWeapon");
 
                                         //AntiNoDamageTime
                                         BukkitRunnable task = new BukkitRunnable(){

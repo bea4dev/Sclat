@@ -83,14 +83,7 @@ public class SplashBomb {
                             if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                                 double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 14 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        DamageMgr.SclatGiveDamage(target, damage);
-                                        PaintMgr.Paint(target.getLocation(), player, true);
-                                    }else{
-                                        target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
-                                        PaintMgr.Paint(target.getLocation(), player, true);
-                                    }
+                                    Sclat.giveDamage(player, target, damage, "subWeapon");
 
                                     //AntiNoDamageTime
                                     BukkitRunnable task = new BukkitRunnable(){

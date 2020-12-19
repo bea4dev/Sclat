@@ -2,6 +2,9 @@
 package be4rjp.sclat.manager;
 
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.dadadachecker.ClickType;
+import be4rjp.sclat.Main;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.MainWeapon;
 import be4rjp.sclat.data.PlayerData;
@@ -70,6 +73,10 @@ public class MainWeaponMgr {
             boolean hc = false;
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".HanbunChargeKeep"))
                 hc = conf.getWeaponConfig().getBoolean("MainWeapon." + weaponname + ".HanbunChargeKeep");
+    
+            float sn = 0.2F;
+            if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".SlideNeedInk"))
+                sn = (float)(conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".SlideNeedInk"));
             
             
             MainWeapon mw = new MainWeapon(weaponname);
@@ -106,6 +113,7 @@ public class MainWeaponMgr {
             mw.setCanChargeKeep(ck);
             mw.setChargeKeepingTime(ckt);
             mw.setHanbunCharge(hc);
+            mw.setSlideNeedINK(sn);
     
             if(conf.getWeaponConfig().contains("MainWeapon." + weaponname + ".SPRate"))
                 mw.setSPRate(conf.getWeaponConfig().getDouble("MainWeapon." + weaponname + ".SPRate"));
@@ -139,19 +147,26 @@ public class MainWeaponMgr {
     }
     
     public static boolean equalWeapon(Player player){
-        PlayerData data = DataMgr.getPlayerData(player);
-        String wname = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName();
-        if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+        try {
+            PlayerData data = DataMgr.getPlayerData(player);
+            String wname = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getItemMeta().getDisplayName();
+            if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+                return false;
+            String itemname = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+            if (itemname.length() >= wname.length())
+                if (wname.equals(itemname.substring(0, wname.length())))
+                    return true;
             return false;
-        String itemname = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-        if(itemname.length() >= wname.length())
-            if(wname.equals(itemname.substring(0, wname.length())))
-                return true;
-        return false;
+        }catch (Exception e){return false;}
     }
     
     public static void UseMainWeapon(Player player){
         if(equalWeapon(player)){
+    
+            Main.dadadaCheckerAPI.fireClickEvent(player);
+    
+            ClickType clickType = Main.dadadaCheckerAPI.getPlayerClickType(player);
+            
             PlayerData data = DataMgr.getPlayerData(player);
             if(data.getCanCharge())
                 data.setTick(0);
@@ -161,7 +176,7 @@ public class MainWeaponMgr {
                 Blaster.ShootBlaster(player);
             if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Burst"))
                 Burst.BurstCooltime(player);
-            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && data.getCanShoot()){
+            if(data.getWeaponClass().getMainWeapon().getWeaponType().equals("Roller") && (data.getCanShoot() || clickType == ClickType.RENDA)){
                 data.setCanShoot(false);
                 Roller.ShootPaintRunnable(player);
             }

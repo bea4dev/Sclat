@@ -44,6 +44,7 @@ public class MainWeapon {
     private double SPRate = 1.0;
     private int maxRandomCount = 1;
     private int level = 0;
+    private float slideNeedINK = 0.2F;
     
     
     
@@ -121,6 +122,8 @@ public class MainWeapon {
     
     public int getLevel(){return this.level;}
     
+    public float getSlideNeedINK(){return this.slideNeedINK;}
+    
     
     public void setWeaponType(String WT){this.WeaponType = WT;}
     
@@ -193,5 +196,7 @@ public class MainWeapon {
     public void setMaxRandomCount(int count){this.maxRandomCount = count;}
     
     public void setLevel(int level){this.level = level;}
+    
+    public void setSlideNeedINK(float ink){this.slideNeedINK = ink;}
     
 }

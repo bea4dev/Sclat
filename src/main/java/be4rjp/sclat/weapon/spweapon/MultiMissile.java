@@ -330,14 +330,7 @@ public class MultiMissile {
                         if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 14;
                             if(DataMgr.getPlayerData(s).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                    DamageMgr.SclatGiveDamage(target, damage);
-                                    PaintMgr.Paint(target.getLocation(), s, true);
-                                }else{
-                                    target.setGameMode(GameMode.SPECTATOR);
-                                    DeathMgr.PlayerDeathRunnable(target, s, "spWeapon");
-                                    PaintMgr.Paint(target.getLocation(), s, true);
-                                }
+                                Sclat.giveDamage(s, target, damage, "spWeapon");
 
                                 //AntiNoDamageTime
                                 BukkitRunnable task = new BukkitRunnable(){

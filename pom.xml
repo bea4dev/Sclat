@@ -70,6 +70,13 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>be4rjp</groupId>
+            <artifactId>dadadachecker</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/target/lib/DADADAChecker.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <resources>

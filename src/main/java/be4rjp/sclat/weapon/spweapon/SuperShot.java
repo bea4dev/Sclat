@@ -137,6 +137,7 @@ public class SuperShot {
                         drop.setVelocity(vec);
                         //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
                         ball = (Snowball)player.getWorld().spawnEntity(loc, EntityType.SNOWBALL);
+                        ball.setShooter(p);
                         ball.setVelocity(vec);
                         ball.setCustomName("SuperShot");
                         ball.setShooter(p);

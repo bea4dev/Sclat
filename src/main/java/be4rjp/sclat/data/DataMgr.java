@@ -45,6 +45,7 @@ public class DataMgr {
     private static Map<Player, RankingHolograms> rankingHologramsMap = new HashMap<>();
     //private static Map<Match, PaintData> paintdata = new HashMap<>(); 
     private static List<Color> list = new ArrayList<>();
+    public static Map<String, Integer> oto = new HashMap<>();
     public static List<Block> rblist = new ArrayList<>();
     public static List<ArmorStand> al = new ArrayList<>();
     public static List<ArmorStand> ssa = new ArrayList<>();

@@ -1,9 +1,12 @@
 
 package be4rjp.sclat.weapon;
 
+import be4rjp.dadadachecker.ClickType;
 import be4rjp.sclat.GaugeAPI;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.PlayerData;
@@ -50,8 +53,10 @@ public class Roller {
                     cancel();
                     return;
                 }
+    
+                ClickType clickType = Main.dadadaCheckerAPI.getPlayerClickType(player);
                 
-                if(data.getTick() >= 6 && data.isInMatch()){
+                if(/*data.getTick() >= 6*/clickType == ClickType.NO_CLICK && data.isInMatch()){
                     data.setTick(7);
                     data.setIsHolding(false);
                     data.setCanPaint(false);
@@ -72,7 +77,7 @@ public class Roller {
                     if(!data.isInMatch() || !p.isOnline())
                         cancel();
                     
-                    if(data.getIsHolding() && data.getCanPaint() && data.isInMatch()){
+                    if(data.getIsHolding() && data.getCanPaint() && data.isInMatch() && Main.dadadaCheckerAPI.getPlayerClickType(p) != ClickType.RENDA && p.getGameMode() != GameMode.SPECTATOR){
                         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
                             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
                             return;
@@ -117,17 +122,8 @@ public class Roller {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
 
                                         double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
-
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveDamage(target, damage);
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-                                            p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-
-                                        }
+    
+                                        Sclat.giveDamage(p, target, damage, "killed");
                                     }
                                 }
                             }
@@ -197,16 +193,7 @@ public class Roller {
 
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
 
-                                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                                DamageMgr.SclatGiveDamage(target, damage);
-                                                PaintMgr.Paint(target.getLocation(), p, true);
-                                                p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                            }else{
-                                                target.setGameMode(GameMode.SPECTATOR);
-                                                DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                                PaintMgr.Paint(target.getLocation(), p, true);
-
-                                            }
+                                            Sclat.giveDamage(p, target, damage, "killed");
 
                                             //AntiNoDamageTime
                                             BukkitRunnable task = new BukkitRunnable(){
@@ -284,16 +271,7 @@ public class Roller {
 
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
 
-                                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                                DamageMgr.SclatGiveDamage(target, damage);
-                                                PaintMgr.Paint(target.getLocation(), p, true);
-                                                p.setVelocity(p.getEyeLocation().getDirection().multiply(-0.5));
-                                            }else{
-                                                target.setGameMode(GameMode.SPECTATOR);
-                                                DeathMgr.PlayerDeathRunnable(target, p, "killed");
-                                                PaintMgr.Paint(target.getLocation(), p, true);
-
-                                            }
+                                            Sclat.giveDamage(p, target, damage, "killed");
 
                                             //AntiNoDamageTime
                                             BukkitRunnable task = new BukkitRunnable(){

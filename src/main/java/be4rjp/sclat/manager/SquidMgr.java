@@ -154,7 +154,11 @@ public class SquidMgr {
                     //p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
                     p.setFoodLevel(20);                                                   
                     p.setSprinting(true);
-                    final double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
+                    double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
+    
+                    if(data.getSpeed() != 0)
+                        speed = data.getSpeed();
+                    
                     if(!DataMgr.getPlayerData(p).getPoison())
                         p.setWalkSpeed((float)speed);
                     else
@@ -182,6 +186,9 @@ public class SquidMgr {
                         speed = (double)data.getWeaponClass().getMainWeapon().getInHoldSpeed() * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
                     else
                         speed = conf.getConfig().getDouble("PlayerWalkSpeed") * Gear.getGearInfluence(p, Gear.Type.HITO_SPEED_UP);
+                    
+                    if(data.getSpeed() != 0)
+                        speed = data.getSpeed();
                     
                     if(p.getExp() <= (0.99F - (float)conf.getConfig().getDouble("NormalRecovery"))){
                         p.setExp(p.getExp() + (float)conf.getConfig().getDouble("NormalRecovery"));

@@ -179,6 +179,7 @@ public class MatchMgr {
                                 //}
                             }else{
                                 sortedMember = DataMgr.joinedList;
+                                Collections.shuffle(sortedMember);
                             }
                             
                             int i = 0;
@@ -349,12 +350,12 @@ public class MatchMgr {
 
             org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
             bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
-            bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam0.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.FOR_OTHER_TEAMS);
             bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
 
             org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
             bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
-            bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+            bteam1.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.FOR_OTHER_TEAMS);
             bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
             
             team0.setTeam(bteam0);
@@ -436,6 +437,8 @@ public class MatchMgr {
 
                 if(s == 0){
                     
+                    p.setDisplayName(DataMgr.getPlayerData(p).getTeam().getTeamColor().getColorCode() + p.getName());
+                    
                     DataMgr.getPlayerData(p).setCanFly(true);
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
@@ -502,7 +505,7 @@ public class MatchMgr {
                         squid = (LivingEntity)e;
                         squid.setAI(false);
                         squid.setSwimming(true);
-                        squid.setCustomName(p.getDisplayName());
+                        squid.setCustomName(p.getName());
                         squid.setCustomNameVisible(true);
                     }
 
@@ -574,7 +577,7 @@ public class MatchMgr {
                         if(s == 100){
                             if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
-                            NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
+                            NPCMgr.createNPC(p, p.getName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
                         }
                     }
@@ -594,7 +597,7 @@ public class MatchMgr {
                         if(s == 160){
                             if(DataMgr.getPlayerData(p).getPlayerNumber() <= 8){
                             introl.getWorld().playSound(DataMgr.getPlayerData(p).getMatchLocation(), Sound.ENTITY_PLAYER_SWIM, 1, 1);
-                            NPCMgr.createNPC(p, p.getDisplayName(), DataMgr.getPlayerData(p).getMatchLocation());
+                            NPCMgr.createNPC(p, p.getName(), DataMgr.getPlayerData(p).getMatchLocation());
                             }
                         }
                     }
@@ -770,13 +773,15 @@ public class MatchMgr {
         
         org.bukkit.scoreboard.Team bteam0 = scoreboard.registerNewTeam(match.getTeam0().getTeamColor().getColorName());
         bteam0.setColor(match.getTeam0().getTeamColor().getChatColor());
-        bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        bteam0.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.FOR_OTHER_TEAMS);
+        //bteam0.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         bteam0.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
         bteam0.setPrefix(match.getTeam0().getTeamColor().getColorCode());
 
         org.bukkit.scoreboard.Team bteam1 = scoreboard.registerNewTeam(match.getTeam1().getTeamColor().getColorName());
         bteam1.setColor(match.getTeam1().getTeamColor().getChatColor());
-        bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        //bteam1.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        bteam1.setOption(org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY, org.bukkit.scoreboard.Team.OptionStatus.FOR_OTHER_TEAMS);
         bteam1.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM);
         bteam1.setPrefix(match.getTeam1().getTeamColor().getColorCode());
         
@@ -786,11 +791,11 @@ public class MatchMgr {
 
         for(Player oplayer : Main.getPlugin().getServer().getOnlinePlayers()){
             if(DataMgr.getPlayerData(oplayer).getIsJoined()){
-                if(match.getTeam0() == DataMgr.getPlayerData(oplayer).getTeam())
-                    bteam0.addPlayer(oplayer);
-                if(match.getTeam1() == DataMgr.getPlayerData(oplayer).getTeam())
-                    bteam1.addPlayer(oplayer);
                 oplayer.setScoreboard(scoreboard);
+                if(match.getTeam0() == DataMgr.getPlayerData(oplayer).getTeam())
+                    bteam0.addEntry(oplayer.getName());
+                if(match.getTeam1() == DataMgr.getPlayerData(oplayer).getTeam())
+                    bteam1.addEntry(oplayer.getName());
             }
         }
         
@@ -1003,6 +1008,9 @@ public class MatchMgr {
             public void run(){
                 try{
                 if(i == 0){
+    
+                    p.setDisplayName(p.getName());
+                    
                     DataMgr.getPlayerData(p).getMatch().setIsFinished(true);
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         for(Path path : DataMgr.getPlayerData(p).getMatch().getMapData().getPathList()){

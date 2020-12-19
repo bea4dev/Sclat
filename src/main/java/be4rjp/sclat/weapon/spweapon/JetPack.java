@@ -338,6 +338,7 @@ public class JetPack {
                         drop.setGravity(false);
                         //雪玉をスポーンさせた瞬間にプレイヤーに雪玉がデスポーンした偽のパケットを送信する
                         ball = (Snowball)player.getWorld().spawnEntity(dl, EntityType.SNOWBALL);
+                        ball.setShooter(p);
                         ball.setGravity(false);
                         ball.setVelocity(new Vector(0, 0, 0));
                         ball.setCustomName("JetPack");
@@ -373,7 +374,7 @@ public class JetPack {
                         player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
 
                         //爆発エフェクト
-                        Sclat.createInkExplosionEffect(drop.getLocation(), 3.5, 25, player);
+                        Sclat.createInkExplosionEffect(drop.getLocation(), 3, 25, player);
 
                         //塗る
                         for(int i = 0; i <= maxDist; i++){
@@ -390,17 +391,10 @@ public class JetPack {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
-                            if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
-                                double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 12;
+                            if (target.getLocation().distance(drop.getLocation()) <= 3.5) {
+                                double damage = (3.5 - target.getLocation().distance(drop.getLocation())) * 10;
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                    if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                        DamageMgr.SclatGiveDamage(target, damage);
-                                        PaintMgr.Paint(target.getLocation(), player, true);
-                                    }else{
-                                        target.setGameMode(GameMode.SPECTATOR);
-                                        DeathMgr.PlayerDeathRunnable(target, player, "spWeapon");
-                                        PaintMgr.Paint(target.getLocation(), player, true);
-                                    }
+                                    Sclat.giveDamage(player, target, damage, "spWeapon");
 
                                     //AntiNoDamageTime
                                     BukkitRunnable task = new BukkitRunnable(){
@@ -418,9 +412,9 @@ public class JetPack {
                         }
 
                         for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                            if (as.getLocation().distance(drop.getLocation()) <= 3.5){
                                 if(as instanceof ArmorStand){
-                                    double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 10;
+                                    double damage = (3.5 - as.getLocation().distance(drop.getLocation())) * 10;
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                                 }
                             }

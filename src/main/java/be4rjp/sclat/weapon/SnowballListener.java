@@ -30,6 +30,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -186,37 +188,23 @@ public class SnowballListener implements Listener {
             return;
 
         if(DataMgr.getSnowballIsHitMap().containsKey((Snowball)event.getDamager())){
-            if(event.getEntity().getCustomName() == null)
-                DataMgr.setSnowballIsHit((Snowball)event.getDamager(), true);
-            else if(event.getEntity().getCustomName().equals("JetPack") || event.getEntity().getCustomName().equals("SuperShot")){
-                Projectile projectile = (Projectile)event.getDamager();
-                Player shooter = (Player)projectile.getShooter();
-                if(event.getEntity() instanceof Player){
-                    Player target = (Player)event.getEntity();
-                    if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                        if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
-                            SPWeaponMgr.addSPCharge(shooter);
-                        if(DataMgr.getPlayerData(target).getArmor() > 0){
-                            target.getWorld().playSound(target.getLocation(), Sound.ENTITY_PLAYER_HURT, 1F, 1.5F);
-                            if(DataMgr.getPlayerData(target).getArmor() > 10000) {
-                                Vector vec = projectile.getVelocity();
-                                Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
-                                target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
-                            }
+            DataMgr.setSnowballIsHit((Snowball)event.getDamager(), true);
+            if(event.getDamager().getCustomName() != null) {
+                if(event.getDamager().getCustomName().equals("JetPack") || event.getDamager().getCustomName().equals("SuperShot")) {
+                    Projectile projectile = (Projectile) event.getDamager();
+                    Player shooter = (Player) projectile.getShooter();
+                    if (event.getEntity() instanceof Player) {
+                        Player target = (Player) event.getEntity();
+                        if (DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
+                            if (!DataMgr.getPlayerData(shooter).getIsUsingSP())
+                                SPWeaponMgr.addSPCharge(shooter);
+            
+                            Sclat.giveDamage(shooter, target, 30, "spWeapon");
                         }
-                        
-                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 20){
-                            DamageMgr.SclatGiveDamage(target, 20);
-                            PaintMgr.Paint(target.getLocation(), shooter, true);
-                        }else{
-                            target.setGameMode(GameMode.SPECTATOR);
-                            DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
-                            PaintMgr.Paint(target.getLocation(), shooter, true);
-                        }
+                    } else if (event.getEntity() instanceof ArmorStand) {
+                        ArmorStand as = (ArmorStand) event.getEntity();
+                        ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
                     }
-                }else if(event.getEntity() instanceof ArmorStand){
-                    ArmorStand as = (ArmorStand) event.getEntity();
-                    ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
                 }
             }
         }else{
@@ -232,48 +220,47 @@ public class SnowballListener implements Listener {
                         if(DataMgr.getPlayerData(target).getArmor() > 10000) {
                             Vector vec = projectile.getVelocity();
                             Vector v = new Vector(vec.getX(), 0, vec.getZ()).normalize();
-                            target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.3));
+                            target.setVelocity(new Vector(v.getX(), 0.2, v.getZ()).multiply(0.33));
                         }
                     }
                     if(projectile.getCustomName() != null){
                         if(projectile.getCustomName().equals("Sprinkler") || projectile.getCustomName().equals("Amehurasi")){
-                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 4){
-                                DamageMgr.SclatGiveDamage(target, 4);
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
-                            }else{
-                                target.setGameMode(GameMode.SPECTATOR);
-                                if(projectile.getCustomName().equals("Sprinkler"))
-                                    DeathMgr.PlayerDeathRunnable(target, shooter, "subWeapon");
-                                else if(projectile.getCustomName().equals("Amehurasi"))
-                                    DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
-                            }
+                            if(projectile.getCustomName().equals("Sprinkler"))
+                                Sclat.giveDamage(shooter, target, 4, "subWeapon");
+                            else if(projectile.getCustomName().equals("Amehurasi"))
+                                Sclat.giveDamage(shooter, target, 4, "spWeapon");
+                            PaintMgr.Paint(target.getLocation(), shooter, true);
                         }
                         
                         if(projectile.getCustomName().equals("SuperShot")){
-                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > 20){
-                                DamageMgr.SclatGiveDamage(target, 20);
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
-                            }else{
-                                target.setGameMode(GameMode.SPECTATOR);
-                                if(projectile.getCustomName().equals("SuperShot"))
-                                    DeathMgr.PlayerDeathRunnable(target, shooter, "spWeapon");
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
-                            }
+                            shooter.playSound(shooter.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.5F, 1F);
+                            Sclat.giveDamage(shooter, target, 20, "spWeapon");
                         }
                         
                         if(DataMgr.mws.contains(projectile.getCustomName())){
-                            if(DataMgr.tsl.contains(projectile.getCustomName()))
-                                shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
-                            
-                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP)){
-                                DamageMgr.SclatGiveDamage(target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP));
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
-                            }else{
-                                target.setGameMode(GameMode.SPECTATOR);
-                                DeathMgr.PlayerDeathRunnable(target, shooter, "killed");
-                                PaintMgr.Paint(target.getLocation(), shooter, true);
+                            if(DataMgr.tsl.contains(projectile.getCustomName())) {
+                                if(!projectile.getCustomName().contains(":")) {
+                                    shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1F, 1.3F);
+                                }else{
+                                    String args[] = projectile.getCustomName().split(":");
+                                    switch(args[1]){
+                                        case "Burst": {
+                                            if(DataMgr.oto.containsKey(args[2])){
+                                                DataMgr.oto.put(args[2], DataMgr.oto.get(args[2]) + 1);
+                                            }else{
+                                                DataMgr.oto.put(args[2], 1);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if(DataMgr.oto.get(args[2]) == DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getRollerShootQuantity()){
+                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                    }
+                                }
                             }
+                            shooter.playSound(shooter.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.5F, 1F);
+                            Sclat.giveDamage(shooter, target, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage(), "killed");
                         }
                     }
                     //AntiNoDamageTime
@@ -305,12 +292,36 @@ public class SnowballListener implements Listener {
             }else if(event.getEntity() instanceof ArmorStand){
                 ArmorStand as = (ArmorStand) event.getEntity();
                 if(projectile.getCustomName() != null){
-                    if(DataMgr.mws.contains(projectile.getCustomName()))
-                        if(DataMgr.tsl.contains(projectile.getCustomName()))
-                            if(Sclat.isNumber(as.getCustomName()))
-                                if(!as.getCustomName().equals("21") && !as.getCustomName().equals("100"))
-                                    if(as.isVisible())
-                                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                    if(DataMgr.mws.contains(projectile.getCustomName())) {
+                        if (DataMgr.tsl.contains(projectile.getCustomName())) {
+                            if (Sclat.isNumber(as.getCustomName())) {
+                                if (!as.getCustomName().equals("21") && !as.getCustomName().equals("100")) {
+                                    if (as.isVisible()) {
+                                        if(!projectile.getCustomName().contains(":")) {
+                                            shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                        }else{
+                                            String args[] = projectile.getCustomName().split(":");
+                                            switch(args[1]){
+                                                case "Burst": {
+                                                    if(DataMgr.oto.containsKey(args[2])){
+                                                        DataMgr.oto.put(args[2], DataMgr.oto.get(args[2]) + 1);
+                                                    }else{
+                                                        DataMgr.oto.put(args[2], 1);
+                                                    }
+                                                    break;
+                                                }
+                                            }
+        
+                                            if(DataMgr.oto.get(args[2]) == DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getRollerShootQuantity()){
+                                                shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                            }
+                                        }
+                                        //shooter.playSound(shooter.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     
                     if(projectile.getCustomName().equals("SuperShot")){
                         ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
@@ -319,6 +330,11 @@ public class SnowballListener implements Listener {
                     if(projectile.getCustomName().equals("JetPack")){
                         ArmorStandMgr.giveDamageArmorStand(as, 20, shooter);
                         return;
+                    }
+                }
+                if(as.getCustomName() != null) {
+                    if (!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")) {
+                        shooter.playSound(shooter.getLocation(), Sound.ENTITY_PLAYER_HURT, 0.5F, 1F);
                     }
                 }
                 ArmorStandMgr.giveDamageArmorStand(as, DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage() * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP), shooter);

@@ -202,14 +202,7 @@ public class TrapData {
                         if (target.getLocation().distance(location) <= maxDist) {
                             double damage = (maxDist - target.getLocation().distance(location)) * 3.0 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                             if (DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
-                                if (target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage) {
-                                    DamageMgr.SclatGiveDamage(target, damage);
-                                    PaintMgr.Paint(target.getLocation(), player, true);
-                                } else {
-                                    target.setGameMode(GameMode.SPECTATOR);
-                                    DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
-                                    PaintMgr.Paint(target.getLocation(), player, true);
-                                }
+                                Sclat.giveDamage(player, target, damage, "subWeapon");
                 
                                 //AntiNoDamageTime
                                 BukkitRunnable task = new BukkitRunnable() {

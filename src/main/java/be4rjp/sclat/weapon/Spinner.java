@@ -138,7 +138,7 @@ public class Spinner {
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed() * charge);
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
-                vec.add(new Vector(Math.random() * random - random/2, 0, Math.random() * random - random/2));
+                vec.add(new Vector(Math.random() * random - random/2, Math.random() * random - random/2, Math.random() * random - random/2));
                 ball.setVelocity(vec);
                 ball.setShooter(player);
                 String name = String.valueOf(Main.getNotDuplicateNumber());

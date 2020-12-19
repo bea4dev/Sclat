@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.PlayerData;
@@ -531,18 +533,7 @@ public class Kasa {
                                         continue;
                                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                         if(rayTrace.intersects(new BoundingBox((Entity)target), 5, 0.05)){
-                                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                                DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                                PaintMgr.Paint(target.getLocation(), player, true);
-                                                if(i > 40)
-                                                    target.setVelocity(dir);
-                                                else
-                                                    target.setVelocity(p.getEyeLocation().getDirection().normalize().multiply(0.5));
-                                            }else{
-                                                target.setGameMode(GameMode.SPECTATOR);
-                                                DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                                                PaintMgr.Paint(target.getLocation(), player, true);
-                                            }
+                                            Sclat.giveDamage(player, target, damage, "killed");
 
                                             //AntiNoDamageTime
                                             BukkitRunnable task = new BukkitRunnable(){

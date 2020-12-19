@@ -1,6 +1,7 @@
 
 package be4rjp.sclat.weapon;
 
+import be4rjp.dadadachecker.ClickType;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
@@ -10,7 +11,9 @@ import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.server.v1_13_R2.EntityPlayer;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,8 +43,9 @@ public class Shooter {
                     return;
                 }
                 
-                if(!data.getIsUsingManeuver()){
-                    if(data.getTick() < 5 && data.isInMatch()){
+                if(!data.getIsUsingManeuver() && data.getCanShoot()){
+                    ClickType clickType = Main.dadadaCheckerAPI.getPlayerClickType(player);
+                    if((clickType == ClickType.FIRST_CLICK || clickType == ClickType.RENDA || clickType == ClickType.NAGAOSI) && data.isInMatch()){
                         Shooter.Shoot(p, false, false, maxRandomCount >= data.getWeaponClass().getMainWeapon().getMaxRandomCount());
                         data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                         if(data.getWeaponClass().getMainWeapon().getMaxRandom() != 0
@@ -74,7 +78,8 @@ public class Shooter {
                 }
                 
                 if(data.getIsUsingManeuver()){
-                    if(data.getTick() < 5 && data.isInMatch()){
+                    ClickType clickType = Main.dadadaCheckerAPI.getPlayerClickType(player);
+                    if((clickType == ClickType.FIRST_CLICK || clickType == ClickType.RENDA || clickType == ClickType.NAGAOSI) && data.isInMatch()){
                         Shooter.Shoot(p, true, false, false);
                         data.setTick(data.getTick() + DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getShootTick());
                     }
@@ -88,6 +93,7 @@ public class Shooter {
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
             Location loc = player.getLocation();
+            Location before = player.getLocation();
             int sl = 0;
             boolean check = true;
                             
@@ -100,60 +106,109 @@ public class Shooter {
                     cancel();
                     return;
                 }
+    
+                Location location = p.getLocation();
+                double x = location.getX() - before.getX();
+                double z = location.getZ() - before.getZ();
+                Vector vec = p.getEyeLocation().getDirection();
+                if(x != 0 && z != 0)
+                    vec = new Vector(x, 0, z);
+                before = location.clone();
+                
+                float ink = data.getWeaponClass().getMainWeapon().getSlideNeedINK();
                 
                 //マニューバー系
                 if(data.getWeaponClass().getMainWeapon().getIsManeuver()){
-                    if(data.getIsSneaking() && sl < 3 && !data.getIsSliding() && p.getInventory().getItemInMainHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType())){
-                        Vector vec = p.getEyeLocation().getDirection();
-                        Vector jvec = (new Vector(vec.getX(), 0, vec.getZ())).normalize().multiply(3);
-                        p.setVelocity(jvec);
-                        data.setIsSneaking(false);
-                        data.setIsSliding(true);
-                        sl++;
-                        BukkitRunnable task = new BukkitRunnable(){
-                            int i = 1;
-                            @Override
-                            public void run(){
-                                if(i == 3)
-                                    p.setVelocity(new Vector(0, 0, 0));
-                                if(i == 5){
-                                    loc = p.getLocation();
-                                    cancel();
+                    if(p.getExp() >= ink) {
+                        if (data.getIsSneaking() && sl < 3 && !data.getIsSliding() && p.getInventory().getItemInMainHand().getType().equals(data.getWeaponClass().getMainWeapon().getWeaponIteamStack().getType())) {
+                            Vector jvec = (new Vector(vec.getX(), 0, vec.getZ())).normalize().multiply(3);
+                            Vector ev = jvec.clone().normalize().multiply(-2);
+        
+                            p.setExp(p.getExp() - ink);
+                            
+                            //エフェクト
+                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                            double random = 1.0;
+                            for (int i = 0; i < 35; i++) {
+                                Vector randomVector = new Vector(Math.random() * random - random / 2, Math.random() * random - random / 2, Math.random() * random - random / 2);
+                                Vector erv = ev.clone().add(randomVector);
+                                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                    if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()) {
+                                        if (o_player.getWorld() == location.getWorld()) {
+                                            if (o_player.getLocation().distance(location) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
+                                                        location.clone().add(0, 0.7, 0).add(randomVector.getX(), randomVector.getY(), randomVector.getZ()),
+                                                        0, erv.getX(), erv.getY(), erv.getZ(), 1, bd);
+                                            }
+                                        }
+                                    }
                                 }
-                                i++;
                             }
-                        };
-                        task.runTaskTimer(Main.getPlugin(), 0, 1);
-                        
-                        BukkitRunnable task1 = new BukkitRunnable(){
-                            @Override
-                            public void run(){
-                                data.setIsSliding(false);
-                            }
-                        };
-                        task1.runTaskLater(Main.getPlugin(), 7);
-                        
-                        BukkitRunnable task2 = new BukkitRunnable(){
-                            @Override
-                            public void run(){
-                                sl = 0;
-                                check = true;
-                            }
-                        };
-                        if(check)
-                            task2.runTaskLater(Main.getPlugin(), 60);
-                        check = false;
+        
+                            p.getWorld().playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1.4F, 1.5F);
+        
+        
+                            p.setVelocity(jvec.clone().setY(p.isOnGround() ? 0 : -0.2));
+                            data.setIsSneaking(false);
+                            data.setIsSliding(true);
+                            data.setCanShoot(false);
+                            sl++;
+                            BukkitRunnable task = new BukkitRunnable() {
+                                int i = 1;
+            
+                                @Override
+                                public void run() {
+                                    if (i == 3) {
+                                        p.setVelocity(new Vector(0, 0, 0));
+                                        data.setIsUsingManeuver(true);
+                                        data.setCanShoot(true);
+                                    }
+                
+                                    if (i == 10) {
+                                        data.setIsUsingManeuver(false);
+                                        loc = p.getLocation();
+                                        cancel();
+                                    }
+                                    i++;
+                                }
+                            };
+                            task.runTaskTimer(Main.getPlugin(), 0, 1);
+        
+                            BukkitRunnable task1 = new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    data.setIsSliding(false);
+                                }
+                            };
+                            task1.runTaskLater(Main.getPlugin(), 10);
+        
+                            BukkitRunnable task2 = new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    sl = 0;
+                                    check = true;
+                                }
+                            };
+                            if (check)
+                                task2.runTaskLater(Main.getPlugin(), 60);
+                            check = false;
+                        }
+                    }else{
+                        p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
                     }
                 }
-                if(loc.getX() == ploc.getX() && loc.getZ() == ploc.getZ())
-                    data.setIsUsingManeuver(true);
-                else
-                    data.setIsUsingManeuver(false);
+                
+                if(!data.getIsSliding()) {
+                    if (loc.getX() == ploc.getX() && loc.getZ() == ploc.getZ())
+                        data.setIsUsingManeuver(true);
+                    else
+                        data.setIsUsingManeuver(false);
+                }
                 
                 //loc = ploc;
             }
         };
-        delay.runTaskTimer(Main.getPlugin(), 0, 4);
+        delay.runTaskTimer(Main.getPlugin(), 0, 1);
     }
     
     public static void Shoot(Player player, boolean slided, boolean sound, boolean maxRandom){
@@ -204,8 +259,10 @@ public class Shooter {
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         double random = data.getWeaponClass().getMainWeapon().getRandom();
         if(maxRandom) random = data.getWeaponClass().getMainWeapon().getMaxRandom();
-        if(isLockOnPlayer || slided)
-            random /= 2;
+        if(isLockOnPlayer)
+            random /= 2.0;
+        if(slided)
+            random /= 10.0;
         int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
         vec.add(new Vector(Math.random() * random - random/2, 0, Math.random() * random - random/2));
         ball.setVelocity(vec);
@@ -250,7 +307,8 @@ public class Shooter {
                 if(i >= tick)
                     inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                 //if(i != tick)
-                PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);
+                if((new Random().nextInt(7)) == 0)
+                    PaintMgr.PaintHightestBlock(inkball.getLocation(), p, false, true);
                 if(inkball.isDead())
                     cancel();
                 

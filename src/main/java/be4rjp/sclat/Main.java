@@ -1,5 +1,6 @@
 package be4rjp.sclat;
 
+import be4rjp.dadadachecker.DADADACheckerAPI;
 import be4rjp.sclat.GUI.ClickListener;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.commands.sclatCommandExecutor;
@@ -76,6 +77,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     //for ProtocolLib
     public static ProtocolManager protocolManager;
     
+    //for DADADAChecker
+    public static DADADACheckerAPI dadadaCheckerAPI;
+    
     
     public static List<String> flyList = new ArrayList<>();
     
@@ -109,6 +113,15 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         }else {
             protocolManager = ProtocolLibrary.getProtocolManager();
             new SclatPacketListener();
+        }
+    
+    
+        //DADADAChecker
+        if (!Bukkit.getPluginManager().isPluginEnabled("DADADAChecker")){
+            getLogger().severe("*** DADADAChecker is not installed or not enabled. ***");
+            return;
+        }else {
+            dadadaCheckerAPI = new DADADACheckerAPI(this);
         }
         //-------------------------------------------------------------------
         

@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
@@ -164,15 +166,8 @@ public class Amehurasi {
                                 if(target.getWorld() != p.getWorld())
                                     continue;
                                 if (target.getLocation().distance(position) <= maxDist && new Random().nextInt(100) == 0) {
-                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){                   
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                            //PaintMgr.Paint(target.getLocation(), p, true);
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, p, "spWeapon");
-                                            PaintMgr.Paint(target.getLocation(), p, true);
-                                        }
+                                    if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                        Sclat.giveDamage(p, target, damage, "spWeapon");
 
                                         //AntiNoDamageTime
                                         BukkitRunnable task = new BukkitRunnable(){

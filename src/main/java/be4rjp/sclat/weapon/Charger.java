@@ -195,16 +195,12 @@ public class Charger {
                 if (target.getLocation().distance(position) <= maxDist) {
                     if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                         if(rayTrace.intersects(new BoundingBox((Entity)target), (int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.05)){
-                            if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                PaintMgr.Paint(target.getLocation(), player, true);
-                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1.2F, 1.3F);
-                            }else{
-                                target.setGameMode(GameMode.SPECTATOR);
-                                DeathMgr.PlayerDeathRunnable(target, player, "killed");
-                                PaintMgr.Paint(target.getLocation(), player, true);
+                            boolean death = Sclat.giveDamage(player, target, damage, "killed");
+                            
+                            if(death)
                                 player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.2F, 1.3F);
-                            }
+                            else
+                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1.2F, 1.3F);
 
                             //AntiNoDamageTime
                             BukkitRunnable task = new BukkitRunnable(){

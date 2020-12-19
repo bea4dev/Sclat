@@ -1,6 +1,7 @@
 package be4rjp.sclat;
 
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
 
 import java.util.ArrayList;
@@ -8,20 +9,20 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import be4rjp.sclat.manager.BungeeCordMgr;
+import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MatchMgr;
 import be4rjp.sclat.server.StatusClient;
+import net.minecraft.server.v1_13_R2.Chunk;
+import net.minecraft.server.v1_13_R2.World;
+import net.minecraft.server.v1_13_R2.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import net.minecraft.server.v1_13_R2.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutBlockChange;
 import net.minecraft.server.v1_13_R2.PacketPlayOutMultiBlockChange;
 import net.minecraft.server.v1_13_R2.PacketPlayOutMapChunk;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -255,6 +256,26 @@ public class Sclat {
                 }
             }
         }
+    }
+    
+    public static boolean giveDamage(Player player, Player target, double damage, String damageType){
+        PlayerData targetData = DataMgr.getPlayerData(target);
+        PlayerData playerData = DataMgr.getPlayerData(player);
+        
+        if(target.getHealth() + targetData.getArmor() > damage){
+            if(targetData.getArmor() > damage){
+                targetData.setArmor(targetData.getArmor() - damage);
+            }else{
+                target.damage(damage - targetData.getArmor());
+                targetData.setArmor(0.0);
+            }
+        }else{
+            target.setGameMode(GameMode.SPECTATOR);
+            DeathMgr.PlayerDeathRunnable(target, player, damageType);
+            targetData.setArmor(0.0);
+            return true;
+        }
+        return false;
     }
     
     public static boolean isNumber(String s) {

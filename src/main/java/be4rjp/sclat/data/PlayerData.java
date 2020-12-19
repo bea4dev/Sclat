@@ -61,6 +61,7 @@ public class PlayerData {
     private Location playerGroundLocation;
     private boolean isUsingSS = false;
     private Vector vehicleVector = new Vector(0, 0, 0);
+    private double speed = 0;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -163,6 +164,8 @@ public class PlayerData {
     
     public boolean getCanFly(){return this.isCanFly;}
     
+    public double getSpeed(){return this.speed;}
+    
     
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
@@ -255,6 +258,8 @@ public class PlayerData {
     
     public void setCanFly(boolean is){this.isCanFly = is;}
     
+    public void setSpeed(double speed){this.speed = speed;}
+    
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -303,6 +308,7 @@ public class PlayerData {
         this.vehicleVector = new Vector(0, 0, 0);
         this.isJumping = false;
         this.isCanFly = false;
+        this.speed = 0;
     }
     
 }

@@ -3,6 +3,8 @@ package be4rjp.sclat.weapon.subweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.DamageMgr;
@@ -331,14 +333,7 @@ public class SplashShield {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(target.getWorld() == p.getWorld()){
                                     if(rayTrace4.intersects(new BoundingBox((Entity)target), 3, 0.5) && DataMgr.getPlayerData(target).getTeam() != DataMgr.getPlayerData(p).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                            PaintMgr.Paint(target.getLocation(), player, true);
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
-                                            PaintMgr.Paint(target.getLocation(), player, true);
-                                        }
+                                        Sclat.giveDamage(player, target, damage, "subWeapon");
 
                                         //AntiNoDamageTime
                                         BukkitRunnable task = new BukkitRunnable(){
@@ -367,14 +362,7 @@ public class SplashShield {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(target.getWorld() == p.getWorld()){
                                     if(rayTrace4.intersects(new BoundingBox((Entity)target), 3, 0.5) && DataMgr.getPlayerData(target).getTeam() != DataMgr.getPlayerData(p).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
-                                        if(target.getHealth() + DataMgr.getPlayerData(target).getArmor() > damage){
-                                            DamageMgr.SclatGiveStrongDamage(target, damage, player);
-                                            PaintMgr.Paint(target.getLocation(), player, true);
-                                        }else{
-                                            target.setGameMode(GameMode.SPECTATOR);
-                                            DeathMgr.PlayerDeathRunnable(target, player, "subWeapon");
-                                            PaintMgr.Paint(target.getLocation(), player, true);
-                                        }
+                                        Sclat.giveDamage(player, target, damage, "subWeapon");
 
                                         //AntiNoDamageTime
                                         BukkitRunnable task = new BukkitRunnable(){
