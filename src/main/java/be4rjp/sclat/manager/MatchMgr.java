@@ -9,11 +9,9 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
+import be4rjp.sclat.weapon.*;
 import org.bukkit.entity.Player;
 
-import be4rjp.sclat.weapon.Charger;
-import be4rjp.sclat.weapon.Roller;
-import be4rjp.sclat.weapon.Shooter;
 import be4rjp.sclat.weapon.spweapon.SuperArmor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -32,9 +30,6 @@ import org.bukkit.Material;
 
 import static be4rjp.sclat.manager.PlayerStatusMgr.getRank;
 import be4rjp.sclat.raytrace.RayTrace;
-import be4rjp.sclat.weapon.Gear;
-import be4rjp.sclat.weapon.Kasa;
-import be4rjp.sclat.weapon.Spinner;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
@@ -648,8 +643,13 @@ public class MatchMgr {
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
                         Spinner.SpinnerRunnable(p);
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
-                        Roller.HoldRunnable(p);
-                        Roller.RollPaintRunnable(p);
+                        if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsHude()){
+                            Brush.HoldRunnable(p);
+                            Brush.RollPaintRunnable(p);
+                        }else {
+                            Roller.HoldRunnable(p);
+                            Roller.RollPaintRunnable(p);
+                        }
                     }
                     
                     if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){

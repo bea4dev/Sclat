@@ -11,8 +11,6 @@ import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.SplashShieldData;
 import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.List;
 import org.bukkit.ChatColor;

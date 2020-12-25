@@ -46,6 +46,7 @@ public class SquidMgr {
             Player p = player;
             boolean is = false;
             boolean is2 = true;
+            int i = 0;
             //LivingEntity squid;
             @Override
             public void run(){
@@ -55,10 +56,7 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.REGENERATION);
                     if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
-                    p.setFoodLevel(20);
-                    p.setHealth(20);
                     p.setWalkSpeed(0.2F);
-                    p.setExp(0);
                     p.setMaxHealth(20);
                     if(data.getCanFly()){
                         p.setAllowFlight(true);
@@ -117,6 +115,15 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.POISON);
                 }
                 
+                if(i > 2){
+                    i = 0;
+                    if(player.getInventory().getItemInMainHand().getType() != Material.AIR){
+                        data.setIsSquid(false);
+                    }else{
+                        data.setIsSquid(true);
+                    }
+                }
+                i++;
                 /*
                 if(Main.tutorial && down.getType().toString().contains("WOOL")){
                     if(down.getType() != data.getTeam().getTeamColor().getWool()){
@@ -129,13 +136,7 @@ public class SquidMgr {
                 if(data.getIsPoisonCoolTime())
                     if(p.hasPotionEffect(PotionEffectType.POISON))
                         p.removePotionEffect(PotionEffectType.POISON);
-                
-                if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR)){
-                    data.setIsSquid(true);
                     
-                }else{
-                    data.setIsSquid(false);
-                }
                 
             
                 if((data.getIsOnInk() && data.getIsSquid()) || data.getIsOnPath()){
@@ -143,6 +144,7 @@ public class SquidMgr {
                     if(!is){
                         p.playSound(p.getLocation(), Sound.ITEM_BUCKET_FILL, 0.5F, 1F);
                         is = true;
+                        p.setFoodLevel(20);
                     }                                                                      
                     if(data.getIsUsingJetPack())
                         p.setFlySpeed(0.1F);
@@ -152,7 +154,6 @@ public class SquidMgr {
                     }
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
                     //p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-                    p.setFoodLevel(20);                                                   
                     p.setSprinting(true);
                     double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
     
@@ -171,14 +172,14 @@ public class SquidMgr {
                         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SWIM, 0.3F, 5F);  
                         is2 = true;
                         p.setSprinting(false);
+                        p.setFoodLevel(4);
                     }
                     is = false;
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))
                         p.removePotionEffect(PotionEffectType.REGENERATION);
                     //if(p.hasPotionEffect(PotionEffectType.INVISIBILITY))
                         //p.removePotionEffect(PotionEffectType.INVISIBILITY);
-
-                    p.setFoodLevel(4);
+                    
                     
                     double speed = 0.2;
                     
@@ -268,10 +269,6 @@ public class SquidMgr {
             @Override
             public void run() {
                 
-                boolean Bslot = false;
-                if(p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
-                    Bslot = true;
-                
                 if(!set){
                     set = true;
                     es.setNoAI(true);
@@ -311,7 +308,7 @@ public class SquidMgr {
                     Location loc = player.getLocation();
                     es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), 0);
 
-                    if(!data.getIsOnInk() && Bslot && !data.getIsOnPath()){
+                    if(!data.getIsOnInk() && data.getIsSquid() && !data.getIsOnPath()){
                         is2 = false;
                         if(!is){
                             is = true;
@@ -345,7 +342,7 @@ public class SquidMgr {
                     
                 }catch(Exception e){}
                 
-                if(Bslot){
+                if(data.getIsSquid()){
                     is4 = false;
                     if(!is3){
                         is3 = true;

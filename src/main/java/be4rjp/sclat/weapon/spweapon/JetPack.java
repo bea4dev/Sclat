@@ -8,14 +8,11 @@ import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.SuperJumpMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
-import be4rjp.sclat.raytrace.RayTrace;
-import be4rjp.sclat.weapon.Gear;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.v1_13_R2.EntityArmorStand;
@@ -45,8 +42,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import javax.xml.crypto.Data;
 
 /**
  *

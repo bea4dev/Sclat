@@ -9,8 +9,6 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.KasaData;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.Team;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.MainWeaponMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
@@ -18,7 +16,7 @@ import be4rjp.sclat.raytrace.BoundingBox;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.chart.PieChart;
+
 import net.minecraft.server.v1_13_R2.EnumItemSlot;
 import net.minecraft.server.v1_13_R2.PacketPlayOutEntityEquipment;
 import org.bukkit.ChatColor;

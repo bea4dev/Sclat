@@ -42,8 +42,10 @@ public class SquidListenerMgr {
             DeathMgr.PlayerDeathRunnable(player, player, "water");
         
         try{
-            if(player.getLocation().getY() <= data.getMatch().getMapData().getVoidY()){
-                DeathMgr.PlayerDeathRunnable(player, player, "fall");
+            if(data.getMatch().getMapData().getVoidY() != 0) {
+                if (player.getLocation().getY() <= data.getMatch().getMapData().getVoidY()) {
+                    DeathMgr.PlayerDeathRunnable(player, player, "fall");
+                }
             }
         }catch (Exception e){}
         

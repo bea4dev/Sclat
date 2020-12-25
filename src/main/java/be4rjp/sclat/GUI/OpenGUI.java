@@ -365,6 +365,7 @@ public class OpenGUI {
                     List<String> list = new ArrayList<>();
                     list.add(weaponType);
                     
+                    
                     switch(weaponType){
                         case"Slosher":
                             list.add("Bucket");
@@ -385,7 +386,17 @@ public class OpenGUI {
                         if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getIsHude())
                             equals = false;
                     }
-                    
+    
+                    if(weaponType.equals("Maneu") && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter")){
+                        if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getIsManeuver())
+                            equals = true;
+                    }
+                    if(weaponType.equals("Shooter") && DataMgr.getWeaponClass(ClassName).getMainWeapon().getWeaponType().equals("Shooter")){
+                        if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getIsManeuver())
+                            equals = false;
+                    }
+    
+    
                     if (slotnum <= 52 && equals){
                         if(shop){
                             if(DataMgr.getWeaponClass(ClassName).getMainWeapon().getMoney() != 0 && !PlayerStatusMgr.haveWeapon(player, ClassName)){
@@ -478,6 +489,11 @@ public class OpenGUI {
                 ItemMeta spm = sp.getItemMeta();
                 spm.setDisplayName("スピナー");
                 sp.setItemMeta(spm);
+    
+                ItemStack m = new ItemStack(Material.GOLDEN_HOE);
+                ItemMeta mm = m.getItemMeta();
+                mm.setDisplayName("マニューバー");
+                m.setItemMeta(mm);
 
                 wm.setItem(0, s);
                 wm.setItem(1, b);
@@ -488,6 +504,7 @@ public class OpenGUI {
                 wm.setItem(6, sr);
                 wm.setItem(7, c);
                 wm.setItem(8, sp);
+                wm.setItem(9, m);
                 player.openInventory(wm);
     
                 ItemStack is = new ItemStack(Material.OAK_DOOR);

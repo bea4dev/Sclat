@@ -7,12 +7,10 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.SplashShieldData;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.raytrace.BoundingBox;
 import be4rjp.sclat.raytrace.RayTrace;
-import be4rjp.sclat.weapon.Gear;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.v1_13_R2.EnumItemSlot;
@@ -28,7 +26,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -306,7 +303,7 @@ public class SplashShield {
                         p.getWorld().playSound(loc, Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
                     }
                     
-                    if(c == 20){
+                    if(c == 15){
                         for(ArmorStand a : list){
                             a.setMarker(false);
                         }
@@ -397,7 +394,7 @@ public class SplashShield {
                     }
 
 
-                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 60){
+                    if(c > 200 || !DataMgr.getPlayerData(p).isInMatch() || ssdata.getDamage() > 80){
                         for(ArmorStand a : list)
                             a.remove();
                         list.get(0).getWorld().playSound(list.get(0).getLocation(), Sound.ENTITY_ITEM_BREAK, 0.8F, 0.8F);

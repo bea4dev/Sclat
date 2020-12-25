@@ -4,8 +4,6 @@ import be4rjp.sclat.Main;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.Sphere;
 import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.weapon.Gear;
 import org.bukkit.Color;
@@ -200,7 +198,7 @@ public class TrapData {
                         if (!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != player.getWorld())
                             continue;
                         if (target.getLocation().distance(location) <= maxDist) {
-                            double damage = (maxDist - target.getLocation().distance(location)) * 3.0 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
+                            double damage = (maxDist - target.getLocation().distance(location)) * 5.0 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                             if (DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
                                 Sclat.giveDamage(player, target, damage, "subWeapon");
                 

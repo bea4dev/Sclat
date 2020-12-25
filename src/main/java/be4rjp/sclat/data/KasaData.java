@@ -1,7 +1,6 @@
 
 package be4rjp.sclat.data;
 
-import be4rjp.sclat.manager.DamageMgr;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.ArmorStand;

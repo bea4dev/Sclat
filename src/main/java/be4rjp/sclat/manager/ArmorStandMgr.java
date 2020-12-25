@@ -79,7 +79,7 @@ public class ArmorStandMgr {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 10);
+        task.runTaskTimer(Main.getPlugin(), 0, 20);
     }
     
     public static void ArmorStandSetup(Player player){
@@ -180,7 +180,7 @@ public class ArmorStandMgr {
                     cancel();
             }
         };
-        effect.runTaskTimer(Main.getPlugin(), 0, 2);
+        effect.runTaskTimer(Main.getPlugin(), 0, 4);
         
         BukkitRunnable task2 = new BukkitRunnable(){
             Player p = player;
@@ -197,7 +197,7 @@ public class ArmorStandMgr {
                     cancel();
             }
         };
-        task2.runTaskTimer(Main.getPlugin(), 0, 1);
+        task2.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
     public static void SprinklerArmorStandSetup(Player player){
@@ -244,7 +244,7 @@ public class ArmorStandMgr {
                     cancel();
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 2);
+        task.runTaskTimer(Main.getPlugin(), 0, 4);
         
         BukkitRunnable task2 = new BukkitRunnable(){
             Player p = player;
@@ -261,7 +261,7 @@ public class ArmorStandMgr {
                     cancel();
             }
         };
-        task2.runTaskTimer(Main.getPlugin(), 0, 1);
+        task2.runTaskTimer(Main.getPlugin(), 0, 2);
         
         BukkitRunnable shoot = new BukkitRunnable(){
             Player p = player;
@@ -417,7 +417,11 @@ public class ArmorStandMgr {
             if(DataMgr.getPlayerData(shooter).getTeam() != DataMgr.getPlayerData(player).getTeam()){
                 as.setCustomName("100");
                 as.setVisible(false);
-                as.setHelmet(new ItemStack(Material.AIR));
+                for (Player op : Main.getPlugin().getServer().getOnlinePlayers()) {
+                    if(as.getWorld() == op.getWorld()){
+                        ((CraftPlayer)op).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(as.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR))));
+                    }
+                }
                 as.getLocation().getWorld().playSound(as.getLocation(), Sound.ENTITY_ARROW_HIT, 1, 2F);
                 as.teleport(as.getLocation().add(0, -1, 0));
             }

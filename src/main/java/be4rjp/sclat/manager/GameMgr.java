@@ -10,12 +10,7 @@ import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
 import be4rjp.sclat.tutorial.Tutorial;
-import be4rjp.sclat.weapon.Blaster;
-import be4rjp.sclat.weapon.Charger;
-import be4rjp.sclat.weapon.Kasa;
-import be4rjp.sclat.weapon.Roller;
-import be4rjp.sclat.weapon.Shooter;
-import be4rjp.sclat.weapon.Spinner;
+import be4rjp.sclat.weapon.*;
 
 import java.util.*;
 
@@ -225,8 +220,13 @@ public class GameMgr implements Listener{
                                 if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
                                     Spinner.SpinnerRunnable(p);
                                 if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
-                                    Roller.HoldRunnable(p);
-                                    Roller.RollPaintRunnable(p);
+                                    if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsHude()){
+                                        Brush.HoldRunnable(p);
+                                        Brush.RollPaintRunnable(p);
+                                    }else {
+                                        Roller.HoldRunnable(p);
+                                        Roller.RollPaintRunnable(p);
+                                    }
                                 }
             
                                 if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){

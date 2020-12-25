@@ -137,7 +137,7 @@ public class SPWeaponMgr {
                 }
             }
         };
-        anime.runTaskTimer(Main.getPlugin(), 0, 1);
+        anime.runTaskTimer(Main.getPlugin(), 0, 2);
     }
     
     public static void ArmorRunnable(Player player){
@@ -163,10 +163,13 @@ public class SPWeaponMgr {
                 }
             }
         };
-        anime.runTaskTimer(Main.getPlugin(), 0, 1);
+        anime.runTaskTimer(Main.getPlugin(), 0, 5);
     }
     
     public static void setSPCoolTimeAnimation(Player player, int tick){
+        
+        PlayerData data = DataMgr.getPlayerData(player);
+        
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             double t = tick;
@@ -174,21 +177,27 @@ public class SPWeaponMgr {
             @Override
             public void run(){
                 if(t == tick)
-                    DataMgr.getPlayerData(p).setIsUsingSP(true);
+                    data.setIsUsingSP(true);
                 t--;
                 int sp = (int)(t / i * 100);
-                DataMgr.getPlayerData(p).setSPGauge(sp);
+                data.setSPGauge(sp);
                 if(t <= 0){
-                    DataMgr.getPlayerData(p).setIsUsingSP(false);
-                    if(DataMgr.getPlayerData(p).isInMatch()){
-                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
-                        WeaponClassMgr.setWeaponClass(p);
+                    data.setIsUsingSP(false);
+                    if(data.isInMatch()){
+                        BukkitRunnable sync = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                p.playSound(p.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
+                                WeaponClassMgr.setWeaponClass(p);
+                            }
+                        };
+                        sync.runTask(Main.getPlugin());
                     }
                     cancel();
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 1);
+        task.runTaskTimerAsynchronously(Main.getPlugin(), 0, 1);
     }
     
     public static void setSPWeapon(Player p){

@@ -7,12 +7,7 @@ import static be4rjp.sclat.Main.conf;
 
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.manager.*;
-import be4rjp.sclat.weapon.Charger;
-import be4rjp.sclat.weapon.Gear;
-import be4rjp.sclat.weapon.Kasa;
-import be4rjp.sclat.weapon.Roller;
-import be4rjp.sclat.weapon.Shooter;
-import be4rjp.sclat.weapon.Spinner;
+import be4rjp.sclat.weapon.*;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import java.util.ArrayList;
@@ -221,7 +216,7 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("武器選択")){
-            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
+            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー") || name.equals("マニューバー")){
                 switch(name){
                     case"シューター":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", false);
@@ -249,6 +244,9 @@ public class ClickListener implements Listener{
                         break;
                     case"チャージャー":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Charger", false);
+                        break;
+                    case"マニューバー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Maneu", false);
                         break;
                     case"戻る":
                         OpenGUI.openWeaponSelect(player, "Main", "null", false);
@@ -312,8 +310,13 @@ public class ClickListener implements Listener{
                         if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Spinner"))
                             Spinner.SpinnerRunnable(p);
                         if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Roller")){
-                            Roller.HoldRunnable(p);
-                            Roller.RollPaintRunnable(p);
+                            if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getIsHude()){
+                                Brush.HoldRunnable(p);
+                                Brush.RollPaintRunnable(p);
+                            }else {
+                                Roller.HoldRunnable(p);
+                                Roller.RollPaintRunnable(p);
+                            }
                         }
 
                         if(DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getWeaponType().equals("Kasa")){
@@ -343,7 +346,7 @@ public class ClickListener implements Listener{
         }
         
         if(event.getClickedInventory().getTitle().equals("Shop")){
-            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー")){
+            if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー") || name.equals("マニューバー")){
                 switch(name){
                     case"シューター":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Shooter", true);
@@ -371,6 +374,9 @@ public class ClickListener implements Listener{
                         break;
                     case"チャージャー":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Charger", true);
+                        break;
+                    case"マニューバー":
+                        OpenGUI.openWeaponSelect(player, "Weapon", "Maneu", true);
                         break;
                     case"戻る":
                         OpenGUI.openWeaponSelect(player, "Main", "null", true);

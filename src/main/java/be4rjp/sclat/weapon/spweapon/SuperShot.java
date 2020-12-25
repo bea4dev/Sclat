@@ -3,27 +3,19 @@ package be4rjp.sclat.weapon.spweapon;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
-import be4rjp.sclat.Sphere;
+
 import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.manager.ArmorStandMgr;
-import be4rjp.sclat.manager.DamageMgr;
-import be4rjp.sclat.manager.DeathMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
-import be4rjp.sclat.weapon.Gear;
-import java.util.List;
+
 import java.util.Random;
 import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -42,7 +34,7 @@ public class SuperShot {
     public static void setSuperShot(Player player){
         DataMgr.getPlayerData(player).setIsUsingSP(true);
         DataMgr.getPlayerData(player).setIsUsingSS(true);
-        SPWeaponMgr.setSPCoolTimeAnimation(player, 120);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 100);
         
         BukkitRunnable it = new BukkitRunnable() {
             Player p = player;
@@ -77,7 +69,7 @@ public class SuperShot {
                 }
             }
         };
-        task.runTaskLater(Main.getPlugin(), 120);
+        task.runTaskLater(Main.getPlugin(), 100);
     }
     
     

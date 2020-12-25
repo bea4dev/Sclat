@@ -148,7 +148,7 @@ public class Shooter {
                             p.getWorld().playSound(p.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1.4F, 1.5F);
         
         
-                            p.setVelocity(jvec.clone().setY(p.isOnGround() ? 0 : -0.2));
+                            p.setVelocity(jvec.clone().setY(p.isOnGround() ? 0 : -0.4));
                             data.setIsSneaking(false);
                             data.setIsSliding(true);
                             data.setCanShoot(false);
