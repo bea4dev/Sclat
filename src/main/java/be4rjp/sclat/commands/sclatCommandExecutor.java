@@ -1,20 +1,24 @@
 package be4rjp.sclat.commands;
 
-import be4rjp.sclat.Main;
-import be4rjp.sclat.Sclat;
-import be4rjp.sclat.ServerType;
-import be4rjp.sclat.SoundType;
+import be4rjp.sclat.*;
+import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.ServerStatus;
+import be4rjp.sclat.manager.BungeeCordMgr;
+import be4rjp.sclat.manager.PlayerStatusMgr;
 import be4rjp.sclat.manager.ServerStatusManager;
+import be4rjp.sclat.server.EquipmentClient;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static be4rjp.sclat.Main.conf;
 
 //sclat Command
 public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
@@ -74,6 +78,51 @@ public class sclatCommandExecutor implements CommandExecutor , TabExecutor {
             }
         }
         //-------------------------------------------------------------------------
+    
+    
+        //----------------------------/sclat mod-----------------------------------
+        if(args[0].equalsIgnoreCase("mod")) {
+            if(args.length != 2) return false;
+        
+            if(type == CommanderType.MEMBER){
+                sender.sendMessage(ChatColor.RED + "You don't have permission.");
+                Sclat.playGameSound((Player)sender, SoundType.ERROR);
+                return true;
+            }
+            
+            if(sender instanceof Player) {
+                String serverName = args[1];
+                for (ServerStatus ss : ServerStatusManager.serverList) {
+                    if (ss.getServerName().equals(serverName)) {
+                        List<String> commands = new ArrayList<>();
+                        commands.add("mod " + ((Player)sender).getName());
+                        commands.add("stop");
+                        EquipmentClient sc = new EquipmentClient(conf.getConfig().getString("EquipShare." + serverName + ".Host"),
+                                conf.getConfig().getInt("EquipShare." + serverName + ".Port"), commands);
+                        sc.startClient();
+                        
+                        Sclat.sendMessage("Moderatorとして転送中...", MessageType.PLAYER, (Player)sender);
+                        Sclat.sendMessage("2秒後に転送されます", MessageType.PLAYER, (Player)sender);
+                        Sclat.playGameSound((Player)sender, SoundType.SUCCESS);
+    
+                        BukkitRunnable task = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    BungeeCordMgr.PlayerSendServer((Player) sender, ss.getServerName());
+                                    DataMgr.getPlayerData((Player) sender).setServerName(ss.getDisplayName());
+                                }catch (Exception e){}
+                            }
+                        };
+                        task.runTaskLater(Main.getPlugin(), 40);
+                    }
+                }
+                return true;
+            }else{return false;}
+            
+        }
+        //-------------------------------------------------------------------------
+        
     
         //------------------/sclat ss <status> <server> <flag>---------------------
         if(args[0].equalsIgnoreCase("ss")) {

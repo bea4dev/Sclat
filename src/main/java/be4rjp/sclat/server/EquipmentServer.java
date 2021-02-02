@@ -1,11 +1,6 @@
 package be4rjp.sclat.server;
 
 import be4rjp.sclat.Main;
-import be4rjp.sclat.Sclat;
-import be4rjp.sclat.data.DataMgr;
-import be4rjp.sclat.manager.PlayerStatusMgr;
-import be4rjp.sclat.manager.SettingMgr;
-import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -94,14 +89,31 @@ class EquipEchoThread extends Thread {
                     EquipmentServerManager.addEquipmentCommand(cmd);
     
                     String args[] = cmd.split(" ");
-                    if(args[0].equals("setting")){ //setting [settingData] [uuid]
-                        if(args.length == 3){
-                            if(args[1].length() == 9 && args[2].length() == 36){
-                                conf.getPlayerSettings().set("Settings." + args[2], args[1]);
+                    switch (args[0]) {
+                        case "setting":{ //setting [settingData] [uuid]
+                            if (args.length == 3) {
+                                if (args[1].length() == 9 && args[2].length() == 36) {
+                                    conf.getPlayerSettings().set("Settings." + args[2], args[1]);
+                                }
                             }
+                            break;
                         }
-                        break;
+                        case "mod":{ //mod [PlayerName]
+                            if (args.length == 2) {
+                                if (Main.modList.contains(args[1])) {
+                                    Main.modList.add(args[1]);
+                                }
+                            }
+                            break;
+                        }
+                        case "join":{
+                            if (args.length == 2) {
+                            
+                            }
+                            break;
+                        }
                     }
+                    
                 }else{
                     break;
                 }

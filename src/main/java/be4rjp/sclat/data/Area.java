@@ -55,7 +55,7 @@ public class Area {
                 if(!loc.getBlock().getType().equals(Material.AIR))
                     this.blist.add(loc.getBlock());
                 if(x == this.from.getBlockX() || x == this.to.getBlockX() || z == this.from.getBlockZ() || z == this.to.getBlockZ()){
-                    Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc, EntityType.SHULKER);
+                    Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc.clone().add(0, -0.1, 0), EntityType.SHULKER);
                     sl.setAI(false);
                     sl.setGravity(false);
                     sl.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4000, 1));
@@ -75,6 +75,7 @@ public class Area {
                     };
                     task.runTaskLater(Main.getPlugin(), 40);
                 }
+                /*
                 for(Shulker sl : this.slist){
                     Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
                     if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
@@ -83,6 +84,7 @@ public class Area {
                     }
                     //sl.remove();
                 }
+                 */
             }
         }
         
@@ -177,6 +179,7 @@ public class Area {
     
     public void stop(){
         this.task.cancel();
+        /*
         for(Shulker sl : this.slist){
             Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
             if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
@@ -185,6 +188,8 @@ public class Area {
             }
             sl.remove();
         }
+        
+         */
         this.slist.clear();
     }
     
@@ -199,12 +204,14 @@ public class Area {
         }
         
         for(Shulker sl : this.slist){
+            /*
             Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
             if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
                 String mname = team.getTeamColor().getWool().toString();
                 String name = mname.replaceAll("WOOL", "CARPET");
                 match.getBlockUpdater().setBlock(b, Material.getMaterial(name));
             }
+             */
             /*
             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if(DataMgr.getPlayerData(oplayer).isInMatch()){
@@ -236,10 +243,12 @@ public class Area {
     public void removeColor(){
         for(Shulker sl : this.slist){
             this.team.getTeam().removeEntry(sl.getUniqueId().toString());
+            /*
             Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
             if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
                 match.getBlockUpdater().setBlock(b, Material.WHITE_CARPET);
             }
+             */
             /*
             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                 if(DataMgr.getPlayerData(oplayer).isInMatch()){

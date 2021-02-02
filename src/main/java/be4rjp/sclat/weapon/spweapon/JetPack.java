@@ -1,6 +1,10 @@
 
 package be4rjp.sclat.weapon.spweapon;
 
+import be4rjp.blockstudio.BlockStudio;
+import be4rjp.blockstudio.api.BSObject;
+import be4rjp.blockstudio.api.BlockStudioAPI;
+import be4rjp.blockstudio.file.ObjectData;
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 
@@ -49,6 +53,13 @@ import org.bukkit.util.Vector;
  */
 public class JetPack {
     public static void JetPackRunnable(Player player){
+    
+        BlockStudioAPI api = BlockStudio.getBlockStudioAPI();
+        ObjectData objectData = api.getObjectData("jetpack");
+        BSObject bsObject = api.createObjectFromObjectData(String.valueOf(Main.getNotDuplicateNumber()),
+                            player.getLocation(), objectData, 40, false);
+        bsObject.startTaskAsync(40);
+        
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
             Location ol = player.getLocation();
@@ -68,12 +79,6 @@ public class JetPack {
                 armorStand.setBasePlate(false);
                 armorStand.setMarker(true);
             });
-            ArmorStand ru;
-            ArmorStand rd;
-            ArmorStand lu;
-            ArmorStand ld;
-            ArmorStand mu;
-            ArmorStand md;
             List<ArmorStand> list = new ArrayList<ArmorStand>();
             
             Vector vehicleVector = new Vector(0, 0, 0);
@@ -85,7 +90,7 @@ public class JetPack {
 
                 boolean onBlock = false;
                 int yh = 1;
-                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 8; y--){
+                for(int y = p.getLocation().getBlockY(); y >= 1 && y >= p.getLocation().getBlockY() - 7; y--){
                     Location bl = new Location(p.getLocation().getWorld(), p.getLocation().getX(), y, p.getLocation().getZ());
                     if(bl.getBlock().getType() != Material.AIR && bl.getBlock().getType() != Material.WATER){
                         onBlock = true;
@@ -93,11 +98,9 @@ public class JetPack {
                     }
                     yh++;
                 }
-                Vector ev = p.getEyeLocation().getDirection().multiply(0.15);
                 
                 p.setAllowFlight(true);
                 p.setFlying(true);
-                
                 
                 Vector vec = new Vector(0, 0, 0);
                 if(i % 2 == 0)
@@ -125,25 +128,26 @@ public class JetPack {
                 Location leaderLoc = leader.getLocation().add(0, -0.3, 0);
                 leaderEyeLoc.setYaw(p.getEyeLocation().getYaw());
                 //as.teleport(leaderLoc);
-                ((CraftArmorStand)as).getHandle().setPositionRotation(leaderLoc.getX(), leaderLoc.getY(), leaderLoc.getZ(), leaderLoc.getYaw(), 0);
-
+                ((CraftArmorStand)as).getHandle().setPositionRotation(leaderLoc.getX(), leaderLoc.getY(), leaderLoc.getZ(), p.getLocation().getYaw(), 0);
+                
+                //move object
                 Vector pv = p.getEyeLocation().getDirection();
+                Vector direction = new Vector(pv.getX(), 0 , pv.getZ()).normalize();
+                Vector locPlus = direction.clone().multiply(-0.2);
+                bsObject.setBaseLocation(leaderLoc.clone().add(locPlus.getX(), 0.5, locPlus.getZ()));
+                bsObject.setDirection(direction);
+                bsObject.move();
+                
                 Vector vec1 = new Vector(pv.getX(), 0, pv.getZ()).normalize().multiply(-0.2);
                 Location pl = leaderEyeLoc.clone();
                 //Location loc1 = pl.add(vec1.getX() + sv.getX(), sv.getY() * 0.8, vec1.getZ() + sv.getZ());
                 Location loc1 = pl.add(vec1.getX(), 0, vec1.getZ());
-                Location mul = loc1.clone().add(0, -0.5, 0);
-                Location mdl = loc1.clone().add(0, -0.9, 0);
 
 
-                Vector vec2 = new Vector(vec1.getZ() * -1, 0, vec1.getX()).normalize().multiply(0.4);
-                Vector vec3 = new Vector(vec1.getZ(), 0, vec1.getX() * -1).normalize().multiply(0.4);
+                Vector vec2 = new Vector(vec1.getZ() * -1, 0, vec1.getX()).normalize().multiply(0.6);
+                Vector vec3 = new Vector(vec1.getZ(), 0, vec1.getX() * -1).normalize().multiply(0.6);
                 Location loc2 = loc1.clone().add(vec2.getX(), 0, vec2.getZ());
                 Location loc3 = loc1.clone().add(vec3.getX(), 0, vec3.getZ());
-                Location rul = loc2.clone().add(0, -0.1, 0);
-                Location rdl = loc2.clone().add(0, -0.5, 0);
-                Location lul = loc3.clone().add(0, -0.1, 0);
-                Location ldl = loc3.clone().add(0, -0.5, 0);
                 
                 PaintMgr.PaintHightestBlock(loc2, player, false, true);
                 PaintMgr.PaintHightestBlock(loc3, player, false, true);
@@ -151,7 +155,7 @@ public class JetPack {
                 if(i != 0){
                     //effect
                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
-                    Location position = ru.getLocation().clone().add(0, 0.2, 0);
+                    Location position = loc2.clone().add(0, -0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
@@ -165,7 +169,7 @@ public class JetPack {
                             }
                         }
                     }
-                    position = lu.getLocation().clone().add(0, 0.2, 0);
+                    position = loc3.clone().add(0, -0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
@@ -196,37 +200,6 @@ public class JetPack {
                     }
                     player.updateInventory();
                     
-                    ru = (ArmorStand)p.getWorld().spawnEntity(rul, EntityType.ARMOR_STAND);
-                    list.add(ru);
-                    rd = (ArmorStand)p.getWorld().spawnEntity(rdl, EntityType.ARMOR_STAND);
-                    list.add(rd);
-                    lu = (ArmorStand)p.getWorld().spawnEntity(lul, EntityType.ARMOR_STAND);
-                    list.add(lu);
-                    ld = (ArmorStand)p.getWorld().spawnEntity(ldl, EntityType.ARMOR_STAND);
-                    list.add(ld);
-                    mu = (ArmorStand)p.getWorld().spawnEntity(mul, EntityType.ARMOR_STAND);
-                    list.add(mu);
-                    md = (ArmorStand)p.getWorld().spawnEntity(mdl, EntityType.ARMOR_STAND);
-                    list.add(md);
-
-
-                    for(ArmorStand as : list){
-                        as.setVisible(false);
-                        as.setBasePlate(false);
-                        as.setGravity(false);
-                        as.setSmall(true);
-                        as.setMarker(true);
-                    }
-
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(ru.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BLOCK))));
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(rd.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BLOCK))));
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(lu.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BLOCK))));
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(ld.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BLOCK))));
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(mu.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BARS))));
-                        ((CraftPlayer)target).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityEquipment(md.getEntityId(), EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(Material.IRON_BARS))));
-                    }
-                    
                     WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
                     EntityArmorStand as = new EntityArmorStand(nmsWorld);
                     as.setPosition(ol.getX(), ol.getY(), ol.getZ());
@@ -244,22 +217,6 @@ public class JetPack {
                     }
                 }
                 
-                //((CraftArmorStand)mu).getHandle().setPositionRotation(mul.getX(), mul.getY(), mul.getZ(), mul.getYaw(), 0);
-                //((CraftArmorStand)md).getHandle().setPositionRotation(mdl.getX(), mdl.getY(), mdl.getZ(), mdl.getYaw(), 0);
-                //((CraftArmorStand)ru).getHandle().setPositionRotation(rul.getX(), rul.getY(), rul.getZ(), rul.getYaw(), 0);
-                //((CraftArmorStand)rd).getHandle().setPositionRotation(rdl.getX(), rdl.getY(), rdl.getZ(), rdl.getYaw(), 0);
-                //((CraftArmorStand)lu).getHandle().setPositionRotation(lul.getX(), lul.getY(), lul.getZ(), lul.getYaw(), 0);
-                //((CraftArmorStand)ld).getHandle().setPositionRotation(ldl.getX(), ldl.getY(), ldl.getZ(), ldl.getYaw(), 0);
-                mu.teleport(mul);
-                md.teleport(mdl);
-                ru.teleport(rul);
-                rd.teleport(rdl);
-                lu.teleport(lul);
-                ld.teleport(ldl);
-
-                for(ArmorStand as : list){
-                    //as.setVelocity(p.getVelocity().multiply(3));
-                }
 
                 Location atl = p.getLocation();
                 //p.sendMessage(String.valueOf(sv.getX() + ", " + sv.getY() + ", " + sv.getZ()));
@@ -292,8 +249,7 @@ public class JetPack {
                     }
                     DataMgr.getPlayerData(p).setIsUsingJetPack(false);
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
-                    for(ArmorStand as : list)
-                        as.remove();
+                    bsObject.remove();
                     p.setFlySpeed(0.1F);
                     //WeaponClassMgr.setWeaponClass(p);
                     cancel();

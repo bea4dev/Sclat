@@ -127,9 +127,9 @@ public class SPWeaponMgr {
                 if(DataMgr.getPlayerData(p).getSPGauge() == 100)
                     bar.setTitle("§b§lREADY");
                 else if(DataMgr.getPlayerData(p).getIsUsingSP())
-                    bar.setTitle("§6§lIn Use...");
+                    bar.setTitle("§6§lIn Use : §r" + DataMgr.getPlayerData(p).getSPGauge() + "%");
                 else
-                    bar.setTitle("§6§lSpecial Weapon : §r" + String.valueOf(DataMgr.getPlayerData(p).getSPGauge() + "%"));
+                    bar.setTitle("§6§lSpecial Weapon : §r" + DataMgr.getPlayerData(p).getSPGauge() + "%");
                 if(!DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()){
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
                     bar.removeAll();

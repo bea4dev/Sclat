@@ -2,10 +2,12 @@ package be4rjp.sclat.data;
 
 import be4rjp.sclat.Main;
 import be4rjp.sclat.MineStat;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerStatus {
     
@@ -26,6 +28,7 @@ public class ServerStatus {
     private boolean restartingServer = false;
     private String mapName = "";
     private boolean maintenance = false;
+    private List<String> uuidList = new ArrayList<>();
     
     public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign, String info){
         this.serverName = serverName;
@@ -103,6 +106,8 @@ public class ServerStatus {
     public Block getSign(){return this.sign;}
     
     public String getInfo(){return this.info;}
+    
+    public List<String> getUUIDList() {return uuidList;}
     
     public boolean isMaintenance(){return this.maintenance;}
     

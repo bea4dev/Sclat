@@ -77,6 +77,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/target/lib/DADADAChecker.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.github.Be4rJP</groupId>
+            <artifactId>BlockStudio</artifactId>
+            <version>-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -85,6 +90,7 @@
                 <includes>
                     <include>plugin.yml</include>
                     <include>tutorial.yml</include>
+                    <include>news.yml</include>
                 </includes>
             </resource>
         </resources>

@@ -1,5 +1,7 @@
 package be4rjp.sclat;
 
+import be4rjp.blockstudio.BlockStudio;
+import be4rjp.blockstudio.api.BlockStudioAPI;
 import be4rjp.dadadachecker.DADADACheckerAPI;
 import be4rjp.sclat.GUI.ClickListener;
 import be4rjp.sclat.data.*;
@@ -28,9 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.bukkit.scoreboard.NameTagVisibility;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 
 /**
  *
@@ -57,7 +57,10 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     public static boolean shop = true;
     
     public static CustomConfig tutorialServers;
+    
+    public static final String VERSION = "v1.0.1 - β";
 
+    public static CustomConfig news;
 
     //StatusShare
     public static StatusServer ss = null;
@@ -82,6 +85,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     
     public static List<String> flyList = new ArrayList<>();
+    
+    public static List<String> modList = new ArrayList<>();
     
 
     @Override
@@ -361,6 +366,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             tutorialServers.getConfig();
         }
         //-------------------------------------------------------------------
+    
+    
+        //---------------------------BlockStudio-----------------------------
+        getLogger().info("Loading all object data...");
+        BlockStudioAPI api = BlockStudio.getBlockStudioAPI();
+        api.loadAllObjectData();
+        //-------------------------------------------------------------------
         
         
         //------------------------Tutorial wire mesh-------------------------
@@ -372,6 +384,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
                 }
             }
         }*/
+        //-------------------------------------------------------------------
+    
+    
+        //-------------------------------News--------------------------------
+        news = new CustomConfig(this, "news.yml");
+        news.saveDefaultConfig();
+        news.getConfig();
         //-------------------------------------------------------------------
     }
     

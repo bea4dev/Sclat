@@ -2,6 +2,8 @@ package be4rjp.sclat.manager;
 
 import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
+
+import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.Gear;
@@ -58,6 +60,12 @@ public class SquidMgr {
                         p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     p.setWalkSpeed(0.2F);
                     p.setMaxHealth(20);
+                    
+                    if(Main.type == ServerType.MATCH) {
+                        p.setFoodLevel(20);
+                        p.setExp(0F);
+                    }
+                    
                     if(data.getCanFly()){
                         p.setAllowFlight(true);
                         p.setFlying(true);

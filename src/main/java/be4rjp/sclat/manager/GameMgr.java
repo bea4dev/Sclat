@@ -6,6 +6,7 @@ import be4rjp.sclat.GUI.OpenGUI;
 import static be4rjp.sclat.Main.conf;
 
 import be4rjp.sclat.data.*;
+import be4rjp.sclat.lobby.LobbyScoreboardRunnable;
 import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
@@ -119,7 +120,10 @@ public class GameMgr implements Listener{
                         };
                         head.runTaskAsynchronously(Main.getPlugin());
                         if(Main.type == ServerType.MATCH){
-                            MatchMgr.PlayerJoinMatch(player);
+                            if(Main.modList.contains(player.getName()))
+                                Main.modList.remove(player.getName());
+                            else
+                                MatchMgr.PlayerJoinMatch(player);
                         }
                     }
                     case 3:{
@@ -342,6 +346,12 @@ public class GameMgr implements Listener{
             joinmeta.setDisplayName("§a§n右クリックで参加");
             join.setItemMeta(joinmeta);
             player.getInventory().setItem(0, join);
+        }
+        
+        if(Main.type == ServerType.LOBBY){
+            //Scoreboard
+            LobbyScoreboardRunnable runnable = new LobbyScoreboardRunnable(player);
+            runnable.runTaskTimerAsynchronously(Main.getPlugin(), 0, 10);
         }
         
         Match match = DataMgr.getMatchFromId(Integer.MAX_VALUE);

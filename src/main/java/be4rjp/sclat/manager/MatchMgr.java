@@ -9,6 +9,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
+import be4rjp.sclat.utils.ObjectiveUtil;
 import be4rjp.sclat.weapon.*;
 import org.bukkit.entity.Player;
 
@@ -24,34 +25,27 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
-import static be4rjp.sclat.manager.PlayerStatusMgr.setupPlayerStatus;
 import static org.bukkit.Bukkit.getServer;
-import org.bukkit.Material;
 
 import static be4rjp.sclat.manager.PlayerStatusMgr.getRank;
-import be4rjp.sclat.raytrace.RayTrace;
+
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.RadioSongPlayer;
-import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import java.io.File;
+
 import java.util.*;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.util.Vector;
 
 /**
  *
@@ -64,6 +58,8 @@ public class MatchMgr {
     public static byte volume = 20;
     
     public static boolean canRollback = true;
+    
+    public static List<String> matchedPlayerList = new ArrayList<>();
     
     
     
@@ -166,11 +162,10 @@ public class MatchMgr {
                                 int index = 0;
                                     for (Integer key : treeMap.keySet()) {
                                         sortedMember.add(treeMap.get(key));
-                                        if(index == 4){
-                                            Collections.shuffle(sortedMember);
-                                        }
+                                        
                                         index++;
                                     }
+                                    Collections.shuffle(sortedMember);
                                 //}
                             }else{
                                 sortedMember = DataMgr.joinedList;
@@ -523,21 +518,25 @@ public class MatchMgr {
                     ScoreboardManager manager = Bukkit.getScoreboardManager();
                     Scoreboard scoreboard = manager.getNewScoreboard();
 
-                    Objective objective = scoreboard.registerNewObjective("Title", "dummy");
+                    Objective objective = scoreboard.registerNewObjective("match", "intro", "§6§lSclat§r "  + Main.VERSION);
                     objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-
-                    Score score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + "3:00");
-                    Score s2 = objective.getScore("");
+                    
+                    List<String> lines = new ArrayList<>();
+    
+                    lines.add("");
+                    lines.add("§a§lマップ名 » §6" + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                    lines.add(" ");
+                    
                     if(conf.getConfig().getString("WorkMode").equals("TDM"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ");
+                        lines.add(ChatColor.YELLOW + "§lゲームモード » §rチームデスマッチ");
                     else if(conf.getConfig().getString("WorkMode").equals("Area"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア");
+                        lines.add(ChatColor.YELLOW + "§lゲームモード » §rガチエリア");
                     else
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル");
-
-                    s2.setScore(2);
-                    score.setScore(1);
+                        lines.add(ChatColor.YELLOW + "§lゲームモード » §rナワバリバトル");
+                    lines.add("  ");
+                    lines.add("§b§l残り時間 » §r3:00");
+                    
+                    ObjectiveUtil.setLine(objective, lines);
 
                     p.setScoreboard(scoreboard);
 
@@ -801,131 +800,182 @@ public class MatchMgr {
         
             BukkitRunnable task = new BukkitRunnable(){
                 Scoreboard sb = scoreboard;
+                Objective objective = sb.registerNewObjective("match", "run", "§6§lSclat§r "  + Main.VERSION);
                 int s = 180;
                 Player p = player;
                 @Override
                 public void run(){
                     try{
-                    Objective objective = sb.registerNewObjective(String.valueOf(s), String.valueOf(s));
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    objective.setDisplayName("MapName:  " + ChatColor.GOLD + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
-
-                    String min = String.format("%02d", s%60);
-                    
-                    Score score;
-                    if(s > 0)
-                        score = objective.getScore(ChatColor.YELLOW + "TimeLeft:    " + ChatColor.GREEN + ChatColor.GREEN + String.valueOf(s/60) + ":" + min);
-                    else
-                        score = objective.getScore(ChatColor.YELLOW + "TimeLeft:  ...延長中...");
-                    Score s2 = objective.getScore("");
-                    if(conf.getConfig().getString("WorkMode").equals("TDM"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  チームデスマッチ");
-                    else if(conf.getConfig().getString("WorkMode").equals("Area"))
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ガチエリア");
-                    else
-                        s2 = objective.getScore(ChatColor.YELLOW + "GameMode:  ナワバリバトル"); 
-                    s2.setScore(2);
-                    score.setScore(1);
-                    
-                    Team gcteam = null;
-                    boolean isgc = false;
-                    boolean entyo = false;
-                    
-                    //ガチエリアカウント
-                    if(conf.getConfig().getString("WorkMode").equals("Area")){
                         
-                        List<Team> list = new ArrayList<>();
-                        for(Area area : match.getMapData().getAreaList()){
-                            list.add(area.getTeam());
-                        }
+                        if(objective != null)
+                            objective.unregister();
+    
+                        objective = scoreboard.registerNewObjective("match", "intro", "§6§lSclat§r "  + Main.VERSION);
+                        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    
+                        String min = String.format("%02d", s%60);
+    
+                        List<String> lines = new ArrayList<>();
+    
+                        lines.add("");
+                        lines.add("§a§lマップ名 » §6" + DataMgr.getPlayerData(p).getMatch().getMapData().getMapName());
+                        lines.add(" ");
+    
+                        if(conf.getConfig().getString("WorkMode").equals("TDM"))
+                            lines.add(ChatColor.YELLOW + "§lゲームモード » §6チームデスマッチ");
+                        else if(conf.getConfig().getString("WorkMode").equals("Area"))
+                            lines.add(ChatColor.YELLOW + "§lゲームモード » §6ガチエリア");
+                        else
+                            lines.add(ChatColor.YELLOW + "§lゲームモード » §6ナワバリバトル");
+                        lines.add("  ");
+                        lines.add("§b§l残り時間 » §r" + s/60 + ":" + min);
+    
+                        ObjectiveUtil.setLine(objective, lines);
                         
-                        boolean is = true;
-                        int i = 0;
-                        Team t = null; 
-                        for(Team team : list){
-                            if(i == 0){
-                                if(team != null){
-                                    t = team;
-                                }else{
-                                    is = false;
-                                    break;
-                                }
-                            }else{
-                                if(team != null){
-                                    if(team != t){
+                        
+                        Team gcteam = null;
+                        boolean isgc = false;
+                        boolean entyo = false;
+                        
+                        //ガチエリアカウント
+                        if(conf.getConfig().getString("WorkMode").equals("Area")){
+                            
+                            List<Team> list = new ArrayList<>();
+                            for(Area area : match.getMapData().getAreaList()){
+                                list.add(area.getTeam());
+                            }
+                            
+                            boolean is = true;
+                            int i = 0;
+                            Team t = null;
+                            for(Team team : list){
+                                if(i == 0){
+                                    if(team != null){
+                                        t = team;
+                                    }else{
                                         is = false;
                                         break;
                                     }
                                 }else{
-                                    is = false;
-                                    break;
+                                    if(team != null){
+                                        if(team != t){
+                                            is = false;
+                                            break;
+                                        }
+                                    }else{
+                                        is = false;
+                                        break;
+                                    }
+                                }
+                                i++;
+                            }
+                            
+                            if(list.size() == 1){
+                                if(list.get(0) != null){
+                                    is = true;
                                 }
                             }
-                            i++;
-                        }
-                        
-                        if(list.size() == 1){
-                            if(list.get(0) != null){
-                                is = true;
-                            }
-                        }
-                        
-                        if(is){
                             
-                            Team wteam = t; //エリアを確保しているチーム
-                            Team lteam = t; //エリアを確保できていないチーム
-                            if(match.getTeam0() == t)
-                                lteam = match.getTeam1();
-                            else
-                                lteam = match.getTeam0();
-                            
-                            if(wteam.getGatiCount() == lteam.getGatiCount()){
-                                if(wteam.getGatiCount() + 1 > lteam.getGatiCount()){
-                                    if(wteam.getGatiCount() != 0) {
-                                        for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                                            PlayerData data = DataMgr.getPlayerData(player);
-                                            if (data.getTeam() == null || !data.isInMatch()) continue;
-        
-                                            if (data.getTeam() == wteam) {
-                                                Sclat.sendMessage("§b§lカウントリードした!", MessageType.PLAYER, player);
-                                                player.sendTitle("", "§b§lカウントリードした!", 10, 20, 10);
-                                                Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
-                                            } else {
-                                                Sclat.sendMessage("§c§lカウントリードされた!", MessageType.PLAYER, player);
-                                                player.sendTitle("", "§c§lカウントリードされた!", 10, 20, 10);
-                                                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
+                            if(is){
+                                
+                                Team wteam = t; //エリアを確保しているチーム
+                                Team lteam = t; //エリアを確保できていないチーム
+                                if(match.getTeam0() == t)
+                                    lteam = match.getTeam1();
+                                else
+                                    lteam = match.getTeam0();
+                                
+                                if(wteam.getGatiCount() == lteam.getGatiCount()){
+                                    if(wteam.getGatiCount() + 1 > lteam.getGatiCount()){
+                                        if(wteam.getGatiCount() != 0) {
+                                            for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                                PlayerData data = DataMgr.getPlayerData(player);
+                                                if (data.getTeam() == null || !data.isInMatch()) continue;
+            
+                                                if (data.getTeam() == wteam) {
+                                                    Sclat.sendMessage("§b§lカウントリードした!", MessageType.PLAYER, player);
+                                                    player.sendTitle("", "§b§lカウントリードした!", 10, 20, 10);
+                                                    Sclat.playGameSound(player, SoundType.CONGRATULATIONS);
+                                                } else {
+                                                    Sclat.sendMessage("§c§lカウントリードされた!", MessageType.PLAYER, player);
+                                                    player.sendTitle("", "§c§lカウントリードされた!", 10, 20, 10);
+                                                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 3F);
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                
+                                list.get(0).addGatiCount();
+                                isgc = is;
+                                gcteam = list.get(0);
                             }
                             
-                            list.get(0).addGatiCount();
-                            isgc = is;
-                            gcteam = list.get(0);
-                        }
-                        
-                        Score s3 = objective.getScore(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam0().getGatiCount()) + "  " + match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam1().getGatiCount()));
-                        s3.setScore(0);
-                        
-                        if(isgc){
-                            Team ngcteam = match.getTeam0();
-                            if(match.getTeam0() == gcteam)
-                                ngcteam = match.getTeam1();
-                            if(gcteam.getGatiCount() <= ngcteam.getGatiCount())
-                                entyo = true;
-                        }
-                        
-                        if(s == 0 && entyo){
-                            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                                    oplayer.sendTitle("", "§7延長戦！", 10, 20, 10);
-                                    Sclat.sendMessage("§7延長戦！", MessageType.PLAYER, oplayer);
+                            Score s3 = objective.getScore(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam0().getGatiCount()) + "  " + match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam1().getGatiCount()));
+                            s3.setScore(0);
+                            
+                            if(isgc){
+                                Team ngcteam = match.getTeam0();
+                                if(match.getTeam0() == gcteam)
+                                    ngcteam = match.getTeam1();
+                                if(gcteam.getGatiCount() <= ngcteam.getGatiCount())
+                                    entyo = true;
+                            }
+                            
+                            if(s == 0 && entyo){
+                                for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                    if(DataMgr.getPlayerData(oplayer).isInMatch()){
+                                        oplayer.sendTitle("", "§7延長戦！", 10, 20, 10);
+                                        Sclat.sendMessage("§7延長戦！", MessageType.PLAYER, oplayer);
+                                    }
+                                }
+                            }
+                            
+                            if(match.getTeam0().getGatiCount() == 100 || match.getTeam1().getGatiCount() == 100){
+                                for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                    if(DataMgr.getPlayerData(oplayer).getIsJoined() && p != oplayer){
+                                        oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                        oplayer.getInventory().clear();
+                                        FinishMatch(oplayer);
+                                    }
+                                }
+                                FinishMatch(p);
+                                cancel();
+                            }
+                            if(match.getTeam0().getGatiCount() == 95 || match.getTeam1().getGatiCount() == 95){
+                                for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                    if(DataMgr.getPlayerData(oplayer).isInMatch()){
+                                        oplayer.sendTitle("", "§7残りカウントあとわずか！", 10, 20, 10);
+                                        Sclat.sendMessage("§7残りカウントあとわずか！", MessageType.PLAYER, oplayer);
+                                        p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 8.0F, 2.0F);
+                                    }
                                 }
                             }
                         }
                         
-                        if(match.getTeam0().getGatiCount() == 100 || match.getTeam1().getGatiCount() == 100){
+                        
+                        if(s == 60 && !conf.getConfig().getString("WorkMode").equals("Area")){
+                            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                if(DataMgr.getPlayerData(oplayer).getIsJoined()){
+                                    Sclat.sendMessage("§6§n残り1分！", MessageType.PLAYER, oplayer);
+                                }
+                            }
+                            if(DataMgr.getPlayerData(p).getPlayerNumber() == 1 && Main.NoteBlockAPI){
+                                NoteBlockSong nbs = NoteBlockAPIMgr.getRandomFinalSong();
+                                Song song = nbs.getSong();
+                                RadioSongPlayer radio = new RadioSongPlayer(song);
+                                radio.setVolume(volume);
+                                for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
+                                    if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined()){
+                                        radio.addPlayer(oplayer);
+                                        oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
+                                    }
+                                }
+                                radio.setPlaying(true);
+                                StopMusic(radio, 1200, match);
+                            }
+                        }
+                        if(s <= 0 && !entyo){
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                 if(DataMgr.getPlayerData(oplayer).getIsJoined() && p != oplayer){
                                     oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
@@ -936,60 +986,16 @@ public class MatchMgr {
                             FinishMatch(p);
                             cancel();
                         }
-                        if(match.getTeam0().getGatiCount() == 95 || match.getTeam1().getGatiCount() == 95){
+                        
+                        if(s <= 5 && s > 0){
                             for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                                    oplayer.sendTitle("", "§7残りカウントあとわずか！", 10, 20, 10);
-                                    Sclat.sendMessage("§7残りカウントあとわずか！", MessageType.PLAYER, oplayer);
-                                    p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 8.0F, 2.0F);
-                                }
+                                if(DataMgr.getPlayerData(oplayer).isInMatch())
+                                    oplayer.sendTitle(ChatColor.GRAY + String.valueOf(s), "", 0, 30, 4);
                             }
                         }
-                    }
-                    
-                    
-                    if(s == 60 && !conf.getConfig().getString("WorkMode").equals("Area")){
-                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).getIsJoined()){
-                                Sclat.sendMessage("§6§n残り1分！", MessageType.PLAYER, oplayer);
-                            }
-                        }
-                        if(DataMgr.getPlayerData(p).getPlayerNumber() == 1 && Main.NoteBlockAPI){
-                            NoteBlockSong nbs = NoteBlockAPIMgr.getRandomFinalSong();
-                            Song song = nbs.getSong();
-                            RadioSongPlayer radio = new RadioSongPlayer(song);
-                            radio.setVolume(volume);
-                            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                                if(DataMgr.getPlayerData(oplayer).getSettings().PlayBGM() && DataMgr.getPlayerData(oplayer).getIsJoined()){
-                                    radio.addPlayer(oplayer);
-                                    oplayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§7Now playing : §6" + nbs.getSongName() + ""));
-                                }
-                            }
-                            radio.setPlaying(true);
-                            StopMusic(radio, 1200, match);
-                        }
-                    }
-                    if(s <= 0 && !entyo){
-                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).getIsJoined() && p != oplayer){
-                                oplayer.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-                                oplayer.getInventory().clear();
-                                FinishMatch(oplayer);
-                            }
-                        }
-                        FinishMatch(p);
-                        cancel();
-                    }
-                    
-                    if(s <= 5 && s > 0){
-                        for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                            if(DataMgr.getPlayerData(oplayer).isInMatch())
-                                oplayer.sendTitle(ChatColor.GRAY + String.valueOf(s), "", 0, 30, 4);
-                        }
-                    }
-                        //Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + "試合終了まで: " + String.valueOf(s));
-                    
-                    s--;
+                            //Main.getPlugin().getServer().broadcastMessage(ChatColor.GOLD + "試合終了まで: " + String.valueOf(s));
+                        
+                        s--;
                     }catch (Exception e){cancel();}
                 }
             };
