@@ -201,12 +201,6 @@ public class MatchMgr {
                                 }
                             }
                             
-                            try {
-                                for (Wiremesh wiremesh : match.getMapData().getWiremeshListTask().getWiremeshsList()) {
-                                    wiremesh.startTask();
-                                }
-                            }catch (Exception e){}
-                            
                             Sclat.sendMessage("§6試合が開始されました", MessageType.BROADCAST);
                             if(conf.getConfig().getBoolean("RateMatch")){
                                 Sclat.sendMessage("", MessageType.ALL_PLAYER);
@@ -714,6 +708,12 @@ public class MatchMgr {
                                 area.start();
                             }
                         }
+    
+                        try {
+                            for (Wiremesh wiremesh : match.getMapData().getWiremeshListTask().getWiremeshsList()) {
+                                wiremesh.startTask();
+                            }
+                        }catch (Exception e){}
                     }
                     
                     ((LivingEntity)p).setCollidable(true);
