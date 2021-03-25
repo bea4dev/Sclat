@@ -67,6 +67,8 @@ public class RankMgr {
                     Map<Integer, String> playerMap = new HashMap<>();
                     for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
                         int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Rank");
+                        if(rate == 0) continue;
+                        
                         while (playerMap.containsKey(rate)) {
                             rate++;
                         }
@@ -93,6 +95,8 @@ public class RankMgr {
                     Map<Integer, String> playerMap = new HashMap<>();
                     for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
                         int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Kill");
+                        if(rate == 0) continue;
+                        
                         while (playerMap.containsKey(rate)) {
                             rate++;
                         }
@@ -104,7 +108,7 @@ public class RankMgr {
                     killRanking = new ArrayList<>();
                     for (Integer key : treeMap.keySet())
                         killRanking.add(treeMap.get(key));
-                }catch (Exception e){}
+                }catch (Exception e){e.printStackTrace();}
             }
         };
         async.runTaskAsynchronously(Main.getPlugin());
@@ -119,6 +123,8 @@ public class RankMgr {
                     Map<Integer, String> playerMap = new HashMap<>();
                     for (String uuid : conf.getPlayerStatus().getConfigurationSection("Status").getKeys(false)) {
                         int rate = conf.getPlayerStatus().getInt("Status." + uuid + ".Paint");
+                        if(rate == 0) continue;
+                        
                         while (playerMap.containsKey(rate)) {
                             rate++;
                         }
