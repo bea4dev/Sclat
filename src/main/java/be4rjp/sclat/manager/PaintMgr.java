@@ -87,7 +87,7 @@ public class PaintMgr {
                         //Sclat.setBlockByNMS(block, ATeam.getTeamColor().getWool(), false);
                         DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, ATeam.getTeamColor().getWool());
                         DataMgr.getPlayerData(player).addPaintCount();
-                        if(new Random().nextInt((int)(10 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP) / DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getSPRate())) == 0 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                        if(new Random().nextInt((int)(12 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP) / DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getSPRate())) == 0 && !DataMgr.getPlayerData(player).getIsUsingSP())
                             SPWeaponMgr.addSPCharge(player);
                     }
                 }else{
@@ -103,7 +103,7 @@ public class PaintMgr {
                     //Sclat.setBlockByNMS(block, team.getTeamColor().getWool(), false);
                     DataMgr.getPlayerData(player).getMatch().getBlockUpdater().setBlock(block, team.getTeamColor().getWool());
                     DataMgr.getPlayerData(player).addPaintCount();
-                    if(new Random().nextInt((int)(12 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP) / DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getSPRate())) == 0 && !DataMgr.getPlayerData(player).getIsUsingSP())
+                    if(new Random().nextInt((int)(13 / Gear.getGearInfluence(player, Gear.Type.SPECIAL_UP) / DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getSPRate())) == 0 && !DataMgr.getPlayerData(player).getIsUsingSP())
                         SPWeaponMgr.addSPCharge(player);
                 }
                 
@@ -113,7 +113,7 @@ public class PaintMgr {
     }
     
     public static boolean canPaint(Block block){
-        return !(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB") || block.getType().toString().contains("DOOR"));
+        return !(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.VINE || block.getType().toString().contains("SIGN") || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB") || block.getType().toString().contains("DOOR"));
     }
     
     
@@ -121,7 +121,7 @@ public class PaintMgr {
         if(block.getType() == team.getTeamColor().getWool())
             return;
 
-        if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.SIGN || block.getType() == Material.VINE || block.getType() == Material.WALL_SIGN || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
+        if(!(block.getType() == Material.AIR || block.getType() == Material.SHULKER_BOX || block.getType() == Material.IRON_BARS || block.getType() == Material.VINE || block.getType().toString().contains("SIGN") || block.getType().toString().contains("GLASS") || block.getType().toString().contains("CARPET") || block.getType().toString().contains("POWDER") || block.getType().toString().contains("FENCE") || block.getType().toString().contains("STAIR") || block.getType().toString().contains("PLATE") || block.getType() == Material.WATER || block.getType() == Material.OBSIDIAN || block.getType().toString().contains("SLAB"))){
             if(DataMgr.getBlockDataMap().containsKey(block)){
                 PaintData data = DataMgr.getPaintDataFromBlock(block);
                 Team BTeam = data.getTeam();

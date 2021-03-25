@@ -8,8 +8,8 @@ import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.weapon.Gear;
 import java.util.List;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PlayerConnection;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -18,7 +18,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -92,7 +92,7 @@ public class Poison {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                                 for(Location loc : s_locs){
                                     if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                        if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
                                             Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
                                             o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
                                         }
@@ -136,7 +136,7 @@ public class Poison {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             if(o_player.getWorld() == drop.getLocation().getWorld()) {
-                                if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                if (o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }

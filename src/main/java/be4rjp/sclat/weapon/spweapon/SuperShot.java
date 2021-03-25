@@ -10,12 +10,12 @@ import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 
 import java.util.Random;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PlayerConnection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -148,7 +148,7 @@ public class SuperShot {
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                                 if(o_player.getWorld() == ball.getWorld())
-                                    if(o_player.getLocation().distance(ball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                    if(o_player.getLocation().distance(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
                                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
                     }

@@ -42,7 +42,6 @@ public class MainWeapon implements Listener{
         if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK))
             if(DataMgr.getPlayerData(player).isInMatch())
                 SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
-        
     }
     
     @EventHandler

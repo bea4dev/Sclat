@@ -21,7 +21,7 @@ public class SettingMgr {
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(4,5).equals("0"))
                 settings.S_ShowEffect_SPWeaponRegion();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(5,6).equals("0"))
-                settings.S_ShowAreaRegion();
+                settings.S_ShowSnowBall();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(0,1).equals("0"))
                 settings.S_PlayBGM();
             if(conf.getPlayerSettings().getString("Settings." + uuid).substring(6,7).equals("0"))

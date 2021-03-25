@@ -18,8 +18,8 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -44,7 +44,7 @@ public class DeathMgr {
     
         Sclat.createInkExplosionEffect(target.getEyeLocation().add(0, -1, 0), 3, 30, shooter);
         
-        DataMgr.getPlayerData(target).setSPGauge((int)(DataMgr.getPlayerData(target).getSPGauge() * 0.8));
+        DataMgr.getPlayerData(target).setSPGauge((int)(DataMgr.getPlayerData(target).getSPGauge() * 0.7));
         
         //半径
         double maxDist = 3;
@@ -76,7 +76,7 @@ public class DeathMgr {
             DataMgr.getPlayerData(shooter).addKillCount();
             DataMgr.getPlayerData(shooter).getTeam().addKillCount();
             if(!DataMgr.getPlayerData(shooter).getIsUsingSP())
-                for(int i = 0; i < 15; i++)
+                for(int i = 0; i < 10; i++)
                     SPWeaponMgr.addSPCharge(shooter);
         }
         

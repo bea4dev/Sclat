@@ -12,16 +12,16 @@ import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.PaintMgr;
 import be4rjp.sclat.weapon.Gear;
 import java.util.List;
-import net.minecraft.server.v1_13_R2.EnumItemSlot;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_14_R1.EnumItemSlot;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityEquipment;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -115,7 +115,7 @@ public class CurlingBomb {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Bomb())
                                 if(target.getWorld() == player.getWorld())
-                                    if(target.getLocation().distance(as1l) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                    if(target.getLocation().distance(as1l) < Main.PARTICLE_RENDER_DISTANCE)
                                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, as1l, 2, 0, 0, 0, 1, bd);
                         }
                         //攻撃判定
@@ -165,6 +165,9 @@ public class CurlingBomb {
 
                         //爆発エフェクト
                         Sclat.createInkExplosionEffect(as1l, maxDist, 15, player);
+    
+                        //バリアをはじく
+                        Sclat.repelBarrier(as1l, maxDist, player);
 
                         //塗る
                         for(int i = 0; i <= maxDist; i++){

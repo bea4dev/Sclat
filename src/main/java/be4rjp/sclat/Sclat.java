@@ -6,23 +6,20 @@ import be4rjp.sclat.data.Team;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import be4rjp.sclat.manager.BungeeCordMgr;
-import be4rjp.sclat.manager.DeathMgr;
-import be4rjp.sclat.manager.MatchMgr;
+import be4rjp.sclat.enums.SclatDamageType;
+import be4rjp.sclat.manager.*;
 import be4rjp.sclat.server.StatusClient;
-import net.minecraft.server.v1_13_R2.Chunk;
-import net.minecraft.server.v1_13_R2.World;
-import net.minecraft.server.v1_13_R2.WorldBorder;
+import be4rjp.sclat.weapon.Gear;
+import net.minecraft.server.v1_14_R1.WorldBorder;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import net.minecraft.server.v1_13_R2.*;
-import org.bukkit.craftbukkit.v1_13_R2.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import net.minecraft.server.v1_13_R2.PacketPlayOutBlockChange;
-import net.minecraft.server.v1_13_R2.PacketPlayOutMultiBlockChange;
-import net.minecraft.server.v1_13_R2.PacketPlayOutMapChunk;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import net.minecraft.server.v1_14_R1.*;
+import org.bukkit.craftbukkit.v1_14_R1.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_14_R1.PacketPlayOutBlockChange;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -43,7 +40,7 @@ public class Sclat {
     public static void setBlockByNMS(org.bukkit.block.Block b, org.bukkit.Material material, boolean applyPhysics) {
         Location loc = b.getLocation();
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
-        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_14_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
         BlockPosition bp = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
         IBlockData ibd = block.getBlockData();
         nmsWorld.setTypeAndData(bp, ibd, applyPhysics ? 3 : 2);
@@ -55,8 +52,8 @@ public class Sclat {
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
-        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_14_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_14_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         BlockPosition bp = new BlockPosition(x, y, z);
         IBlockData ibd = block.getBlockData();
         nmsChunk.setType(bp, ibd, applyPhysics);
@@ -68,8 +65,8 @@ public class Sclat {
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
         BlockPosition bp = new BlockPosition(x, y, z);
-        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_14_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_14_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         Block block = ((CraftBlockData) Bukkit.createBlockData(material)).getState().getBlock();
         IBlockAccess iba = (IBlockAccess)nmsWorld;
         PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(iba, bp);
@@ -82,7 +79,7 @@ public class Sclat {
     
     public static void sendWorldBorderWarningPacket(Player player){
         EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        net.minecraft.server.v1_13_R2.WorldBorder wb = new WorldBorder();
+        net.minecraft.server.v1_14_R1.WorldBorder wb = new WorldBorder();
         wb.world = nmsPlayer.getWorldServer();
         wb.setSize(1);
         wb.setCenter(player.getLocation().getX() + 10_000, player.getLocation().getZ() + 10_000);
@@ -92,7 +89,7 @@ public class Sclat {
     
     public static void sendWorldBorderWarningClearPacket(Player player){
         EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        net.minecraft.server.v1_13_R2.WorldBorder wb = new WorldBorder();
+        net.minecraft.server.v1_14_R1.WorldBorder wb = new WorldBorder();
         wb.world = nmsPlayer.getWorldServer();
         wb.setSize(30_000_000);
         wb.setCenter(player.getLocation().getX(), player.getLocation().getZ());
@@ -107,8 +104,8 @@ public class Sclat {
         int x = loc.getBlockX();
         int y = loc.getBlockY();
         int z = loc.getBlockZ();
-        net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        net.minecraft.server.v1_13_R2.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
+        net.minecraft.server.v1_14_R1.World nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_14_R1.Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         ChunkSection cs = nmsChunk.getSections()[y >> 4];
         IBlockData ibd = block.getBlockData();
         if (cs == nmsChunk.a()) {
@@ -248,7 +245,7 @@ public class Sclat {
             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                 for(Location loc : s_locs){
                     if(o_player.getWorld() == loc.getWorld()){
-                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                        if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
                             o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
                                     loc, 0, loc.getX() - center.getX(), loc.getY() - center.getY(), loc.getZ() - center.getZ(), 1, bd);
                         }
@@ -257,6 +254,81 @@ public class Sclat {
             }
         }
     }
+    
+    public static void repelBarrier(Location center, double radius, Player shooter){
+        for(Player player : Main.getPlugin().getServer().getOnlinePlayers()){
+            PlayerData playerData = DataMgr.getPlayerData(player);
+            
+            if(player.getWorld() != center.getWorld()) continue;
+            if(playerData.getArmor() < 10000.0) continue;
+            if(player.getGameMode() == GameMode.SPECTATOR) continue;
+            if(playerData.getTeam() == DataMgr.getPlayerData(shooter).getTeam()) continue;
+            
+            double distance = player.getLocation().distance(center);
+            
+            if(distance > radius) continue;
+            
+            Location loc = player.getLocation();
+            Vector vector = new Vector(loc.getX() - center.getX(), 0, loc.getZ() - center.getZ());
+            
+            if(vector.lengthSquared() == 0.0) continue;
+            
+            Vector nomVec = vector.normalize();
+            double rate = ((radius - distance) / radius) * 2.5;
+            
+            player.setVelocity(nomVec.multiply(rate));
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 1F, 1.5F);
+        }
+    }
+    
+    /*
+    public static void createInkExplosion(Location center, double radius, int effectAccuracy, double damageRate, SclatDamageType type, Player player){
+        //爆発音
+        player.getWorld().playSound(center, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
+    
+        //爆発エフェクト
+        Sclat.createInkExplosionEffect(center, radius, effectAccuracy, player);
+        
+        //塗る
+        for(int i = 0; i <= radius; i++){
+            List<Location> p_locs = Sphere.getSphere(center, i, 14);
+            for(Location loc : p_locs){
+                PaintMgr.Paint(loc, player, false);
+            }
+        }
+    
+        //攻撃判定の処理
+        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+            if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != player.getWorld())
+                continue;
+            if (target.getLocation().distance(center) <= radius) {
+                double gear = SclatDamageType.SUB_WEAPON == type ? Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP) : 1.0;
+                double damage = (radius - target.getLocation().distance(center)) * damageRate * gear;
+                if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                    Sclat.giveDamage(player, target, damage, type.getName());
+                
+                    //AntiNoDamageTime
+                    BukkitRunnable task = new BukkitRunnable(){
+                        Player p = target;
+                        @Override
+                        public void run(){
+                            target.setNoDamageTicks(0);
+                        }
+                    };
+                    task.runTaskLater(Main.getPlugin(), 1);
+                }
+            }
+        }
+    
+        for(Entity as : player.getWorld().getEntities()){
+            if (as.getLocation().distance(center) <= radius){
+                if(as instanceof ArmorStand){
+                    double damage = (radius - as.getLocation().distance(center)) * damageRate;
+                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                }
+            }
+        }
+    }*/
     
     public static boolean giveDamage(Player player, Player target, double damage, String damageType){
         PlayerData targetData = DataMgr.getPlayerData(target);

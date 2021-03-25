@@ -3,14 +3,14 @@ package be4rjp.sclat.data;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.manager.PlayerStatusMgr;
 import be4rjp.sclat.manager.RankMgr;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -54,7 +54,7 @@ public class RankingHolograms {
     
         WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
         
-        title = new EntityArmorStand(nmsWorld);
+        title = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 2.5, location.getZ());
         title.setNoGravity(true);
         title.setPosition(location.getX(), location.getY() + 2.5, location.getZ());
         title.setBasePlate(false);
@@ -64,7 +64,7 @@ public class RankingHolograms {
         title.setCustomNameVisible(true);
         armorStandList.add(title);
     
-        separator = new EntityArmorStand(nmsWorld);
+        separator = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 0.0, location.getZ());
         separator.setNoGravity(true);
         separator.setPosition(location.getX(), location.getY() + 0.0, location.getZ());
         separator.setBasePlate(false);
@@ -74,7 +74,7 @@ public class RankingHolograms {
         separator.setCustomNameVisible(true);
         armorStandList.add(separator);
     
-        you = new EntityArmorStand(nmsWorld);
+        you = new EntityArmorStand(nmsWorld, location.getX(), location.getY() - 0.4, location.getZ());
         you.setNoGravity(true);
         you.setPosition(location.getX(), location.getY() - 0.4, location.getZ());
         you.setBasePlate(false);
@@ -84,7 +84,7 @@ public class RankingHolograms {
         you.setCustomNameVisible(true);
         armorStandList.add(you);
     
-        mode = new EntityArmorStand(nmsWorld);
+        mode = new EntityArmorStand(nmsWorld, location.getX(), location.getY() - 0.8, location.getZ());
         mode.setNoGravity(true);
         mode.setPosition(location.getX(), location.getY() - 0.8, location.getZ());
         mode.setBasePlate(false);
@@ -94,7 +94,7 @@ public class RankingHolograms {
         mode.setCustomNameVisible(true);
         armorStandList.add(mode);
     
-        clickHit1 = new EntityArmorStand(nmsWorld);
+        clickHit1 = new EntityArmorStand(nmsWorld, location.getX() + 0.3, location.getY() + 0.0, location.getZ() + 0.3);
         clickHit1.setNoGravity(true);
         clickHit1.setPosition(location.getX() + 0.3, location.getY() + 0.0, location.getZ() + 0.3);
         clickHit1.setBasePlate(false);
@@ -103,7 +103,7 @@ public class RankingHolograms {
         clickHit1.setCustomNameVisible(false);
         armorStandList.add(clickHit1);
     
-        clickHit2 = new EntityArmorStand(nmsWorld);
+        clickHit2 = new EntityArmorStand(nmsWorld, location.getX() + 0.3, location.getY() + 0.0, location.getZ() - 0.3);
         clickHit2.setNoGravity(true);
         clickHit2.setPosition(location.getX() + 0.3, location.getY() + 0.0, location.getZ() - 0.3);
         clickHit2.setBasePlate(false);
@@ -112,7 +112,7 @@ public class RankingHolograms {
         clickHit2.setCustomNameVisible(false);
         armorStandList.add(clickHit2);
     
-        clickHit3 = new EntityArmorStand(nmsWorld);
+        clickHit3 = new EntityArmorStand(nmsWorld, location.getX() - 0.3, location.getY() + 0.0, location.getZ() - 0.3);
         clickHit3.setNoGravity(true);
         clickHit3.setPosition(location.getX() - 0.3, location.getY() + 0.0, location.getZ() - 0.3);
         clickHit3.setBasePlate(false);
@@ -121,7 +121,7 @@ public class RankingHolograms {
         clickHit3.setCustomNameVisible(false);
         armorStandList.add(clickHit3);
     
-        clickHit4 = new EntityArmorStand(nmsWorld);
+        clickHit4 = new EntityArmorStand(nmsWorld, location.getX() - 0.3, location.getY() + 0.0, location.getZ() + 0.3);
         clickHit4.setNoGravity(true);
         clickHit4.setPosition(location.getX() - 0.3, location.getY() + 0.0, location.getZ() + 0.3);
         clickHit4.setBasePlate(false);
@@ -133,7 +133,7 @@ public class RankingHolograms {
         
         rankArmorStands = new ArrayList<>();
         for(int i = 0; i < 5; i++){
-            EntityArmorStand armorStand = new EntityArmorStand(nmsWorld);
+            EntityArmorStand armorStand = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 2.0 - (0.4 * (double)i), location.getZ());
             armorStand.setNoGravity(true);
             armorStand.setPosition(location.getX(), location.getY() + 2.0 - (0.4 * (double)i), location.getZ());
             armorStand.setBasePlate(false);

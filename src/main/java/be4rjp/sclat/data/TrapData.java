@@ -49,7 +49,7 @@ public class TrapData {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                         for(Location loc : s_locs){
                             if(o_player.getWorld() == loc.getWorld() && DataMgr.getPlayerData(o_player).getTeam() != null){
-                                if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance") && (DataMgr.getPlayerData(o_player).getTeam() == team || near)){
+                                if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE && (DataMgr.getPlayerData(o_player).getTeam() == team || near)){
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(near ? DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor() : Color.BLACK, 1);
                                     o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 5, dustOptions);
                                 }
@@ -77,6 +77,7 @@ public class TrapData {
                 for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != location.getWorld())
                         continue;
+                    if(target.getGameMode() == GameMode.SPECTATOR) continue;
                     if (target.getLocation().distance(location) <= 3 && DataMgr.getPlayerData(target).getTeam() != team) {
                         Explosion();
                     }
@@ -124,6 +125,9 @@ public class TrapData {
     
                     //爆発エフェクト
                     Sclat.createInkExplosionEffect(location, maxDist, 15, player);
+    
+                    //バリアをはじく
+                    Sclat.repelBarrier(location, maxDist, player);
                     
                     //センサーエフェクト
                     List<Location> s_locs = Sphere.getSphere(location, maxDist + 1, 25);
@@ -131,7 +135,7 @@ public class TrapData {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                             for(Location loc : s_locs){
                                 if(o_player.getWorld() == loc.getWorld()){
-                                    if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                    if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
                                         o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
                                     }

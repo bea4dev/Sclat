@@ -115,10 +115,29 @@ public class MatchMgr {
                             Sclat.sendMessage("§aあと§c" + String.valueOf(startPlayerCount - match.getJoinedPlayerCount()) + "§a人必要です", MessageType.ALL_PLAYER);
                             match.setIsStartedCount(false);
                             match.setIsStarted(false);
+                            //Send match status
+                            if(Main.type == ServerType.MATCH){
+                                List<String> commands = new ArrayList<>();
+                                commands.add("cdc " + conf.getServers().getString("ServerName"));
+                                commands.add("stop");
+                                StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                                        conf.getConfig().getInt("StatusShare.Port"), commands);
+                                sc.startClient();
+                            }
                             cancel();
                         }
-                        if(s == 0)
+                        if(s == 0) {
+                            //Send match status
+                            if(Main.type == ServerType.MATCH){
+                                List<String> commands = new ArrayList<>();
+                                commands.add("cd " + conf.getServers().getString("ServerName") + " " + (System.currentTimeMillis() / 1000 + 30));
+                                commands.add("stop");
+                                StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
+                                        conf.getConfig().getInt("StatusShare.Port"), commands);
+                                sc.startClient();
+                            }
                             Sclat.sendMessage("§a試合開始まで後§c30§a秒", MessageType.ALL_PLAYER);
+                        }
                         if(s == 10)
                             Sclat.sendMessage("§a試合開始まで後§c20§a秒", MessageType.ALL_PLAYER);
                         if(s == 20)
@@ -226,7 +245,7 @@ public class MatchMgr {
                             //Send match status
                             if(Main.type == ServerType.MATCH){
                                 List<String> commands = new ArrayList<>();
-                                commands.add("started " + conf.getServers().getString("ServerName"));
+                                commands.add("started " + conf.getServers().getString("ServerName") + " " + System.currentTimeMillis() / 1000);
                                 commands.add("stop");
                                 StatusClient sc = new StatusClient(conf.getConfig().getString("StatusShare.Host"),
                                         conf.getConfig().getInt("StatusShare.Port"), commands);
@@ -427,6 +446,9 @@ public class MatchMgr {
                     
                     if(DataMgr.getPlayerData(p).getPlayerNumber() == 1){
                         PaintMgr.PaintGlass(match);
+                        
+                        p.getWorld().getEntities().forEach(entity -> {if(entity.getType() == EntityType.SHULKER){entity.remove();}});
+                        
                         if(conf.getConfig().getString("WorkMode").equals("Area")){
                             for(Area area : match.getMapData().getAreaList()){
                                 area.setup(match);
@@ -669,8 +691,14 @@ public class MatchMgr {
                     //SquidMgr.SquidRunnable(p);
                     DataMgr.getPlayerData(p).setIsInMatch(true);
                     p.setExp(0.99F);
-                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1)
+                    if(DataMgr.getPlayerData(p).getPlayerNumber() == 1) {
                         InMatchCounter(p);
+                        if(conf.getConfig().getString("WorkMode").equals("Area")){
+                            for(Area area : match.getMapData().getAreaList()){
+                                area.setupAreaTeam();
+                            }
+                        }
+                    }
                     p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_INFECT, 10.0F, 2.0F);
                     
                     if(Gear.getGearInfluence(p, Gear.Type.MAX_HEALTH_UP) == 1.2){
@@ -803,6 +831,10 @@ public class MatchMgr {
                 Objective objective = sb.registerNewObjective("match", "run", "§6§lSclat§r "  + Main.VERSION);
                 int s = 180;
                 Player p = player;
+                
+                boolean team0nokori = false;
+                boolean team1nokori = false;
+                
                 @Override
                 public void run(){
                     try{
@@ -829,8 +861,6 @@ public class MatchMgr {
                             lines.add(ChatColor.YELLOW + "§lゲームモード » §6ナワバリバトル");
                         lines.add("  ");
                         lines.add("§b§l残り時間 » §r" + s/60 + ":" + min);
-    
-                        ObjectiveUtil.setLine(objective, lines);
                         
                         
                         Team gcteam = null;
@@ -911,8 +941,10 @@ public class MatchMgr {
                                 gcteam = list.get(0);
                             }
                             
-                            Score s3 = objective.getScore(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam0().getGatiCount()) + "  " + match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + "Team : " + String.valueOf(100 - match.getTeam1().getGatiCount()));
-                            s3.setScore(0);
+                            lines.add("   ");
+                            lines.add("§lカウント » ");
+                            lines.add(match.getTeam0().getTeamColor().getColorCode() + match.getTeam0().getTeamColor().getColorName() + " : " + String.valueOf(100 - match.getTeam0().getGatiCount()) + "  " + match.getTeam1().getTeamColor().getColorCode() + match.getTeam1().getTeamColor().getColorName() + " : " + String.valueOf(100 - match.getTeam1().getGatiCount()));
+                            
                             
                             if(isgc){
                                 Team ngcteam = match.getTeam0();
@@ -942,7 +974,11 @@ public class MatchMgr {
                                 FinishMatch(p);
                                 cancel();
                             }
-                            if(match.getTeam0().getGatiCount() == 95 || match.getTeam1().getGatiCount() == 95){
+                            if((match.getTeam0().getGatiCount() == 95 && !team0nokori) || (match.getTeam1().getGatiCount() == 95 && !team1nokori)){
+                                
+                                if(match.getTeam0().getGatiCount() == 95) team0nokori = true;
+                                if(match.getTeam1().getGatiCount() == 95) team1nokori = true;
+                                
                                 for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                                     if(DataMgr.getPlayerData(oplayer).isInMatch()){
                                         oplayer.sendTitle("", "§7残りカウントあとわずか！", 10, 20, 10);
@@ -952,6 +988,8 @@ public class MatchMgr {
                                 }
                             }
                         }
+    
+                        ObjectiveUtil.setLine(objective, lines);
                         
                         
                         if(s == 60 && !conf.getConfig().getString("WorkMode").equals("Area")){
@@ -1315,9 +1353,9 @@ public class MatchMgr {
                     Sclat.sendMessage(ChatColor.GREEN + " Money : " + ChatColor.RESET + "+" + String.valueOf(pMoney) + ChatColor.AQUA + "  Lv : " + ChatColor.RESET + "+" + String.valueOf(pLv), MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     if(pRank < 0)
-                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
+                        Sclat.sendMessage(ChatColor.GOLD + " RankPoint : " + ChatColor.RESET + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
                     else
-                        Sclat.sendMessage(ChatColor.GOLD + " Rank : " + ChatColor.RESET + "+" + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
+                        Sclat.sendMessage(ChatColor.GOLD + " RankPoint : " + ChatColor.RESET + "+" + String.valueOf(pRank) + (Main.type == ServerType.NORMAL ? "  [ §b" + RankMgr.toABCRank(getRank(player)) + " §r]" : ""), MessageType.PLAYER, p);
                     Sclat.sendMessage("", MessageType.PLAYER, p);
                     Sclat.sendMessage("§a-----------------------------------", MessageType.PLAYER, p);
                     /*

@@ -8,8 +8,7 @@ import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.manager.*;
 import be4rjp.sclat.weapon.*;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -34,7 +31,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ClickListener implements Listener{
     @EventHandler
     public void onGUIClick(InventoryClickEvent event){
-        if(event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null || event.getClickedInventory().getTitle() == null)
+        if(event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null || event.getView().getTitle() == null)
             return;
         
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
@@ -154,7 +151,7 @@ public class ClickListener implements Listener{
         }
         if(name.equals("リソースパックをダウンロード / DOWNLOAD RESOURCEPACK"))
             player.setResourcePack(conf.getConfig().getString("ResourcePackURL"));
-        if(event.getClickedInventory().getTitle().equals("Gear")){
+        if(event.getView().getTitle().equals("Gear")){
             for(int i = 0; i <= 8;){
                 if(Gear.getGearName(i).equals(name)){
                     DataMgr.getPlayerData(player).setGearNumber(i);
@@ -164,7 +161,7 @@ public class ClickListener implements Listener{
                 }
                 i++;
             }
-        }else if(event.getClickedInventory().getTitle().equals("Gear shop")){
+        }else if(event.getView().getTitle().equals("Gear shop")){
             for(int i = 0; i <= 8;){
                 if(Gear.getGearName(i).equals(name)){
                     if(PlayerStatusMgr.getMoney(player) >= Gear.getGearPrice(i)){
@@ -182,7 +179,7 @@ public class ClickListener implements Listener{
                 i++;
             }
         }
-        if(event.getClickedInventory().getTitle().equals("Server List")){
+        if(event.getView().getTitle().equals("Server List")){
             for (ServerStatus ss : ServerStatusManager.serverList){
                 if(ss.getDisplayName().equals(name)){
                     if(ss.getRestartingServer()){
@@ -215,7 +212,7 @@ public class ClickListener implements Listener{
             }
         }
         
-        if(event.getClickedInventory().getTitle().equals("武器選択")){
+        if(event.getView().getTitle().equals("武器選択")){
             if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー") || name.equals("マニューバー")){
                 switch(name){
                     case"シューター":
@@ -345,7 +342,7 @@ public class ClickListener implements Listener{
             Sclat.sendMessage("ブキ[" + ChatColor.GOLD + name + ChatColor.RESET + "]を選択しました", MessageType.PLAYER, player);
         }
         
-        if(event.getClickedInventory().getTitle().equals("Shop")){
+        if(event.getView().getTitle().equals("Shop")){
             if(name.equals("装備選択へ戻る") || name.equals("戻る") || name.equals("シューター") || name.equals("ローラー") || name.equals("チャージャー") || name.equals("ブラスター") || name.equals("バーストシューター") || name.equals("スロッシャー") || name.equals("シェルター") || name.equals("ブラシ") || name.equals("スピナー") || name.equals("マニューバー")){
                 switch(name){
                     case"シューター":
@@ -406,7 +403,7 @@ public class ClickListener implements Listener{
             }
         }
         
-        if(event.getClickedInventory().getTitle().equals("Chose Target")){
+        if(event.getView().getTitle().equals("Chose Target")){
             if(name.equals("§r§6リスポーン地点へジャンプ")){
                 Location loc = Main.lobby.clone();
                 if(!conf.getConfig().getString("WorkMode").equals("Trial"))
@@ -439,7 +436,7 @@ public class ClickListener implements Listener{
         }
         
         
-        if(event.getClickedInventory().getTitle().equals("設定")){
+        if(event.getView().getTitle().equals("設定")){
             if(name.equals("戻る")){
                 OpenGUI.openMenu(player);
                 return;
@@ -458,8 +455,8 @@ public class ClickListener implements Listener{
                 case "スペシャルウエポンの範囲エフェクト":
                     DataMgr.getPlayerData(player).getSettings().S_ShowEffect_SPWeaponRegion();
                     break;
-                case "エリアの発光表示":
-                    DataMgr.getPlayerData(player).getSettings().S_ShowAreaRegion();
+                case "弾の表示":
+                    DataMgr.getPlayerData(player).getSettings().S_ShowSnowBall();
                     break;
                 case "BGM":
                     DataMgr.getPlayerData(player).getSettings().S_PlayBGM();
@@ -484,7 +481,7 @@ public class ClickListener implements Listener{
             String E_CL = DataMgr.getPlayerData(player).getSettings().ShowEffect_ChargerLine() ? "1" : "0";
             String E_CS = DataMgr.getPlayerData(player).getSettings().ShowEffect_SPWeapon() ? "1" : "0";
             String E_RR = DataMgr.getPlayerData(player).getSettings().ShowEffect_SPWeaponRegion() ? "1" : "0";
-            String E_RS = DataMgr.getPlayerData(player).getSettings().ShowAreaRegion() ? "1" : "0";
+            String E_RS = DataMgr.getPlayerData(player).getSettings().ShowSnowBall() ? "1" : "0";
             //String E_BGM = DataMgr.getPlayerData(player).getSettings().PlayBGM() ? "1" : "0";
             String E_B = DataMgr.getPlayerData(player).getSettings().ShowEffect_Bomb() ? "1" : "0";
             String E_BEx = DataMgr.getPlayerData(player).getSettings().ShowEffect_BombEx() ? "1" : "0";

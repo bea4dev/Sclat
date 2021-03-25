@@ -49,9 +49,6 @@ public class LobbyScoreboardRunnable extends BukkitRunnable {
     public void run() {
         objective.unregister();
         if(!player.isOnline()) cancel();
-        
-        objective = scoreboard.registerNewObjective("Lobby", player.getName(), "§6§lSclat §r" + Main.VERSION);
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     
         List<String> lines = new ArrayList<>();
         lines.add("§7§m                                  ");
@@ -66,10 +63,17 @@ public class LobbyScoreboardRunnable extends BukkitRunnable {
             if(!serverStatus.isOnline()) continue;
             
             String line = "";
-            if(serverStatus.getRunningMatch())
-                line = serverStatus.getPlayerCount() + "§e人が試合中 §r/ " + serverStatus.getUUIDList().size() + "§a人が待機中";
-            else
-                line = serverStatus.getUUIDList().size() + "§a人が開始待機中";
+            if(serverStatus.getRunningMatch()) {
+                long time = System.currentTimeMillis() / 1000 - serverStatus.getMatchStartTime();
+                String min = String.format("%02d", time%60);
+                line = serverStatus.getPlayerCount() + "§e人が試合中" + (time < 10000 ? " §r(" + time/60 + ":" + min + ")" : "");
+            }else {
+                if(serverStatus.getWaitingEndTime() != 0) {
+                    line = serverStatus.getPlayerCount() + "§a人が待機中" + " §r(§b" + (serverStatus.getWaitingEndTime() - (System.currentTimeMillis() / 1000) + "§r秒後に開始)");
+                }else{
+                    line = serverStatus.getPlayerCount() + "§a人が待機中";
+                }
+            }
             
             lines.add(" " + serverStatus.getDisplayName() + ": §r" + line);
         }
@@ -79,6 +83,8 @@ public class LobbyScoreboardRunnable extends BukkitRunnable {
         lines.add("   ");
         lines.add("§7§m                                  §r");
     
+        objective = scoreboard.registerNewObjective("Lobby", player.getName(), "§6§lSclat §r" + Main.VERSION);
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         ObjectiveUtil.setLine(objective, lines);
     }
 }

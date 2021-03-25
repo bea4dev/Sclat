@@ -20,6 +20,7 @@ public class RankMgr {
 
     private static final String[] ranks = {"C-", "C", "C+", "B-", "B",
                                         "B+", "A-", "A", "A+", "S", "S+"};
+    private static final int MAX_RATE = (ranks.length - 1) * 500;
     
     public static List<String> ranking = new ArrayList<>();
     public static List<String> killRanking = new ArrayList<>();
@@ -27,8 +28,34 @@ public class RankMgr {
 
     //レートを500単位で区切ってランク付けする
     public static String toABCRank(int ir){
-        int MaxRate = (ranks.length - 1) * 500;
-        return ir >= 0 ? ranks[ir <= MaxRate ? ir / 500 : ranks.length - 1] : "UnRanked";
+        return ir >= 0 ? ranks[ir <= MAX_RATE ? ir / 500 : ranks.length - 1] : "UnRanked";
+    }
+    
+    public static void addPlayerRankPoint(String uuid, int rankPoint){
+        if(rankPoint == 0) return;
+        
+        int rank = PlayerStatusMgr.getRank(uuid);
+    
+        int MAX_RATE = ranks.length * 500;
+        
+        if(rank >= MAX_RATE) {
+            if(rankPoint < 0){
+                double minusRate = (double)MAX_RATE / ((double)MAX_RATE - (double)rank);
+                int minus = (int)((double)rankPoint * minusRate);
+                PlayerStatusMgr.addRank(uuid, -minus);
+            }
+            return;
+        }
+        
+        if(rankPoint > 0){
+            double plusRate = ((double)MAX_RATE - (double)rank) / (double)MAX_RATE;
+            int plus = (int)((double)rankPoint * plusRate);
+            PlayerStatusMgr.addRank(uuid, plus);
+        }else{
+            double minusRate = (double)MAX_RATE / ((double)MAX_RATE - (double)rank);
+            int minus = (int)((double)rankPoint * minusRate);
+            PlayerStatusMgr.addRank(uuid, minus);
+        }
     }
     
     public static void makeRankingAsync(){

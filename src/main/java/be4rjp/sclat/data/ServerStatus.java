@@ -28,7 +28,11 @@ public class ServerStatus {
     private boolean restartingServer = false;
     private String mapName = "";
     private boolean maintenance = false;
-    private List<String> uuidList = new ArrayList<>();
+    private List<String> uuidList;
+    private long waitingEndTime = 0;
+    private long matchStartTime = 0;
+    
+    private MatchServerRunnable matchServerRunnable;
     
     public ServerStatus(String serverName, String displayName, String host, int port, int maxPlayer, int period, Block sign, String info){
         this.serverName = serverName;
@@ -39,6 +43,9 @@ public class ServerStatus {
         this.maxPlayer = maxPlayer;
         this.sign = sign;
         this.info = info;
+        this.uuidList = new ArrayList<>();
+        
+        this.matchServerRunnable = new MatchServerRunnable(this);
         
         this.task = new BukkitRunnable() {
             @Override
@@ -109,6 +116,10 @@ public class ServerStatus {
     
     public List<String> getUUIDList() {return uuidList;}
     
+    public long getMatchStartTime() {return matchStartTime;}
+    
+    public long getWaitingEndTime() {return waitingEndTime;}
+    
     public boolean isMaintenance(){return this.maintenance;}
     
     public boolean isOnline(){return this.online;}
@@ -120,6 +131,10 @@ public class ServerStatus {
     public void setMapName(String name){this.mapName = name;}
     
     public void setMaintenance(boolean is){this.maintenance = is;}
+    
+    public void setMatchStartTime(long matchStartTime) {this.matchStartTime = matchStartTime;}
+    
+    public void setWaitingEndTime(long waitingEndTime) {this.waitingEndTime = waitingEndTime;}
     
     public void stopTask(){this.task.cancel();}
     

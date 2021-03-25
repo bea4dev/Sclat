@@ -1,10 +1,10 @@
 
 package be4rjp.sclat.raytrace;
-import net.minecraft.server.v1_13_R2.AxisAlignedBB;
+import net.minecraft.server.v1_14_R1.AxisAlignedBB;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 
 public class BoundingBox {
 

@@ -19,23 +19,23 @@ import be4rjp.sclat.manager.WeaponClassMgr;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
-import net.minecraft.server.v1_13_R2.EnumItemSlot;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityEquipment;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
-import net.minecraft.server.v1_13_R2.WorldServer;
+import net.minecraft.server.v1_14_R1.EntityArmorStand;
+import net.minecraft.server.v1_14_R1.EnumItemSlot;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityEquipment;
+import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_14_R1.PlayerConnection;
+import net.minecraft.server.v1_14_R1.WorldServer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -62,7 +62,7 @@ public class JetPack {
         
         BukkitRunnable task = new BukkitRunnable(){
             Player p = player;
-            Location ol = player.getLocation();
+            Location ol = DataMgr.getPlayerData(player).getPlayerGroundLocation();
             int i = 0;
             int id = 0;
             Location btl = player.getLocation();
@@ -77,7 +77,7 @@ public class JetPack {
                 armorStand.setSmall(true);
                 armorStand.setVisible(false);
                 armorStand.setBasePlate(false);
-                armorStand.setMarker(true);
+                //armorStand.setMarker(true);
             });
             List<ArmorStand> list = new ArrayList<ArmorStand>();
             
@@ -110,12 +110,13 @@ public class JetPack {
                 Vector d_WASDVector = (new Vector(pvec.getZ(), 0, pvec.getX() * -1)).multiply(vec.getZ());
                 Vector xzVector = w_WASDVector.add(d_WASDVector);
                 Vector moveVector = new Vector(xzVector.getX(), onBlock ? (i >= 30 ? vec.getY() + 0.1 : 0.7) : -0.5, xzVector.getZ()).multiply(0.3);
-                if((vehicleVector.clone().add(moveVector)).lengthSquared() <= 0.2){
+                if((vehicleVector.clone().add(moveVector)).lengthSquared() <= 0.19){
                     vehicleVector.add(moveVector);
                     vehicleVector = vehicleVector.multiply(0.9);
                 }
                 leader.setVelocity(vehicleVector);
                 //as.teleport(as.getLocation().add(vehicleVector));
+                
                 
                 if(!as.getPassengers().contains(p)){
                     as.addPassenger(p);
@@ -160,7 +161,7 @@ public class JetPack {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
                         if(o_player.getWorld() == position.getWorld()){
-                            if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            if(o_player.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
                                 for(int i = 0; i <= 10; i++) {
                                     double random = 0.015;
                                     o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
@@ -174,7 +175,7 @@ public class JetPack {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
                         if(o_player.getWorld() == position.getWorld()){
-                            if(o_player.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                            if(o_player.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
                                 for(int i = 0; i <= 10; i++) {
                                     double random = 0.015;
                                     o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
@@ -201,7 +202,7 @@ public class JetPack {
                     player.updateInventory();
                     
                     WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
-                    EntityArmorStand as = new EntityArmorStand(nmsWorld);
+                    EntityArmorStand as = new EntityArmorStand(nmsWorld, ol.getX(), ol.getY(), ol.getZ());
                     as.setPosition(ol.getX(), ol.getY(), ol.getZ());
                     as.setInvisible(true);
                     as.setNoGravity(true);
@@ -222,7 +223,7 @@ public class JetPack {
                 //p.sendMessage(String.valueOf(sv.getX() + ", " + sv.getY() + ", " + sv.getZ()));
                 btl = p.getLocation();
 
-                if(i == 170 || p.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(p).isInMatch()){
+                if(i == 170 || p.getGameMode().equals(GameMode.SPECTATOR) || !DataMgr.getPlayerData(p).isInMatch() || DataMgr.getPlayerData(p).getIsDead()){
                     if(as.getPassengers().contains(p))
                         as.removePassenger(p);
                     as.remove();
@@ -251,6 +252,7 @@ public class JetPack {
                     DataMgr.getPlayerData(p).setIsUsingSP(false);
                     bsObject.remove();
                     p.setFlySpeed(0.1F);
+                    DataMgr.getPlayerData(player).setCanUseSubWeapon(true);
                     //WeaponClassMgr.setWeaponClass(p);
                     cancel();
                     return;
@@ -309,7 +311,7 @@ public class JetPack {
                         if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeapon())
                             continue;
                             if(target.getWorld() == ball.getWorld()){
-                                if(target.getLocation().distance(ball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                if(target.getLocation().distance(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
                                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                                     target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);
                                 }
@@ -379,7 +381,7 @@ public class JetPack {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon()){
                             if(o_player.getWorld() == drop.getLocation().getWorld()) {
-                                if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                if (o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }

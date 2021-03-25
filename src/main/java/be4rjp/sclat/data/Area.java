@@ -8,17 +8,16 @@ import be4rjp.sclat.Sclat;
 import be4rjp.sclat.manager.PaintMgr;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.server.v1_13_R2.EntityShulker;
-//import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_14_R1.EntityShulker;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftShulker;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftShulker;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Shulker;
@@ -35,6 +34,8 @@ public class Area {
     private final Location to;
     private Match match;
     private Team team = null;
+    private org.bukkit.scoreboard.Team colorTeam0;
+    private org.bukkit.scoreboard.Team colorTeam1;
     private BukkitRunnable task;
     private List<Shulker> slist = new ArrayList<>();
     private List<Block> blist = new ArrayList<>();
@@ -42,6 +43,15 @@ public class Area {
     
     public Area(Location from, Location to){this.from = from; this.to = to;}
     
+    public void setupAreaTeam(){
+        colorTeam0 = match.getTeam0().getTeam().getScoreboard().registerNewTeam("ColorTeam0" + Main.getNotDuplicateNumber());
+        colorTeam0.setCanSeeFriendlyInvisibles(false);
+        colorTeam0.setColor(match.getTeam0().getTeamColor().getChatColor());
+    
+        colorTeam1 = match.getTeam0().getTeam().getScoreboard().registerNewTeam("ColorTeam1" + Main.getNotDuplicateNumber());
+        colorTeam1.setCanSeeFriendlyInvisibles(false);
+        colorTeam1.setColor(match.getTeam1().getTeamColor().getChatColor());
+    }
     
     public void setup(Match match){
         this.match = match;
@@ -55,14 +65,15 @@ public class Area {
                 if(!loc.getBlock().getType().equals(Material.AIR))
                     this.blist.add(loc.getBlock());
                 if(x == this.from.getBlockX() || x == this.to.getBlockX() || z == this.from.getBlockZ() || z == this.to.getBlockZ()){
-                    Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc.clone().add(0, -0.1, 0), EntityType.SHULKER);
+                    Shulker sl = (Shulker)this.from.getWorld().spawnEntity(loc.clone().add(0, 0, 0), EntityType.SHULKER);
                     sl.setAI(false);
                     sl.setGravity(false);
-                    sl.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4000, 1));
-                    EntityShulker esl = ((CraftShulker)sl).getHandle();
-                    esl.setFlag(5, true);
+                    sl.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4000, 1, false, false));
+                    sl.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 4000, 1, false, false));
+                    //EntityShulker esl = ((CraftShulker)sl).getHandle();
+                    //esl.setFlag(5, true);
                     this.slist.add(sl);
-
+                    /*
                     BukkitRunnable task = new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -74,6 +85,8 @@ public class Area {
                         }
                     };
                     task.runTaskLater(Main.getPlugin(), 40);
+                    
+                     */
                 }
                 /*
                 for(Shulker sl : this.slist){
@@ -92,13 +105,14 @@ public class Area {
             @Override
             public void run(){
                 //エリアの発光表示
+                /*
                 for(Shulker sl : slist) {
                     for (Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()) {
                         if (DataMgr.getPlayerData(oplayer).getSettings().ShowAreaRegion()) {
                             GlowingAPI.setGlowing(sl, oplayer, true);
                         }
                     }
-                }
+                }*/
                 
                 //エリア処理
                 int t0c = 0;
@@ -179,17 +193,7 @@ public class Area {
     
     public void stop(){
         this.task.cancel();
-        /*
-        for(Shulker sl : this.slist){
-            Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
-            if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
-                b.setType(Material.AIR);
-                DataMgr.rblist.remove(b);
-            }
-            sl.remove();
-        }
-        
-         */
+        this.slist.forEach(sl -> sl.remove());
         this.slist.clear();
     }
     
@@ -204,60 +208,23 @@ public class Area {
         }
         
         for(Shulker sl : this.slist){
-            /*
-            Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
-            if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
-                String mname = team.getTeamColor().getWool().toString();
-                String name = mname.replaceAll("WOOL", "CARPET");
-                match.getBlockUpdater().setBlock(b, Material.getMaterial(name));
+            if(match.getTeam0() == team){
+                colorTeam0.addEntry(sl.getUniqueId().toString());
+            }else{
+                colorTeam1.addEntry(sl.getUniqueId().toString());
             }
-             */
-            /*
-            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                    EntityShulker esl = ((CraftShulker)sl).getHandle(); 
-                    ((CraftPlayer)oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(esl));
-                }
-            }
-            ShulkerDestroyRunnable(sl);
-            */
-            this.team.getTeam().addEntry(sl.getUniqueId().toString());
+            //this.team.getTeam().addEntry(sl.getUniqueId().toString());
         }
     }
     
-    /*
-    private void ShulkerDestroyRunnable(Shulker sl){
-        BukkitRunnable task = new BukkitRunnable(){
-            @Override
-            public void run(){
-                for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                    if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                        ((CraftPlayer)oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(sl.getEntityId()));
-                    }
-                }
-            }
-        };
-        task.runTaskLater(Main.getPlugin(), 20);
-    }*/
-    
     public void removeColor(){
         for(Shulker sl : this.slist){
-            this.team.getTeam().removeEntry(sl.getUniqueId().toString());
-            /*
-            Block b = sl.getLocation().getBlock().getRelative(BlockFace.UP);
-            if(b.getType().equals(Material.AIR) || b.getType().toString().contains("CARPET")){
-                match.getBlockUpdater().setBlock(b, Material.WHITE_CARPET);
+            if(match.getTeam0() == team){
+                colorTeam0.removeEntry(sl.getUniqueId().toString());
+            }else{
+                colorTeam1.removeEntry(sl.getUniqueId().toString());
             }
-             */
-            /*
-            for(Player oplayer : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
-                if(DataMgr.getPlayerData(oplayer).isInMatch()){
-                    EntityShulker esl = ((CraftShulker)sl).getHandle(); 
-                    ((CraftPlayer)oplayer).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(esl));
-                }
-            }
-            ShulkerDestroyRunnable(sl);
-            */
+            //this.team.getTeam().removeEntry(sl.getUniqueId().toString());
         }
     }
 }

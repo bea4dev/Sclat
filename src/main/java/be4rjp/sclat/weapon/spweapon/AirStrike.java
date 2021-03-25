@@ -40,7 +40,7 @@ public class AirStrike {
     public static void AirStrikeRunnable(Player player){
         Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
         player.getInventory().clear();
-        SPWeaponMgr.setSPCoolTimeAnimation(player, 160);
+        SPWeaponMgr.setSPCoolTimeAnimation(player, 200);
         
         BukkitRunnable clear = new BukkitRunnable(){
             @Override
@@ -72,10 +72,10 @@ public class AirStrike {
             @Override
             public void run(){
                 if(c == 0) DataMgr.getPlayerData(player).setIsUsingSP(true);
-                final double random = 17;
+                final double random = 18;
                 Location loc = new Location(ploc.getWorld(), ploc.getBlockX() + vec.getBlockX() + (Math.random() * random - random/2), y + 50, ploc.getBlockZ() + vec.getBlockZ() + (Math.random() * random - random/2));
                 StrikeRunnable(player, loc);
-                if(c == 10 || !DataMgr.getPlayerData(player).isInMatch()){
+                if(c == 15 || !DataMgr.getPlayerData(player).isInMatch()){
                     //player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1, 2);
                     cancel();
                 }

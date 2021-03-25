@@ -15,18 +15,17 @@ import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.Gear;
 import java.util.ArrayList;
 import java.util.List;
-import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  *
@@ -543,6 +542,11 @@ public class OpenGUI {
             shooter_r.add("§a§l[Enable]");
         else
             shooter_r.add("§7§l[Disable]");
+        shooter_r.add("");
+        shooter_r.add("§b[INFO]§r");
+        shooter_r.add("メインウエポンの弾の軌跡にインクのエフェクトを描画します。");
+        shooter_r.add("無効化するとクライアントのパーティクル描画負担と");
+        shooter_r.add("通信量を削減することができます。");
         shooter_m.setLore(shooter_r);
         shooter.setItemMeta(shooter_m);
         inv.setItem(9, shooter);
@@ -574,6 +578,12 @@ public class OpenGUI {
             charger_r.add("§a§l[Enable]");
         else
             charger_r.add("§7§l[Disable]");
+        charger_r.add("");
+        charger_r.add("§b[INFO]§r");
+        charger_r.add("他のプレイヤーがチャージして狙っているときに");
+        charger_r.add("方向と射撃距離を表すレーザーを描画します。");
+        charger_r.add("無効化するとクライアントのパーティクル描画負担と");
+        charger_r.add("通信量を削減することができます。");
         charger_m.setLore(charger_r);
         charger.setItemMeta(charger_m);
         inv.setItem(10, charger);
@@ -605,6 +615,12 @@ public class OpenGUI {
             chargerS_r.add("§a§l[Enable]");
         else
             chargerS_r.add("§7§l[Disable]");
+        chargerS_r.add("");
+        chargerS_r.add("§b[INFO]§r");
+        chargerS_r.add("プレイヤーがスペシャルウエポンを使用しているときに");
+        chargerS_r.add("演出用のエフェクトを描画します。");
+        chargerS_r.add("無効化するとクライアントのパーティクル描画負担と");
+        chargerS_r.add("通信量を削減することができます。");
         chargerS_m.setLore(chargerS_r);
         chargerS.setItemMeta(chargerS_m);
         inv.setItem(11, chargerS);
@@ -635,6 +651,13 @@ public class OpenGUI {
             rollaerL_r.add("§a§l[Enable]");
         else
             rollaerL_r.add("§7§l[Disable]");
+        rollaerL_r.add("");
+        rollaerL_r.add("§b[INFO]§r");
+        rollaerL_r.add("プレイヤーがスペシャルウエポンを使用しているときに");
+        rollaerL_r.add("スペシャルウエポンの効果範囲を表すエフェクトを描画します。");
+        rollaerL_r.add("無効化するとクライアントのパーティクル描画負担と");
+        rollaerL_r.add("通信量を削減することができますが");
+        rollaerL_r.add("スペシャルウエポンの効果範囲を把握しづらくなります。");
         rollaerL_m.setLore(rollaerL_r);
         rollaerL.setItemMeta(rollaerL_m);
         inv.setItem(12, rollaerL);
@@ -657,27 +680,32 @@ public class OpenGUI {
         
         
         
-        ItemStack rollerS = new ItemStack(Material.GLASS_PANE);
+        ItemStack rollerS = new ItemStack(Material.SNOWBALL);
         ItemMeta rollerS_m = rollerS.getItemMeta();
-        rollerS_m.setDisplayName("エリアの発光表示");
+        rollerS_m.setDisplayName("弾の表示");
         ArrayList<String> rollerS_r = new ArrayList<String>();
-        if(DataMgr.getPlayerData(player).getSettings().ShowAreaRegion())
+        if(DataMgr.getPlayerData(player).getSettings().ShowSnowBall())
             rollerS_r.add("§a§l[Enable]");
         else
             rollerS_r.add("§7§l[Disable]");
+        rollerS_r.add("");
+        rollerS_r.add("§b[INFO]§r");
+        rollerS_r.add("メインウエポンから発射された弾を描画します。");
+        rollerS_r.add("無効化するとクライアントのエンティティ描画負担と");
+        rollerS_r.add("通信量を削減することができます。");
         rollerS_m.setLore(rollerS_r);
         rollerS.setItemMeta(rollerS_m);
         inv.setItem(13, rollerS);
         
         ItemStack rollerS_p;
-        if(DataMgr.getPlayerData(player).getSettings().ShowAreaRegion())
+        if(DataMgr.getPlayerData(player).getSettings().ShowSnowBall())
             rollerS_p = new ItemStack(Material.LIME_DYE);
         else
             rollerS_p = new ItemStack(Material.GUNPOWDER);
         ItemMeta rollerS_p_m = rollerS_p.getItemMeta();
-        rollerS_p_m.setDisplayName("エリアの発光表示");
+        rollerS_p_m.setDisplayName("弾の表示");
         ArrayList<String> rollerS_p_r = new ArrayList<String>();
-        if(DataMgr.getPlayerData(player).getSettings().ShowAreaRegion())
+        if(DataMgr.getPlayerData(player).getSettings().ShowSnowBall())
             rollerS_p_r.add("§a§l[Enable]");
         else
             rollerS_p_r.add("§7§l[Disable]");
@@ -728,6 +756,11 @@ public class OpenGUI {
             bomb_r.add("§a§l[Enable]");
         else
             bomb_r.add("§7§l[Disable]");
+        bomb_r.add("");
+        bomb_r.add("§b[INFO]§r");
+        bomb_r.add("サブウエポン等の投擲武器の軌跡にエフェクトを描画します。");
+        bomb_r.add("無効化するとクライアントのパーティクル描画負担と");
+        bomb_r.add("通信量を削減することができます。");
         bomb_m.setLore(bomb_r);
         bomb.setItemMeta(bomb_m);
         inv.setItem(14, bomb);
@@ -757,6 +790,11 @@ public class OpenGUI {
             bombEx_r.add("§a§l[Enable]");
         else
             bombEx_r.add("§7§l[Disable]");
+        bombEx_r.add("");
+        bombEx_r.add("§b[INFO]§r");
+        bombEx_r.add("ボム等の爆発エフェクトを描画します。");
+        bombEx_r.add("無効化するとクライアントのパーティクル描画負担と");
+        bombEx_r.add("通信量を削減することができます。");
         bombEx_m.setLore(bombEx_r);
         bombEx.setItemMeta(bombEx_m);
         inv.setItem(15, bombEx);
@@ -786,6 +824,10 @@ public class OpenGUI {
             ck_r.add("§a§l[Enable]");
         else
             ck_r.add("§7§l[Disable]");
+        ck_r.add("");
+        ck_r.add("§b[INFO]§r");
+        ck_r.add("チャージャー等のチャージキープ機能を発動できるようになります。");
+        ck_r.add("(チャージキープは十分チャージした後にイカ状態に切り替えると発動します。)");
         ck_m.setLore(ck_r);
         ck.setItemMeta(ck_m);
         inv.setItem(16, ck);

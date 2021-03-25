@@ -17,10 +17,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -67,7 +70,8 @@ public class Blaster {
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
-        player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
+        ((CraftSnowball)ball).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
         int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
@@ -103,7 +107,7 @@ public class Blaster {
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
                         if(o_player.getWorld() == inkball.getWorld())
-                            if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                            if(o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                 }
 
@@ -116,6 +120,9 @@ public class Blaster {
                     
                     //爆発エフェクト
                     Sclat.createInkExplosionEffect(inkball.getLocation(), maxDist, 25, player);
+                    
+                    //バリアをはじく
+                    Sclat.repelBarrier(inkball.getLocation(), maxDist, player);
                     
                     //塗る
                     for(int i = 0; i <= maxDist - 1; i++){

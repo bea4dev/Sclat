@@ -116,7 +116,7 @@ public class ServerStatusManager {
                 }
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 60);
+        task.runTaskTimer(Main.getPlugin(), 0, 40);
     }
     
     public static void openServerList(Player player){player.openInventory(inv);}

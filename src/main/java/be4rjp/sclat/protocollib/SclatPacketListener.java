@@ -10,8 +10,9 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
+import net.minecraft.server.v1_14_R1.EntityArmorStand;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -45,7 +46,6 @@ public class SclatPacketListener {
     
                         Vector vec = new Vector(x, y, z);
                         DataMgr.getPlayerData(player).setVehicleVector(vec);
-                
                     }
                 }
         });
@@ -75,5 +75,26 @@ public class SclatPacketListener {
                     }
                 }
         });
+    
+    /*
+        Main.protocolManager.addPacketListener(
+            new PacketAdapter(Main.getPlugin(), PacketType.Play.Server.SPAWN_ENTITY){
+                @Override
+                public void onPacketReceiving(PacketEvent event) {//雪玉のスポーンパケットを遮断
+                    final Player player = event.getPlayer();
+                    if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
+                        final PacketContainer packet = event.getPacket();
+                        
+                        packet.g
+                    
+                        if(packet.getEntityTypeModifier().readSafely(0) == EntityType.SNOWBALL){
+                            if(!DataMgr.getPlayerData(player).getSettings().ShowSnowBall())
+                                event.setCancelled(true);
+                        }
+                    }
+                }
+        });
+        
+     */
     }
 }

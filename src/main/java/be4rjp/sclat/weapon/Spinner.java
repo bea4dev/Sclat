@@ -15,6 +15,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
@@ -134,7 +136,8 @@ public class Spinner {
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
-        player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
+        ((CraftSnowball)ball).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1.1F);
                 Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed() * charge);
                 double random = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getRandom();
                 int distick = DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getDistanceTick();
@@ -160,22 +163,25 @@ public class Spinner {
                         inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
                         if(!inkball.equals(ball)){
-                            i+=DataMgr.getSnowballHitCount(name);
+                            i+=DataMgr.getSnowballHitCount(name) - 1;
                             DataMgr.setSnowballHitCount(name, 0);
                         }
-                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                        for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
-                                if(o_player.getWorld() == inkball.getWorld())
-                                    if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                        o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
+    
+                        if(i != 0) {
+                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                            for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                                if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
+                                    if (o_player.getWorld() == inkball.getWorld())
+                                        if (o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                            o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
+                            }
                         }
                         
                         if(i >= tick && !addedFallVec){
                             inkball.setVelocity(fallvec);
                             addedFallVec = true;
                         }
-                        if(i >= tick)
+                        if(i >= tick && i <= tick + 15)
                             inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                         if(i != tick)
                             PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);

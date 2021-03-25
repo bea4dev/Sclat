@@ -7,7 +7,7 @@ import be4rjp.sclat.ServerType;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.weapon.Gear;
-import net.minecraft.server.v1_13_R2.EntitySquid;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,7 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -24,13 +24,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityTeleport;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftSquid;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSquid;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.Squid;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
@@ -53,6 +50,11 @@ public class SquidMgr {
             @Override
             public void run(){
                 PlayerData data = DataMgr.getPlayerData(p);
+    
+                if(!p.isOnline()){
+                    cancel();
+                }
+                
                 if(!data.isInMatch()){
                     if(p.hasPotionEffect(PotionEffectType.REGENERATION))
                         p.removePotionEffect(PotionEffectType.REGENERATION);
@@ -79,10 +81,6 @@ public class SquidMgr {
                     }
                     return;
                 }
-                
-                //プレイヤーが最後に立っていた地面を記録する
-                if(p.isOnGround())
-                    data.setPlayerGroundLocation(p.getLocation());
                 
                 //Sponge
                 Location pl = p.getLocation().add(0, 0.5, 0);
@@ -158,11 +156,23 @@ public class SquidMgr {
                         p.setFlySpeed(0.1F);
                     
                     if(p.getExp() <= (0.99F - (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)))){
-                        p.setExp(p.getExp() + (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)));
+                        if(data.getCanUseSubWeapon())
+                            p.setExp(p.getExp() + (float)(conf.getConfig().getDouble("SquidRecovery") * Gear.getGearInfluence(p, Gear.Type.INK_RECOVERY_UP)));
                     }
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 200, 3));
                     //p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 200, 1));
-                    p.setSprinting(true);
+                    
+                    Location loc = p.getLocation();
+                    Location gro = data.getPlayerGroundLocation();
+                    if(gro == null) gro = loc;
+                    if(loc.getX() != gro.getX() || loc.getX() != gro.getX() || loc.getX() != gro.getX()) {
+                        p.setSprinting(true);
+                        org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                        p.getLocation().getWorld().spawnParticle(org.bukkit.Particle.BLOCK_DUST, p.getLocation(), 2, 0.1, 0.1, 0.1, 1, bd);
+                    }else {
+                        p.setSprinting(false);
+                    }
+                    
                     double speed = conf.getConfig().getDouble("SquidSpeed") * Gear.getGearInfluence(p, Gear.Type.IKA_SPEED_UP);
     
                     if(data.getSpeed() != 0)
@@ -172,7 +182,6 @@ public class SquidMgr {
                         p.setWalkSpeed((float)speed);
                     else
                         p.setWalkSpeed((float)(speed - speed / 3));
-                        
                         
                     
                 }else{
@@ -219,10 +228,10 @@ public class SquidMgr {
                     }
                     
                 }
-                
-                if(!p.isOnline()){
-                    cancel();
-                }
+    
+                //プレイヤーが最後に立っていた地面を記録する
+                if(p.isOnGround())
+                    data.setPlayerGroundLocation(p.getLocation());
             } 
         };
         task.runTaskTimer(Main.getPlugin(), 0, 2);
@@ -271,8 +280,8 @@ public class SquidMgr {
             boolean is4 = true;
             boolean set = false;
             boolean death = false;
-            net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
-            EntitySquid es = new EntitySquid(nmsWorld);
+            net.minecraft.server.v1_14_R1.World nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
+            EntitySquid es = new EntitySquid(EntityTypes.SQUID, nmsWorld);
             
             @Override
             public void run() {

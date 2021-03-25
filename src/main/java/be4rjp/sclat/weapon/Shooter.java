@@ -11,15 +11,18 @@ import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.server.v1_13_R2.EntityPlayer;
+import net.minecraft.server.v1_14_R1.EntityPlayer;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -135,7 +138,7 @@ public class Shooter {
                                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                     if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()) {
                                         if (o_player.getWorld() == location.getWorld()) {
-                                            if (o_player.getLocation().distance(location) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                                            if (o_player.getLocation().distance(location) < Main.PARTICLE_RENDER_DISTANCE) {
                                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
                                                         location.clone().add(0, 0.7, 0).add(randomVector.getX(), randomVector.getY(), randomVector.getZ()),
                                                         0, erv.getX(), erv.getY(), erv.getZ(), 1, bd);
@@ -255,7 +258,8 @@ public class Shooter {
         PaintMgr.PaintHightestBlock(player.getLocation(), player, true, true);
                     
         Snowball ball = player.launchProjectile(Snowball.class);
-        player.playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
+        ((CraftSnowball)ball).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIG_STEP, 0.3F, 1F);
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         double random = data.getWeaponClass().getMainWeapon().getRandom();
         if(maxRandom) random = data.getWeaponClass().getMainWeapon().getMaxRandom();
@@ -288,23 +292,25 @@ public class Shooter {
                 inkball = DataMgr.getMainSnowballNameMap().get(name);
                 
                 if(!inkball.equals(ball)){
-                    i+=DataMgr.getSnowballHitCount(name);
+                    i+=DataMgr.getSnowballHitCount(name) - 1;
                     DataMgr.setSnowballHitCount(name, 0);
                 }
-                
-                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
-                        if(o_player.getWorld() == inkball.getWorld())
-                            if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
-                                o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
+    
+                if(i != 0) {
+                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
+                            if (o_player.getWorld() == inkball.getWorld())
+                                if (o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                    o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
+                    }
                 }
                 
                 if(i >= tick && !addedFallVec){
                     inkball.setVelocity(fallvec);
                     addedFallVec = true;
                 }
-                if(i >= tick)
+                if(i >= tick && i <= tick + 15)
                     inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                 //if(i != tick)
                 if((new Random().nextInt(7)) == 0)

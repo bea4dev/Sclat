@@ -77,7 +77,7 @@ public class SuperTyakuti {
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon() && !o_player.equals(player)){
                                 if(o_player.getWorld() == player.getWorld()){
-                                    if(o_player.getLocation().distance(player.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                    if(o_player.getLocation().distance(player.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor(), 1);
                                         o_player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(0, -0.5, 0), 5, 0.5, 0.4, 0.5, 5, dustOptions);
                                     }
@@ -104,7 +104,7 @@ public class SuperTyakuti {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeaponRegion()){
                                 for(Location loc : s_locs){
                                     if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                        if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
                                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                                             o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
                                         }

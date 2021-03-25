@@ -8,16 +8,16 @@ import static be4rjp.sclat.manager.PlayerStatusMgr.getLv;
 import static be4rjp.sclat.manager.PlayerStatusMgr.getMoney;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
-import net.minecraft.server.v1_13_R2.EntityEnderPearl;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityVelocity;
-import net.minecraft.server.v1_13_R2.PacketPlayOutMount;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntity;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_13_R2.World;
-import net.minecraft.server.v1_13_R2.WorldServer;
+import net.minecraft.server.v1_14_R1.EntityArmorStand;
+import net.minecraft.server.v1_14_R1.EntityEnderPearl;
+import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityVelocity;
+import net.minecraft.server.v1_14_R1.PacketPlayOutMount;
+import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_14_R1.World;
+import net.minecraft.server.v1_14_R1.WorldServer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -27,9 +27,9 @@ import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -125,7 +125,7 @@ public class SuperJumpMgr {
                     WeaponClassMgr.setWeaponClass(p);
                     p.closeInventory();
                     p.getInventory().setHeldItemSlot(0);
-                    p.teleport(toloc.clone().add(0, 5, 0));
+                    p.teleport(toloc.clone().add(0, 4, 0));
                     DataMgr.getPlayerData(player).setIsJumping(false);
                     cancel();
                 }
@@ -148,7 +148,7 @@ public class SuperJumpMgr {
             public void run(){
                 if(c == 0){
                     WorldServer nmsWorld = ((CraftWorld) p.getWorld()).getHandle();
-                    EntityArmorStand as = new EntityArmorStand(nmsWorld);
+                    EntityArmorStand as = new EntityArmorStand(nmsWorld, toloc.getX(), toloc.getY(), toloc.getZ());
                     as.setPosition(toloc.getX(), toloc.getY(), toloc.getZ());
                     as.setInvisible(true);
                     as.setNoGravity(true);

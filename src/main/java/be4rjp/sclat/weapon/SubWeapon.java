@@ -6,6 +6,8 @@ import be4rjp.sclat.Main;
 import static be4rjp.sclat.Main.conf;
 import be4rjp.sclat.data.DataMgr;
 import be4rjp.sclat.data.PlayerData;
+import be4rjp.sclat.manager.MainWeaponMgr;
+import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.SubWeaponMgr;
 import be4rjp.sclat.raytrace.RayTrace;
 import be4rjp.sclat.weapon.subweapon.QuickBomb;
@@ -20,9 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerAnimationEvent;
-import org.bukkit.event.player.PlayerAnimationType;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.util.Vector;
 
 
@@ -63,5 +63,26 @@ public class SubWeapon implements Listener{
             if(DataMgr.getPlayerData(player).isInMatch())
                 SubWeaponMgr.UseSubWeapon(player, DataMgr.getPlayerData(player).getWeaponClass().getSubWeaponName());
         }
+    }
+    
+    @EventHandler
+    public void PlayerRightClick(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
+        
+        SubWeaponMgr.UseSubWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+    }
+    
+    @EventHandler
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
+        Player player = event.getPlayer();
+        if(player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getItemMeta() == null || player.getInventory().getItemInMainHand().getItemMeta().getDisplayName() == null)
+            return;
+        if(!DataMgr.getPlayerData(player).isInMatch()) return;
+    
+        SubWeaponMgr.UseSubWeapon(player, player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
     }
 }

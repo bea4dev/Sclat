@@ -9,8 +9,11 @@ import be4rjp.sclat.manager.PaintMgr;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -57,6 +60,7 @@ public class Bucket {
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
+        ((CraftSnowball)ball).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())));
         Vector vec = player.getLocation().getDirection().multiply(DataMgr.getPlayerData(player).getWeaponClass().getMainWeapon().getShootSpeed());
         if(v != null)
             vec = v;
@@ -81,18 +85,20 @@ public class Bucket {
             public void run(){
                 inkball = DataMgr.getMainSnowballNameMap().get(name);
                         
-                    if(!inkball.equals(ball)){
-                        i+=DataMgr.getSnowballHitCount(name);
-                        DataMgr.setSnowballHitCount(name, 0);
-                    }
-                    
-                for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                    if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
-                        continue;
-                    if(target.getWorld() == inkball.getWorld()){
-                        if(target.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
-                            org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                            target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                if(!inkball.equals(ball)){
+                    i+=DataMgr.getSnowballHitCount(name) - 1;
+                    DataMgr.setSnowballHitCount(name, 0);
+                }
+                if(i != 0) {
+                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if (target.getWorld() != p.getWorld()) continue;
+                        if (!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
+                            continue;
+                        if (target.getWorld() == inkball.getWorld()) {
+                            if (target.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
+                                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
+                            }
                         }
                     }
                 }
@@ -101,7 +107,7 @@ public class Bucket {
                     inkball.setVelocity(fallvec);
                     addedFallVec = true;
                 }
-                if(i >= tick)
+                if(i >= tick && i <= tick + 15)
                     inkball.setVelocity(inkball.getVelocity().add(new Vector(0, -0.1, 0)));
                 if(i != tick)
                     PaintMgr.PaintHightestBlock(inkball.getLocation(), p, true, true);

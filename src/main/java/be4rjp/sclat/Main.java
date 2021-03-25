@@ -88,6 +88,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     public static List<String> modList = new ArrayList<>();
     
+    
+    public static double PARTICLE_RENDER_DISTANCE = 0;
+    
 
     @Override
     public void onEnable() {
@@ -146,6 +149,8 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             tutorial = conf.getConfig().getBoolean("Tutorial");
         if(conf.getConfig().contains("Colors"))
             colors = conf.getConfig().getStringList("Colors");
+        
+        PARTICLE_RENDER_DISTANCE = conf.getConfig().getDouble("ParticlesRenderDistance");
         //-------------------------------------------------------------------
         
         
@@ -376,14 +381,13 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         
         //------------------------Tutorial wire mesh-------------------------
-        /*
         if(Main.tutorial){
             for(MapData mData : DataMgr.maplist) {
                 for(Wiremesh wiremesh : mData.getWiremeshListTask().getWiremeshsList()){
                     wiremesh.startTask();
                 }
             }
-        }*/
+        }
         //-------------------------------------------------------------------
     
     

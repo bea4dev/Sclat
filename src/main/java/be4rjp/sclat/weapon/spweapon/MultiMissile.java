@@ -15,20 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
-import net.minecraft.server.v1_13_R2.EntitySquid;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
-import net.minecraft.server.v1_13_R2.WorldServer;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -76,7 +70,7 @@ public class MultiMissile {
                         for(Player op : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                             if(DataMgr.getPlayerData(op).isInMatch() && op.getWorld() == p.getWorld() && !op.getName().equals(p.getName()) && DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(op).getTeam()){
                                 Location loc = op.getLocation();
-                                EntitySquid es = new EntitySquid(nmsWorld);
+                                EntitySquid es = new EntitySquid(EntityTypes.SQUID, nmsWorld);
                                 es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                                 es.setInvisible(true);
                                 es.setNoGravity(true);
@@ -90,8 +84,8 @@ public class MultiMissile {
                                 ArmorStand as = (ArmorStand)e;
                                 if(as.getCustomName() == null) continue;
                                 if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100") && !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
-                                    EntityArmorStand eas = new EntityArmorStand(nmsWorld);
                                     Location loc = as.getLocation();
+                                    EntityArmorStand eas = new EntityArmorStand(nmsWorld, loc.getX(), loc.getY(), loc.getZ());
                                     eas.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                                     eas.setInvisible(true);
                                     eas.setSmall(as.isSmall());
@@ -293,7 +287,7 @@ public class MultiMissile {
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(o_player.getWorld() == drop.getLocation().getWorld()) {
-                        if (o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")) {
+                        if (o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
                             if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
@@ -364,7 +358,7 @@ public class MultiMissile {
     public static void MMSquidRunnable(Player shooter, Player target){
         WorldServer nmsWorld = ((CraftWorld) target.getWorld()).getHandle();
         Location loc = target.getLocation();
-        EntitySquid es = new EntitySquid(nmsWorld);
+        EntitySquid es = new EntitySquid(EntityTypes.SQUID, nmsWorld);
         es.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         es.setInvisible(true);
         es.setNoGravity(true);

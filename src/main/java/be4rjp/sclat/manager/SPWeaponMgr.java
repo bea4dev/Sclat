@@ -293,6 +293,9 @@ public class SPWeaponMgr {
             case "プレイヤーを狙って右クリックで発射":
                 DataMgr.getPlayerData(player).setIsUsingMM(false);
                 break;
+            case "狙って右クリックで発射":
+                DataMgr.getPlayerData(player).setIsUsingMM(false);
+                break;
         }
         
         if(data.getIsUsingSP())

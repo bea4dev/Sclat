@@ -90,7 +90,7 @@ public class Charger {
                                 if(target.equals(p) || !DataMgr.getPlayerData(target).getSettings().ShowEffect_ChargerLine())
                                     continue;
                                 if(target.getWorld() == p.getWorld()){
-                                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                    if(target.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                                         target.spawnParticle(Particle.REDSTONE, position, 1, 0, 0, 0, 50, dustOptions);
                                     }
@@ -174,7 +174,7 @@ public class Charger {
                 if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                     continue;
                 if(target.getWorld() == position.getWorld()){
-                    if(target.getLocation().distance(position) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                    if(target.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 1, 0, 0, 0, 1, bd);
                     }

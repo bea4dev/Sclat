@@ -12,25 +12,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
-import net.minecraft.server.v1_13_R2.MinecraftServer;
-import net.minecraft.server.v1_13_R2.PacketPlayOutAnimation;
-import net.minecraft.server.v1_13_R2.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.server.v1_13_R2.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
-import net.minecraft.server.v1_13_R2.PlayerInteractManager;
-import net.minecraft.server.v1_13_R2.WorldServer;
-import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_13_R2.PacketPlayOutEntityHeadRotation;
+import net.minecraft.server.v1_14_R1.EntityArmorStand;
+import net.minecraft.server.v1_14_R1.EntityPlayer;
+import net.minecraft.server.v1_14_R1.MinecraftServer;
+import net.minecraft.server.v1_14_R1.PacketPlayOutAnimation;
+import net.minecraft.server.v1_14_R1.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.server.v1_14_R1.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_14_R1.PlayerConnection;
+import net.minecraft.server.v1_14_R1.PlayerInteractManager;
+import net.minecraft.server.v1_14_R1.WorldServer;
+import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_14_R1.PacketPlayOutEntityHeadRotation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftChatMessage;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -93,7 +93,7 @@ public class PlayerStatusMgr {
         connection.sendPacket(new PacketPlayOutEntityHeadRotation(npc, (byte) ((location.getYaw() * 256.0F) / 360.0F)));
         connection.sendPacket(new PacketPlayOutAnimation(npc, 0));
         
-        EntityArmorStand as = new EntityArmorStand(nmsWorld);
+        EntityArmorStand as = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 0.8D, location.getZ());
         as.setLocation(location.getX(), location.getY() + 0.8D, location.getZ(), location.getYaw(), 0);
         as.setInvisible(true);
         as.setCustomNameVisible(true);
@@ -102,7 +102,7 @@ public class PlayerStatusMgr {
         
         list.put(player, as);
         
-        EntityArmorStand as1 = new EntityArmorStand(nmsWorld);
+        EntityArmorStand as1 = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 1.2D, location.getZ());
         as1.setLocation(location.getX(), location.getY() + 1.2D, location.getZ(), location.getYaw(), 0);
         as1.setInvisible(true);
         as1.setCustomNameVisible(true);
@@ -111,7 +111,7 @@ public class PlayerStatusMgr {
         
         list1.put(player, as1);
     
-        EntityArmorStand as2 = new EntityArmorStand(nmsWorld);
+        EntityArmorStand as2 = new EntityArmorStand(nmsWorld, location.getX(), location.getY() + 0.4D, location.getZ());
         as2.setLocation(location.getX(), location.getY() + 0.4D, location.getZ(), location.getYaw(), 0);
         as2.setInvisible(true);
         as2.setCustomNameVisible(true);

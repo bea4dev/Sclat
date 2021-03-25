@@ -1,21 +1,21 @@
 package be4rjp.sclat.server;
 
+import be4rjp.sclat.Main;
+import be4rjp.sclat.MessageType;
 import be4rjp.sclat.Sclat;
+import be4rjp.sclat.SoundType;
 import be4rjp.sclat.data.ServerStatus;
 import be4rjp.sclat.manager.PlayerReturnManager;
 import be4rjp.sclat.manager.PlayerStatusMgr;
+import be4rjp.sclat.manager.RankMgr;
 import be4rjp.sclat.manager.ServerStatusManager;
-import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StatusServer extends Thread {
 
@@ -116,7 +116,7 @@ class EchoThread extends Thread {
                                             PlayerStatusMgr.addMoney(args[3], Integer.parseInt(args[2]));
                                             break;
                                         case "rank":
-                                            PlayerStatusMgr.addRank(args[3], Integer.parseInt(args[2]));
+                                            RankMgr.addPlayerRankPoint(args[3], Integer.parseInt(args[2]));
                                             break;
                                         case "level":
                                             PlayerStatusMgr.addLv(args[3], Integer.parseInt(args[2]));
@@ -133,10 +133,35 @@ class EchoThread extends Thread {
                             break;
                         }
                         case "started":{
-                            if (args.length == 2) {
+                            if (args.length == 3) {
                                 for(ServerStatus ss : ServerStatusManager.serverList){
                                     if(ss.getServerName().equals(args[1])) {
                                         ss.setRunningMatch(true);
+                                        ss.setWaitingEndTime(0);
+                                        ss.setMatchStartTime(Long.parseLong(args[2]));
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case "cd":{
+                            if (args.length == 3) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setWaitingEndTime(Long.parseLong(args[2]));
+                                        Sclat.sendMessage(ss.getDisplayName() + "§aの試合待機が開始されました！", MessageType.ALL_PLAYER);
+                                        Sclat.sendMessage("§a§l" + (ss.getWaitingEndTime() - (System.currentTimeMillis() / 1000)) + "§b秒後に開始されます", MessageType.ALL_PLAYER);
+                                        Main.getPlugin().getServer().getOnlinePlayers().forEach(player -> Sclat.playGameSound(player, SoundType.SUCCESS));
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case "cdc":{
+                            if (args.length == 2) {
+                                for(ServerStatus ss : ServerStatusManager.serverList){
+                                    if(ss.getServerName().equals(args[1])) {
+                                        ss.setWaitingEndTime(0);
                                     }
                                 }
                             }
@@ -147,6 +172,7 @@ class EchoThread extends Thread {
                                 for(ServerStatus ss : ServerStatusManager.serverList){
                                     if(ss.getServerName().equals(args[1])) {
                                         ss.setRunningMatch(false);
+                                        ss.setMatchStartTime(0);
                                     }
                                 }
                             }

@@ -19,6 +19,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftSnowball;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -82,7 +84,7 @@ public class Amehurasi {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             if(o_player.getWorld() == drop.getWorld()){
-                                if(o_player.getLocation().distance(drop.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                if(o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }
@@ -131,7 +133,7 @@ public class Amehurasi {
                                 for(Location loc : locList){
                                     if(new Random().nextInt(3) == 1){
                                         if(o_player.getWorld() == loc.getWorld()){
-                                            if(o_player.getLocation().distance(loc) < conf.getConfig().getInt("ParticlesRenderDistance")){
+                                            if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
                                                 Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 3);
                                                 o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
                                             }
@@ -207,6 +209,7 @@ public class Amehurasi {
     
     public static void SnowballAmehurasiRunnable(Player player, Location loc){
         Snowball ball = (Snowball)player.getWorld().spawnEntity(loc, EntityType.SNOWBALL);
+        ((CraftSnowball)ball).getHandle().setItem(CraftItemStack.asNMSCopy(new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool())));
         ball.setShooter(player);
         ball.setCustomName("Amehurasi");
         BukkitRunnable task = new BukkitRunnable(){
@@ -220,7 +223,7 @@ public class Amehurasi {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             if(o_player.getWorld() == inkball.getWorld())
-                                if(o_player.getLocation().distance(inkball.getLocation()) < conf.getConfig().getInt("ParticlesRenderDistance"))
+                                if(o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
                                     o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                     }
                 }

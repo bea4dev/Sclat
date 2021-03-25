@@ -150,7 +150,6 @@ public class MapDataMgr {
                 Location to = new Location(w, tolocx, tolocy, tolocz);
                 
                 WiremeshListTask wmListTask = new WiremeshListTask(from, to, trapDoor, ironBars, fence);
-                wmListTask.startTask();
                 map.setWiremeshListTask(wmListTask);
             }
     

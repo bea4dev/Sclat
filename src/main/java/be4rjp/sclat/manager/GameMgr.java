@@ -7,6 +7,7 @@ import static be4rjp.sclat.Main.conf;
 
 import be4rjp.sclat.data.*;
 import be4rjp.sclat.lobby.LobbyScoreboardRunnable;
+import be4rjp.sclat.packet.PacketHandler;
 import be4rjp.sclat.server.EquipmentClient;
 import be4rjp.sclat.server.EquipmentServerManager;
 import be4rjp.sclat.server.StatusClient;
@@ -15,6 +16,11 @@ import be4rjp.sclat.weapon.*;
 
 import java.util.*;
 
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelPipeline;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 
 import static org.bukkit.Bukkit.getServer;
@@ -22,7 +28,8 @@ import static org.bukkit.Bukkit.getServer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -135,6 +142,12 @@ public class GameMgr implements Listener{
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 5);
+        
+        
+        //PacketHandler
+        PacketHandler packetHandler = new PacketHandler(player);
+        ChannelPipeline pipeline = ((CraftPlayer)player).getHandle().playerConnection.networkManager.channel.pipeline();
+        pipeline.addBefore("packet_handler", "SclatPacketInjector:" + player.getName(), packetHandler);
         
         
         //試し撃ちモード
@@ -503,7 +516,7 @@ public class GameMgr implements Listener{
         Player player = (Player) e.getPlayer();
         Action action = e.getAction();
         if(e.getClickedBlock() != null){
-            if(e.getClickedBlock().getType() == Material.WALL_SIGN || e.getClickedBlock().getType() == Material.SIGN){
+            if(e.getClickedBlock().getType().toString().endsWith("SIGN")){
                 Sign sign = (Sign) e.getClickedBlock().getState();
                 
                 if(Main.type == ServerType.LOBBY){
@@ -600,6 +613,13 @@ public class GameMgr implements Listener{
                     case "[ Charger ]":
                         OpenGUI.openWeaponSelect(player, "Weapon", "Charger", false);
                         break;
+                    case "[ PatchNote ]":
+                        TextComponent component = new TextComponent();
+                        component.setText("[パッチノートを見るにはここをクリック]");
+                        component.setColor(net.md_5.bungee.api.ChatColor.AQUA);
+                        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://be4rjp.github.io/Sclat-PatchNote/note/v101b/note.html"));
+                        player.spigot().sendMessage(component);
+                        break;
                 }
             }
         }
@@ -621,6 +641,16 @@ public class GameMgr implements Listener{
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = (Player) event.getPlayer();
         PlayerData data = DataMgr.getPlayerData(player);
+        
+        //PacketHandler
+        Channel channel = ((CraftPlayer)player).getHandle().playerConnection.networkManager.channel;
+        channel.eventLoop().submit(() -> {
+            channel.pipeline().remove(player.getName());
+            return null;
+        });
+        
+        
+        
         if(Main.type == ServerType.MATCH) {
             if (DataMgr.joinedList.contains(player)) {
                 DataMgr.setPlayerIsQuit(player.getUniqueId().toString(), true);
