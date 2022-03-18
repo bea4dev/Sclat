@@ -62,6 +62,7 @@ public class PlayerData {
     private boolean isUsingSS = false;
     private Vector vehicleVector = new Vector(0, 0, 0);
     private double speed = 0;
+    private float fov = 0.1F;
 
     
     public PlayerData(Player player){this.player = player;}
@@ -166,6 +167,7 @@ public class PlayerData {
     
     public double getSpeed(){return this.speed;}
     
+    public float getFov() {return fov;}
     
     
     public void setSettings(PlayerSettings settings){this.settings = settings;}
@@ -260,6 +262,7 @@ public class PlayerData {
     
     public void setSpeed(double speed){this.speed = speed;}
     
+    public void setFov(float fov) {this.fov = fov;}
     
     public void reflectionDoChargeKeep(){this.doChargeKeep = !this.doChargeKeep;}
     
@@ -309,6 +312,7 @@ public class PlayerData {
         this.isJumping = false;
         this.isCanFly = false;
         this.speed = 0;
+        this.fov = 0.1F;
     }
     
 }

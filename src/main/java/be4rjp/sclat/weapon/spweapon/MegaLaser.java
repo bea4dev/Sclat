@@ -87,9 +87,10 @@ public class MegaLaser {
                 }
                 
                 
-                if(!p.isOnline() || !DataMgr.getPlayerData(p).isInMatch()){
+                if(!p.isOnline() || !DataMgr.getPlayerData(p).isInMatch() || p.getGameMode() == GameMode.SPECTATOR){
                     if(p.hasPotionEffect(PotionEffectType.SLOW))
                         p.removePotionEffect(PotionEffectType.SLOW);
+                    DataMgr.getPlayerData(p).setIsUsingMM(false);
                     bsObject.remove();
                     cancel();
                 }
@@ -137,13 +138,16 @@ public class MegaLaser {
                     objectLoc.getWorld().playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
                 else
                     objectLoc.getWorld().playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.6F);
+    
                 
-                Vector axis = direction.clone().rotateAroundAxis(new Vector(0, 1, 0), 90);
-                Vector plusVector = direction.clone().rotateAroundAxis(axis, -90);
+                Vector xzVector = new Vector(direction.getX(), 0, direction.getZ());
+                float xzAngle = xzVector.angle(new Vector(0, 0, 1)) * (direction.getX() >= 0 ? 1 : -1);
+                Vector x = new Vector(1, 0, 0);
+                x.rotateAroundY(xzAngle);
 
                 List<Vector> plusList = new ArrayList<>();
                 for(int angle = 0; angle <= 360; angle+=15){
-                    plusList.add(plusVector.clone().rotateAroundAxis(direction, angle));
+                    plusList.add(x.clone().rotateAroundAxis(direction, angle).normalize());
                 }
                 
                 
@@ -174,7 +178,7 @@ public class MegaLaser {
                             if (eloc.distance(target.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
                                 if (DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()) {
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), c <= 3 ? 1 : 2);
-                                    target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 10, dustOptions);
+                                    target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 30, dustOptions);
                                 }
                             }
                         }
@@ -191,22 +195,24 @@ public class MegaLaser {
                     //画面エフェクト
                     double maxDist = 5;
                     List<Player> list = new ArrayList<>();
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(target).isInMatch())
-                            continue;
-                        if(target.getWorld() != p.getWorld())
-                            continue;
-                        if(DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
-                            continue;
-                        if (target.getLocation().distance(position) <= maxDist) {
-                            list.add(target);
+                    if(i > 5) {
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if (!DataMgr.getPlayerData(target).isInMatch())
+                                continue;
+                            if (target.getWorld() != p.getWorld())
+                                continue;
+                            if (DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
+                                continue;
+                            if (target.getLocation().distance(position.clone().add(0, 1, 0)) <= maxDist) {
+                                list.add(target);
+                            }
                         }
-                    }
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()){
-                        if(list.contains(target))
-                            Sclat.sendWorldBorderWarningPacket(target);
-                        else
-                            Sclat.sendWorldBorderWarningClearPacket(target);
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if (list.contains(target))
+                                Sclat.sendWorldBorderWarningPacket(target);
+                            else
+                                Sclat.sendWorldBorderWarningClearPacket(target);
+                        }
                     }
                     
                     //攻撃判定
@@ -218,8 +224,14 @@ public class MegaLaser {
                                 continue;
                             if(target.getWorld() != p.getWorld())
                                 continue;
-                            if (target.getLocation().distance(position) <= maxDist) {
+                            if (target.getLocation().distance(position.clone().add(0, -1, 0)) <= maxDist) {
                                 if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                    
+                                    if(DataMgr.getPlayerData(target).getArmor() > 10000.0 && target.getGameMode() != GameMode.SPECTATOR){
+                                        target.setVelocity(direction.clone().multiply(2.0));
+                                        target.getWorld().playSound(target.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 1F, 1.5F);
+                                    }
+                                    
                                     Sclat.giveDamage(p, target, damage, "spWeapon");
                                     
                                     //AntiNoDamageTime
@@ -236,7 +248,7 @@ public class MegaLaser {
                         }
     
                         for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(position) <= maxDist){
+                            if (as.getLocation().distance(position.clone().add(0, -1, 0)) <= maxDist){
                                 if(as instanceof ArmorStand){
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                 }

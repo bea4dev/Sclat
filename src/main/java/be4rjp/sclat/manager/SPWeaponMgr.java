@@ -286,6 +286,8 @@ public class SPWeaponMgr {
     public static void UseSPWeapon(Player player, String name){
         PlayerData data = DataMgr.getPlayerData(player);
         
+        if(data.getIsJumping() && !name.equals("スーパーチャクチ")) return;
+        
         switch (name) {
             case "カーソルを合わせて右クリックで発射":
                 AirStrike.AirStrikeRunnable(player);
@@ -373,16 +375,12 @@ public class SPWeaponMgr {
                 player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
                 break;
             case "メガホンレーザー":
-                if(player.isOnGround()){
-                    data.setIsUsingSP(true);
-                    MegaLaser.MegaLaserRunnable(player);
-                    player.getInventory().setItem(4, new ItemStack(Material.AIR));
-                    player.setExp(0.99F);
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
-                }else{
-                    player.sendMessage(ChatColor.RED + "空中では展開できない！");
-                    player.playNote(player.getLocation(), Instrument.STICKS, Note.natural(1, Note.Tone.E));
-                }
+                data.setIsUsingSP(true);
+                MegaLaser.MegaLaserRunnable(player);
+                player.getInventory().setItem(4, new ItemStack(Material.AIR));
+                player.setExp(0.99F);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 2);
+                
                 break;
         }
     }

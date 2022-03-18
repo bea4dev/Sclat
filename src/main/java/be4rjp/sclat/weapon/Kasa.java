@@ -592,7 +592,7 @@ public class Kasa {
                         }
                     }
 
-                    if((p.getInventory().getItemInMainHand().getType().equals(Material.AIR) || !p.isSneaking()) && squid && i < 39){
+                    if((p.getInventory().getItemInMainHand().getType().equals(Material.AIR) || !p.isSneaking() || p.getGameMode() == GameMode.SPECTATOR) && squid && i < 39){
                         squid = false;
                         i = 39;
                     }

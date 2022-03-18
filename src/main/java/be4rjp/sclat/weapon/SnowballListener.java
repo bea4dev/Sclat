@@ -129,12 +129,12 @@ public class SnowballListener implements Listener {
                                 
                                 double damage = DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getDamage();
                                 String type = DataMgr.getPlayerData(shooter).getWeaponClass().getMainWeapon().getWeaponType();
-                                
+    
                                 if(!type.equals("Blaster")) {
-                                    double ticksLived = (double) projectile.getTicksLived();
+                                    double ticksLived = (double) projectile.getTicksLived() * 1.2;
                                     if(ticksLived > 20.0)
                                         ticksLived = 20.0;
-                                    damage /= 20.0 * (2 / 5);
+                                    damage -= damage * (ticksLived / 100);
                                 }
                                 
                                 Sclat.giveDamage(shooter, target, damage * Gear.getGearInfluence(shooter, Gear.Type.MAIN_SPEC_UP), "killed");

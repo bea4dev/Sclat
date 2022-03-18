@@ -7,9 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.server.v1_14_R1.PacketPlayOutMultiBlockChange;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_14_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -30,6 +36,9 @@ public class BlockUpdater {
             public void run(){
                 try {
                     List<Block> tb = blocks.subList(c, blocks.size());
+                    
+                    Map<Chunk, List<Block>> chunkBlockMap = new HashMap<>();
+                    
                     loop:
                     for (Block block : tb) {
                         //Sclat.setBlockByNMS(block, blocklist.get(block), true);
@@ -54,7 +63,8 @@ public class BlockUpdater {
                                 check:
                                 for (Block cb : list) {
                                     if (cb.getType().equals(Material.AIR)) {
-                                        Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                                        //Sclat.sendBlockChangeForAllPlayer(block, blocklist.get(block));
+                                        chunkBlockMap.computeIfAbsent(block.getChunk(), chunk -> new ArrayList<>()).add(block);
                                         continue check;
                                     }
                                 }
@@ -70,6 +80,26 @@ public class BlockUpdater {
                             break;
                         }
                     }
+                    
+                    //Use multi block change
+                    for (Map.Entry<Chunk, List<Block>> entry : chunkBlockMap.entrySet()){
+                        Chunk chunk = entry.getKey();
+                        List<Block> blocks = entry.getValue();
+                        
+                        short[] positionArray = new short[blocks.size()];
+                        int i = 0;
+                        for(Block block : blocks){
+                            positionArray[i] = (short) ((block.getX() & 0xF) << 12 | (block.getZ() & 0xF) << 8 | block.getY());
+                            i++;
+                        }
+                        PacketPlayOutMultiBlockChange packet = new PacketPlayOutMultiBlockChange(positionArray.length, positionArray, ((CraftChunk) chunk).getHandle());
+                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                            if(target.getWorld() == chunk.getWorld()){
+                                ((CraftPlayer)target).getHandle().playerConnection.sendPacket(packet);
+                            }
+                        }
+                    }
+                    
                 }catch (Exception e){cancel();}
             }
         };

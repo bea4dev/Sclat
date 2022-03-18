@@ -580,9 +580,9 @@ public class GameMgr implements Listener{
                         BungeeCordMgr.PlayerSendServer(player, "sclattest");
                         DataMgr.getPlayerData(player).setServerName("sclattest");
                         break;
-                    case "Return to lobby":
-                        BungeeCordMgr.PlayerSendServer(player, "lobby");
-                        DataMgr.getPlayerData(player).setServerName("Lobby");
+                    case "[ Return to jg ]":
+                        BungeeCordMgr.PlayerSendServer(player, "jg");
+                        DataMgr.getPlayerData(player).setServerName("JG");
                         break;
                     case "Return to sclat":
                         BungeeCordMgr.PlayerSendServer(player, "sclat");
@@ -617,7 +617,7 @@ public class GameMgr implements Listener{
                         TextComponent component = new TextComponent();
                         component.setText("[パッチノートを見るにはここをクリック]");
                         component.setColor(net.md_5.bungee.api.ChatColor.AQUA);
-                        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://be4rjp.github.io/Sclat-PatchNote/note/v101b/note.html"));
+                        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://be4rjp.github.io/Sclat-PatchNote/note/v102b/note.html"));
                         player.spigot().sendMessage(component);
                         break;
                 }

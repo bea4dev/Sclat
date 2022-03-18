@@ -21,6 +21,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutBlockChange;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -95,6 +96,14 @@ public class Sclat {
         wb.setCenter(player.getLocation().getX(), player.getLocation().getZ());
         PacketPlayOutWorldBorder packet = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+    
+    public static void setPlayerFOV(Player player, float fov){
+        PlayerAbilities abilities = new PlayerAbilities();
+        abilities.walkSpeed = fov;
+        DataMgr.getPlayerData(player).setFov(fov);
+        PacketPlayOutAbilities packet = new PacketPlayOutAbilities(abilities);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
     
     /*

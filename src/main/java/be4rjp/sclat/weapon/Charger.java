@@ -14,6 +14,8 @@ import be4rjp.sclat.raytrace.BoundingBox;
 import be4rjp.sclat.raytrace.RayTrace;
 import java.util.ArrayList;
 
+import net.minecraft.server.v1_14_R1.PacketPlayOutAbilities;
+import net.minecraft.server.v1_14_R1.PlayerAbilities;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -21,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -60,16 +63,24 @@ public class Charger {
                 if(data.getTick() <= 6 && data.isInMatch()){
                     ItemStack w = data.getWeaponClass().getMainWeapon().getWeaponIteamStack().clone();
                     ItemMeta wm = w.getItemMeta();
+    
+                    if(data.getWeaponClass().getMainWeapon().getScope()) {
+                        data.setIsCharging(true);
+                    }
                     
                     //data.setTick(data.getTick() + 1);
                     if(charge < max)
                         charge++;
                     
                     if(data.getWeaponClass().getMainWeapon().getScope()){
+                        /*
                         if(charge != max)
                             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1, (int)charge / 3));
                         else
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 3));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40000, (int)charge / 3));*/
+                        if(charge < max){
+                            Sclat.setPlayerFOV(p, -0.1F / ((float) charge / 19.0F));
+                        }
                         
                     }
                     
@@ -119,8 +130,14 @@ public class Charger {
                 
                 
                 if(data.getTick() == 7 && data.isInMatch()){
+                    /*
                     if(player.hasPotionEffect(PotionEffectType.SLOW))
-                        player.removePotionEffect(PotionEffectType.SLOW);
+                        player.removePotionEffect(PotionEffectType.SLOW);*/
+                    if(data.getWeaponClass().getMainWeapon().getScope()) {
+                        data.setIsCharging(false);
+                        Sclat.setPlayerFOV(player, 0.06F);
+                    }
+                    
                     if(p.getExp() > data.getWeaponClass().getMainWeapon().getNeedInk() * charge){
                         p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP) * charge));
                         Charger.Shoot(p, (int)((double)charge * (double)data.getWeaponClass().getMainWeapon().getChargeRatio() * (double)data.getWeaponClass().getMainWeapon().getDistanceTick()), data.getWeaponClass().getMainWeapon().getDamage() * charge);

@@ -119,7 +119,7 @@ public class OpenGUI {
         if(Main.type == ServerType.LOBBY){
             ItemStack b = new ItemStack(Material.OAK_DOOR);
             ItemMeta bmeta = b.getItemMeta();
-            bmeta.setDisplayName("ロビーへ戻る / RETURN TO LOBBY");
+            bmeta.setDisplayName("JGへ戻る / RETURN TO JG");
             b.setItemMeta(bmeta);
             inv.setItem(34, b);
         }

@@ -6,6 +6,7 @@ import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.data.PlayerSettings;
 import io.netty.channel.*;
 import net.minecraft.server.v1_14_R1.EntityTypes;
+import net.minecraft.server.v1_14_R1.PacketPlayOutAbilities;
 import net.minecraft.server.v1_14_R1.PacketPlayOutSpawnEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,6 +42,12 @@ public class PacketHandler extends ChannelDuplexHandler{
             if(entityTypes == EntityTypes.SNOWBALL){
                 if(!playerSettings.ShowSnowBall())
                     return;
+            }
+        }
+        
+        if(packet instanceof PacketPlayOutAbilities){
+            if(playerData.getIsCharging()){
+                ((PacketPlayOutAbilities) packet).b(playerData.getFov());
             }
         }
         
