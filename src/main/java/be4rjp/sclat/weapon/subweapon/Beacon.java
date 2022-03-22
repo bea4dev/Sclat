@@ -48,8 +48,10 @@ public class Beacon {
                 }
             };
             delay.runTaskLater(Main.getPlugin(), 10);
-        }else if(player.getExp() < (float)(0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
+        }else if(player.getExp() < (float)(0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+        }
         
         BukkitRunnable delay = new BukkitRunnable(){
             Player p = player;
