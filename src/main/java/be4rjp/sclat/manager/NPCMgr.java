@@ -44,11 +44,13 @@ public class NPCMgr {
         
                     //見えないところにスポーンさせて、クライアントにスキンを先に読み込ませる
                     npc.setLocation(location.getX(), location.getY() - 20, location.getZ(), location.getYaw(), 0);
+                    npc.getDataWatcher().set(DataWatcherRegistry.a.a(15), (byte)127);
         
                     for(Player p : Main.getPlugin(Main.class).getServer().getOnlinePlayers()){
                         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
                         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
+                        connection.sendPacket(new PacketPlayOutEntityMetadata(npc.getId(), npc.getDataWatcher(), true));
                     }
                 }
                 if(s == 1){

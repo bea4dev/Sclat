@@ -38,27 +38,15 @@
     <orderEntry type="library" name="Maven: org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.koca2000:NoteBlockAPI:-0eace096b6-1" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: com.github.ucchyocean:LunaChat:3.0.15">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/lib/LunaChat.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Maven: com.github.ucchyocean:LunaChat:v3.0.16" level="project" />
+    <orderEntry type="library" name="Maven: org.bstats:bstats-bukkit:1.7" level="project" />
+    <orderEntry type="library" name="Maven: org.bstats:bstats-bungeecord:1.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.11" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:20.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.comphenix.protocol:ProtocolLib:4.5.0" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
     <orderEntry type="library" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: be4rjp:dadadachecker:1.0-SNAPSHOT">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/target/lib/DADADAChecker.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Maven: com.github.Be4rJP:DADADAChecker:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.Be4rJP:BlockStudio:-1e03db37e6-1" level="project" />
   </component>
 </module>

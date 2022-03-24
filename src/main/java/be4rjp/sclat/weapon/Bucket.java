@@ -37,11 +37,14 @@ public class Bucket {
             delay1.runTaskLater(Main.getPlugin(), data.getWeaponClass().getMainWeapon().getCoolTime());
         
         BukkitRunnable delay = new BukkitRunnable(){
-            Player p = player;
             @Override
             public void run(){
-                for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) 
-                    Shoot(player, null);
+                boolean sound = false;
+                for (int i = 0; i < data.getWeaponClass().getMainWeapon().getRollerShootQuantity(); i++) {
+                    boolean is = Shoot(player, null);
+                    if(is) sound = true;
+                }
+                if(sound) player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
             }
         };
         if(data.getCanRollerShoot()){
@@ -50,15 +53,14 @@ public class Bucket {
         }
     }
     
-    public static void Shoot(Player player, Vector v){
+    public static boolean Shoot(Player player, Vector v){
     
-        if(player.getGameMode() == GameMode.SPECTATOR) return;
+        if(player.getGameMode() == GameMode.SPECTATOR) return false;
         
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
-            return;
+            return true;
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
         Snowball ball = player.launchProjectile(Snowball.class);
@@ -120,5 +122,7 @@ public class Bucket {
             }
         };
         task.runTaskTimer(Main.getPlugin(), 0, 1);
+        
+        return false;
     }
 }

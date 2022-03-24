@@ -61,9 +61,7 @@
         <dependency>
             <groupId>com.github.ucchyocean</groupId>
             <artifactId>LunaChat</artifactId>
-            <version>3.0.15</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/target/lib/LunaChat.jar</systemPath>     
+            <version>v3.0.16</version>
         </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
@@ -71,11 +69,9 @@
             <version>4.5.0</version>
         </dependency>
         <dependency>
-            <groupId>be4rjp</groupId>
-            <artifactId>dadadachecker</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/target/lib/DADADAChecker.jar</systemPath>
+            <groupId>com.github.Be4rJP</groupId>
+            <artifactId>DADADAChecker</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.Be4rJP</groupId>
