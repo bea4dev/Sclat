@@ -155,27 +155,21 @@ public class JetPack {
                 
                 if(i != 0){
                     //effect
-                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
+                    //org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                     Location position = loc2.clone().add(0, -0.2, 0);
+                    Location position2 = loc3.clone().add(0, -0.2, 0);
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             continue;
                         if(o_player.getWorld() == position.getWorld()){
-                            if(o_player.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
+                            if(o_player.getLocation().distanceSquared(position) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                 for(int i = 0; i <= 10; i++) {
                                     double random = 0.015;
                                     o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
                                     //o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 0, 0, -2, 0, 10, bd);
                                 }
                             }
-                        }
-                    }
-                    position = loc3.clone().add(0, -0.2, 0);
-                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
-                            continue;
-                        if(o_player.getWorld() == position.getWorld()){
-                            if(o_player.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE){
+                            if(o_player.getLocation().distanceSquared(position2) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                 for(int i = 0; i <= 10; i++) {
                                     double random = 0.015;
                                     o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
@@ -183,6 +177,22 @@ public class JetPack {
                             }
                         }
                     }
+
+                    /*
+                    for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        if(!DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
+                            continue;
+                        if(o_player.getWorld() == position.getWorld()){
+                            if(o_player.getLocation().distanceSquared(position) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
+                                for(int i = 0; i <= 10; i++) {
+                                    double random = 0.015;
+                                    o_player.spawnParticle(Particle.ITEM_CRACK, position, 0, Math.random() * random - random/2, -0.13, Math.random() * random - random/2, 10, new ItemStack(DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool()));
+                                }
+                            }
+                        }
+                    }
+
+                     */
                 }
 
                 if(i == 0){
@@ -237,7 +247,7 @@ public class JetPack {
                     }
                     p.getInventory().clear();
                     if(p.getWorld() == ol.getWorld() && !p.getGameMode().equals(GameMode.SPECTATOR)){
-                        if(p.getLocation().distance(ol) > 3){
+                        if(p.getLocation().distanceSquared(ol) > 9 /* 3^2 */){
                             SuperJumpMgr.SuperJumpRunnable(p, ol);
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 2, 1.3F);
                         }else{
@@ -308,14 +318,24 @@ public class JetPack {
                         ball.setVelocity(drop.getVelocity());  
                     
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                        if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeapon())
+                        if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeapon()){
                             continue;
-                            if(target.getWorld() == ball.getWorld()){
-                                if(target.getLocation().distance(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
-                                    org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
-                                    target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);
-                                }
+                        }
+                        if(target.getWorld() == ball.getWorld()){
+                            if(target.getLocation().distanceSquared(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
+                                org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
+                                target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);
                             }
+                        }
+
+                        //ボムの視認用エフェクト
+                        if(target.getWorld() == drop.getLocation().getWorld()) {
+                            if (target.getLocation().distanceSquared(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
+                                Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
+                                target.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
+                            }
+                        }
+
                     }
 
                     if(DataMgr.getSnowballIsHit(ball) || drop.isOnGround()){
@@ -344,7 +364,7 @@ public class JetPack {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != p.getWorld())
                                 continue;
-                            if (target.getLocation().distance(drop.getLocation()) <= 3.5) {
+                            if (target.getLocation().distanceSquared(drop.getLocation()) <= 12.25 /* 3.5^2 */) {
                                 double damage = (3.5 - target.getLocation().distance(drop.getLocation())) * 10;
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     Sclat.giveDamage(player, target, damage, "spWeapon");
@@ -365,11 +385,9 @@ public class JetPack {
                         }
 
                         for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(drop.getLocation()) <= 3.5){
-                                if(as instanceof ArmorStand){
-                                    double damage = (3.5 - as.getLocation().distance(drop.getLocation())) * 10;
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
-                                }
+                            if (as instanceof ArmorStand && as.getLocation().distanceSquared(drop.getLocation()) <= 12.25 /* 3.5^2 */){
+                                double damage = (3.5 - as.getLocation().distance(drop.getLocation())) * 10;
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                             }
                         }
                         drop.remove();
@@ -377,17 +395,21 @@ public class JetPack {
                         return;
                     }
 
+                    //ちょっと上の方に移動
+                    /*
                     //ボムの視認用エフェクト
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon()){
                             if(o_player.getWorld() == drop.getLocation().getWorld()) {
-                                if (o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
+                                if (o_player.getLocation().distanceSquared(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }
                             }
                         }
                     }
+
+                     */
 
                     c++;
                     x = drop.getLocation().getX();

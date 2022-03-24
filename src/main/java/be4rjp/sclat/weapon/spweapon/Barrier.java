@@ -59,7 +59,7 @@ public class Barrier {
                         org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                         for(Location e_loc : s_locs)
                             if(o_player.getWorld() == e_loc.getWorld())
-                                if(o_player.getLocation().distance(e_loc) < Main.PARTICLE_RENDER_DISTANCE)
+                                if(o_player.getLocation().distanceSquared(e_loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                     o_player.spawnParticle(Particle.REDSTONE, e_loc, 0, 0, 0, 0, 70, dustOptions);
                     }
                 }

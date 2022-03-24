@@ -90,6 +90,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
     
     
     public static double PARTICLE_RENDER_DISTANCE = 0;
+    public static double PARTICLE_RENDER_DISTANCE_SQUARED;
     
 
     @Override
@@ -151,6 +152,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
             colors = conf.getConfig().getStringList("Colors");
         
         PARTICLE_RENDER_DISTANCE = conf.getConfig().getDouble("ParticlesRenderDistance");
+        PARTICLE_RENDER_DISTANCE_SQUARED = Math.pow(PARTICLE_RENDER_DISTANCE,2.0D);
         //-------------------------------------------------------------------
         
         

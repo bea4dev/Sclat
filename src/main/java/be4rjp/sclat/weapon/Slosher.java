@@ -103,7 +103,7 @@ public class Slosher {
                         if(!DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                             continue;
                             if(target.getWorld() == inkball.getWorld()){
-                                if(target.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
+                                if(target.getLocation().distanceSquared(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                     org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(p).getTeam().getTeamColor().getWool().createBlockData();
                                     target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 3, 0, 0, 0, 1, bd);
                                 }

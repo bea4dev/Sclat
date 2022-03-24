@@ -131,6 +131,7 @@ public class AirStrike {
                     
                     //半径
                     double maxDist = 4;
+                    double maxDistSquared = 16; /* 4^2 */
                     
                     //爆発音
                     player.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
@@ -153,7 +154,7 @@ public class AirStrike {
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).isInMatch())
                             continue;
-                        if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
+                        if (target.getLocation().distanceSquared(drop.getLocation()) <= maxDistSquared) {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 7;
                             if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 Sclat.giveDamage(player, target, damage, "spWeapon");
@@ -174,7 +175,7 @@ public class AirStrike {
                     }
                     
                     for(Entity as : player.getWorld().getEntities()){
-                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                        if (as.getLocation().distanceSquared(drop.getLocation()) <= maxDistSquared){
                             if(as instanceof ArmorStand){
                                 double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 7;
                                 ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);

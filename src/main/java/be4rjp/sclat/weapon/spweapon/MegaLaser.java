@@ -175,7 +175,7 @@ public class MegaLaser {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if (p.getWorld() != target.getWorld())
                                 continue;
-                            if (eloc.distance(target.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
+                            if (eloc.distanceSquared(target.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
                                 if (DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()) {
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), c <= 3 ? 1 : 2);
                                     target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 30, dustOptions);
@@ -194,7 +194,8 @@ public class MegaLaser {
                     
                     //画面エフェクト
                     double maxDist = 5;
-                    List<Player> list = new ArrayList<>();
+                    double maxDistSquared = 25; /* 5^2 */
+                    //List<Player> list = new ArrayList<>();
                     if(i > 5) {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if (!DataMgr.getPlayerData(target).isInMatch())
@@ -203,16 +204,23 @@ public class MegaLaser {
                                 continue;
                             if (DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
                                 continue;
-                            if (target.getLocation().distance(position.clone().add(0, 1, 0)) <= maxDist) {
-                                list.add(target);
+                            if (target.getLocation().distanceSquared(position.clone().add(0, 1, 0)) <= maxDistSquared) {
+                                //list.add(target);
+                                Sclat.sendWorldBorderWarningPacket(target);
+                            }else {
+                                Sclat.sendWorldBorderWarningClearPacket(target);
                             }
                         }
+                        //ここは上のループに含ませちゃってもいいのか...?
+                        /*
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if (list.contains(target))
                                 Sclat.sendWorldBorderWarningPacket(target);
                             else
                                 Sclat.sendWorldBorderWarningClearPacket(target);
                         }
+
+                         */
                     }
                     
                     //攻撃判定
@@ -224,7 +232,7 @@ public class MegaLaser {
                                 continue;
                             if(target.getWorld() != p.getWorld())
                                 continue;
-                            if (target.getLocation().distance(position.clone().add(0, -1, 0)) <= maxDist) {
+                            if (target.getLocation().distanceSquared(position.clone().add(0, -1, 0)) <= maxDistSquared) {
                                 if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     
                                     if(DataMgr.getPlayerData(target).getArmor() > 10000.0 && target.getGameMode() != GameMode.SPECTATOR){
@@ -248,10 +256,8 @@ public class MegaLaser {
                         }
     
                         for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(position.clone().add(0, -1, 0)) <= maxDist){
-                                if(as instanceof ArmorStand){
-                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                }
+                            if (as instanceof ArmorStand && as.getLocation().distanceSquared(position.clone().add(0, -1, 0)) <= maxDistSquared){
+                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                             }
                         }
                     }

@@ -61,7 +61,7 @@ public class SplashShield {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             if(drop.getWorld() == o_player.getWorld()){
-                                if(o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
+                                if(o_player.getLocation().distanceSquared(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }

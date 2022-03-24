@@ -84,7 +84,7 @@ public class Amehurasi {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                             if(o_player.getWorld() == drop.getWorld()){
-                                if(o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
+                                if(o_player.getLocation().distanceSquared(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 1);
                                     o_player.spawnParticle(Particle.REDSTONE, drop.getLocation(), 1, 0, 0, 0, 50, dustOptions);
                                 }
@@ -133,7 +133,7 @@ public class Amehurasi {
                                 for(Location loc : locList){
                                     if(new Random().nextInt(3) == 1){
                                         if(o_player.getWorld() == loc.getWorld()){
-                                            if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
+                                            if(o_player.getLocation().distanceSquared(loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                                 Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), 3);
                                                 o_player.spawnParticle(Particle.REDSTONE, loc, 1, 1, 1, 1, 1, dustOptions);
                                             }
@@ -155,13 +155,14 @@ public class Amehurasi {
                             if(position.getBlock().getType() != Material.AIR) break;
 
                             double maxDist = 6.5;
+                            double maxDistSquared = 42.25; /* 6.5^2 */
                             double damage = 2;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
                                 if(target.getWorld() != p.getWorld())
                                     continue;
-                                if (target.getLocation().distance(position) <= maxDist && new Random().nextInt(100) == 0) {
+                                if (target.getLocation().distanceSquared(position) <= maxDistSquared && new Random().nextInt(100) == 0) {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                         Sclat.giveDamage(p, target, damage, "spWeapon");
 
@@ -179,10 +180,8 @@ public class Amehurasi {
                             }
 
                             for(Entity as : player.getWorld().getEntities()){
-                                if (as.getLocation().distance(position) <= maxDist && new Random().nextInt(100) == 0){
-                                    if(as instanceof ArmorStand){
-                                        ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
-                                    }          
+                                if (as instanceof ArmorStand && as.getLocation().distanceSquared(position) <= maxDistSquared && new Random().nextInt(100) == 0){
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
                                 }
                             }
                         }
@@ -223,7 +222,7 @@ public class Amehurasi {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                             if(o_player.getWorld() == inkball.getWorld())
-                                if(o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                if(o_player.getLocation().distanceSquared(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                     o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 1, 0, 0, 0, 1, bd);
                     }
                 }
