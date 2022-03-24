@@ -108,8 +108,10 @@ public class SplashShield {
         };
         if(player.getExp() > 0.6F)
             task.runTaskTimer(Main.getPlugin(), 0, 1);
-        else
+        else{
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+        }
         
         BukkitRunnable cooltime = new BukkitRunnable(){
             @Override

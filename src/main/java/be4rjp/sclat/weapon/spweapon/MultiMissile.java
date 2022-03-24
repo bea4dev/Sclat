@@ -136,6 +136,7 @@ public class MultiMissile {
                                 ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(es.getBukkitEntity().getEntityId()));
                                 if(MMCheckCanLock(p, op)){
                                     op.sendTitle("", ChatColor.RED + "ミサイル接近中！", 0, 40, 4);
+                                    op.playSound(op.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
                                     op.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 30, 1));
                                     targetList.add(op);
                                     count++;

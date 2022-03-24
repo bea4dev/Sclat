@@ -141,8 +141,10 @@ public class Sprinkler {
                 
         if(player.getExp() > (float)(0.6 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
             task.runTaskTimer(Main.getPlugin(), 0, 1);
-        else
+        else{
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+        }
     }
     
     public static void SprinklerRunnable2(ArmorStand as, Player player){

@@ -74,6 +74,7 @@ public class Brush {
                     if(data.getIsHolding() && data.getCanPaint() && data.isInMatch() && Main.dadadaCheckerAPI.getPlayerClickType(p) != ClickType.RENDA && p.getGameMode() != GameMode.SPECTATOR){
                         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
                             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
+                            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
                             return;
                         }
                         p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getRollerNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
@@ -206,6 +207,7 @@ public class Brush {
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 13, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
             return;
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));

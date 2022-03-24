@@ -147,8 +147,10 @@ public class Charger {
                             //p.sendMessage(String.valueOf(data.getWeaponClass().getMainWeapon().getChargeRatio()));
                             Charger.Shoot(p, (int)((double)reach  * (double)data.getWeaponClass().getMainWeapon().getChargeRatio() * (double)data.getWeaponClass().getMainWeapon().getDistanceTick()), data.getWeaponClass().getMainWeapon().getDamage() * reach);
                             p.setExp(p.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() * reach / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
-                        }else
+                        }else {
                             p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
+                            p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+                        }
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
