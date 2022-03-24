@@ -204,7 +204,9 @@ public class QuickBomb {
                 
         if(player.getExp() > 0.4 || DataMgr.getPlayerData(player).getIsBombRush())
             task.runTaskTimer(Main.getPlugin(), 0, 1);
-        else
+        else{
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+        }
     }
 }

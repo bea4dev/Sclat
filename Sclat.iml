@@ -37,7 +37,7 @@
     <orderEntry type="library" name="Maven: org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.14.4-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.github.koca2000:NoteBlockAPI:-5bed328fb1-1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.koca2000:NoteBlockAPI:-0eace096b6-1" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: com.github.ucchyocean:LunaChat:3.0.15">
         <CLASSES>
@@ -59,6 +59,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: com.github.Be4rJP:BlockStudio:-8f180a9965-1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.Be4rJP:BlockStudio:-1e03db37e6-1" level="project" />
   </component>
 </module>

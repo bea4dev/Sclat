@@ -30,12 +30,18 @@ public class Trap{
                 data.addTrapCount();
                 player.setExp(player.getExp() - (float)(0.39 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)));
                 player.playSound(player.getLocation(), Sound.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, 1F, 1.2F);
-            }else if (player.getExp() < (float) (0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP)))
+            }else if (player.getExp() < (float) (0.4 / Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP))){
                 player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
-            else if(!player.isOnGround())
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+            }
+            else if(!player.isOnGround()){
                 player.sendTitle("", ChatColor.RED + "空中では使用できません", 0, 5, 2);
-        }else if (!PaintMgr.canPaint(block))
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+            }
+        }else if (!PaintMgr.canPaint(block)){
             player.sendTitle("", ChatColor.RED + "ここでは使用できません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+        }
     
         BukkitRunnable delay = new BukkitRunnable(){
             @Override

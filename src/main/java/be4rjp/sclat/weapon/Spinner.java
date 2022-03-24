@@ -86,8 +86,11 @@ public class Spinner {
                         int reach = (int)(p.getExp() / data.getWeaponClass().getMainWeapon().getNeedInk());
                         if(reach >= 2){
                             SpinnerShootRunnable((int)(reach * data.getWeaponClass().getMainWeapon().getChargeRatio()), p);
-                        }else
+                        }else{
                             p.sendTitle("", ChatColor.RED + "インクが足りません", 0, 10, 2);
+                            p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
+                        }
+
                     }
                     charge = 0;
                     p.getInventory().setItem(0, data.getWeaponClass().getMainWeapon().getWeaponIteamStack());
@@ -132,6 +135,7 @@ public class Spinner {
         PlayerData data = DataMgr.getPlayerData(player);
         if(player.getExp() <= (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP))){
             player.sendTitle("", ChatColor.RED + "インクが足りません", 0, 5, 2);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 1.63F);
             return;
         }
         player.setExp(player.getExp() - (float)(data.getWeaponClass().getMainWeapon().getNeedInk() / Gear.getGearInfluence(player, Gear.Type.MAIN_INK_EFFICIENCY_UP)));
