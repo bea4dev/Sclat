@@ -77,7 +77,7 @@ public class SuperTyakuti {
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon() && !o_player.equals(player)){
                                 if(o_player.getWorld() == player.getWorld()){
-                                    if(o_player.getLocation().distance(player.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
+                                    if(o_player.getLocation().distanceSquared(player.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor(), 1);
                                         o_player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(0, -0.5, 0), 5, 0.5, 0.4, 0.5, 5, dustOptions);
                                     }
@@ -104,7 +104,7 @@ public class SuperTyakuti {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeaponRegion()){
                                 for(Location loc : s_locs){
                                     if(o_player.getWorld() == loc.getWorld()){
-                                        if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
+                                        if(o_player.getLocation().distanceSquared(loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                             org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(player).getTeam().getTeamColor().getWool().createBlockData();
                                             o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, loc, 1, 0, 0, 0, 1, bd);
                                         }
@@ -123,6 +123,7 @@ public class SuperTyakuti {
                         Sclat.createInkExplosionEffect(player.getLocation(), 7, 10, player);
 
                         double maxDist = 8;
+                        double maxDistSquared = 64; /* 8^2 */
                         //塗る
                         for(int i = 0; i <= maxDist; i++){
                             List<Location> p_locs = Sphere.getSphere(player.getLocation(), i, 10);
@@ -136,7 +137,7 @@ public class SuperTyakuti {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != player.getWorld())
                                 continue;
-                            if (target.getLocation().distance(player.getLocation()) <= maxDist) {
+                            if (target.getLocation().distanceSquared(player.getLocation()) <= maxDistSquared) {
                                 double damage = (maxDist - target.getLocation().distance(player.getLocation())) * 15;
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     Sclat.giveDamage(player, target, damage, "spWeapon");
@@ -157,7 +158,7 @@ public class SuperTyakuti {
                         }
 
                         for(Entity as : player.getWorld().getEntities()){
-                            if (as.getLocation().distance(player.getLocation()) <= maxDist){
+                            if (as.getLocation().distanceSquared(player.getLocation()) <= maxDistSquared){
                                 if(as instanceof ArmorStand){
                                     if(as.getCustomName() != null) {
                                         double damage = (maxDist - as.getLocation().distance(player.getLocation())) * 15;

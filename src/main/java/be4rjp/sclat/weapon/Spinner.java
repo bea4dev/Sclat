@@ -176,7 +176,7 @@ public class Spinner {
                             for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
                                     if (o_player.getWorld() == inkball.getWorld())
-                                        if (o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                        if (o_player.getLocation().distanceSquared(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                             o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
                             }
                         }

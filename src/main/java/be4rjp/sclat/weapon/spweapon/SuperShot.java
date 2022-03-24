@@ -148,7 +148,7 @@ public class SuperShot {
                         for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                                 if(o_player.getWorld() == ball.getWorld())
-                                    if(o_player.getLocation().distance(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                    if(o_player.getLocation().distanceSquared(ball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                         o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, ball.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
                     }

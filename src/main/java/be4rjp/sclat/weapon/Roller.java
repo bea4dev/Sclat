@@ -93,7 +93,7 @@ public class Roller {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                 if(target.getWorld() == p.getWorld())
-                                    if(target.getLocation().distance(front) < Main.PARTICLE_RENDER_DISTANCE)
+                                    if(target.getLocation().distanceSquared(front) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, front, 2, 0, 0, 0, 1, bd);
                         }
                         Vector vec1 = new Vector(vec.getZ() * -1, 0, vec.getX());
@@ -108,7 +108,7 @@ public class Roller {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
-                                        if(target.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE)
+                                        if(target.getLocation().distanceSquared(position) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
     
@@ -154,7 +154,7 @@ public class Roller {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
-                                        if(target.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE)
+                                        if(target.getLocation().distanceSquared(position) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
                             
@@ -232,7 +232,7 @@ public class Roller {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(DataMgr.getPlayerData(target).getSettings().ShowEffect_MainWeaponInk())
                                     if(target.getWorld() == p.getWorld())
-                                        if(target.getLocation().distance(position) < Main.PARTICLE_RENDER_DISTANCE)
+                                        if(target.getLocation().distanceSquared(position) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
                             

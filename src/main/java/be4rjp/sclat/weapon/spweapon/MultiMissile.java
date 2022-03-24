@@ -269,7 +269,7 @@ public class MultiMissile {
                     ball.setVelocity(drop.getVelocity());
                 }
 
-                if(dl.distance(tl) < 10){
+                if(dl.distanceSquared(tl) < 100 /* 10^2 */){
                     reached = true;
                 }
 
@@ -288,7 +288,7 @@ public class MultiMissile {
                 org.bukkit.block.data.BlockData bd = DataMgr.getPlayerData(s).getTeam().getTeamColor().getWool().createBlockData();
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(o_player.getWorld() == drop.getLocation().getWorld()) {
-                        if (o_player.getLocation().distance(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE) {
+                        if (o_player.getLocation().distanceSquared(drop.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
                             if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon())
                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, drop.getLocation(), 1, 0, 0, 0, 1, bd);
                         }
@@ -298,6 +298,7 @@ public class MultiMissile {
                 if(DataMgr.getSnowballIsHit(ball)){
                     //半径
                     double maxDist = 3;
+                    double maxDistSquared = 9;/* 3^2 */
 
                     //爆発音
                     s.getWorld().playSound(drop.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
@@ -317,7 +318,7 @@ public class MultiMissile {
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != s.getWorld())
                             continue;
-                        if (target.getLocation().distance(drop.getLocation()) <= maxDist) {
+                        if (target.getLocation().distanceSquared(drop.getLocation()) <= maxDistSquared) {
                             double damage = (maxDist - target.getLocation().distance(drop.getLocation())) * 14;
                             if(DataMgr.getPlayerData(s).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                 Sclat.giveDamage(s, target, damage, "spWeapon");
@@ -338,7 +339,7 @@ public class MultiMissile {
                     }
 
                     for(Entity as : s.getWorld().getEntities()){
-                        if (as.getLocation().distance(drop.getLocation()) <= maxDist){
+                        if (as.getLocation().distanceSquared(drop.getLocation()) <= maxDistSquared){
                             if(as instanceof ArmorStand){
                                 double damage = (maxDist - as.getLocation().distance(drop.getLocation())) * 2;
                                 ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, s);

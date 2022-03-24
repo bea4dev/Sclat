@@ -138,7 +138,7 @@ public class Shooter {
                                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                                     if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()) {
                                         if (o_player.getWorld() == location.getWorld()) {
-                                            if (o_player.getLocation().distance(location) < Main.PARTICLE_RENDER_DISTANCE) {
+                                            if (o_player.getLocation().distanceSquared(location) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
                                                 o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
                                                         location.clone().add(0, 0.7, 0).add(randomVector.getX(), randomVector.getY(), randomVector.getZ()),
                                                         0, erv.getX(), erv.getY(), erv.getZ(), 1, bd);
@@ -303,7 +303,7 @@ public class Shooter {
                     for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if (DataMgr.getPlayerData(o_player).getSettings().ShowEffect_MainWeaponInk())
                             if (o_player.getWorld() == inkball.getWorld())
-                                if (o_player.getLocation().distance(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE)
+                                if (o_player.getLocation().distanceSquared(inkball.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                     o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST, inkball.getLocation(), 0, 0, -1, 0, 1, bd);
                     }
                 }

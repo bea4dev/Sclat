@@ -268,10 +268,10 @@ public class SnowballListener implements Listener {
             return;
         }
         
-        if(event.getEntity().getCustomName() != null){
-            if(DataMgr.getMainSnowballNameMap().containsKey(event.getEntity().getCustomName())){
-                if(event.getEntity() instanceof Snowball){
-                    if(event.getHitEntity() != null){
+        if(event.getEntity() instanceof Snowball){
+            if(event.getHitEntity() != null){
+                if(event.getEntity().getCustomName() != null){
+                    if(DataMgr.getMainSnowballNameMap().containsKey(event.getEntity().getCustomName())){
                         if(event.getHitEntity() instanceof ArmorStand){
                             if(event.getHitEntity().getCustomName() != null){
                                 if(event.getHitEntity().getCustomName().equals("SplashShield")){

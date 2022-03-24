@@ -49,7 +49,7 @@ public class TrapData {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_Bomb()){
                         for(Location loc : s_locs){
                             if(o_player.getWorld() == loc.getWorld() && DataMgr.getPlayerData(o_player).getTeam() != null){
-                                if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE && (DataMgr.getPlayerData(o_player).getTeam() == team || near)){
+                                if(o_player.getLocation().distanceSquared(loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED && (DataMgr.getPlayerData(o_player).getTeam() == team || near)){
                                     Particle.DustOptions dustOptions = new Particle.DustOptions(near ? DataMgr.getPlayerData(player).getTeam().getTeamColor().getBukkitColor() : Color.BLACK, 1);
                                     o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 5, dustOptions);
                                 }
@@ -84,10 +84,10 @@ public class TrapData {
                 }
     
                 for(Entity as : player.getWorld().getEntities()) {
-                    if (as.getLocation().distance(location) <= 3) {
+                    if (as instanceof ArmorStand && as.getLocation().distanceSquared(location) <= 9 /*3^2*/) {
                         if(as.getCustomName() != null){
                             if(as.getCustomName() == null) continue;
-                            if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")&& !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                            if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")&& !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
                                 Explosion();
                             }
                         }
@@ -119,6 +119,7 @@ public class TrapData {
                 if(i == 20) {
                     //半径
                     double maxDist = 4;
+                    double maxDistSquared = 16; /* 4^2 */
     
                     //爆発音
                     player.getWorld().playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
@@ -135,7 +136,7 @@ public class TrapData {
                         if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                             for(Location loc : s_locs){
                                 if(o_player.getWorld() == loc.getWorld()){
-                                    if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
+                                    if(o_player.getLocation().distanceSquared(loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                         Particle.DustOptions dustOptions = new Particle.DustOptions(Color.BLACK, 1);
                                         o_player.spawnParticle(Particle.REDSTONE, loc, 1, 0, 0, 0, 1, dustOptions);
                                     }
@@ -165,9 +166,9 @@ public class TrapData {
                     }
     
                     for(Entity as : player.getWorld().getEntities()){
-                        if (as.getLocation().distance(location) <= maxDist + 1){
+                        if (as instanceof ArmorStand && as.getLocation().distance(location) <= maxDist + 1){
                             if(as.getCustomName() != null){
-                                if(as instanceof ArmorStand && !as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")&& !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
+                                if(!as.getCustomName().equals("Path") && !as.getCustomName().equals("21") && !as.getCustomName().equals("100")&& !as.getCustomName().equals("SplashShield") && !as.getCustomName().equals("Kasa")){
                                     ((ArmorStand)as).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1));
                                 }
                             }
@@ -176,8 +177,8 @@ public class TrapData {
     
                     //攻撃判定の処理
                     for (Entity as : player.getWorld().getEntities()) {
-                        if (as.getLocation().distance(location) <= maxDist) {
-                            if (as instanceof ArmorStand) {
+                        if (as instanceof ArmorStand) {
+                            if (as.getLocation().distanceSquared(location) <= maxDistSquared) {
                                 if (as.getCustomName() != null) {
                                     try {
                                         if (as.getCustomName().equals("Kasa")) {
@@ -201,7 +202,7 @@ public class TrapData {
                     for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if (!DataMgr.getPlayerData(target).isInMatch() || target.getWorld() != player.getWorld())
                             continue;
-                        if (target.getLocation().distance(location) <= maxDist) {
+                        if (target.getLocation().distanceSquared(location) <= maxDistSquared) {
                             double damage = (maxDist - target.getLocation().distance(location)) * 5.0 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                             if (DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
                                 Sclat.giveDamage(player, target, damage, "subWeapon");
@@ -221,8 +222,8 @@ public class TrapData {
                     }
     
                     for (Entity as : player.getWorld().getEntities()) {
-                        if (as.getLocation().distance(location) <= maxDist) {
-                            if (as instanceof ArmorStand) {
+                        if (as instanceof ArmorStand) {
+                            if (as.getLocation().distanceSquared(location) <= maxDistSquared) {
                                 double damage = (maxDist - as.getLocation().distance(location)) * 2.5 * Gear.getGearInfluence(player, Gear.Type.SUB_SPEC_UP);
                                 ArmorStandMgr.giveDamageArmorStand((ArmorStand) as, damage, player);
                                 if (as.getCustomName() != null) {

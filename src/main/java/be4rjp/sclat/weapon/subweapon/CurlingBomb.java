@@ -115,7 +115,7 @@ public class CurlingBomb {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(DataMgr.getPlayerData(target).getSettings().ShowEffect_Bomb())
                                 if(target.getWorld() == player.getWorld())
-                                    if(target.getLocation().distance(as1l) < Main.PARTICLE_RENDER_DISTANCE)
+                                    if(target.getLocation().distanceSquared(as1l) < Main.PARTICLE_RENDER_DISTANCE_SQUARED)
                                         target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, as1l, 2, 0, 0, 0, 1, bd);
                         }
                         //攻撃判定

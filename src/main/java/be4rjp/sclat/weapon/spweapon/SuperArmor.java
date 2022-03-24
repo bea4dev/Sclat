@@ -42,7 +42,7 @@ public class SuperArmor {
                 for (Player o_player : Main.getPlugin().getServer().getOnlinePlayers()) {
                     if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_SPWeapon() && !o_player.equals(player)){
                         if(o_player.getWorld() == player.getWorld()){
-                            if(o_player.getLocation().distance(player.getLocation()) < Main.PARTICLE_RENDER_DISTANCE){
+                            if(o_player.getLocation().distanceSquared(player.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                                 Particle.DustOptions dustOptions = new Particle.DustOptions(data.getTeam().getTeamColor().getBukkitColor(), 1);
                                 o_player.spawnParticle(Particle.REDSTONE, player.getEyeLocation(), 5, 0.5, 0.4, 0.5, 5, dustOptions);
                             }

@@ -254,7 +254,7 @@ public class Sclat {
             if(DataMgr.getPlayerData(o_player).getSettings().ShowEffect_BombEx()){
                 for(Location loc : s_locs){
                     if(o_player.getWorld() == loc.getWorld()){
-                        if(o_player.getLocation().distance(loc) < Main.PARTICLE_RENDER_DISTANCE){
+                        if(o_player.getLocation().distanceSquared(loc) < Main.PARTICLE_RENDER_DISTANCE_SQUARED){
                             o_player.spawnParticle(org.bukkit.Particle.BLOCK_DUST,
                                     loc, 0, loc.getX() - center.getX(), loc.getY() - center.getY(), loc.getZ() - center.getZ(), 1, bd);
                         }
