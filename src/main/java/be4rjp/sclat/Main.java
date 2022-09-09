@@ -12,6 +12,8 @@ import be4rjp.sclat.manager.*;
 import be4rjp.sclat.protocollib.SclatPacketListener;
 import be4rjp.sclat.server.EquipmentServer;
 import be4rjp.sclat.server.StatusServer;
+import be4rjp.sclat.ticks.AsyncPlayerListener;
+import be4rjp.sclat.ticks.AsyncThreadManager;
 import be4rjp.sclat.tutorial.Tutorial;
 import be4rjp.sclat.weapon.SnowballListener;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -100,6 +102,9 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         
         pdspList = new ArrayList<>();
         
+        //Setup async tick thread
+        AsyncThreadManager.setup(1);
+        
         
         //----------------------------APICheck-------------------------------
         NoteBlockAPI = true;
@@ -181,6 +186,7 @@ public class Main extends JavaPlugin implements PluginMessageListener{
         pm.registerEvents(new be4rjp.sclat.weapon.SubWeapon(), this);
         pm.registerEvents(new be4rjp.sclat.weapon.SPWeapon(), this);
         pm.registerEvents(new SnowballListener(), this);
+        pm.registerEvents(new AsyncPlayerListener(), this);
         
         if(LunaChat)
             pm.registerEvents(new LunaChatListener(), this);
@@ -415,6 +421,12 @@ public class Main extends JavaPlugin implements PluginMessageListener{
 
     @Override
     public void onDisable() {
+        
+        try {
+            AsyncThreadManager.shutdownAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     
         //-----------------------Tutorial server list------------------------
         if(type == ServerType.LOBBY){

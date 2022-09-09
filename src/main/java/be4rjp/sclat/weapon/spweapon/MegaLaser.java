@@ -8,13 +8,19 @@ import be4rjp.blockstudio.file.ObjectData;
 import be4rjp.sclat.Main;
 import be4rjp.sclat.Sclat;
 import be4rjp.sclat.data.DataMgr;
+import be4rjp.sclat.data.PlayerData;
 import be4rjp.sclat.manager.ArmorStandMgr;
 import be4rjp.sclat.manager.SPWeaponMgr;
 import be4rjp.sclat.manager.WeaponClassMgr;
 import be4rjp.sclat.raytrace.RayTrace;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import be4rjp.sclat.ticks.AsyncTask;
+import be4rjp.sclat.ticks.AsyncThreadManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,6 +108,17 @@ public class MegaLaser {
     }
     
     
+    public static void playSound(Location targetLoc, Sound sound, float v, float p) {
+        for (Player target : AsyncThreadManager.onlinePlayers) {
+            Location loc = target.getLocation();
+            if (loc.getWorld() == targetLoc.getWorld()) {
+                if (loc.distanceSquared(targetLoc) < 500) {
+                    target.playSound(targetLoc, sound, v, p);
+                }
+            }
+        }
+    }
+    
     public static void MegaLaserShootRunnable(Player player, BSObject bsObject){
     
         Vector direction = player.getEyeLocation().getDirection().normalize();
@@ -114,8 +131,10 @@ public class MegaLaser {
         ArrayList<Vector> positions = rayTrace.traverse(300, 1);
     
         SPWeaponMgr.setSPCoolTimeAnimation(player, 130);
+    
+        PlayerData playerData = DataMgr.getPlayerData(player);
         
-        BukkitRunnable task = new BukkitRunnable() {
+        AsyncTask task = new AsyncTask() {
             Player p = player;
             int c = 0;
     
@@ -123,9 +142,9 @@ public class MegaLaser {
             public void run() {
     
                 //終了処理
-                if(c == 13 || !DataMgr.getPlayerData(p).isInMatch() || !p.isOnline()) {
-                    DataMgr.getPlayerData(p).setIsUsingSP(false);
-                    for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                if(c == 13 || !playerData.isInMatch() || !p.isOnline()) {
+                    playerData.setIsUsingSP(false);
+                    for (Player target : AsyncThreadManager.onlinePlayers) {
                         Sclat.sendWorldBorderWarningClearPacket(target);
                     }
                     bsObject.remove();
@@ -134,11 +153,11 @@ public class MegaLaser {
                 
                 
                 //音
-                if(c <= 3)
-                    objectLoc.getWorld().playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
-                else
-                    objectLoc.getWorld().playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.6F);
-    
+                if(c <= 3) {
+                    playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
+                } else {
+                    playSound(objectLoc, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.6F);
+                }
                 
                 Vector xzVector = new Vector(direction.getX(), 0, direction.getZ());
                 float xzAngle = xzVector.angle(new Vector(0, 0, 1)) * (direction.getX() >= 0 ? 1 : -1);
@@ -152,6 +171,8 @@ public class MegaLaser {
                 
                 
                 //動作処理
+                Set<Player> damageTargets = new HashSet<>();
+                double damage = 7.5;
                 for(int i = 1; i < positions.size();i++){
                     
                     if(c % 2 == 0)
@@ -172,12 +193,14 @@ public class MegaLaser {
 
                     for(Vector plus : plusList) {
                         Location eloc = position.clone().add(plus.clone().multiply(r));
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
+                        for (Player target : AsyncThreadManager.onlinePlayers) {
                             if (p.getWorld() != target.getWorld())
                                 continue;
                             if (eloc.distanceSquared(target.getLocation()) < Main.PARTICLE_RENDER_DISTANCE_SQUARED) {
-                                if (DataMgr.getPlayerData(target).getSettings().ShowEffect_SPWeaponRegion()) {
-                                    Particle.DustOptions dustOptions = new Particle.DustOptions(DataMgr.getPlayerData(p).getTeam().getTeamColor().getBukkitColor(), c <= 3 ? 1 : 2);
+                                PlayerData targetData = DataMgr.getPlayerData(target);
+                                if (targetData == null) continue;
+                                if (targetData.getSettings().ShowEffect_SPWeaponRegion()) {
+                                    Particle.DustOptions dustOptions = new Particle.DustOptions(playerData.getTeam().getTeamColor().getBukkitColor(), c <= 3 ? 1 : 2);
                                     target.spawnParticle(Particle.REDSTONE, eloc, 1, 0, 0, 0, 30, dustOptions);
                                 }
                             }
@@ -187,9 +210,9 @@ public class MegaLaser {
                     //音
                     if(i > 5 && i % 5 == 0){
                         if(c <= 3)
-                            position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
+                            playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.5F);
                         else
-                            position.getWorld().playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.6F);
+                            playSound(position, Sound.ENTITY_WITHER_SHOOT, 0.3F, 0.6F);
                     }
                     
                     //画面エフェクト
@@ -197,12 +220,14 @@ public class MegaLaser {
                     double maxDistSquared = 25; /* 5^2 */
                     //List<Player> list = new ArrayList<>();
                     if(i > 5) {
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if (!DataMgr.getPlayerData(target).isInMatch())
+                        for (Player target : AsyncThreadManager.onlinePlayers) {
+                            PlayerData targetData = DataMgr.getPlayerData(target);
+                            if (targetData == null) continue;
+                            if (!targetData.isInMatch())
                                 continue;
                             if (target.getWorld() != p.getWorld())
                                 continue;
-                            if (DataMgr.getPlayerData(target).getTeam() == DataMgr.getPlayerData(p).getTeam())
+                            if (targetData.getTeam() == playerData.getTeam())
                                 continue;
                             if (target.getLocation().distanceSquared(position.clone().add(0, 1, 0)) <= maxDistSquared) {
                                 //list.add(target);
@@ -225,22 +250,22 @@ public class MegaLaser {
                     
                     //攻撃判定
                     if(i > 5 && c > 3){
-                        double damage = 7.5;
-                        
-                        for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
-                            if(!DataMgr.getPlayerData(target).isInMatch())
+                        for (Player target : AsyncThreadManager.onlinePlayers) {
+                            PlayerData targetData = DataMgr.getPlayerData(target);
+                            if (targetData == null) continue;
+                            if(!targetData.isInMatch())
                                 continue;
                             if(target.getWorld() != p.getWorld())
                                 continue;
                             if (target.getLocation().distanceSquared(position.clone().add(0, -1, 0)) <= maxDistSquared) {
-                                if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                if(playerData.getTeam() != targetData.getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     
-                                    if(DataMgr.getPlayerData(target).getArmor() > 10000.0 && target.getGameMode() != GameMode.SPECTATOR){
+                                    if(targetData.getArmor() > 10000.0 && target.getGameMode() != GameMode.SPECTATOR){
                                         target.setVelocity(direction.clone().multiply(2.0));
                                         target.getWorld().playSound(target.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 1F, 1.5F);
                                     }
                                     
-                                    Sclat.giveDamage(p, target, damage, "spWeapon");
+                                    damageTargets.add(target);
                                     
                                     //AntiNoDamageTime
                                     BukkitRunnable task = new BukkitRunnable(){
@@ -255,17 +280,25 @@ public class MegaLaser {
                             }
                         }
     
-                        for(Entity as : player.getWorld().getEntities()){
-                            if (as instanceof ArmorStand && as.getLocation().distanceSquared(position.clone().add(0, -1, 0)) <= maxDistSquared){
-                                ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                        AsyncThreadManager.sync(() -> {
+                            for(Entity as : player.getWorld().getEntities()){
+                                if (as instanceof ArmorStand && as.getLocation().distanceSquared(position.clone().add(0, -1, 0)) <= maxDistSquared){
+                                    ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, player);
+                                }
                             }
-                        }
+                        });
                     }
                 }
+    
+                AsyncThreadManager.sync(() -> {
+                    for (Player target : damageTargets) {
+                        Sclat.giveDamage(p, target, damage, "spWeapon");
+                    }
+                });
                 
                 c++;
             }
         };
-        task.runTaskTimer(Main.getPlugin(), 0, 10);
+        task.runTaskTimer(0, 10);
     }
 }

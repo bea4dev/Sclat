@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -18,7 +20,7 @@ import org.bukkit.entity.Snowball;
  * @author Be4rJP
  */
 public class DataMgr {
-    private static Map<Player, PlayerData> playerdata = new HashMap<>();
+    private static Map<Player, PlayerData> playerdata = new ConcurrentHashMap<>();
     private static Map<String, PlayerData> uuiddata = new HashMap<>();
     private static Map<Integer, Match> matchdata = new HashMap<>();
     private static Map<Integer, Team> teamdata = new HashMap<>();
