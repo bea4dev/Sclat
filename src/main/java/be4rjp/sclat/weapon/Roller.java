@@ -112,11 +112,11 @@ public class Roller {
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
     
-                            double maxDist = 2;
+                            double maxDistSquad = 4/* 2*2 */;
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
-                                if (target.getLocation().distance(position) <= maxDist) {
+                                if (target.getLocation().distanceSquared(position) <= maxDistSquad) {
                                     if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                 
                                         double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
@@ -127,9 +127,9 @@ public class Roller {
                             }
                             
                             for(Entity as : player.getWorld().getEntities()){
-                                if (as.getLocation().distance(position) <= maxDist){
-                                    if(as instanceof ArmorStand){
-                                        if(as.getCustomName() != null) {
+                                if (as instanceof ArmorStand){
+                                    if(as.getCustomName() != null){
+                                        if(as.getLocation().distanceSquared(position) <= maxDistSquad) {
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                             ArmorStandMgr.giveDamageArmorStand((ArmorStand) as, damage, player);
                                         }
@@ -158,12 +158,12 @@ public class Roller {
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
                             
-                            double maxDist = 2;
+                            double maxDistSquad = 4 /* 2*2 */;
                             
                             for (Entity as : p.getWorld().getEntities()) {
-                                if (as.getLocation().distance(position) <= maxDist) {
-                                    if (as instanceof ArmorStand) {
-                                        if (as.getCustomName() != null) {
+                                if (as instanceof ArmorStand) {
+                                    if (as.getCustomName() != null) {
+                                        if (as.getLocation().distanceSquared(position) <= maxDistSquad) {
                                             try {
                                                 if (as.getCustomName().equals("Kasa")) {
                                                     KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
@@ -185,9 +185,9 @@ public class Roller {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if(!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
-                                if (target.getLocation().distance(position) <= maxDist) {
-                                    if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
-                                        if(DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                                if (DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
+                                    if(target.getLocation().distanceSquared(position) <= maxDistSquad){
+                                        if(rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)){
                     
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                     
@@ -209,9 +209,9 @@ public class Roller {
                             }
                             
                             for(Entity as : player.getWorld().getEntities()){
-                                if (as.getLocation().distance(position) <= maxDist){
-                                    if(as instanceof ArmorStand){
-                                        if(as.getCustomName() != null) {
+                                if (as instanceof ArmorStand){
+                                    if(as.getCustomName() != null){
+                                        if(as.getLocation().distanceSquared(position) <= maxDistSquad) {
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                             ArmorStandMgr.giveDamageArmorStand((ArmorStand) as, damage, player);
                                         }
@@ -236,12 +236,12 @@ public class Roller {
                                             target.spawnParticle(org.bukkit.Particle.BLOCK_DUST, position, 2, 0, 0, 0, 1, bd);
                             }
                             
-                            double maxDist = 2;
+                            double maxDistSquad = 4 /* 2*2 */;
                             
                             for (Entity as : p.getWorld().getEntities()) {
-                                if (as.getLocation().distance(position) <= maxDist) {
-                                    if (as instanceof ArmorStand) {
-                                        if (as.getCustomName() != null) {
+                                if (as instanceof ArmorStandd) {
+                                    if (as.getCustomName() != null) {
+                                        if (as.getLocation().distanceSquared(position) <= maxDistSquad) {
                                             try {
                                                 if (as.getCustomName().equals("Kasa")) {
                                                     KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
@@ -263,9 +263,9 @@ public class Roller {
                             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                                 if (!DataMgr.getPlayerData(target).isInMatch())
                                     continue;
-                                if (target.getLocation().distance(position) <= maxDist) {
+                                if (DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
                                     if (rayTrace1.intersects(new BoundingBox((Entity)target), data.getWeaponClass().getMainWeapon().getRollerWidth(), 0.05)) {
-                                        if (DataMgr.getPlayerData(p).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
+                                        if (target.getLocation().distanceSquared(position) <= maxDistSquad) {
     
                                             double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
     
@@ -288,8 +288,8 @@ public class Roller {
                             }
                             
                             for(Entity as : player.getWorld().getEntities()){
-                                if (as.getLocation().distance(position) <= maxDist){
-                                    if(as instanceof ArmorStand){
+                                if (as instanceof ArmorStand){
+                                    if(as.getLocation().distance(position) <= maxDistSquad){
                                         double damage = DataMgr.getPlayerData(p).getWeaponClass().getMainWeapon().getRollerDamage();
                                         ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                                     }

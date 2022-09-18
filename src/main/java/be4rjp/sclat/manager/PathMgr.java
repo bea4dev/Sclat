@@ -49,7 +49,7 @@ public class PathMgr {
                 drop.setVelocity(vec);
                 
                 boolean is = false;
-                if(drop.getLocation().distance(from) > from.distance(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
+                if(drop.getLocation().distanceSquared(from) > from.distanceSquared(to) || !drop.getPassengers().contains(p) || !DataMgr.getPlayerData(p).isInMatch() || !p.getInventory().getItemInMainHand().getType().equals(Material.AIR))
                     is = true;
                 if(path.getTeam() == null)
                     is = true;
@@ -138,7 +138,7 @@ public class PathMgr {
                     for (Player player : Main.getPlugin().getServer().getOnlinePlayers()) {
                         if(team != null){
                             if(DataMgr.getPlayerData(player).isInMatch() && player.getWorld() == from.getWorld() && player.getInventory().getItemInMainHand().getType().equals(Material.AIR) && DataMgr.getPlayerData(player).getTeam() == team && !DataMgr.getPlayerData(player).getIsOnPath()){
-                                if(player.getLocation().distance(from) < 1)
+                                if(player.getLocation().distanceSquared(from) < 1 /* 1*1 */)
                                     setPath(player, from, to, path1);
                             }
                         }
