@@ -73,7 +73,7 @@ public class Wiremesh extends BukkitRunnable{
                 
                 EntityPlayer entityPlayer = ((CraftPlayer)player).getHandle();
                 
-                if (block.getLocation().distance(player.getLocation()) <= 5) {
+                if (block.getLocation().distanceSquared(player.getLocation()) <= 25 /* 5*5 */) {
                     
                     if(is){
                         player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
