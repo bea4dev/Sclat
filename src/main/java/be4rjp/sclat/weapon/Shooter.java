@@ -243,9 +243,9 @@ public class Shooter {
                 }
         
                 for (Entity as : player.getWorld().getEntities()) {
-                    if (as.getLocation().distance(position) <= 2) {
-                        if (as instanceof ArmorStand) {
-                            if (as.getCustomName() != null) {
+                    if (as instanceof ArmorStand) {
+                        if (as.getCustomName() != null) {
+                            if (as.getLocation().distanceSquared(position) <= 4 /* 2*2 */) {
                                 isLockOnPlayer = true;
                                 break check;
                             }

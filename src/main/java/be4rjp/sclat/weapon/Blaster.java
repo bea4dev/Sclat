@@ -138,9 +138,9 @@ public class Blaster {
                     
                     //攻撃判定の処理
                     for (Entity as : player.getWorld().getEntities()) {
-                        if (as.getLocation().distance(ball.getLocation()) <= maxDist) {
-                            if (as instanceof ArmorStand) {
-                                if (as.getCustomName() != null) {
+                        if (as instanceof ArmorStand) {
+                            if (as.getCustomName() != null) {
+                                if (as.getLocation().distanceSquared(ball.getLocation()) <= maxDist*maxDist) {
                                     try {
                                         if (as.getCustomName().equals("Kasa")) {
                                             KasaData kasaData = DataMgr.getKasaDataFromArmorStand((ArmorStand) as);
@@ -191,7 +191,7 @@ public class Blaster {
                     
                     for(Entity as : player.getWorld().getEntities()){
                         if(as instanceof ArmorStand){
-                            if (as.getLocation().distance(inkball.getLocation()) <= maxDist + 1) {
+                            if (as.getLocation().distanceSquared(inkball.getLocation()) <= (maxDist + 1)*(maxDist + 1)) {
                                 double damage = (maxDist + 1 - as.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                                 ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                             }

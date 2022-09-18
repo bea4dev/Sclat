@@ -145,7 +145,7 @@ public class Slosher {
                         for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                             if(!DataMgr.getPlayerData(target).isInMatch())
                                 continue;
-                            if (target.getLocation().distance(inkball.getLocation()) <= maxDist) {
+                            if (target.getLocation().distanceSquared(inkball.getLocation()) <= maxDist*maxDist) {
                                 double damage = (maxDist - target.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                                 if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
                                     Sclat.giveDamage(player, target, damage, "killed");
@@ -168,7 +168,7 @@ public class Slosher {
 
                         for(Entity as : player.getWorld().getEntities()){
                             if(as instanceof ArmorStand){
-                                if (as.getLocation().distance(inkball.getLocation()) <= maxDist) {
+                                if (as.getLocation().distanceSquared(inkball.getLocation()) <= maxDist*maxDist) {
                                     double damage = (maxDist - as.getLocation().distance(inkball.getLocation())) * data.getWeaponClass().getMainWeapon().getBlasterExDamage();
                                     ArmorStandMgr.giveDamageArmorStand((ArmorStand)as, damage, p);
                                 }

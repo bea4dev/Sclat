@@ -202,12 +202,12 @@ public class Charger {
             
             
             
-            double maxDist = 2;
+            double maxDistSquad = 4 /* 2*2 */;
             for (Player target : Main.getPlugin().getServer().getOnlinePlayers()) {
                 if(!DataMgr.getPlayerData(target).isInMatch())
                     continue;
-                if (target.getLocation().distance(position) <= maxDist) {
-                    if(DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)){
+                if (DataMgr.getPlayerData(player).getTeam() != DataMgr.getPlayerData(target).getTeam() && target.getGameMode().equals(GameMode.ADVENTURE)) {
+                    if(target.getLocation().distanceSquared(position) <= maxDistSquad){
                         if(rayTrace.intersects(new BoundingBox((Entity)target), (int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.05)){
                             boolean death = Sclat.giveDamage(player, target, damage, "killed");
                             
@@ -232,8 +232,8 @@ public class Charger {
             }
             
             for(Entity as : player.getWorld().getEntities()){
-                if (as.getLocation().distance(position) <= maxDist){
-                    if(as instanceof ArmorStand){
+                if (as instanceof ArmorStand){
+                    if(as.getLocation().distanceSquared(position) <= maxDistSquad){
                         if(rayTrace.intersects(new BoundingBox((Entity)as), (int)(reach * Gear.getGearInfluence(player, Gear.Type.MAIN_SPEC_UP)), 0.05)){
                             if(as.getCustomName() != null){
                                 if(as.getCustomName().equals("SplashShield")){
