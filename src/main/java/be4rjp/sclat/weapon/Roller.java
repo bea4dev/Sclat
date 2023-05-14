@@ -239,7 +239,7 @@ public class Roller {
                             double maxDistSquad = 4 /* 2*2 */;
                             
                             for (Entity as : p.getWorld().getEntities()) {
-                                if (as instanceof ArmorStandd) {
+                                if (as instanceof ArmorStand) {
                                     if (as.getCustomName() != null) {
                                         if (as.getLocation().distanceSquared(position) <= maxDistSquad) {
                                             try {
